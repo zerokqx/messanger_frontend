@@ -1,3 +1,5 @@
+import { ThemeToggle } from "@/components";
+import { SideMenu } from "@/components/organisms/SideMenu";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -5,9 +7,5 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  return (
-    <div className="caret-red-300 bg-red-600">
-      <h3 className="">Welcome Home!</h3>
-    </div>
-  );
+  return <ThemeToggle />;
 }
