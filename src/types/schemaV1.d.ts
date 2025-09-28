@@ -11,7 +11,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private_service/v1] Ping */
+        /** [/docs/proxy/chat_private/v1] Ping */
         get: operations["ping_ping_get"];
         put?: never;
         post?: never;
@@ -28,7 +28,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private_service/v1] Example Errors From Server */
+        /** [/docs/proxy/chat_private/v1] Example Errors From Server */
         get: operations["example_errors_from_server_errors_get"];
         put?: never;
         post?: never;
@@ -47,7 +47,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth_service/v1] Login */
+        /** [/docs/proxy/auth/v1] Login */
         post: operations["login_login_post"];
         delete?: never;
         options?: never;
@@ -64,7 +64,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth_service/v1] Register */
+        /** [/docs/proxy/auth/v1] Register */
         post: operations["register_register_post"];
         delete?: never;
         options?: never;
@@ -81,7 +81,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth_service/v1] Refresh Token */
+        /** [/docs/proxy/auth/v1] Refresh Token */
         post: operations["refresh_token_token_refresh_post"];
         delete?: never;
         options?: never;
@@ -98,7 +98,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth_service/v1] Request Password Reset */
+        /** [/docs/proxy/auth/v1] Request Password Reset */
         post: operations["request_password_reset_password_reset_post"];
         delete?: never;
         options?: never;
@@ -115,7 +115,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth_service/v1] Confirm Password Reset */
+        /** [/docs/proxy/auth/v1] Confirm Password Reset */
         post: operations["confirm_password_reset_password_reset_confirm_post"];
         delete?: never;
         options?: never;
@@ -132,7 +132,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth_service/v1] Change Password */
+        /** [/docs/proxy/auth/v1] Change Password */
         post: operations["change_password_password_change_post"];
         delete?: never;
         options?: never;
@@ -147,7 +147,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/user_service/v1] Get Contacts */
+        /** [/docs/proxy/user/v1] Get Contacts */
         get: operations["get_contacts_contact_list_get"];
         put?: never;
         post?: never;
@@ -167,7 +167,7 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * [/docs/proxy/user_service/v1] Add Contact
+         * [/docs/proxy/user/v1] Add Contact
          * @description Передать или user_id или login или friend_code
          */
         post: operations["add_contact_contact_add_post"];
@@ -190,7 +190,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        /** [/docs/proxy/user_service/v1] Update Contact */
+        /** [/docs/proxy/user/v1] Update Contact */
         patch: operations["update_contact_contact_update_patch"];
         trace?: never;
     };
@@ -204,7 +204,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** [/docs/proxy/user_service/v1] Remove Contact */
+        /** [/docs/proxy/user/v1] Remove Contact */
         delete: operations["remove_contact_contact_remove_delete"];
         options?: never;
         head?: never;
@@ -218,7 +218,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/user_service/v1] Get Blacklist */
+        /** [/docs/proxy/user/v1] Get Blacklist */
         get: operations["get_blacklist_blacklist_list_get"];
         put?: never;
         post?: never;
@@ -237,7 +237,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/user_service/v1] Add To Blacklist */
+        /** [/docs/proxy/user/v1] Add To Blacklist */
         post: operations["add_to_blacklist_blacklist_add_post"];
         delete?: never;
         options?: never;
@@ -255,7 +255,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** [/docs/proxy/user_service/v1] Remove From Blacklist */
+        /** [/docs/proxy/user/v1] Remove From Blacklist */
         delete: operations["remove_from_blacklist_blacklist_remove_delete"];
         options?: never;
         head?: never;
@@ -269,7 +269,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/user_service/v1] Get User Role */
+        /** [/docs/proxy/user/v1] Get User Role */
         get: operations["get_user_role_role_get"];
         put?: never;
         post?: never;
@@ -286,7 +286,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/profile_service/v1] Get My Profile */
+        /** [/docs/proxy/profile/v1] Get My Profile */
         get: operations["get_my_profile_me_get"];
         put?: never;
         post?: never;
@@ -304,7 +304,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** [/docs/proxy/profile_service/v1] Edit Profile */
+        /** [/docs/proxy/profile/v1] Edit Profile */
         put: operations["edit_profile_edit_put"];
         post?: never;
         delete?: never;
@@ -320,7 +320,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/profile_service/v1] Get User Profile By User Id */
+        /** [/docs/proxy/profile/v1] Get User Profile By User Id */
         get: operations["get_user_profile_by_user_id__user_id__get"];
         put?: never;
         post?: never;
@@ -339,7 +339,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/profile_service/v1] Get User Profile By User Id */
+        /** [/docs/proxy/profile/v1] Get User Profile By User Id */
         post: operations["get_user_profile_by_user_id_user_id_internal_post"];
         delete?: never;
         options?: never;
@@ -356,7 +356,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/profile_service/v1] [internal] Get Profiles Internal */
+        /** [/docs/proxy/profile/v1] [internal] Get Profiles Internal */
         post: operations["get_profiles_internal_user_ids_internal_post"];
         delete?: never;
         options?: never;
@@ -372,7 +372,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * [/docs/proxy/feed_service/v1] Search By Query
+         * [/docs/proxy/feed/v1] Search By Query
          * @description Поиск пользователей по логину (по префиксу, максимум 10 результатов).
          *
          *     Показываются пользователи:
@@ -410,7 +410,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** [/docs/proxy/chat_private_service/v1] Delete Private Chat */
+        /** [/docs/proxy/chat_private/v1] Delete Private Chat */
         delete: operations["delete_private_chat_delete_delete"];
         options?: never;
         head?: never;
@@ -424,7 +424,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private_service/v1] Get List Private Chats */
+        /** [/docs/proxy/chat_private/v1] Get List Private Chats */
         get: operations["get_list_private_chats_list_get"];
         put?: never;
         post?: never;
@@ -441,7 +441,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private_service/v1] Get Private Chat History */
+        /** [/docs/proxy/chat_private/v1] Get Private Chat History */
         get: operations["get_private_chat_history_history_get"];
         put?: never;
         post?: never;
@@ -460,7 +460,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/chat_private_service/v1] Create Private Chat By Uuid */
+        /** [/docs/proxy/chat_private/v1] Create Private Chat By Uuid */
         post: operations["create_private_chat_by_uuid_create_post"];
         delete?: never;
         options?: never;
@@ -477,7 +477,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/chat_private_service/v1] Send Private Message With Uuid */
+        /** [/docs/proxy/chat_private/v1] Send Private Message With Uuid */
         post: operations["send_private_message_with_uuid_send_post"];
         delete?: never;
         options?: never;
