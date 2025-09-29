@@ -1,17 +1,12 @@
-import { checkAuth } from "@/utils";
+import { checkAuth } from "@/utils/accessToken";
 import { AppShell } from "@mantine/core";
-import {
-  createRootRoute,
-  Link,
-  Outlet,
-  redirect,
-} from "@tanstack/react-router";
+import { createRootRoute, Outlet, redirect } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import { useAsync } from "react-use";
 const RootLayout = () => {
   const authStatus = useAsync(async () => {
-    const auth = await checkAuth();
+    const auth = checkAuth();
     console.log(auth);
   }, []);
   return (

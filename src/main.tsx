@@ -1,6 +1,6 @@
 import "@styles/style.css";
 import "@styles/index.css";
-
+import "@mantine/notifications/styles.css";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
@@ -9,6 +9,7 @@ import "@mantine/core/styles.css";
 import { routeTree } from "./routeTree.gen";
 import { MantineProvider } from "@mantine/core";
 import theme from "./styles/mantine.style";
+import { Notifications } from "@mantine/notifications";
 // Create a new router instance
 export const router = createRouter({ routeTree });
 
@@ -26,6 +27,7 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <MantineProvider theme={theme} defaultColorScheme="dark">
         <RouterProvider router={router} />
+        <Notifications radius="xl" />
       </MantineProvider>
     </StrictMode>,
   );

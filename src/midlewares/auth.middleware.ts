@@ -1,4 +1,4 @@
-import { checkAuth } from "@/utils";
+import { checkAuth } from "@/utils/accessToken";
 import { redirect } from "@tanstack/react-router";
 import type { Middleware } from "openapi-fetch";
 
