@@ -2,8 +2,6 @@ import { notifications } from "@mantine/notifications";
 import type { AnyFieldApi } from "@tanstack/react-form";
 import { useEffect } from "react";
 import { no } from "zod/v4/locales";
-
-// WARNING: type conversion to lables type.
 export function FieldInfo({
   field,
   label,
