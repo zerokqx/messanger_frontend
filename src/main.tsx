@@ -27,7 +27,7 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <MantineProvider theme={theme} defaultColorScheme="dark">
         <RouterProvider router={router} />
-        <Notifications radius="xl" />
+        <Notifications position="top" />
       </MantineProvider>
     </StrictMode>,
   );
