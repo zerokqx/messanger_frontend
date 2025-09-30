@@ -18,7 +18,7 @@ function SubscribeButton({ label }: { label: string }) {
       {(isSubmitting) => (
         <Button
           onClick={() => form.handleSubmit()}
-          type=""
+          type="submit"
           disabled={isSubmitting}
         >
           {label}
@@ -41,8 +41,8 @@ const { useAppForm, withForm } = createFormHook({
 
 const ChildForm = withForm({
   defaultValues: {
-    firstName: "",
-    lastName: "",
+    userName: "",
+    password: "",
   },
 
   props: {
@@ -51,15 +51,27 @@ const ChildForm = withForm({
   render: function Render({ form, title }) {
     return (
       <div>
-        <p>{title}</p>
         <form.AppField
-          name="firstName"
+          name="userName"
           children={(field) => (
-            <field.StrictInput contextHook={useFieldContext} />
+            <field.StrictInput
+              placeholder="Имя пользователя"
+              contextHook={useFieldContext}
+            />
+          )}
+        />
+
+        <form.AppField
+          name="password"
+          children={(field) => (
+            <field.StrictInput
+              placeholder="Пороль"
+              contextHook={useFieldContext}
+            />
           )}
         />
         <form.AppForm>
-          <form.SubscribeButton label="" />
+          <form.SubscribeButton label="Submit" />
         </form.AppForm>
       </div>
     );
@@ -69,8 +81,8 @@ const ChildForm = withForm({
 function RouteComponent() {
   const form = useAppForm({
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      userName: "",
+      password: "",
     },
     onSubmit: async ({ value }) => {
       console.log(value);

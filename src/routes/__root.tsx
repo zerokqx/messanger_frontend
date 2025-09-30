@@ -16,7 +16,11 @@ const RootLayout = () => {
   return (
     <>
       <AppShell>
-        <AppShell.Main b>
+        <AppShell.Main
+          style={(theme) => ({
+            background: theme.black,
+          })}
+        >
           <Outlet />
         </AppShell.Main>
       </AppShell>

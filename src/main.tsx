@@ -1,5 +1,3 @@
-import "@styles/style.css";
-import "@styles/index.css";
 import "@mantine/notifications/styles.css";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
