@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
+import { devtools } from "@tanstack/devtools-vite";
 export default defineConfig({
   plugins: [
     react({
@@ -14,6 +15,7 @@ export default defineConfig({
     tanstackRouter(),
     tailwindcss(),
 
+    devtools(),
     tsPaths(),
   ],
 });

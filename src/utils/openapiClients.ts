@@ -1,3 +1,4 @@
+import { authMiddleware } from "@/midlewares";
 import createClient, { type Client } from "openapi-fetch";
 import type { paths } from "../types/schemaV1";
 export type Services = "auth" | "user" | "profile" | "feed" | "chat";
@@ -11,7 +12,9 @@ const createApi = (
     throw Error("Not put service in param");
   }
   const link = `https://api.yobble.org/${version}/${service}`;
-  return createClient<paths>({ baseUrl: link });
+  const client = createClient<paths>({ baseUrl: link });
+  client.use(authMiddleware);
+  return client;
 };
 export const authClient = createApi("auth");
 export const userClient = createApi("user");

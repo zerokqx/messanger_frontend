@@ -1,27 +1,34 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useForm, type AnyFieldApi } from "@tanstack/react-form";
-import { useEffect, useRef, type FormEvent } from "react";
-import { FieldInfo, StrictInput } from "@/components";
+
+
+import { StrictInput, FieldInfo } from "@/components/atoms";
+import { TanctackField } from "@/components/atoms/FormComponents/TanstackField";
+import { authClient } from "@/utils";
 import { loginFormSchema } from "@/zod/inputForm";
-import { notifications } from "@mantine/notifications";
-import { Notification } from "@mantine/core";
-export const Route = createFileRoute("/_auth/login")({
-  component: RouteComponent,
-});
+import { formOptions, useForm } from "@tanstack/react-form";
+import type { FormEvent } from "react";
 
-
-function RouteComponent() {
-  const form = useForm({
+// BUG: Not repeat usles component
+export function RegisterForm() {
+  const opt = formOptions({
     defaultValues: {
       userName: "",
       password: "",
     },
-
+  });
+  const form = useForm({
+    ...opt,
     validators: {
       onChange: loginFormSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      const registerData = await authClient.POST("/register", {
+        body: {
+          login: value.userName,
+          password: value.password,
+          invite: "2025",
+        },
+      });
+      console.log(registerData.data);
     },
   });
   return (
@@ -33,6 +40,8 @@ function RouteComponent() {
         form.handleSubmit();
       }}
     >
+      <h1>Reg</h1>
+      <TanctackField form={form} />
       <form.Field
         name="userName"
         children={(field) => (
@@ -47,7 +56,6 @@ function RouteComponent() {
         name="password"
         children={(field) => (
           <>
-            {/* <label htmlFor={field.name}>Пароль: </label> */}
             <StrictInput type="password" field={field} placeholder="Пороль" />
             <FieldInfo field={field} label="Пороль" />
           </>
