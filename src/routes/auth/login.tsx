@@ -1,4 +1,5 @@
 import { StrictInput } from "@/components";
+import LightSwitch from "@/components/atoms/Light";
 import { SubscribeButton } from "@/components/organisms/Form/SubscribeButton";
 import { useUserStore } from "@/store";
 import { authClient } from "@/utils";
@@ -50,7 +51,7 @@ const ChildForm = withForm({
         style={{
           display: "flex",
           flexDirection: "column",
-          width: "100%",
+          width: "100vw",
           height: "100vh",
           gap: theme.spacing.xs,
         }}
@@ -70,6 +71,7 @@ const ChildForm = withForm({
           name="password"
           children={(field) => (
             <field.StrictInput
+              styles={{}}
               placeholder="Пороль"
               contextHook={useFieldContext}
             />
@@ -81,6 +83,7 @@ const ChildForm = withForm({
             label="Submit"
           />
         </form.AppForm>
+        <LightSwitch />
       </Center>
     );
   },
@@ -92,7 +95,6 @@ function RouteComponent() {
       userName: "",
       password: "",
     },
-
     validators: {
       onChange: loginFormSchema,
     },
@@ -103,12 +105,11 @@ function RouteComponent() {
           login: value.userName,
         },
       });
-
       if (data?.status == "200" || data?.data.access_token) {
         setToken(data?.data.access_token);
       } else {
         notifications.show({
-          title: "Опа ошибочка!",
+          title: "Опа ошибка!",
           message:
             "Не пережевайте - это на нашей стороне скоро все будет исправлено",
           color: "red",

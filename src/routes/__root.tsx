@@ -1,20 +1,10 @@
-import { checkAuth } from "@/utils/accessToken";
+import type { TUserState } from "@/store/userStore/userStore.type";
 import { AppShell } from "@mantine/core";
-import { createRootRoute, Outlet, redirect } from "@tanstack/react-router";
-import {
-  TanStackRouterDevtools,
-  TanStackRouterDevtoolsPanel,
-} from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { FormDevtoolsPlugin } from "@tanstack/react-form-devtools";
-import { useAsync } from "react-use";
-import { useUserStore } from "@/store";
-import type { TUserState } from "@/store/userStore/userStore.type";
+import { createRootRoute, Outlet, redirect } from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 const RootLayout = () => {
-  const authStatus = useAsync(async () => {
-    const auth = checkAuth();
-    console.log(auth);
-  }, []);
   return (
     <>
       <AppShell>
