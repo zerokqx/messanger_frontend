@@ -1,15 +1,91 @@
-import { FieldInfo, StrictInput } from "@/components";
+import { StrictInput } from "@/components";
+import { SubscribeButton } from "@/components/organisms/Form/SubscribeButton";
+import { useUserStore } from "@/store";
 import { loginFormSchema } from "@/zod/inputForm";
-import { useForm } from "@tanstack/react-form";
+import { Text, useMantineTheme, Center } from "@mantine/core";
+import { createFormHookContexts, createFormHook } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
-import { type FormEvent } from "react";
+import { useEffect } from "react";
+
 export const Route = createFileRoute("/auth/login")({
   component: RouteComponent,
 });
 
+const {
+  useFormContext,
+  fieldContext: fieldContextLogin,
+  formContext: formContextLogin,
+  useFieldContext,
+} = createFormHookContexts();
 
+const { useAppForm, withForm } = createFormHook({
+  fieldComponents: {
+    StrictInput,
+  },
+  formComponents: {
+    SubscribeButton,
+  },
+  fieldContext: fieldContextLogin,
+  formContext: formContextLogin,
+});
+
+const ChildForm = withForm({
+  defaultValues: {
+    userName: "",
+    password: "",
+  },
+  validators: {
+    onChange: loginFormSchema,
+  },
+  props: {
+    title: "Форма",
+  },
+
+  render: function Render({ form, title }) {
+    const theme = useMantineTheme();
+    return (
+      <Center
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "100vh",
+          gap: theme.spacing.xs,
+        }}
+      >
+        <Text fw={700}>{title}</Text>
+        <form.AppField
+          name="userName"
+          children={(field) => (
+            <field.StrictInput
+              placeholder="Имя пользователя"
+              contextHook={useFieldContext}
+            />
+          )}
+        />
+
+        <form.AppField
+          name="password"
+          children={(field) => (
+            <field.StrictInput
+              placeholder="Пороль"
+              contextHook={useFieldContext}
+            />
+          )}
+        />
+        <form.AppForm>
+          <form.SubscribeButton
+            useFormContext={useFormContext}
+            label="Submit"
+          />
+        </form.AppForm>
+      </Center>
+    );
+  },
+});
 function RouteComponent() {
-  const form = useForm({
+  const user = useUserStore();
+  const form = useAppForm({
     defaultValues: {
       userName: "",
       password: "",
@@ -22,55 +98,12 @@ function RouteComponent() {
       console.log(value);
     },
   });
-  return (
-    <form
-      className="flex flex-col max-w-[40rem] gap-2"
-      onSubmit={(e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-    >
+  useEffect(() => {
+    console.log("User state updated:", user);
+  }, [user]);
 
-      <form.Field
-        name="userName"
-        children={(field) => (
-          <>
-            <StrictInput field={field} placeholder="Имя пользователя" />
-            <FieldInfo label="Имя пользователя" field={field} />
-          </>
-        )}
-      />
-
-      <form.Field
-        name="password"
-        children={(field) => (
-          <>
-            {/* <label htmlFor={field.name}>Пароль: </label> */}
-            <StrictInput type="password" field={field} placeholder="Пороль" />
-            <FieldInfo field={field} label="Пороль" />
-          </>
-        )}
-      />
-      <form.Subscribe
-        selector={(state) => [state.canSubmit, state.isSubmitting]}
-        children={([canSubmit, isSubmitting]) => (
-          <>
-            <button type="submit" disabled={!canSubmit}>
-              {isSubmitting ? "..." : "Submit"}
-            </button>
-            <button
-              type="reset"
-              onClick={(e) => {
-                e.preventDefault();
-                form.reset();
-              }}
-            >
-              Reset
-            </button>
-          </>
-        )}
-      />
-    </form>
-  );
+  useEffect(() => {
+    user.setToken("dwdwa");
+  }, [user.setToken]);
+  return <ChildForm form={form} title="Вход в систему" />;
 }

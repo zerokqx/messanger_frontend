@@ -1,10 +1,16 @@
-import { StrictInput } from "@/components/atoms";
+import { StrictInput } from "@/components";
+import { SubscribeButton } from "@/components/organisms/Form/SubscribeButton";
+import { authClient } from "@/utils";
+import { loginFormSchema } from "@/zod/inputForm";
 import { Text, useMantineTheme, Center } from "@mantine/core";
 import { createFormHookContexts, createFormHook } from "@tanstack/react-form";
-import { SubscribeButton } from "./SubscribeButton";
-import { loginFormSchema } from "@/zod/inputForm";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const {
+export const Route = createFileRoute("/auth/register")({
+  component: RouteComponent,
+});
+
+const {
   useFormContext,
   fieldContext: fieldContextLogin,
   formContext: formContextLogin,
@@ -22,7 +28,7 @@ const { useAppForm, withForm } = createFormHook({
   formContext: formContextLogin,
 });
 
-export const ChildForm = withForm({
+const ChildForm = withForm({
   defaultValues: {
     userName: "",
     password: "",
@@ -76,4 +82,17 @@ export const ChildForm = withForm({
     );
   },
 });
-export { useAppForm };
+function RouteComponent() {
+  const form = useAppForm({
+    defaultValues: {
+      userName: "",
+      password: "",
+    },
+
+    validators: {
+      onChange: loginFormSchema,
+    },
+    onSubmit: async ({ value }) => {},
+  });
+  return <ChildForm form={form} title="Регистраци" />;
+}

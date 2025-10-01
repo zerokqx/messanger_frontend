@@ -4,6 +4,7 @@ import type { InputHTMLAttributes } from "react";
 
 export const StrictInput = ({
   contextHook,
+  styles,
   ...props
 }: InputProps &
   InputHTMLAttributes<HTMLInputElement> & {
@@ -18,7 +19,9 @@ export const StrictInput = ({
         input: {
           backgroundColor: theme.black,
           border: `1px ${theme.white} solid `,
+
           color: theme.white,
+          ...styles,
         },
       }}
       id={field.name}

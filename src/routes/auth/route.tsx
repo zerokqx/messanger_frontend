@@ -8,7 +8,6 @@ function RouteComponent() {
   return (
     <>
       <Outlet />
-      <h1>Test Login Page</h1>
     </>
   );
 }
