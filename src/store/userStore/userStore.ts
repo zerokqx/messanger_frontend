@@ -1,22 +1,21 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import type { TUserState } from "./userStore.type";
+import type { TUserActions, TUserState } from "./userStore.type";
 import { createSelectors } from "../autoGenerateSelector";
 
-export const useUserStoreBase = create<TUserState>()(
+export const useUserStoreBase = create<TUserState & TUserActions>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       accessToken: {
         token: "",
         timeCreate: Date.now(),
       },
-      isRoot: false,
       user: {
         profileLink: "",
         name: "",
         avatar: "",
+        uuid: "",
       },
-      uuid: "",
       setToken(token) {
         set(() => ({
           accessToken: {
@@ -25,10 +24,13 @@ export const useUserStoreBase = create<TUserState>()(
           },
         }));
       },
+      // setUser(){
+      //
+      // }
     }),
     {
       name: "user-storage",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

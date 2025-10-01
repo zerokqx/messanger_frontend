@@ -1,14 +1,17 @@
 export interface TUserState {
-  isRoot: boolean;
-  uuid: string;
   accessToken: {
     token: string;
     timeCreate: ReturnType<DateConstructor["now"]>;
   };
   user: {
+    isRoot: boolean;
+    uuid: string;
     name: string;
     avatar: string;
     profileLink: string;
   };
-  setToken: (token:string) => void
+}
+
+export interface TUserActions {
+  setToken: (token: TUserState["accessToken"]["token"]) => void;
 }

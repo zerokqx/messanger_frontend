@@ -1,8 +1,10 @@
 import { StrictInput } from "@/components";
 import { SubscribeButton } from "@/components/organisms/Form/SubscribeButton";
 import { useUserStore } from "@/store";
+import { authClient } from "@/utils";
 import { loginFormSchema } from "@/zod/inputForm";
 import { Text, useMantineTheme, Center } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { createFormHookContexts, createFormHook } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
@@ -84,7 +86,7 @@ const ChildForm = withForm({
   },
 });
 function RouteComponent() {
-  const user = useUserStore();
+  const { setToken } = useUserStore();
   const form = useAppForm({
     defaultValues: {
       userName: "",
@@ -95,15 +97,24 @@ function RouteComponent() {
       onChange: loginFormSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      const { data } = await authClient.POST("/login", {
+        body: {
+          password: value.password,
+          login: value.userName,
+        },
+      });
+
+      if (data?.status == "200" || data?.data.access_token) {
+        setToken(data?.data.access_token);
+      } else {
+        notifications.show({
+          title: "Опа ошибочка!",
+          message:
+            "Не пережевайте - это на нашей стороне скоро все будет исправлено",
+          color: "red",
+        });
+      }
     },
   });
-  useEffect(() => {
-    console.log("User state updated:", user);
-  }, [user]);
-
-  useEffect(() => {
-    user.setToken("dwdwa");
-  }, [user.setToken]);
   return <ChildForm form={form} title="Вход в систему" />;
 }

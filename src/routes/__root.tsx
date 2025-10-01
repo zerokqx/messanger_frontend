@@ -8,6 +8,8 @@ import {
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { FormDevtoolsPlugin } from "@tanstack/react-form-devtools";
 import { useAsync } from "react-use";
+import { useUserStore } from "@/store";
+import type { TUserState } from "@/store/userStore/userStore.type";
 const RootLayout = () => {
   const authStatus = useAsync(async () => {
     const auth = checkAuth();
@@ -40,12 +42,26 @@ const RootLayout = () => {
 export const Route = createRootRoute({
   component: RootLayout,
   loader: ({ location }) => {
-    // if (location.pathname == "/login") return;
-    // const status = checkAuth(); //false
-    // console.log(status);
-    // if (status) {
-    //   throw redirect({ to: "/login" });
-    // }
+    if (location.pathname.startsWith("/auth")) return;
+
+    const user = localStorage.getItem("user-storage");
+
+    if (!user) {
+      throw redirect({ to: "/auth/login" });
+    }
+
+    try {
+      const userJson: { state?: TUserState } = JSON.parse(user);
+      const token = userJson.state?.accessToken?.token;
+
+      if (!token) {
+        throw redirect({ to: "/auth/login" });
+      }
+
+      return;
+    } catch (e) {
+      throw redirect({ to: "/auth/login" });
+    }
   },
 
   preload: true,
