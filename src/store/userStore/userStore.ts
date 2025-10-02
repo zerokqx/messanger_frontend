@@ -2,10 +2,11 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { TUserActions, TUserState } from "./userStore.type";
 import { createSelectors } from "../autoGenerateSelector";
+import z from "zod";
 
 export const useUserStoreBase = create<TUserState & TUserActions>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       accessToken: {
         token: "",
         timeCreate: Date.now(),
@@ -24,6 +25,17 @@ export const useUserStoreBase = create<TUserState & TUserActions>()(
           },
         }));
       },
+      validateToken() {
+        return z.jwt().safeParse(get().accessToken.token).success;
+      },
+      removeToken() {
+        set(() => ({
+          accessToken: {
+            token: "",
+            timeCreate: 0,
+          },
+        }));
+      },
       // setUser(){
       //
       // }
@@ -34,5 +46,4 @@ export const useUserStoreBase = create<TUserState & TUserActions>()(
     },
   ),
 );
-
 export const useUserStore = createSelectors(useUserStoreBase);

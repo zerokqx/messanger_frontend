@@ -7,12 +7,14 @@ import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 export default defineConfig({
   plugins: [
+    tanstackRouter({
+      autoCodeSplitting: true,
+    }),
     react({
       babel: {
         plugins: [["babel-plugin-react-compiler"]],
       },
     }),
-    tanstackRouter(),
     tailwindcss(),
 
     devtools(),

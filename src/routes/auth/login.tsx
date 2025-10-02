@@ -90,6 +90,8 @@ const ChildForm = withForm({
 });
 function RouteComponent() {
   const { setToken } = useUserStore();
+  const { location } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const form = useAppForm({
     defaultValues: {
       userName: "",
@@ -106,7 +108,12 @@ function RouteComponent() {
         },
       });
       if (data?.status == "200" || data?.data.access_token) {
+        form.reset();
         setToken(data?.data.access_token);
+        navigate({
+          to: location,
+          search: { location },
+        });
       } else {
         notifications.show({
           title: "Опа ошибка!",

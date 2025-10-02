@@ -1,5 +1,3 @@
-import { authMiddleware } from "@/midlewares";
-import { authClient } from "@/utils";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -7,17 +5,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const auth = authClient;
-  authClient.use(authMiddleware);
-  // useAsync(async () => {
-  //   const a = await authClient.POST("/login", {
-  //     body: {
-  //       login: "d",
-  //       password: "d",
-  //     },
-  //   });
-  //   console.log(a);
-  // }, []);
   return (
     <>
       <button

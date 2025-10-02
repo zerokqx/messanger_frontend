@@ -4,7 +4,6 @@ export interface TUserState {
     timeCreate: ReturnType<DateConstructor["now"]>;
   };
   user: {
-    isRoot: boolean;
     uuid: string;
     name: string;
     avatar: string;
@@ -14,4 +13,6 @@ export interface TUserState {
 
 export interface TUserActions {
   setToken: (token: TUserState["accessToken"]["token"]) => void;
+  validateToken: () => boolean;
+  removeToken: () => void;
 }
