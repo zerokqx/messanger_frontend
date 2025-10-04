@@ -22,3 +22,7 @@ export const loginFormSchema = z.object({
     .regex(/[a-z]/, "Пароль должен содержать хотя бы одну строчную букву")
     .regex(/[\W_]/, "Пароль должен содержать хотя бы один спецсимвол"),
 });
+
+export const test = z.object({
+  us: z.object(),
+});

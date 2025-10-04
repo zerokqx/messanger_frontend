@@ -14,7 +14,6 @@ export const Route = createFileRoute("/(authentication)")({
           location: location.href,
         },
       });
-      
     }
   },
 });

@@ -1,4 +1,5 @@
-import LightSwitch from "@/components/atoms/Light";
+import { LoginForm } from "@/components/organisms/Form/Login";
+import { Tabs } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth/")({
@@ -7,8 +8,14 @@ export const Route = createFileRoute("/auth/")({
 
 function RouteComponent() {
   return (
-    <div>
-      <LightSwitch />
-    </div>
+    <Tabs defaultValue={"Вход"}>
+      <Tabs.List>
+        <Tabs.Tab value="Логин">Логин</Tabs.Tab>
+        <Tabs.Tab value="Регистрация">Регистрация</Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="Логин">
+        <LoginForm />;
+      </Tabs.Panel>
+    </Tabs>
   );
 }
