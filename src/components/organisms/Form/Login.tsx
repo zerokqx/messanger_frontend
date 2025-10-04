@@ -2,10 +2,8 @@ import { useUserStore } from "@/store";
 import { authClient } from "@/utils";
 import { loginFormSchema } from "@/zod";
 import { notifications } from "@mantine/notifications";
-import { formOptions } from "@tanstack/react-form";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { createForm, useAppForm, useFieldContext } from ".";
-import type { FieldSet } from "./types";
 
 export const LoginForm = () => {
   const { setToken } = useUserStore();
@@ -70,5 +68,5 @@ export const LoginForm = () => {
     },
   );
 
-  return <Form form={form} title="Вход в систему" />;
+  return <Form form={form} title="Вход в систему" />; // Here erro
 };

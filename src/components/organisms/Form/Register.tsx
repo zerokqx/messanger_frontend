@@ -1,37 +1,16 @@
-import { useUserStore } from "@/store";
 import { authClient } from "@/utils";
-import { notifications } from "@mantine/notifications";
-import { useNavigate, useSearch } from "@tanstack/react-router";
-import { FormBase, useAppForm, useFieldContext } from ".";
-import type { FieldSet } from "./types";
 import { registerFormSchema } from "@/zod";
+import { notifications } from "@mantine/notifications";
+import { formOptions } from "@tanstack/react-form";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import { createForm, useAppForm, useFieldContext } from ".";
 
-const registreFormData: FieldSet<typeof registerFormSchema>[] = [
-  {
-    name: "userName",
-    placeholder: "Имя пользователя",
-    contextHook: useFieldContext,
-  },
-
-  {
-    name: "password",
-    placeholder: "Пороль",
-    contextHook: useFieldContext,
-  },
-
-  {
-    name: "confirmPassword",
-    placeholder: "Подтвердите пароль",
-    contextHook: useFieldContext,
-  },
-];
 export const RegisterForm = () => {
-  const { setToken } = useUserStore();
   const search = useSearch({
     from: "/auth",
   });
   const navigate = useNavigate();
-  const form = useAppForm({
+  const registerFormOptions = formOptions({
     defaultValues: {
       userName: "",
       password: "",
@@ -40,31 +19,54 @@ export const RegisterForm = () => {
     validators: {
       onChange: registerFormSchema,
     },
-    onSubmit: async ({ value }) => {
-      // const { data } = await authClient.POST("/login", {
-      //   body: {
-      //     password: value.password,
-      //     login: value.userName,
-      //   },
-      // });
-      // if (data?.status == "200" || data?.data.access_token) {
-      //   form.reset();
-      //   setToken(data?.data.access_token);
-      //   navigate({
-      //     to: search.location,
-      //     search,
-      //   });
-      // } else {
-      //   notifications.show({
-      //     title: "Опа ошибка!",
-      //     message:
-      //       "Не пережевайте - это на нашей стороне скоро все будет исправлено",
-      //     color: "red",
-      //   });
-      // }
-    },
   });
-  return (
-    <FormBase title="Вход в систему" fields={registreFormData} form={form} />
+  const form = useAppForm({
+    onSubmit: async ({ value }) => {
+      const { data } = await authClient.POST("/register", {
+        body: {
+          password: value.password,
+          login: value.userName,
+        },
+      });
+      if (data?.status == "200") {
+        form.reset();
+        navigate({
+          to: search.location,
+          search,
+        });
+      } else {
+        notifications.show({
+          title: "Опа ошибка!",
+          message: "Извините, попробуйте повторить запрос.",
+          color: "red",
+        });
+      }
+    },
+    ...registerFormOptions,
+  });
+
+  const Form = createForm(
+    [
+      {
+        name: "userName",
+        placeholder: "Имя пользователя",
+        contextHook: useFieldContext,
+      },
+
+      {
+        name: "password",
+        placeholder: "Пороль",
+        contextHook: useFieldContext,
+      },
+
+      {
+        name: "confirmPassword",
+        placeholder: "Подтвердите пароль",
+        contextHook: useFieldContext,
+      },
+    ],
+    registerFormOptions,
   );
-};
+
+  return <Form form={form} title="Регистраця" />;
+}

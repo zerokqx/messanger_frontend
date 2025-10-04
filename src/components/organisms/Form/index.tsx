@@ -5,6 +5,7 @@ import {
   createFormHook,
   createFormHookContexts,
   formOptions,
+  type AnyFormOptions,
 } from "@tanstack/react-form";
 import { SubscribeButton } from "./SubscribeButton";
 import type { FieldSet } from "./types";
@@ -27,11 +28,10 @@ const { useAppForm, withForm } = createFormHook({
   formContext: formContextLogin,
 });
 
-export function createForm<
-  O extends ReturnType<typeof formOptions> & {
-    defaultValues: Record<string, string>;
-  },
->(fieldSet: FieldSet<O["defaultValues"]>[], options: O) {
+export function createForm<O extends AnyFormOptions>(
+  fieldSet: FieldSet<O["defaultValues"]>[],
+  options: AnyFormApi,
+) {
   return withForm({
     ...options,
     props: {

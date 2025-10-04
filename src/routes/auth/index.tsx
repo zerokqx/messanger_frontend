@@ -1,4 +1,5 @@
 import { LoginForm } from "@/components/organisms/Form/Login";
+import { RegisterForm } from "@/components/organisms/Form/Register";
 import { Tabs } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -15,6 +16,9 @@ function RouteComponent() {
       </Tabs.List>
       <Tabs.Panel value="Логин">
         <LoginForm />;
+      </Tabs.Panel>
+      <Tabs.Panel value="Регистрация">
+        <RegisterForm />
       </Tabs.Panel>
     </Tabs>
   );
