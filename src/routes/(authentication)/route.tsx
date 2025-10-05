@@ -9,7 +9,7 @@ export const Route = createFileRoute("/(authentication)")({
     if (!jwtValidate) {
       token.removeToken();
       throw redirect({
-        to: "/auth/login",
+        to: "/auth",
         search: {
           location: location.href,
         },

@@ -1,6 +1,5 @@
-import { authClient } from "@/utils";
+import { useRegister } from "@/hooks";
 import { registerFormSchema } from "@/zod";
-import { notifications } from "@mantine/notifications";
 import { formOptions } from "@tanstack/react-form";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { createForm, useAppForm, useFieldContext } from ".";
@@ -9,7 +8,7 @@ export const RegisterForm = () => {
   const search = useSearch({
     from: "/auth",
   });
-  const navigate = useNavigate();
+  const { mutate } = useRegister(search);
   const registerFormOptions = formOptions({
     defaultValues: {
       userName: "",
@@ -22,25 +21,13 @@ export const RegisterForm = () => {
   });
   const form = useAppForm({
     onSubmit: async ({ value }) => {
-      const { data } = await authClient.POST("/register", {
+      form.reset();
+      mutate({
         body: {
           password: value.password,
           login: value.userName,
         },
       });
-      if (data?.status == "200") {
-        form.reset();
-        navigate({
-          to: search.location,
-          search,
-        });
-      } else {
-        notifications.show({
-          title: "Опа ошибка!",
-          message: "Извините, попробуйте повторить запрос.",
-          color: "red",
-        });
-      }
     },
     ...registerFormOptions,
   });
@@ -69,4 +56,4 @@ export const RegisterForm = () => {
   );
 
   return <Form form={form} title="Регистраця" />;
-}
+};

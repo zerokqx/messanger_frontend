@@ -6,7 +6,7 @@ import z from "zod";
 
 export const useUserStoreBase = create<TUserState & TUserActions>()(
   persist(
-    (set, get) => ({
+    (set, get, store) => ({
       accessToken: {
         token: "",
         timeCreate: Date.now(),
@@ -16,6 +16,19 @@ export const useUserStoreBase = create<TUserState & TUserActions>()(
         name: "",
         avatar: "",
         uuid: "",
+      },
+      clearStore() {
+        set(store.getInitialState());
+      },
+      setUuid(uuid) {
+        if (z.uuid().safeParse(uuid).success) {
+          set((state) => ({
+            user: {
+              ...state.user,
+              uuid,
+            },
+          }));
+        }
       },
       setToken(token) {
         set(() => ({

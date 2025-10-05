@@ -9,7 +9,7 @@ export const Route = createFileRoute("/auth/")({
 
 function RouteComponent() {
   return (
-    <Tabs defaultValue={"Вход"}>
+    <Tabs defaultValue={"Логин"}>
       <Tabs.List>
         <Tabs.Tab value="Логин">Логин</Tabs.Tab>
         <Tabs.Tab value="Регистрация">Регистрация</Tabs.Tab>

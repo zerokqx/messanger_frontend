@@ -15,4 +15,6 @@ export interface TUserActions {
   setToken: (token: TUserState["accessToken"]["token"]) => void;
   validateToken: () => boolean;
   removeToken: () => void;
+  setUuid: (uuid: string) => void;
+  clearStore: () => void;
 }

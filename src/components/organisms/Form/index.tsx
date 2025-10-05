@@ -1,10 +1,8 @@
 import { StrictInput } from "@/components/atoms";
-import { loginFormSchema } from "@/zod";
-import { Center, Text, useMantineTheme } from "@mantine/core";
+import { Flex, Text, useMantineTheme } from "@mantine/core";
 import {
   createFormHook,
   createFormHookContexts,
-  formOptions,
   type AnyFormOptions,
 } from "@tanstack/react-form";
 import { SubscribeButton } from "./SubscribeButton";
@@ -28,9 +26,14 @@ const { useAppForm, withForm } = createFormHook({
   formContext: formContextLogin,
 });
 
+/**
+ * Fabric function for declarative create form based on `Tanstack-Form`
+ * @param fieldSet Attr for map by fields.
+ * @param options Options for form
+ */
 export function createForm<O extends AnyFormOptions>(
   fieldSet: FieldSet<O["defaultValues"]>[],
-  options: AnyFormApi,
+  options: O,
 ) {
   return withForm({
     ...options,
@@ -41,34 +44,34 @@ export function createForm<O extends AnyFormOptions>(
     render: function Render({ form, title }) {
       const theme = useMantineTheme();
       return (
-        <Center
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100vw",
-            height: "100vh",
-            gap: theme.spacing.xs,
-          }}
+        <Flex
+          w={"full"}
+          direction={"column"}
+          justify={"center"}
+          align={"center"}
+          h={"100vh"}
         >
           <Text fw={700}>{title}</Text>
-          {fieldSet.map((fieldData) => (
-            <form.AppField
-              name={fieldData.name.toString()}
-              children={(field) => (
-                <field.StrictInput
-                  placeholder={fieldData.placeholder}
-                  contextHook={fieldData.contextHook}
-                />
-              )}
-            />
-          ))}
+          <Flex direction={"column"} w={"max-content"} gap={"sm"} p="lg">
+            {fieldSet.map((fieldData) => (
+              <form.AppField
+                name={fieldData.name.toString()}
+                children={(field) => (
+                  <field.StrictInput
+                    placeholder={fieldData.placeholder}
+                    contextHook={fieldData.contextHook}
+                  />
+                )}
+              />
+            ))}
+          </Flex>
           <form.AppForm>
             <form.SubscribeButton
               useFormContext={useFormContext}
-              label="Submit"
+              label="Отправить"
             />
           </form.AppForm>
-        </Center>
+        </Flex>
       );
     },
   });

@@ -1,13 +1,17 @@
-import { Input, useMantineTheme, type InputProps } from "@mantine/core";
+import {
+  Input,
+  TextInput,
+  useMantineTheme,
+  type TextInputProps,
+} from "@mantine/core";
 import type { createFormHookContexts } from "@tanstack/react-form";
 import { useEffect, useState, type InputHTMLAttributes } from "react";
-import { fi } from "zod/v4/locales";
 
 export const StrictInput = ({
   contextHook,
   styles,
   ...props
-}: InputProps &
+}: TextInputProps &
   InputHTMLAttributes<HTMLInputElement> & {
     contextHook: ReturnType<typeof createFormHookContexts>["useFieldContext"];
   }) => {
@@ -32,16 +36,16 @@ export const StrictInput = ({
     }
   }, [field.state.meta.errors]);
   return (
-    <Input.Wrapper  w="max-content" error={er ? er.full : ""}>
-      <Input
+    <Input.Wrapper w="max-content" error={er ? er.full : ""}>
+      <TextInput
         {...props}
+        w={"20rem"}
+        h="2rem"
+        c={"white"}
+        bd={`1px ${theme.white} solid `}
         styles={{
           input: {
             backgroundColor: theme.black,
-            border: `1px ${theme.white} solid `,
-            width: "20rem",
-            height: "2rem",
-            color: theme.white,
           },
         }}
         id={field.name}

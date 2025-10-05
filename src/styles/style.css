@@ -1,7 +1,1 @@
 @import "tailwindcss";
-
-body,
-html,
-#root {
-  background-color: black;
-}

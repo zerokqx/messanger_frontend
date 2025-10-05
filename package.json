@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
+    "test:ts": "tsc --noEmit",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -24,10 +25,12 @@
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-form": "^1.23.4",
     "@tanstack/react-form-devtools": "^0.1.4",
+    "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-router": "^1.132.7",
     "@tanstack/react-router-devtools": "^1.132.7",
     "dayjs": "^1.11.18",
-    "openapi-fetch": "^0.14.0",
+    "openapi-fetch": "^0.14.1",
+    "openapi-react-query": "^0.5.0",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
     "react": "^19.1.1",

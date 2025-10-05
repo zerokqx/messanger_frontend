@@ -1,3 +1,6 @@
+import { Button } from "@/components";
+import { useUserStore } from "@/store";
+import { notifications } from "@mantine/notifications";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -5,26 +8,20 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { clearStore } = useUserStore();
   return (
     <>
-      <button
-        onClick={() => {
-          localStorage.removeItem("access_token");
-        }}
+      <Button onClick={clearStore}>Clear access</Button>
+      <Button
+        onClick={() =>
+          notifications.show({
+            title: "Test",
+            message: "Test",
+          })
+        }
       >
-        Clear access
-      </button>
-
-      <button
-        onClick={() => {
-          localStorage.setItem(
-            "access_token",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjk4NzU2MDAwLCJleHAiOjE2OTg4NDI0MDB9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-          );
-        }}
-      >
-        Add access
-      </button>
+        Get Notify
+      </Button>
     </>
   );
 }
