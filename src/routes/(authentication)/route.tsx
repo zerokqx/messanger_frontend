@@ -1,3 +1,4 @@
+import { useLogin, useMe, useRefresh } from "@/hooks";
 import { useUserStore } from "@/store";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
@@ -19,5 +20,8 @@ export const Route = createFileRoute("/(authentication)")({
 });
 
 function RouteComponent() {
+  useRefresh();
+
+  useMe();
   return <div>Hello "/(auth)"!</div>;
 }

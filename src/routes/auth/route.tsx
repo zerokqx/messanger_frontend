@@ -1,4 +1,4 @@
-import { getAccessFromZustand, useUserStore } from "@/store";
+import { useUserStore } from "@/store";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth")({

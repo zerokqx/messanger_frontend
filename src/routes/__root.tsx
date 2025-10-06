@@ -9,7 +9,6 @@ const RootLayout = () => {
             background: theme.black,
           })}
         >
-
           <Outlet />
         </AppShell.Main>
       </AppShell>

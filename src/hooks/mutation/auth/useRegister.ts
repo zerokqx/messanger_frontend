@@ -21,6 +21,7 @@ export const useRegister = (search: ReturnType<typeof useSearch>) => {
           search,
         });
       },
+
       onError: () => {
         notifications.show({
           title: "Опа ошибка!",

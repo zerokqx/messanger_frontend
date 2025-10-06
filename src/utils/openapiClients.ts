@@ -5,9 +5,11 @@ import createFetchClient, { type Client } from "openapi-fetch";
 export type Services = "auth" | "user" | "profile" | "feed" | "chat";
 export type Version = "v1";
 
+// WARN: credentials sends on all endpoinds
 type ApiFunctionCreate = (service: Services, version: Version) => Client<paths>;
 const openapiFetcher: ApiFunctionCreate = (service, version) => {
   const fetcher = createFetchClient<paths>({
+    credentials: "include",
     baseUrl: `https://api.yobble.org/${version}/${service}`,
   });
 

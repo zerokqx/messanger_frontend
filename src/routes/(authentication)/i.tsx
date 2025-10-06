@@ -1,9 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { useMe } from "@/hooks";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/(authentication)/i')({
+export const Route = createFileRoute("/(authentication)/i")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/(authentication)/i"!</div>
+  useMe();
+  return <div>Hello "/(authentication)/i"!</div>;
 }
