@@ -1,36 +1,70 @@
-import { authMiddleware } from "@/midlewares";
-import createClient, { type OpenapiQueryClient } from "openapi-react-query";
-import type { paths } from "../types/schemaV1";
-import createFetchClient, { type Client } from "openapi-fetch";
+import { authMiddleware, generalMiddleware } from "@/midlewares";
+import type { paths } from "@type/schemaV1";
+import createFetchClient, {
+  type ClientOptions,
+  type Middleware,
+} from "openapi-fetch";
+import createClient from "openapi-react-query";
 export type Services = "auth" | "user" | "profile" | "feed" | "chat";
 export type Version = "v1";
 
-// WARN: credentials sends on all endpoinds
-type ApiFunctionCreate = (service: Services, version: Version) => Client<paths>;
-const openapiFetcher: ApiFunctionCreate = (service, version) => {
-  const fetcher = createFetchClient<paths>({
-    credentials: "include",
-    baseUrl: `https://api.yobble.org/${version}/${service}`,
-  });
-
-  fetcher.use(authMiddleware);
-
-  return fetcher;
-};
-
-const createApi = (
+const createBaseUrl = (
   service: Services,
+  url: `https://${string}` = "https://api.yobble.org",
   version: Version = "v1",
-): OpenapiQueryClient<paths> => {
-  if (!service) {
-    throw Error("Not put service in param");
-  }
-  const client = createClient<paths>(openapiFetcher(service, version));
-  return client;
+) => `${url}/${version}/${service}`;
+
+createBaseUrl("auth");
+const createFetcher = <P extends paths = paths>({
+  clientOptions,
+}: {
+  midlewares?: Middleware[];
+  clientOptions?: ClientOptions;
+}) => {
+  const fetcher = createFetchClient<P>({
+    ...clientOptions,
+  });
+  return (midlewares?: Middleware[]) => {
+    if (midlewares && midlewares.length > 0) {
+      midlewares.forEach((midleware) => fetcher.use(midleware));
+    }
+
+    fetcher.use(generalMiddleware);
+    return () => createClient<paths>(fetcher);
+  };
 };
 
-export const authClient = createApi("auth");
-export const userClient = createApi("user");
-export const profileClient = createApi("user");
-export const chatPriveteClient = createApi("chat");
-export const feedClient = createApi("feed");
+export const authClient = createFetcher({
+  clientOptions: {
+    credentials: "include",
+    baseUrl: createBaseUrl("auth"),
+  },
+})([authMiddleware])();
+
+export const userClient = createFetcher({
+  clientOptions: {
+    credentials: "include",
+    baseUrl: createBaseUrl("user"),
+  },
+})()();
+
+export const profileClient = createFetcher({
+  clientOptions: {
+    credentials: "include",
+    baseUrl: createBaseUrl("profile"),
+  },
+})()();
+
+export const chatPriveteClient = createFetcher({
+  clientOptions: {
+    credentials: "include",
+    baseUrl: createBaseUrl("chat"),
+  },
+})()();
+
+export const feedClient = createFetcher({
+  clientOptions: {
+    credentials: "include",
+    baseUrl: createBaseUrl("feed"),
+  ллллллллллллл,
+})()();

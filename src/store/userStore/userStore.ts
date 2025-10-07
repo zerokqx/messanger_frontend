@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage, devtools } from "zustand/middleware";
-import type { TUserActions, TUserState } from "./userStore.type";
 import { createSelectors } from "../autoGenerateSelector";
 import z from "zod";
+import type { TUserState, TUserActions } from "@type/store";
 
 export const useUserStoreBase = create<TUserState & TUserActions>()(
   devtools(
