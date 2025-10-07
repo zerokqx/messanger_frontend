@@ -5,16 +5,9 @@ import createFetchClient, {
   type Middleware,
 } from "openapi-fetch";
 import createClient from "openapi-react-query";
-export type Services = "auth" | "user" | "profile" | "feed" | "chat";
-export type Version = "v1";
+import  { createBaseUrl } from "./createBaseUrl";
 
-const createBaseUrl = (
-  service: Services,
-  url: `https://${string}` = "https://api.yobble.org",
-  version: Version = "v1",
-) => `${url}/${version}/${service}`;
 
-createBaseUrl("auth");
 const createFetcher = <P extends paths = paths>({
   clientOptions,
 }: {
@@ -24,7 +17,7 @@ const createFetcher = <P extends paths = paths>({
   const fetcher = createFetchClient<P>({
     ...clientOptions,
   });
-  return (midlewares?: Middleware[]) => {
+  return (...midlewares: Middleware[]) => {
     if (midlewares && midlewares.length > 0) {
       midlewares.forEach((midleware) => fetcher.use(midleware));
     }
@@ -33,38 +26,33 @@ const createFetcher = <P extends paths = paths>({
     return () => createClient<paths>(fetcher);
   };
 };
-
 export const authClient = createFetcher({
   clientOptions: {
     credentials: "include",
     baseUrl: createBaseUrl("auth"),
   },
-})([authMiddleware])();
+})(authMiddleware)();
 
 export const userClient = createFetcher({
   clientOptions: {
-    credentials: "include",
     baseUrl: createBaseUrl("user"),
   },
 })()();
 
 export const profileClient = createFetcher({
   clientOptions: {
-    credentials: "include",
     baseUrl: createBaseUrl("profile"),
   },
 })()();
 
 export const chatPriveteClient = createFetcher({
   clientOptions: {
-    credentials: "include",
     baseUrl: createBaseUrl("chat"),
   },
 })()();
 
 export const feedClient = createFetcher({
   clientOptions: {
-    credentials: "include",
     baseUrl: createBaseUrl("feed"),
-  ллллллллллллл,
+  },
 })()();
