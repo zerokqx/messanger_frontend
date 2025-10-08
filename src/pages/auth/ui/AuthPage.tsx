@@ -1,13 +1,9 @@
 import { LoginForm } from "@/components/organisms/Form/Login";
 import { RegisterForm } from "@/components/organisms/Form/Register";
 import { Tabs } from "@mantine/core";
-import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/auth/")({
-  component: RouteComponent,
-});
-
-function RouteComponent() {
+// TODO: Configurable patern
+export const AuthPage = () => {
   return (
     <Tabs defaultValue={"Логин"}>
       <Tabs.List>
@@ -22,4 +18,4 @@ function RouteComponent() {
       </Tabs.Panel>
     </Tabs>
   );
-}
+};

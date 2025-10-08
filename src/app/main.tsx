@@ -4,22 +4,20 @@ import "@styles/style.css";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "@mantine/core/styles.css";
-import { routeTree } from "./routeTree.gen";
 import { MantineProvider } from "@mantine/core";
-import theme from "./styles/mantine.style";
+import theme from "../styles/mantine.style";
 import { Notifications } from "@mantine/notifications";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { routeTree } from "./routeTree.gen";
 export const router = createRouter({ routeTree });
 
 const queryClient = new QueryClient();
-// Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }
 }
-// This code is only for TypeScript
-declare global {
+declare global 
   interface Window {
     __TANSTACK_QUERY_CLIENT__: import("@tanstack/query-core").QueryClient;
   }

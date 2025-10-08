@@ -1,7 +1,7 @@
-import { useRegister } from "@/hooks";
+import { useRegister } from "@/services";
 import { registerFormSchema } from "@/zod";
 import { formOptions } from "@tanstack/react-form";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useSearch } from "@tanstack/react-router";
 import { createForm, useAppForm, useFieldContext } from ".";
 
 export const RegisterForm = () => {

@@ -1,7 +1,5 @@
 import { useUserStore } from "@/store";
-import { checkAuth } from "@/utils/accessToken";
 import type { Middleware } from "openapi-fetch";
-
 
 export const authMiddleware: Middleware = {
   async onRequest({ request }) {
@@ -11,7 +9,5 @@ export const authMiddleware: Middleware = {
   },
   async onError({ request, error }) {
     console.log(error);
-    const onExists = checkAuth();
-    console.log(onExists);
   },
 };
