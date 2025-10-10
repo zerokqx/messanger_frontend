@@ -1,4 +1,4 @@
-import { useUserStore } from "@/store";
+import { useUserStore } from "@/entities/user";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth")({

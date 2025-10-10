@@ -1,21 +1,23 @@
-import { LoginForm } from "@/components/organisms/Form/Login";
-import { RegisterForm } from "@/components/organisms/Form/Register";
 import { Tabs } from "@mantine/core";
+import type { CurrentTabs } from "../types/tabsConfigCurrent.type";
+import { tabsConfig } from "../config/tabs";
 
-// TODO: Configurable patern
-export const AuthPage = () => {
+export const AuthPage = ({
+  defaultValue = "Логин",
+}: {
+  defaultValue?: CurrentTabs;
+}) => {
+  const { list, panels } = tabsConfig;
   return (
-    <Tabs defaultValue={"Логин"}>
+    <Tabs defaultValue={defaultValue}>
       <Tabs.List>
-        <Tabs.Tab value="Логин">Логин</Tabs.Tab>
-        <Tabs.Tab value="Регистрация">Регистрация</Tabs.Tab>
+        {list.map((tab) => (
+          <Tabs.Tab value={tab.value}>{tab.text}</Tabs.Tab>
+        ))}
       </Tabs.List>
-      <Tabs.Panel value="Логин">
-        <LoginForm />;
-      </Tabs.Panel>
-      <Tabs.Panel value="Регистрация">
-        <RegisterForm />
-      </Tabs.Panel>
+      {panels.map((panel) => (
+        <Tabs.Panel value={panel.value}>{panel.render()()}</Tabs.Panel>
+      ))}
     </Tabs>
   );
 };

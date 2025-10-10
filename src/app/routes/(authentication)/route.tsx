@@ -1,6 +1,4 @@
-import { useMe } from "@/hooks";
-import { useRefresh } from "@/services";
-import { useUserStore } from "@/store";
+import { useUserStore, useRefresh, useMe } from "@/entities/user";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(authentication)")({
