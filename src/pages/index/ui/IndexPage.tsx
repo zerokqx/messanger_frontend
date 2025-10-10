@@ -1,22 +1,26 @@
-import { useUserStore } from "@/entities/user";
-import { Button } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { useUserStore } from '@/entities/user';
+import { CustomMantineButton } from '@/shared/ui/Button';
+import { ThemeToggle } from '@/shared/ui/ThemeToggle';
+import { notifications } from '@mantine/notifications';
 
 export const IndexPage = () => {
   const { clearStore } = useUserStore();
   return (
     <>
-      <Button onClick={clearStore}>Clear access</Button>
-      <Button
+      <ThemeToggle />
+      <CustomMantineButton onClick={clearStore}>
+        Clear access
+      </CustomMantineButton>
+      <CustomMantineButton
         onClick={() =>
           notifications.show({
-            title: "Test",
-            message: "Test",
+            title: 'Test',
+            message: 'Test',
           })
         }
       >
         Get Notify
-      </Button>
+      </CustomMantineButton>
     </>
   );
 };

@@ -40,7 +40,14 @@ export const Form = <O extends AnyFormOptions>({
             <form.Field
               name={fieldData.name.toString()}
               children={(field) => (
-                <CustomMantineInput placeholder={fieldData.placeholder} />
+                <CustomMantineInput
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder={fieldData.placeholder}
+                />
               )}
             />
           ))}
