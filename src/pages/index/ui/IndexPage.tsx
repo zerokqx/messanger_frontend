@@ -1,10 +1,10 @@
-import { useUserStore } from '@/entities/user';
+import { useTokenStore } from '@/entities/token';
 import { CustomMantineButton } from '@/shared/ui/Button';
 import { ThemeToggle } from '@/shared/ui/ThemeToggle';
 import { notifications } from '@mantine/notifications';
 
 export const IndexPage = () => {
-  const { clearStore } = useUserStore();
+  const { clearStore } = useTokenStore();
   return (
     <>
       <ThemeToggle />

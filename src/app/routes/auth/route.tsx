@@ -1,14 +1,15 @@
-import { useUserStore } from "@/entities/user";
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useTokenStore } from '@/entities/token';
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
-export const Route = createFileRoute("/auth")({
+export const Route = createFileRoute('/auth')({
   validateSearch: (search) => ({
-    location: (search.location as string) || "/",
+    location: (search.location as string) || '/',
   }),
   beforeLoad: ({ search }) => {
-    const jwt = useUserStore.getState().validateToken();
+    const jwt = useTokenStore.getState().validateToken();
 
     if (jwt) {
+      console.log('ex');
       throw redirect({
         to: search.location,
       });

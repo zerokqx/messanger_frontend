@@ -14,7 +14,7 @@ export const useTheme: UseThemeHook = () => {
     auto: MdAutoAwesome,
   };
   const IconComponent = Icons[colorScheme];
-  const set = () => setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+  const set = () => { setColorScheme(colorScheme === 'dark' ? 'light' : 'dark'); };
   return {
     Icon: IconComponent,
     set,

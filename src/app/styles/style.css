@@ -1,1 +1,4 @@
 @import "tailwindcss";
+.d{
+  display: flex ;
+}

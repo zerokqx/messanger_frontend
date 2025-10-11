@@ -24,7 +24,7 @@ declare global {
 }
 
 window.__TANSTACK_QUERY_CLIENT__ = queryClient;
-const rootElement = document.getElementById('root')!;
+const rootElement = document.getElementById('root');
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(

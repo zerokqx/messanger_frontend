@@ -1,9 +1,8 @@
-// WARN: Global contexts form
-
 import { useLogin } from '@/entities/user';
 import { useSearch } from '@tanstack/react-router';
 import { loginFormSchema } from '../model/loginSchema';
 import { Form } from '@/shared/ui/Form';
+import { formOptions } from '@tanstack/react-form';
 
 export const LoginForm = () => {
   const search = useSearch({
@@ -11,6 +10,24 @@ export const LoginForm = () => {
   });
   const { mutate } = useLogin(search);
 
+  const options = formOptions({
+    defaultValues: {
+      userName: '',
+      password: '',
+    },
+    validators: {
+      onChange: loginFormSchema,
+    },
+
+    onSubmit: ({ value }) => {
+      mutate({
+        body: {
+          password: value.password,
+          login: value.userName,
+        },
+      });
+    },
+  });
   return (
     <Form
       fieldSet={[
@@ -24,24 +41,8 @@ export const LoginForm = () => {
           placeholder: 'Пороль',
         },
       ]}
-      options={{
-        defaultValues: {
-          userName: '',
-          password: '',
-        },
-        validators: {
-          onChange: loginFormSchema,
-        },
-
-        onSubmit: async ({ value }) => {
-          mutate({
-            body: {
-              password: value.password,
-              login: value.userName,
-            },
-          });
-        },
-      }}
+      // BUG: Not corrects type
+      options={options}
       title="Вход в систему"
     />
   );

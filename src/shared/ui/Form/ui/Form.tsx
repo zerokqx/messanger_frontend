@@ -1,14 +1,9 @@
-import type { FieldSet } from '../types';
-import { CustomMantineInput } from '../../Input';
-import { Text, Flex } from '@mantine/core';
+import { Flex, Text } from '@mantine/core';
 import { useForm, type AnyFormOptions } from '@tanstack/react-form';
-import { CustomMantineButton } from '../../Button';
 
-interface FormProps<O extends AnyFormOptions> {
-  options: O;
-  fieldSet: FieldSet<O['defaultValues']>[];
-  title: string;
-}
+import { CustomMantineButton } from '../../Button';
+import { CustomMantineInput } from '../../Input';
+import type { FormProps } from '../types';
 
 export const Form = <O extends AnyFormOptions>({
   options,
@@ -24,7 +19,7 @@ export const Form = <O extends AnyFormOptions>({
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        form.handleSubmit();
+        void form.handleSubmit();
       }}
     >
       <Flex
@@ -38,14 +33,17 @@ export const Form = <O extends AnyFormOptions>({
         <Flex direction={'column'} w={'max-content'} gap={'sm'} p="lg">
           {fieldSet.map((fieldData) => (
             <form.Field
+              key={fieldData.placeholder}
               name={fieldData.name.toString()}
               children={(field) => (
                 <CustomMantineInput
                   id={field.name}
                   name={field.name}
-                  value={field.state.value}
+                  value={field.state.value as string}
                   onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value);
+                  }}
                   placeholder={fieldData.placeholder}
                 />
               )}

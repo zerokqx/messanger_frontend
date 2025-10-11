@@ -23,6 +23,7 @@ export const RegisterForm = () => {
         onSubmit({ value }) {
           mutate({
             body: {
+              // BUG: Any type.
               password: value.password,
               login: value.userName,
             },

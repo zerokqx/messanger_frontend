@@ -13,7 +13,7 @@ import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as authenticationRouteRouteImport } from './routes/(authentication)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as authenticationIRouteImport } from './routes/(authentication)/i'
+import { Route as authenticationProfileRouteImport } from './routes/(authentication)/profile'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -34,21 +34,21 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const authenticationIRoute = authenticationIRouteImport.update({
-  id: '/i',
-  path: '/i',
+const authenticationProfileRoute = authenticationProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => authenticationRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof authenticationRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
-  '/i': typeof authenticationIRoute
+  '/profile': typeof authenticationProfileRoute
   '/auth/': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticationRouteRouteWithChildren
-  '/i': typeof authenticationIRoute
+  '/profile': typeof authenticationProfileRoute
   '/auth': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
@@ -56,20 +56,20 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(authentication)': typeof authenticationRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
-  '/(authentication)/i': typeof authenticationIRoute
+  '/(authentication)/profile': typeof authenticationProfileRoute
   '/auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/i' | '/auth/'
+  fullPaths: '/' | '/auth' | '/profile' | '/auth/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/i' | '/auth'
+  to: '/' | '/profile' | '/auth'
   id:
     | '__root__'
     | '/'
     | '/(authentication)'
     | '/auth'
-    | '/(authentication)/i'
+    | '/(authentication)/profile'
     | '/auth/'
   fileRoutesById: FileRoutesById
 }
@@ -109,22 +109,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/(authentication)/i': {
-      id: '/(authentication)/i'
-      path: '/i'
-      fullPath: '/i'
-      preLoaderRoute: typeof authenticationIRouteImport
+    '/(authentication)/profile': {
+      id: '/(authentication)/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof authenticationProfileRouteImport
       parentRoute: typeof authenticationRouteRoute
     }
   }
 }
 
 interface authenticationRouteRouteChildren {
-  authenticationIRoute: typeof authenticationIRoute
+  authenticationProfileRoute: typeof authenticationProfileRoute
 }
 
 const authenticationRouteRouteChildren: authenticationRouteRouteChildren = {
-  authenticationIRoute: authenticationIRoute,
+  authenticationProfileRoute: authenticationProfileRoute,
 }
 
 const authenticationRouteRouteWithChildren =

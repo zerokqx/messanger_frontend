@@ -1,20 +1,8 @@
-export interface TUserState {
-  accessToken: {
-    token: string;
-    timeCreate: ReturnType<DateConstructor["now"]>;
-  };
-  user: {
-    uuid: string;
-    name: string;
-    avatar: string;
-    profileLink: string;
-  };
-}
+import type { ClearState } from '@/shared/types';
+import type { components } from '@/shared/types/v1';
 
-export interface TUserActions {
-  setToken: (token: TUserState["accessToken"]["token"]) => void;
-  validateToken: () => boolean;
-  removeToken: () => void;
-  setUuid: (uuid: string) => void;
-  clearStore: () => void;
+export type TUserState = components['schemas']['ProfileResponse']['data'];
+
+export interface TUserActions extends ClearState {
+  setUser: (user: TUserState) => void;
 }

@@ -1,12 +1,9 @@
 import type { Middleware } from 'openapi-fetch';
-import { useUserStore } from '../../model/userStore';
+import { useTokenStore } from '@/entities/token/@x/user';
 export const authMiddleware: Middleware = {
-  async onRequest({ request }) {
-    const token = useUserStore.getState().accessToken.token;
+  onRequest({ request }) {
+    const token = useTokenStore.getState().access;
     request.headers.set('Authorization', `Bearer ${token}`);
     request.headers.append('X-Client-Type', 'web');
-  },
-  async onError({ error }) {
-    console.log(error);
   },
 };

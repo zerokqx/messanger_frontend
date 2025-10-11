@@ -16,11 +16,13 @@ export const createFetcher = <P extends paths = paths>({
     ...clientOptions,
   });
   return (...midlewares: Middleware[]) => {
-    if (midlewares && midlewares.length > 0) {
-      midlewares.forEach((midleware) => fetcher.use(midleware));
+    if (midlewares.length > 0) {
+      midlewares.forEach((midleware) => {
+        fetcher.use(midleware);
+      });
     }
 
     fetcher.use(generalMiddleware);
-    return () => createClient<paths>(fetcher);
+    return () => createClient<P>(fetcher);
   };
 };

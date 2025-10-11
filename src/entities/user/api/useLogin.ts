@@ -1,28 +1,28 @@
 import { notifications } from '@mantine/notifications';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { useUserStore } from '../model/userStore';
 import { authClient } from '@/shared/api';
 import { authMiddleware } from './middlewares';
+import { useTokenStore } from '@/entities/token/@x/user';
 
 /**
  * @param search - Return data from hook useForm
  * @returns Default useMutation
  */
 export const useLogin = (search: ReturnType<typeof useSearch>) => {
-  const { setToken } = useUserStore();
+  const { setToken } = useTokenStore();
   const navigate = useNavigate();
 
   const mutate = authClient(authMiddleware)().useMutation('post', '/login', {
-    onSuccess: ({ data }) => {
+    onSuccess: async ({ data }) => {
       setToken(data.access_token);
       // WARNING: need regenerate scheme openapi. In currend SchemaV1 not exists data.uuid in response /login
       // setUuid(data.uuid)
-      navigate({
+      await navigate({
         to: search.location,
-        search,
       });
     },
     onError: () => {
+      console.log(mutate.error);
       notifications.show({
         title: 'Опа ошибка!',
         message:
@@ -31,5 +31,6 @@ export const useLogin = (search: ReturnType<typeof useSearch>) => {
       });
     },
   });
+
   return { ...mutate };
 };

@@ -1,15 +1,17 @@
-import { useUserStore, useRefresh, useMe } from "@/entities/user";
-import { createFileRoute, redirect } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/(authentication)")({
+import { useRefresh, useTokenStore } from '@/entities/token';
+import { useMe } from '@/entities/user';
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+export const Route = createFileRoute('/(authentication)')({
   component: RouteComponent,
   beforeLoad: ({ location }) => {
-    const token = useUserStore.getState();
+    const token = useTokenStore.getState();
+
     const jwtValidate = token.validateToken();
+    console.log(!jwtValidate);
     if (!jwtValidate) {
-      token.removeToken();
-      throw redirect({
-        to: "/auth",
+      token.clearStore();
+      return redirect({
+        to: '/auth',
         search: {
           location: location.href,
         },
@@ -20,7 +22,6 @@ export const Route = createFileRoute("/(authentication)")({
 
 function RouteComponent() {
   useRefresh();
-
   useMe();
-  return <div>Hello "/(auth)"!</div>;
+  return <Outlet />;
 }
