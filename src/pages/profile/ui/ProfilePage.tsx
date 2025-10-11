@@ -1,5 +1,9 @@
-import { UserBadge } from '@/entities/user';
+import { SideBar } from '@/shared/ui/SideBar';
 
 export const ProfilePage = () => {
-  return <UserBadge />;
+  return (
+    <>
+      <SideBar />
+    </>
+  );
 };
