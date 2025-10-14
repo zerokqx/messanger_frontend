@@ -6,6 +6,7 @@ export interface Compouned {
 }
 export interface SideBarProps {
   children: ReactNode;
+  renderUserBadge?: () => ReactNode;
 }
 
 export type SideBarCompouned = ((props: SideBarProps) => JSX.Element) &

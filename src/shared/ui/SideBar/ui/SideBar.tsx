@@ -1,36 +1,26 @@
-import { Drawer, Flex } from '@mantine/core';
+import { Drawer } from '@mantine/core';
 import { CustomMantineButton } from '../../Button';
 import { useSideBarStore } from '../store/useMenuStore';
 import type { SideBarCompouned } from '../types/sideBar.type';
 import { SideItem } from './Item';
 
 // TODO: Gesture add
-export const SideBar: SideBarCompouned = ({ children }) => {
+export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
   const { isOpen, toggle, close } = useSideBarStore();
   return (
     <>
-      <CustomMantineButton onClick={toggle}>Munu</CustomMantineButton>
-      <Drawer.Root opened={isOpen} onClose={close} offset={20}>
+      <CustomMantineButton onClick={toggle}>Menu</CustomMantineButton>
+      <Drawer.Root opened={isOpen} onClose={close} offset={0}>
         <Drawer.Overlay />
-        <Drawer.Content bdrs="xl" bg={'black'} bd={'solid 1px white'}>
-          <Drawer.Title>zerok</Drawer.Title>
-          <Drawer.Body>
-            <Flex
-              h="100vh"
-              bd={{ base: 'none' }}
-              styles={{
-                root: {
-                  overflow: 'hidden',
-                  borderRight: `solid white 1px`,
-                },
-              }}
-              pt={'md'}
-              direction={'column'}
-            >
-              {children}
-            </Flex>
-          </Drawer.Body>
-        </Drawer.Content>
+        <Drawer.Body>
+          <Drawer.Content bdrs="none" bg={'black'}>
+            <Drawer.Header bg={'indigo'}>
+              {renderUserBadge?.()}
+              <Drawer.CloseButton />
+            </Drawer.Header>
+            {children}
+          </Drawer.Content>
+        </Drawer.Body>
       </Drawer.Root>
     </>
   );
