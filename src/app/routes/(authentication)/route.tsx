@@ -1,6 +1,7 @@
 import { useRefresh, useTokenStore } from '@/entities/token';
 import { useMe } from '@/entities/user';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+import { SideBarLayout } from './_layout';
 export const Route = createFileRoute('/(authentication)')({
   component: RouteComponent,
   beforeLoad: ({ location }) => {
@@ -23,5 +24,10 @@ export const Route = createFileRoute('/(authentication)')({
 function RouteComponent() {
   useRefresh();
   useMe();
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      <SideBarLayout />
+    </>
+  );
 }

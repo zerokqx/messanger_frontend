@@ -6,21 +6,22 @@ export const UserBadge = () => {
   console.log(p);
   return (
     <Flex
-      align={'end'}
-      bg={'dark'}
-      justify={'center'}
-      gap={'xl'}
-      w="max-content"
+      align={'start'}
+      justify={'start'}
+      gap={'md'}
+      direction={'column'}
       p={'sm'}
       bdrs={'xl'}
     >
       <Avatar
-        variant="gradient"
-        color="blue"
+        variant="white"
+        color="indigo"
         alt={login + ' avatar'}
         name={login}
       />
-      <Text>{login}</Text>
+      <Text c="white" fw={700}>
+        {login}
+      </Text>
     </Flex>
   );
 };
