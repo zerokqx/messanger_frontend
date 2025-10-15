@@ -1,5 +1,6 @@
-import { AppShell } from "@mantine/core";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { AppShell } from '@mantine/core';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { SideBarLayout } from './(authentication)/_layout';
 const RootLayout = () => {
   return (
     <>
@@ -10,6 +11,7 @@ const RootLayout = () => {
           })}
         >
           <Outlet />
+          <SideBarLayout />
         </AppShell.Main>
       </AppShell>
       {/* <TanStackDevtools */}

@@ -1,34 +1,25 @@
-import type { IconType } from 'react-icons/lib';
-import { Cog, MessageCircle, User } from 'lucide-react';
-import { SideBar } from '@/shared/ui/SideBar';
 import { UserBadge } from '@/entities/user';
-
-const sideBarRows: {
-  Icon: IconType;
-  label: string;
-}[] = [
-  {
-    Icon: User,
-    label: 'Профиль',
-  },
-  {
-    Icon: MessageCircle,
-    label: 'Чаты',
-  },
-  {
-    Icon: Cog,
-    label: 'Настройки',
-  },
-];
+import { SideBar } from '@/shared/ui/SideBar';
+import { SettingsModal } from '@/widgets/Settings/ui';
+import { useDisclosure } from '@mantine/hooks';
+import { Cog, MessageCircle, User } from 'lucide-react';
 
 export const SideBarLayout = () => {
+  const settings = useDisclosure(false);
   return (
-    <SideBar renderUserBadge={() => <UserBadge />}>
-      {sideBarRows.map(({ label, Icon }, index) => (
-        <SideBar.Item text={label} key={label + index.toString()}>
-          <Icon />
+    <>
+      <SettingsModal disclosure={settings} />
+      <SideBar renderUserBadge={() => <UserBadge />}>
+        <SideBar.Item text="Профиль">
+          <User />
         </SideBar.Item>
-      ))}
-    </SideBar>
+        <SideBar.Item text="Чаты">
+          <MessageCircle />
+        </SideBar.Item>
+        <SideBar.Item text="Настройки" onClick={settings[1].toggle}>
+          <Cog />
+        </SideBar.Item>
+      </SideBar>
+    </>
   );
 };

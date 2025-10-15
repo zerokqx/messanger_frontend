@@ -6,7 +6,7 @@ export const CustomMantineButton = ({
   ...props
 }: CustomButtonProps) => {
   return (
-    <ButtonMantine {...props} bdrs={'xl'} bg={'dark'}>
+    <ButtonMantine justify="center" {...props} bdrs={'1px'} variant="white">
       {children}
     </ButtonMantine>
   );

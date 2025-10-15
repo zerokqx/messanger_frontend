@@ -1,9 +1,10 @@
 import { Flex, Text } from '@mantine/core';
 import styles from '../hover/SideItem.module.css';
 import type { SideItemProps } from '../types/item.type';
-export const SideItem = ({ children, text }: SideItemProps) => {
+export const SideItem = ({ children, text, ...props }: SideItemProps) => {
   return (
     <Flex
+      {...props}
       className={styles.hoverItem}
       w={'100%'}
       gap={'md'}

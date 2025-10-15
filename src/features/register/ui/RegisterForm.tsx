@@ -26,6 +26,7 @@ export const RegisterForm = () => {
               // BUG: Any type.
               password: value.password,
               login: value.userName,
+              invite: '2025',
             },
           });
         },
