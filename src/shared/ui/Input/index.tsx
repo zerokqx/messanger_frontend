@@ -1,2 +1,2 @@
-export type { CustomMantineInputProps } from "./types/";
-export { CustomMantineInput } from "./ui/";
+export type { CustomMantineInputProps } from './types/';
+export { CustomMantineInput } from './ui/';

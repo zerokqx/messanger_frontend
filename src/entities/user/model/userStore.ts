@@ -8,9 +8,10 @@ const useUserStoreBase = create<TUserState & TUserActions>()(
     persist(
       (set, _, store) => ({
         user_id: '00000000-0000-0000-0000-000000000000',
-        login: 'mockuser',
-        full_name: 'Mock User',
-        bio: 'This is a mock user biography.',
+
+        login: 'Anonymous',
+        full_name: 'Anonymous',
+        bio: '',
         balances: [], // пустой массив WalletBalance
         created_at: new Date().toISOString(),
         stories: [], // пустой массив (тип unknown[])
