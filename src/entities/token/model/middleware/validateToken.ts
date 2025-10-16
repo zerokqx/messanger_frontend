@@ -14,10 +14,10 @@ export const validateToken =
         } else {
           set(partial as Partial<S> | ((s: S) => Partial<S>), false);
         }
-        console.info('Токен изменен');
+        console.log('Token change.');
       } else {
         set({ access: '' } as S);
-        console.warn('Новые данные с невалидным токеном, обновление отменено');
+        console.warn('New data no valid.');
         // Можно добавить очистку состояния или другую реакцию
       }
     };
