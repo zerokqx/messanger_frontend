@@ -1,16 +1,10 @@
-import type { UseDisclosureReturnValue } from '@mantine/hooks';
+import { useAppSettings } from '@/shared/app/settings/model/useAppSettings';
+import { useSettingsStore } from '@/widgets/Settings/model';
 import { Flex, Modal as MantineModal } from '@mantine/core';
 import type { ReactNode } from 'react';
-import { useAppSettings } from '@/shared/app/settings/model/useAppSettings';
 
-export const Modal = ({
-  disclosure,
-  children,
-}: {
-  children: ReactNode;
-  disclosure: UseDisclosureReturnValue;
-}) => {
-  const [opened, { close }] = disclosure;
+export const Modal = ({ children }: { children: ReactNode }) => {
+  const { isOpen, close } = useSettingsStore();
   const { borderElements } = useAppSettings();
   return (
     <MantineModal
@@ -20,6 +14,7 @@ export const Modal = ({
       zIndex={500}
       overlayProps={{
         backgroundOpacity: 0.55,
+
         blur: 3,
       }}
       styles={{
@@ -33,8 +28,7 @@ export const Modal = ({
           background: 'black',
         },
       }}
-      bdrs={'none'}
-      opened={opened}
+      opened={isOpen}
       onClose={close}
       centered
     >

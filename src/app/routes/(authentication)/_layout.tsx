@@ -1,14 +1,14 @@
 import { UserBadge } from '@/entities/user';
 import { SideBar } from '@/shared/ui/SideBar';
+import { useSettingsStore } from '@/widgets/Settings/model';
 import { SettingsModal } from '@/widgets/Settings/ui';
-import { useDisclosure } from '@mantine/hooks';
 import { Cog, MessageCircle, User } from 'lucide-react';
 
-export const SideBarLayout = () => {
-  const settings = useDisclosure(false);
+export default function SideBarLayout() {
+  const { toggle } = useSettingsStore();
   return (
     <>
-      <SettingsModal disclosure={settings} />
+      <SettingsModal />
       <SideBar renderUserBadge={() => <UserBadge />}>
         <SideBar.Item text="Профиль">
           <User />
@@ -16,10 +16,10 @@ export const SideBarLayout = () => {
         <SideBar.Item text="Чаты">
           <MessageCircle />
         </SideBar.Item>
-        <SideBar.Item text="Настройки" onClick={settings[1].toggle}>
+        <SideBar.Item text="Настройки" onClick={toggle}>
           <Cog />
         </SideBar.Item>
       </SideBar>
     </>
   );
-};
+}

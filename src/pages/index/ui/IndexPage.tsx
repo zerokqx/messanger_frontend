@@ -1,51 +1,18 @@
-import { useTokenStore } from '@/entities/token';
-import { CustomMantineButton } from '@/shared/ui/Button';
-import { ThemeToggle } from '@/shared/ui/ThemeToggle';
-import { notifications } from '@mantine/notifications';
-import { useRef } from 'react';
+import { useCheckAuth } from '@/entities/user/model';
+import { Flex, Skeleton } from '@mantine/core';
+import { Loader } from 'lucide-react';
+import { lazy, Suspense, useState, useEffect } from 'react';
+
+const WelcomeLazy = lazy(() => import('@/shared/ui/Welcome/ui/Welcome'));
 
 export const IndexPage = () => {
-  const { clearStore } = useTokenStore();
-  const { setToken } = useTokenStore();
-  const ref = useRef('');
+  const isAuth = useCheckAuth();
+
   return (
-    <>
-      <ThemeToggle />
-      <CustomMantineButton onClick={clearStore}>
-        Clear access
-      </CustomMantineButton>
-      <CustomMantineButton
-        onClick={() =>
-          notifications.show({
-            title: 'Test',
-            message: 'Test',
-          })
-        }
-      >
-        Get Notify
-      </CustomMantineButton>
-
-      <input
-        name="inp"
-        onChange={(e) => {
-          ref.current = e.target.value;
-        }}
-      />
-
-      <CustomMantineButton
-        onClick={() => {
-          setToken(ref.current);
-        }}
-      >
-        Submit
-      </CustomMantineButton>
-      <CustomMantineButton
-        onClick={() => {
-          console.log(ref.current);
-        }}
-      >
-        Log
-      </CustomMantineButton>
-    </>
+    <Flex w="100%" h="100vh" justify="center" align="center">
+      <Suspense fallback={<Loader color="white" />}>
+        {!isAuth && <WelcomeLazy>Yobble</WelcomeLazy>}
+      </Suspense>
+    </Flex>
   );
 };
