@@ -4,7 +4,7 @@ import { useSideBarStore } from '../store/useMenuStore';
 import { SideItem } from './Item';
 import type { SideBarCompouned } from '../types/sideBar.type';
 import { useMediaQuery } from '@mantine/hooks';
-import { useAppSettings } from '@/shared/app/settings/model/useAppSettings';
+import { useAppSettings } from '@/shared/lib/settings/model/useAppSettings';
 
 export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
   const { isOpen, toggle, close } = useSideBarStore();

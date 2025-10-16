@@ -1,5 +1,5 @@
 import { useLogout } from '@/entities/user/model';
-import { useAppSettings } from '@/shared/app/settings/model/useAppSettings';
+import { useAppSettings } from '@/shared/lib/settings/model/useAppSettings';
 import { CustomMantineButton } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox/ui';
 import { Modal } from '@/shared/ui/Modal';

@@ -1,6 +1,6 @@
-import { useRefresh } from '@/entities/token';
 import { useMe } from '@/entities/user';
 import { useCheckAuth } from '@/entities/user/model/useCheckAuth.ts';
+import { useRefresh } from '@/features/refresh/api/useRefresh.ts';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import { lazy } from 'react';
 export const Route = createFileRoute('/(authentication)')({

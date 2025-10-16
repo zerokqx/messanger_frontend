@@ -1,19 +1,15 @@
 import { authClient } from '@/shared/api';
 import { useEffect } from 'react';
 
-import { useJwt } from 'react-jwt';
-import { useTokenStore } from '../model';
 import { authMiddleware } from '@/entities/user/@x/token';
+import { useJwt } from 'react-jwt';
+import { useTokenStore } from '@/entities/token';
 
 export const useRefresh = () => {
   const { access, setToken } = useTokenStore();
-  const { decodedToken, reEvaluateToken, isExpired } = useJwt(access);
-  console.log(decodedToken);
-  console.log(isExpired);
+  const { reEvaluateToken, isExpired } = useJwt(access);
 
-  const { mutate, data, isSuccess, isError } = authClient(
-    authMiddleware
-  )().useMutation(
+  const { mutate } = authClient(authMiddleware)().useMutation(
     'post',
     '/token/refresh',
 
