@@ -1,5 +1,4 @@
 import { useAppSettings } from '@/shared/lib/settings';
-import { useSettingsStore } from '@/widgets/Settings/model';
 import { Flex, Modal as MantineModal, type ModalProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 

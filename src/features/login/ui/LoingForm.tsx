@@ -29,7 +29,7 @@ export const LoginForm = () => {
     },
   });
   return (
-    <Form
+    <Form <typeof options>
       fieldSet={[
         {
           name: 'userName',
