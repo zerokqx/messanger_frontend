@@ -1,10 +1,9 @@
 import { useAppSettings } from '@/shared/lib/settings';
 import { useSettingsStore } from '@/widgets/Settings/model';
-import { Flex, Modal as MantineModal } from '@mantine/core';
+import { Flex, Modal as MantineModal, type ModalProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 
-export const Modal = ({ children }: { children: ReactNode }) => {
-  const { isOpen, close } = useSettingsStore();
+export const Modal = ({ children,...props }: { children: ReactNode }& ModalProps) => {
   const { borderElements } = useAppSettings();
   return (
     <MantineModal
@@ -28,9 +27,8 @@ export const Modal = ({ children }: { children: ReactNode }) => {
           background: 'black',
         },
       }}
-      opened={isOpen}
-      onClose={close}
       centered
+      {...props}
     >
       <Flex direction={'column'} gap={'md'}>
         {children}

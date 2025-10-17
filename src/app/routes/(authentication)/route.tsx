@@ -1,5 +1,5 @@
 import { useMe } from '@/entities/user';
-import { useCheckAuth } from '@/entities/user/model/useCheckAuth.ts';
+import { useCheckAuth } from '@/features/checkAuth/index.ts';
 import { useRefresh } from '@/features/refresh/api/useRefresh.ts';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import { lazy } from 'react';

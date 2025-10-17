@@ -1,9 +1,9 @@
 import { authClient } from '@/shared/api';
 import { useEffect } from 'react';
 
-import { authMiddleware } from '@/entities/user/@x/token';
 import { useJwt } from 'react-jwt';
 import { useTokenStore } from '@/entities/token';
+import { authMiddleware } from '@/entities/user';
 
 export const useRefresh = () => {
   const { access, setToken } = useTokenStore();

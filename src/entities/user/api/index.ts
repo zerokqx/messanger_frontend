@@ -1,2 +1,2 @@
-export * from './useMe.ts';
-export * from './middlewares/';
+export * from "./useMe";
+export * from "./middlewares";
