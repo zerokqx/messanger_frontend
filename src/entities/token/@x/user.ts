@@ -1,1 +1,1 @@
-export { useTokenStore } from '../model/';
+export {useTokenStore} from "../model/"

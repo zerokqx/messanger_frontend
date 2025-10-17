@@ -1,5 +1,5 @@
-import { AppShell } from "@mantine/core";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { AppShell } from '@mantine/core';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 const RootLayout = () => {
   return (
     <>

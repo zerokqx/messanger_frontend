@@ -2,25 +2,24 @@ import { Avatar, Flex, Text } from '@mantine/core';
 import { useUserStore } from '../model/userStore';
 
 export const UserBadge = () => {
-  const { login, ...p } = useUserStore();
-  console.log(p);
+  const { login } = useUserStore();
   return (
     <Flex
-      align={'end'}
-      bg={'dark'}
-      justify={'center'}
-      gap={'xl'}
-      w="max-content"
       p={'sm'}
-      bdrs={'xl'}
+      gap={'md'}
+      align={'start'}
+      justify={'start'}
+      direction={'column'}
     >
       <Avatar
-        variant="gradient"
-        color="blue"
+        variant="white"
+        color="indigo"
         alt={login + ' avatar'}
         name={login}
       />
-      <Text>{login}</Text>
+      <Text c="white" fw={700}>
+        {login}
+      </Text>
     </Flex>
   );
 };

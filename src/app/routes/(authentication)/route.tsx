@@ -1,15 +1,14 @@
-import { useRefresh, useTokenStore } from '@/entities/token';
 import { useMe } from '@/entities/user';
+import { useCheckAuth } from '@/features/checkAuth/index.ts';
+import { useRefresh } from '@/features/refresh/api/useRefresh.ts';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+import { lazy } from 'react';
 export const Route = createFileRoute('/(authentication)')({
   component: RouteComponent,
   beforeLoad: ({ location }) => {
-    const token = useTokenStore.getState();
+    const token = useCheckAuth.check();
 
-    const jwtValidate = token.validateToken();
-    console.log(!jwtValidate);
-    if (!jwtValidate) {
-      token.clearStore();
+    if (!token) {
       return redirect({
         to: '/auth',
         search: {
@@ -20,8 +19,14 @@ export const Route = createFileRoute('/(authentication)')({
   },
 });
 
+const SideBarLazy = lazy(() => import('./_layout.tsx'));
 function RouteComponent() {
   useRefresh();
   useMe();
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      <SideBarLazy />
+    </>
+  );
 }

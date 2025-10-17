@@ -1,8 +1,8 @@
 import { notifications } from '@mantine/notifications';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { authClient } from '@/shared/api';
-import { authMiddleware } from './middlewares';
 import { useTokenStore } from '@/entities/token/@x/user';
+import { authMiddleware } from '@/entities/user';
 
 /**
  * @param search - Return data from hook useForm
@@ -11,7 +11,7 @@ import { useTokenStore } from '@/entities/token/@x/user';
 export const useLogin = (search: ReturnType<typeof useSearch>) => {
   const { setToken } = useTokenStore();
   const navigate = useNavigate();
-
+  // WARN: authMiddleware in user entites
   const mutate = authClient(authMiddleware)().useMutation('post', '/login', {
     onSuccess: async ({ data }) => {
       setToken(data.access_token);
