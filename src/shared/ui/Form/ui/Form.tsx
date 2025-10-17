@@ -5,7 +5,7 @@ import { CustomMantineButton } from '../../Button';
 import { CustomMantineInput } from '../../Input';
 import type { FormProps } from '../types';
 
-export const Form = <O extends AnyFormOptions>({
+export const Form = <O extends  object>({
   options,
   fieldSet,
   title,
@@ -27,7 +27,6 @@ export const Form = <O extends AnyFormOptions>({
         direction={'column'}
         justify={'center'}
         align={'center'}
-        h={'100vh'}
       >
         <Text fw={700}>{title}</Text>
         <Flex direction={'column'} w={'max-content'} gap={'sm'} p="lg">

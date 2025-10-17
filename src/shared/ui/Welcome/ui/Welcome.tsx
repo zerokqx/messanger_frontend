@@ -4,7 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useLoginModal } from '@/widgets/LoginModal';
 export default function Welcome({ children }: { children: string }) {
   const navigate = useNavigate({
-    from: '/auth',
+    from: '/',
   });
   const login = useLoginModal()
   return (

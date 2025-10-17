@@ -4,6 +4,7 @@ import { CustomMantineButton } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox/ui';
 import { Modal } from '@/shared/ui/Modal';
 import { LogOut } from 'lucide-react';
+import { useSettingsStore } from '../model';
 export const SettingsModal = () => {
   const logout = useLogout();
   const {
@@ -11,9 +12,12 @@ export const SettingsModal = () => {
     setPermanentPanel,
     borderElements,
     setborderElements,
+
   } = useAppSettings();
+  const {isOpen,close} = useSettingsStore()
   return (
-    <Modal>
+
+    <Modal opened={isOpen} onClose={close}>
       <Checkbox
         checked={borderElements}
         label="Включить обводку элементов"

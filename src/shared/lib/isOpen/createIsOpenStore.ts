@@ -1,11 +1,9 @@
-import { create, type StoreApi, type UseBoundStore } from 'zustand';
+import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { UseSettingStore } from './types';
+import type { FabricStores, UseModalStore } from './types';
 
-export const createIsOpenStore = (): UseBoundStore<
-  StoreApi<UseSettingStore>
-> => {
-  return create<UseSettingStore>()(
+export const createIsOpenStore:FabricStores = () => {
+  const store = create<UseModalStore>()(
     devtools((set, get) => ({
       isOpen: false,
       close() {
@@ -21,4 +19,6 @@ export const createIsOpenStore = (): UseBoundStore<
       },
     }))
   );
+  return store
 };
+
