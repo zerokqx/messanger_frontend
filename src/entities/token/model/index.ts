@@ -1,1 +1,1 @@
-export * from "./useTokenStore.ts"
+export { useTokenStore } from './useTokenStore';

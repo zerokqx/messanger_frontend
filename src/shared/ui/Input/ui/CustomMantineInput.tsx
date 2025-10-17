@@ -14,8 +14,8 @@ export const CustomMantineInput = ({ ...props }: CustomMantineInputProps) => {
         {...props}
         w={'20rem'}
         h="2rem"
-        c={'white'}
-        bd={`1px ${theme.white} solid `}
+        variant="default"
+        radius={'0'}
         styles={{
           input: {
             backgroundColor: theme.black,

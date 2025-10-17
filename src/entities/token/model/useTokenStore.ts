@@ -3,11 +3,12 @@ import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import type { UseTokenStore } from '../types/useTokenStore.type';
 import z from 'zod';
 import { createSelectors } from '@/shared/lib/zustand/selectors';
+import { validateToken } from './middleware';
 
 const useTokenStoreBase = create<UseTokenStore>()(
   devtools(
     persist(
-      (set, get, store) => ({
+      validateToken((set, get, store) => ({
         access: '',
         setToken(token) {
           set(() => ({ access: token }));
@@ -18,7 +19,8 @@ const useTokenStoreBase = create<UseTokenStore>()(
         clearStore() {
           set(store.getInitialState());
         },
-      }),
+      })),
+
       {
         name: 'token-storage',
         storage: createJSONStorage(() => localStorage),

@@ -1,2 +1,2 @@
-export * from "./user.type.ts";
-export * from "./userStore.type.ts";
+export type { User } from './user.type.ts';
+export type { TUserActions } from './userStore.type.ts';
