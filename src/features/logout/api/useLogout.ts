@@ -1,5 +1,5 @@
-import { useTokenStore } from '@/entities/token/@x/user';
-import { useUserStore } from './userStore';
+import { useTokenStore } from '@/entities/token';
+import { useUserStore } from '@/entities/user';
 import { useNavigate } from '@tanstack/react-router';
 
 export const useLogout = () => {

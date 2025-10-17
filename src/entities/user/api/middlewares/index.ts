@@ -1,1 +1,1 @@
-export * from "./auth.middleware.ts"
+export {authMiddleware} from "./auth.middleware.ts"

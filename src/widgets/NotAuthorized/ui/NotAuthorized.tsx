@@ -1,4 +1,5 @@
-import { useCheckAuth } from '@/entities/user/model';
+import { useCheckAuth } from '@/features/checkAuth';
+import { LoginModal } from '@/widgets/LoginModal';
 import { Flex } from '@mantine/core';
 import { Loader } from 'lucide-react';
 import { lazy, Suspense } from 'react';
@@ -10,6 +11,7 @@ export const NotAuthorized = () => {
   return (
     <Flex w="100%" h="100vh" justify="center" align="center">
       <Suspense fallback={<Loader color="white" />}>
+        <LoginModal/>
         {!isAuth && <WelcomeLazy>Yobble</WelcomeLazy>}
       </Suspense>
     </Flex>
