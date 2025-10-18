@@ -20,7 +20,12 @@ export const Modal = ({
   full?: boolean;
 } & Omit<ModalProps, 'onClose' | 'opened'>) => {
   const { borderElements } = useAppSettings();
-  const border = full ? '' : borderElements ? '1px white solid' : 'none';
+  const t = useMantineTheme();
+  const border = full
+    ? ''
+    : borderElements
+      ? `1px ${t.colors.gray[8]} solid`
+      : 'none';
   return (
     <MantineModal
       transitionProps={{
@@ -28,11 +33,10 @@ export const Modal = ({
       }}
       zIndex={500}
       overlayProps={{
-        backgroundOpacity: 0.56,
+        backgroundOpacity: 0.8,
       }}
       fullScreen={full}
       opened={store.isOpen}
-      removeScrollProps={{ allowPinchZoom: true }}
       xOffset={10}
       yOffset={10}
       onClose={store.close}
@@ -42,8 +46,9 @@ export const Modal = ({
           background: 'transparent',
         },
         content: {
+          overflowX: 'hidden',
           border: border,
-          background: 'black',
+          background: t.black,
         },
       }}
       {...props}

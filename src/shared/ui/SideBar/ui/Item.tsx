@@ -1,15 +1,15 @@
-import { Flex, Text, useMantineTheme } from '@mantine/core';
+import { Flex, Text } from '@mantine/core';
 import type { SideItemProps } from '../types/item.type';
-import { hoverOpacity } from '@/shared/styles/HoverOpacity.css';
+import { Separator } from '../../Separator';
 export const SideItem = ({ children, text, ...props }: SideItemProps) => {
-  const t = useMantineTheme();
   return (
     <Flex
       {...props}
       gap={'md'}
       p={'md'}
-      align={'center'}
       h={'3rem'}
+      direction={'column'}
+      mt={'md'}
       styles={{
         root: {
           position: 'relative',
@@ -17,9 +17,20 @@ export const SideItem = ({ children, text, ...props }: SideItemProps) => {
         },
       }}
     >
-      <div className={hoverOpacity} />
-      {children}
-      <Text>{text}</Text>
+      <Flex
+        align={'center'}
+        gap={'md'}
+        direction={'row'}
+        styles={{
+          root: {
+            cursor: 'pointer',
+          },
+        }}
+      >
+        {children}
+        <Text>{text}</Text>
+      </Flex>
+      <Separator />
     </Flex>
   );
 };

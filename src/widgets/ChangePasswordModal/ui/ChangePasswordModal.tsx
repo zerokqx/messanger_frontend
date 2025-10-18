@@ -32,6 +32,7 @@ export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
     <Modal {...props} zIndex={501} store={store}>
       {!isSuccess ? (
         <Form
+          buttonLabel='Сменить пароль'
           title="Смена пароля"
           options={options}
           fieldSet={[

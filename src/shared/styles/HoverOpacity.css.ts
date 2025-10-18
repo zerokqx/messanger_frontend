@@ -10,7 +10,5 @@ export const hoverOpacity = style({
   width: '100%',
   opacity: '0.05',
   height: '100%',
-  ':hover': {
-    background: vars.colors.white,
-  },
+  background: vars.colors.white,
 });
