@@ -13,13 +13,10 @@ export const CustomMantineInput = ({ ...props }: CustomMantineInputProps) => {
       <TextInput
         {...props}
         w={'20rem'}
-        h="2rem"
         radius={'sm'}
         styles={{
           input: {
-            border: 'white 1px solid',
-
-            backgroundColor: theme.black,
+            backgroundColor: theme.colors.dark[8],
           },
         }}
       />

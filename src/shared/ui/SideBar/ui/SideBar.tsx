@@ -1,14 +1,16 @@
-import { Drawer } from '@mantine/core';
+import { Drawer, useMantineTheme } from '@mantine/core';
 import { CustomMantineButton } from '../../Button';
 import { useSideBarStore } from '../store/useMenuStore';
 import { SideItem } from './Item';
 import type { SideBarCompouned } from '../types/sideBar.type';
 import { useMediaQuery } from '@mantine/hooks';
 import { useAppSettings } from '@/shared/lib/settings/model/useAppSettings';
+import { Separator } from '../../Separator';
 
 export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
   const { isOpen, toggle, close } = useSideBarStore();
   const mobile = useMediaQuery('(min-width: 56.25em)');
+  const t = useMantineTheme()
   const { borderElements } = useAppSettings();
   return (
     <>
@@ -26,13 +28,13 @@ export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
             userSelect: 'none',
             borderRight: borderElements
               ? mobile
-                ? '1px solid white'
+                ? `1px solid ${t.colors.gray[9]}`
                 : 'none'
               : 'none',
           },
         }}
         opened={isOpen}
-        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+        overlayProps={{ backgroundOpacity: 0.5 }}
         onClose={close}
         offset={0}
       >
