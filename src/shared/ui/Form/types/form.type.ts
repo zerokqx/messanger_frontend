@@ -5,4 +5,5 @@ export interface FormProps<O extends AnyFormOptions> {
   options: O;
   fieldSet: FieldSet<O['defaultValues']>[];
   title: string;
+  buttonLabel?: string;
 }

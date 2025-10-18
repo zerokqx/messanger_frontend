@@ -5,10 +5,11 @@ import { CustomMantineButton } from '../../Button';
 import { CustomMantineInput } from '../../Input';
 import type { FormProps } from '../types';
 
-export const Form = <O extends  object>({
+export const Form = <O extends object>({
   options,
   fieldSet,
   title,
+  buttonLabel,
 }: FormProps<O>) => {
   const form = useForm({
     ...options,
@@ -22,12 +23,7 @@ export const Form = <O extends  object>({
         void form.handleSubmit();
       }}
     >
-      <Flex
-        w={'full'}
-        direction={'column'}
-        justify={'center'}
-        align={'center'}
-      >
+      <Flex w={'full'} direction={'column'} justify={'center'} align={'center'}>
         <Text fw={700}>{title}</Text>
         <Flex direction={'column'} w={'max-content'} gap={'sm'} p="lg">
           {fieldSet.map((fieldData) => (
@@ -53,7 +49,7 @@ export const Form = <O extends  object>({
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <CustomMantineButton type="submit" disabled={!canSubmit}>
-              {isSubmitting ? '...' : 'Submit'}
+              {isSubmitting ? '...' : (buttonLabel ?? 'Submit')}
             </CustomMantineButton>
           )}
         />

@@ -14,10 +14,11 @@ export const CustomMantineInput = ({ ...props }: CustomMantineInputProps) => {
         {...props}
         w={'20rem'}
         h="2rem"
-        variant="default"
-        radius={'0'}
+        radius={'sm'}
         styles={{
           input: {
+            border: 'white 1px solid',
+
             backgroundColor: theme.black,
           },
         }}

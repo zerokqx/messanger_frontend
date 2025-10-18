@@ -1,6 +1,7 @@
 export const ProfilePage = () => {
-  return <>
-
-<div>dw</div>
-  </>;
+  return (
+    <>
+      <div></div>
+    </>
+  );
 };
