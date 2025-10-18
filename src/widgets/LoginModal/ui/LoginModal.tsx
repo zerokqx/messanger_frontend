@@ -4,14 +4,10 @@ import { useLogin } from "@/features/login";
 import { loginFormSchema } from "@/features/login/model/loginSchema";
 import { Form } from "@/shared/ui/Form";
 import { formOptions } from "@tanstack/react-form";
-import { useSearch } from "@tanstack/react-router";
 
 export const  LoginModal  = () => {
-  const {isOpen,close} = useLoginModal()
-  const search = useSearch({
-    from:'/'
-  });
-  const { mutate } = useLogin(search);
+  const store = useLoginModal()
+  const { mutate } = useLogin();
 
   const options = formOptions({
     defaultValues: {
@@ -31,16 +27,16 @@ export const  LoginModal  = () => {
         },
         
       },{
-          onSuccess:() => { close(); }
+          onSuccess:() => { store.close(); }
         });
       
     },
   });
   return (
-  <Modal opened={isOpen} onClose={close}>
+  <Modal  store={store}>
 
 
-    <Form <typeof options>
+    <Form 
       fieldSet={[
         {
           name: 'userName',

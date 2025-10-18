@@ -1,19 +1,23 @@
 import { useCheckAuth } from '@/features/checkAuth';
+import { CenterFlex } from '@/shared/ui/CenterFlex';
 import { LoginModal } from '@/widgets/LoginModal';
-import { Flex } from '@mantine/core';
+import { RegisterModal } from '@/widgets/RegisterModal/ui/RegisterModal';
 import { Loader } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 
 const WelcomeLazy = lazy(() => import('@/shared/ui/Welcome/ui/Welcome'));
 export const NotAuthorized = () => {
   const isAuth = useCheckAuth();
-
+  // WARN: Modals
   return (
-    <Flex w="100%" h="100vh" justify="center" align="center">
-      <Suspense fallback={<Loader color="white" />}>
-        <LoginModal/>
-        {!isAuth && <WelcomeLazy>Yobble</WelcomeLazy>}
-      </Suspense>
-    </Flex>
+    <>
+      <LoginModal />
+      <RegisterModal />
+      <CenterFlex>
+        <Suspense fallback={<Loader color="white" />}>
+          {!isAuth && <WelcomeLazy>Yobble</WelcomeLazy>}
+        </Suspense>
+      </CenterFlex>
+    </>
   );
 };

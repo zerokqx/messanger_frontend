@@ -1,25 +1,17 @@
-import { notifications } from '@mantine/notifications';
-import { useNavigate, useSearch } from '@tanstack/react-router';
-import { authClient } from '@/shared/api';
 import { useTokenStore } from '@/entities/token/@x/user';
 import { authMiddleware } from '@/entities/user';
+import { authClient } from '@/shared/api';
+import { notifications } from '@mantine/notifications';
 
 /**
  * @param search - Return data from hook useForm
  * @returns Default useMutation
  */
-export const useLogin = (search: ReturnType<typeof useSearch>) => {
+export const useLogin = () => {
   const { setToken } = useTokenStore();
-  const navigate = useNavigate();
-  // WARN: authMiddleware in user entites
   const mutate = authClient(authMiddleware)().useMutation('post', '/login', {
-    onSuccess: async ({ data }) => {
+    onSuccess:  ({ data }) => {
       setToken(data.access_token);
-      // WARNING: need regenerate scheme openapi. In currend SchemaV1 not exists data.uuid in response /login
-      // setUuid(data.uuid)
-      await navigate({
-        to: search.location,
-      });
     },
     onError: () => {
       console.log(mutate.error);

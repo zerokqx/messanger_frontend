@@ -3,12 +3,8 @@ import { createRootRoute, Outlet } from '@tanstack/react-router';
 const RootLayout = () => {
   return (
     <>
-      <AppShell>
-        <AppShell.Main
-          style={(theme) => ({
-            background: theme.black,
-          })}
-        >
+      <AppShell bg={'black'}>
+        <AppShell.Main>
           <Outlet />
         </AppShell.Main>
       </AppShell>

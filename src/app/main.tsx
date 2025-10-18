@@ -1,6 +1,5 @@
 import '@mantine/notifications/styles.css';
 import { StrictMode } from 'react';
-import './styles/style.css';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import '@mantine/core/styles.css';
@@ -8,7 +7,7 @@ import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { routeTree } from './routeTree.gen';
-import { theme } from './styles/mantine.style';
+import { theme } from '@/shared/theme';
 export const router = createRouter({ routeTree });
 
 const queryClient = new QueryClient();

@@ -7,11 +7,8 @@ export const Checkbox = ({ ...props }: CheckboxProps) => {
         input: {
           border: 'none',
           borderRadius: '0px',
-          background: 'white',
         },
-        icon: {
-          color: 'black',
-        },
+        icon: {},
       }}
       {...props}
     />
