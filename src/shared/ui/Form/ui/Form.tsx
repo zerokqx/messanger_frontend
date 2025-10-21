@@ -1,5 +1,5 @@
 import { Flex, Text } from '@mantine/core';
-import { useForm, type AnyFormOptions } from '@tanstack/react-form';
+import { useForm } from '@tanstack/react-form';
 
 import { CustomMantineButton } from '../../Button';
 import { CustomMantineInput } from '../../Input';

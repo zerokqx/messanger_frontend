@@ -14,8 +14,8 @@ export const useRegister = () => {
     '/register',
 
     {
-      onSuccess: ({ data }) => {
-void navigate({to:'.',replace:true})
+      onSuccess: () => {
+        void navigate({ to: '.', replace: true });
       },
 
       onError: () => {

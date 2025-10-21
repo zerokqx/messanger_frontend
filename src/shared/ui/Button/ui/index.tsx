@@ -1,1 +1,1 @@
-export * from "./Button.tsx";
+export { CustomMantineButton } from "./Button.tsx";

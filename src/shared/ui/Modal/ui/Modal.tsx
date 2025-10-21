@@ -1,5 +1,6 @@
-import type { UseModalStore } from '@/shared/lib/isOpen/types';
 import { useAppSettings } from '@/shared/lib/settings';
+import { useModalGlobal } from '@/shared/model/useModalStore';
+import type { AllModals } from '@/shared/model/useModalStore/types/useModalGlobal.type';
 import {
   Flex,
   Modal as MantineModal,
@@ -7,19 +8,25 @@ import {
   type ModalProps,
 } from '@mantine/core';
 import { type ReactNode } from 'react';
-export const Modal = ({
-  children,
-  store,
-  full = false,
-  ...props
-}: {
+
+interface ModalComponentProps extends Omit<ModalProps, 'onClose' | 'opened'> {
   children: ReactNode;
-  store: UseModalStore;
   onClose?: ModalProps['onClose'];
   opened?: ModalProps['opened'];
   full?: boolean;
-} & Omit<ModalProps, 'onClose' | 'opened'>) => {
-  const { borderElements } = useAppSettings();
+  keyModal: AllModals;
+}
+
+export const Modal = ({
+  children,
+  keyModal,
+  full = false,
+  ...props
+}: ModalComponentProps) => {
+  const borderElements = useAppSettings((state) => state.borderElements);
+  const opened = useModalGlobal((s) => s[keyModal]);
+
+  const close = useModalGlobal((s) => s.pinClose)(keyModal);
   const t = useMantineTheme();
   const border = full
     ? ''
@@ -33,13 +40,13 @@ export const Modal = ({
       }}
       zIndex={500}
       overlayProps={{
-        backgroundOpacity: 0.8,
+        backgroundOpacity: 0.97,
       }}
       fullScreen={full}
-      opened={store.isOpen}
+      opened={opened}
       xOffset={10}
       yOffset={10}
-      onClose={store.close}
+      onClose={close}
       centered
       styles={{
         header: {

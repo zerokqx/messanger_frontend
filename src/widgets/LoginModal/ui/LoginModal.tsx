@@ -33,7 +33,7 @@ export const  LoginModal  = () => {
     },
   });
   return (
-  <Modal  store={store}>
+  <Modal  keyModal="login">
 
 
     <Form 

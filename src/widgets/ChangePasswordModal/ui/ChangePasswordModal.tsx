@@ -1,15 +1,13 @@
+import { useLogout } from '@/entities/user';
+import { useChangePassword } from '@/features/changePassword';
 import { Form } from '@/shared/ui/Form';
 import { Modal } from '@/shared/ui/Modal';
 import { formOptions } from '@tanstack/react-form';
-import { useChangePasswordModal } from '../model/useChangePasswordModal';
 import type { CustomModalProps } from '../types/modal.type';
-import { useChangePassword } from '@/features/changePassword';
-import { useLogout } from '@/entities/user';
 
 export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
   const { mutate, isSuccess } = useChangePassword();
   const logout = useLogout();
-  const store = useChangePasswordModal();
 
   const options = formOptions({
     defaultValues: {
@@ -29,10 +27,10 @@ export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
     },
   });
   return (
-    <Modal {...props} zIndex={501} store={store}>
+    <Modal {...props} zIndex={501} keyModal={'password'}>
       {!isSuccess ? (
         <Form
-          buttonLabel='Сменить пароль'
+          buttonLabel="Сменить пароль"
           title="Смена пароля"
           options={options}
           fieldSet={[

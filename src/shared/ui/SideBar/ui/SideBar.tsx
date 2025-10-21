@@ -1,20 +1,18 @@
-import { Drawer, useMantineTheme } from '@mantine/core';
-import { CustomMantineButton } from '../../Button';
-import { useSideBarStore } from '../store/useMenuStore';
-import { SideItem } from './Item';
-import type { SideBarCompouned } from '../types/sideBar.type';
-import { useMediaQuery } from '@mantine/hooks';
 import { useAppSettings } from '@/shared/lib/settings/model/useAppSettings';
-import { Separator } from '../../Separator';
+import { Drawer, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { useSideBarStore } from '../store/useMenuStore';
+import type { SideBarCompouned } from '../types/sideBar.type';
+import { SideItem } from './Item';
+import { InfoBlock } from './InfoBlock';
 
 export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
-  const { isOpen, toggle, close } = useSideBarStore();
+  const { isOpen, close } = useSideBarStore();
   const mobile = useMediaQuery('(min-width: 56.25em)');
-  const t = useMantineTheme()
+  const t = useMantineTheme();
   const { borderElements } = useAppSettings();
   return (
     <>
-      <CustomMantineButton onClick={toggle}>Menu</CustomMantineButton>
       <Drawer
         withCloseButton={false}
         p={'none'}
@@ -50,3 +48,4 @@ export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
 };
 
 SideBar.Item = SideItem;
+SideBar.InfoBlock = InfoBlock;

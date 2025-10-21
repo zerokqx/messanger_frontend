@@ -1,6 +1,7 @@
 export interface UseAppSettingsState {
   permanentPanel: boolean;
   borderElements: boolean;
+  // accentColor: `#${string}`
 }
 export interface UseAppSettingsActions {
   setPermanentPanel: (value: boolean) => void;
