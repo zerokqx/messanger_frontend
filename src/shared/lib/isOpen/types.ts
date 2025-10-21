@@ -1,4 +1,4 @@
-import type { StoreApi, UseBoundStore } from "zustand";
+import type { StoreApi, UseBoundStore } from 'zustand';
 
 export interface UseModalStoreState {
   isOpen: boolean;
@@ -9,4 +9,6 @@ export interface UseModalStoreActions {
   close: () => void;
 }
 export type UseModalStore = UseModalStoreState & UseModalStoreActions;
-export type FabricStores = ()=> UseBoundStore<StoreApi<UseModalStore>>
+export type FabricStores = (
+  defaultState?: boolean
+) => UseBoundStore<StoreApi<UseModalStore>>;

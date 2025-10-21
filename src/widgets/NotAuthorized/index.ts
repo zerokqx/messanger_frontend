@@ -1,1 +1,1 @@
-export * from './ui';
+export { NotAuthorized } from './ui';

@@ -8,6 +8,9 @@ import tailwindcss from '@tailwindcss/vite';
 import { devtools } from '@tanstack/devtools-vite';
 const APP = './src/app';
 export default defineConfig({
+  build: {
+    sourcemap: true,
+  },
   plugins: [
     tanstackRouter({
       target: 'react',
@@ -24,6 +27,6 @@ export default defineConfig({
 
     devtools(),
     tsPaths(),
-    vanillaExtractPlugin()
+    vanillaExtractPlugin(),
   ],
 });

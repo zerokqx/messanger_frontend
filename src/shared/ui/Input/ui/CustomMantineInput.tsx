@@ -1,24 +1,27 @@
-import { Input, TextInput, useMantineTheme } from '@mantine/core';
+import {
+  Input,
+  TextInput,
+  useMantineTheme,
+  type TextInputProps,
+} from '@mantine/core';
 import { useState } from 'react';
-import type { CustomMantineInputProps } from '..';
 
-export const CustomMantineInput = ({ ...props }: CustomMantineInputProps) => {
+export const CustomMantineInput = ({w, ...props }: TextInputProps) => {
   const [er] = useState<{
     short: string;
     full: string;
   } | null>(null);
   const theme = useMantineTheme();
   return (
-    <Input.Wrapper w="max-content" error={er ? er.full : ''}>
+    <Input.Wrapper  error={er ? er.full : ''}>
       <TextInput
-        {...props}
-        w={'20rem'}
         radius={'sm'}
         styles={{
           input: {
             backgroundColor: theme.colors.dark[8],
           },
         }}
+        {...props}
       />
     </Input.Wrapper>
   );

@@ -1,22 +1,34 @@
-import { AppShell } from '@mantine/core';
+import { IsAuth } from '@/features/checkAuth/ui';
+import { AppShellNavbar } from '@/widgets/ChatAside';
+import { LoginBadge } from '@/widgets/LoginBadge';
+import { SideBarLayout } from '@/widgets/SideBar';
+import { AppShell, useMantineTheme } from '@mantine/core';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 const RootLayout = () => {
+  const t = useMantineTheme();
   return (
     <>
-      <AppShell bg={'black'}>
+      <AppShell
+        padding={'md'}
+        navbar={{
+          width: '300px',
+          breakpoint: 'xs',
+          collapsed: {
+            mobile: false,
+          },
+        }}
+        bg={t.black}
+        layout="default"
+      >
         <AppShell.Main>
           <Outlet />
+          <IsAuth status={false}>
+            <LoginBadge />
+          </IsAuth>
         </AppShell.Main>
+        <AppShellNavbar />
       </AppShell>
-      {/* <TanStackDevtools */}
-      {/*   plugins={[ */}
-      {/*     { */}
-      {/*       name: "TanStack Router", */}
-      {/*       render: <TanStackRouterDevtoolsPanel />, */}
-      {/*     }, */}
-      {/*     FormDevtoolsPlugin(), */}
-      {/*   ]} */}
-      {/* /> */}
+      <SideBarLayout />
     </>
   );
 };

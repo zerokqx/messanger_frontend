@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { FabricStores, UseModalStore } from './types';
 
-export const createIsOpenStore:FabricStores = () => {
+export const createIsOpenStore: FabricStores = (defaultState = false) => {
   const store = create<UseModalStore>()(
     devtools((set, get) => ({
-      isOpen: false,
+      isOpen: defaultState,
       close() {
         set({ isOpen: false });
       },
@@ -19,6 +19,5 @@ export const createIsOpenStore:FabricStores = () => {
       },
     }))
   );
-  return store
+  return store;
 };
-

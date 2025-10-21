@@ -1,15 +1,11 @@
 import { useLogout, useUserStore } from '@/entities/user/model';
 import { useAppSettings } from '@/shared/lib/settings/model/useAppSettings';
+import { useModalGlobal } from '@/shared/model/useModalStore';
 import { CustomMantineButton } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox/ui';
 import { Modal } from '@/shared/ui/Modal';
-import {
-  ChangePasswordModal,
-  useChangePasswordModal,
-} from '@/widgets/ChangePasswordModal';
 import { UnstyledButton } from '@mantine/core';
 import { LayoutTemplate, LogOut, UserCog } from 'lucide-react';
-import { useSettingsStore } from '../model';
 import { AccordionSetting } from './AccordionSettings';
 export const SettingsModal = () => {
   const logout = useLogout();
@@ -19,11 +15,11 @@ export const SettingsModal = () => {
     borderElements,
     setborderElements,
   } = useAppSettings();
-  const store = useSettingsStore();
-  const password = useChangePasswordModal();
   const userName = useUserStore((state) => state.login);
+  const passwordChangeOpen = useModalGlobal((s) => s.pinOpen)('password');
+
   return (
-    <Modal size={'xs'} store={store}>
+    <Modal size={'xs'} keyModal="settings">
       <AccordionSetting icon={LayoutTemplate} label="Интерфейс">
         <Checkbox
           checked={borderElements}
@@ -40,9 +36,8 @@ export const SettingsModal = () => {
           }}
         />
       </AccordionSetting>
-      <ChangePasswordModal h={'30vh'} />
       <AccordionSetting icon={UserCog} label={`Пользователь ${userName}`}>
-        <UnstyledButton onClick={password.toggle}>
+        <UnstyledButton onClick={passwordChangeOpen}>
           Сменить пароль
         </UnstyledButton>
       </AccordionSetting>

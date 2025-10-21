@@ -1,6 +1,5 @@
 import { createTheme, type MantineColorsTuple } from '@mantine/core';
 
-import chroma from 'chroma-js';
 const colors: Record<string, MantineColorsTuple> = {
   blue: [
     '#e5f3ff',

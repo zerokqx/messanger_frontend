@@ -5,9 +5,10 @@ import { createSelectors } from '@/shared/lib/zustand/selectors';
 
 const useAppSettingsBase = create<UseAppSettings>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       permanentPanel: false,
       borderElements: true,
+
       setPermanentPanel(value) {
         set({ permanentPanel: value });
       },
@@ -17,7 +18,6 @@ const useAppSettingsBase = create<UseAppSettings>()(
     }),
     {
       name: 'app-settings', // ключ для localStorage
-      // можно указать опции сериализации если надо
     }
   )
 );
