@@ -1,13 +1,13 @@
-import { Modal } from "@/shared/ui/Modal"
-import { useLoginModal } from "../model"
-import { useLogin } from "@/features/login";
-import { loginFormSchema } from "@/features/login/model/loginSchema";
-import { Form } from "@/shared/ui/Form";
-import { formOptions } from "@tanstack/react-form";
+import { loginFormSchema } from '@/features/login/model/loginSchema';
+import { useAuth } from '@/shared/model/authProviderContext';
+import { useModalGlobal } from '@/shared/model/useModalStore';
+import { Form } from '@/shared/ui/Form';
+import { Modal } from '@/shared/ui/Modal';
+import { formOptions } from '@tanstack/react-form';
 
-export const  LoginModal  = () => {
-  const store = useLoginModal()
-  const { mutate } = useLogin();
+export const LoginModal = () => {
+  const close = useModalGlobal().pinClose('login');
+  const { mutate } = useAuth().useLogin();
 
   const options = formOptions({
     defaultValues: {
@@ -18,39 +18,39 @@ export const  LoginModal  = () => {
       onChange: loginFormSchema,
     },
 
-    
     onSubmit: ({ value }) => {
-      mutate({
-        body: {
-          password: value.password,
-          login: value.userName,
+      mutate(
+        {
+          body: {
+            password: value.password,
+            login: value.userName,
+          },
         },
-        
-      },{
-          onSuccess:() => { store.close(); }
-        });
-      
+        {
+          onSuccess: () => {
+            close();
+          },
+        }
+      );
     },
   });
   return (
-  <Modal  keyModal="login">
+    <Modal keyModal="login">
+      <Form
+        fieldSet={[
+          {
+            name: 'userName',
+            placeholder: 'Имя пользователя',
+          },
 
-
-    <Form 
-      fieldSet={[
-        {
-          name: 'userName',
-          placeholder: 'Имя пользователя',
-        },
-
-        {
-          name: 'password',
-          placeholder: 'Пороль',
-        },
-      ]}
-      options={options}
-      title="Вход в систему"
-    />
+          {
+            name: 'password',
+            placeholder: 'Пороль',
+          },
+        ]}
+        options={options}
+        title="Вход в систему"
+      />
     </Modal>
   );
-}
+};

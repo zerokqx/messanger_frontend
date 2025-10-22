@@ -1,11 +1,9 @@
-import { useAppSettings, useBorder } from '@/shared/lib/settings';
 import { AppShellNavbar, useMantineTheme } from '@mantine/core';
 import { NavbarHeader } from './NavbarHeader';
+import { useBorder } from '@/shared/lib/hooks/settings';
 
 export const AppShellNavbarWidget = () => {
   const t = useMantineTheme();
-  const d = useAppSettings((s) => s.borderElements);
-  console.log(d);
   const bd = useBorder('0.1rem');
   return (
     <AppShellNavbar

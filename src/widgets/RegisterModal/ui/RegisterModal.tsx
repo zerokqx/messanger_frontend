@@ -1,13 +1,12 @@
-import { Form } from '@/shared/ui/Form';
-import { formOptions } from '@tanstack/react-form';
 import { registerSchema, useRegister } from '@/features/register';
+import { useModalGlobal } from '@/shared/model/useModalStore';
+import { Form } from '@/shared/ui/Form';
 import { Modal } from '@/shared/ui/Modal';
-import { useRegisterModal } from '../model/useRegisterModal';
-import { useLoginModal } from '@/widgets/LoginModal';
+import { formOptions } from '@tanstack/react-form';
 
 export const RegisterModal = () => {
-  const store = useRegisterModal();
-  const login = useLoginModal();
+  const registerClose = useModalGlobal().pinClose('register');
+  const loginOpen = useModalGlobal().pinOpen('login');
   const options = formOptions({
     defaultValues: {
       userName: '',
@@ -28,8 +27,8 @@ export const RegisterModal = () => {
         },
         {
           onSuccess: () => {
-            store.close();
-            login.open();
+            registerClose();
+            loginOpen();
           },
         }
       );

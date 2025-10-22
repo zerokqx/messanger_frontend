@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { useJwt } from 'react-jwt';
 import { useTokenStore } from '@/entities/token';
 import { authMiddleware } from '@/entities/user';
+import { useAuth } from '@/shared/model/authProviderContext';
 
 export const useRefresh = () => {
+  const isAuth = useAuth().isAuth;
   const { access, setToken } = useTokenStore();
   const { reEvaluateToken, isExpired } = useJwt(access);
 
@@ -22,6 +24,7 @@ export const useRefresh = () => {
     }
   );
   useEffect(() => {
+    if (!isAuth) return;
     if (isExpired) {
       mutate({
         // WARNING: Deprected types swagger. In currend doc swagger not exists refresh token in body key
@@ -30,5 +33,5 @@ export const useRefresh = () => {
         },
       });
     }
-  }, [isExpired, access, mutate]);
+  }, [isExpired, access, isAuth, mutate]);
 };

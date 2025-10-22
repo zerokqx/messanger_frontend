@@ -6,6 +6,7 @@ import { AppShell, useMantineTheme } from '@mantine/core';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 const RootLayout = () => {
   const t = useMantineTheme();
+
   return (
     <>
       <AppShell
@@ -18,7 +19,6 @@ const RootLayout = () => {
           },
         }}
         bg={t.black}
-        layout="default"
       >
         <AppShell.Main>
           <Outlet />

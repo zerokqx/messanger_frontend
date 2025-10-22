@@ -1,17 +1,18 @@
+import '@/shared/styles/root.css';
 import { theme } from '@/shared/theme';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
-import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRouter, RouterProvider } from '@tanstack/react-router';
+import { domAnimation, LazyMotion } from 'motion/react';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { routeTree } from './routeTree.gen';
 import { Modals } from './ui/Modals';
-import { LazyMotion, domAnimation } from 'motion/react';
-import '@/shared/styles/root.css';
 import { NotificationStyled } from './ui/Notifications';
+import { useAppSettings, SettingsPovider } from '@/shared/lib/hooks/settings';
+import { AuthProvider } from './providers/auth/AuthProvide';
 export const router = createRouter({ routeTree });
 
 const queryClient = new QueryClient();
@@ -34,9 +35,13 @@ if (rootElement && !rootElement.innerHTML) {
       <QueryClientProvider client={queryClient}>
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <LazyMotion features={domAnimation}>
-            <NotificationStyled />
-            <RouterProvider router={router} />
-            <Modals />
+            <SettingsPovider value={useAppSettings}>
+              <AuthProvider>
+                <NotificationStyled />
+                <RouterProvider router={router} />
+                <Modals />
+              </AuthProvider>
+            </SettingsPovider>
           </LazyMotion>
         </MantineProvider>
       </QueryClientProvider>
