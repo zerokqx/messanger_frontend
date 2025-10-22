@@ -1,34 +1,30 @@
-import { useAppSettings } from '@/shared/lib/settings/model/useAppSettings';
+import { useBorder } from '@/shared/lib/hooks/settings';
+import { useResponsive } from '@/shared/lib/hooks/useResponsive';
 import { Drawer, useMantineTheme } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import { useSideBarStore } from '../store/useMenuStore';
 import type { SideBarCompouned } from '../types/sideBar.type';
-import { SideItem } from './Item';
 import { InfoBlock } from './InfoBlock';
+import { SideItem } from './Item';
 
 export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
   const { isOpen, close } = useSideBarStore();
-  const mobile = useMediaQuery('(min-width: 56.25em)');
+  const { mobile } = useResponsive();
   const t = useMantineTheme();
-  const { borderElements } = useAppSettings();
+  const bd = useBorder('0.1rem');
   return (
     <>
       <Drawer
+        closeButtonProps={{ 'aria-label': 'Close drawer' }}
         withCloseButton={false}
-        p={'none'}
         transitionProps={{
           transition: 'slide-right',
         }}
-        w={{ base: '100%' }}
+        size={mobile ? 'xl' : '300px'}
         styles={{
           content: {
-            background: 'black',
+            background: t.black,
             userSelect: 'none',
-            borderRight: borderElements
-              ? mobile
-                ? `1px solid ${t.colors.gray[9]}`
-                : 'none'
-              : 'none',
+            borderRight: !mobile ? bd : 'none',
           },
         }}
         opened={isOpen}

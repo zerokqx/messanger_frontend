@@ -1,5 +1,4 @@
-import { useBorder } from '@/shared/lib/settings';
-import { ColoredIcons } from '@/shared/ui/ColoredIcon';
+import { useBorder } from '@/shared/lib/hooks/settings';
 import { CustomMantineInput } from '@/shared/ui/Input';
 import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
 import { Flex, Burger, useMantineTheme } from '@mantine/core';

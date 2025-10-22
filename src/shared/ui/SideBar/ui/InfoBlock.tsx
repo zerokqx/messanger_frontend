@@ -1,11 +1,12 @@
 import { Flex, Divider, useMantineTheme } from '@mantine/core';
 import type { InfoBlockProp } from '../types/infoBlock.type';
-import { useBorder } from '@/shared/lib/settings';
+import { useBorder } from '@/shared/lib/hooks/settings';
 
 export const InfoBlock = ({
   inline,
   accent,
   icon,
+  flexProps,
   children,
 }: InfoBlockProp) => {
   const Icon = icon;
@@ -27,7 +28,7 @@ export const InfoBlock = ({
     >
       <Flex
         {...(accent && {
-          bg: t.colors.dark[9],
+          bg: t.black,
           bdrs: 'xl',
           p: 'md',
         })}
@@ -42,7 +43,7 @@ export const InfoBlock = ({
         }}
       >
         {Icon && Icon}
-        {children}
+        <Flex {...flexProps}>{children}</Flex>
       </Flex>
 
       {!inline && <Divider />}

@@ -1,4 +1,4 @@
-import { useAppSettings } from '@/shared/lib/settings';
+import { useSettings } from '@/shared/lib/hooks/settings/model/context';
 import { useModalGlobal } from '@/shared/model/useModalStore';
 import type { AllModals } from '@/shared/model/useModalStore/types/useModalGlobal.type';
 import {
@@ -23,7 +23,7 @@ export const Modal = ({
   full = false,
   ...props
 }: ModalComponentProps) => {
-  const borderElements = useAppSettings((state) => state.borderElements);
+  const borderElements = useSettings()((s) => s.borderElements);
   const opened = useModalGlobal((s) => s[keyModal]);
 
   const close = useModalGlobal((s) => s.pinClose)(keyModal);

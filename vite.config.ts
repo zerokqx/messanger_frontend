@@ -10,6 +10,7 @@ const APP = './src/app';
 export default defineConfig({
   build: {
     sourcemap: true,
+    cssCodeSplit: true,
   },
   plugins: [
     tanstackRouter({

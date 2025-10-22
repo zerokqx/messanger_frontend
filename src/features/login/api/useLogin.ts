@@ -7,12 +7,14 @@ import { notifications } from '@mantine/notifications';
  * @param search - Return data from hook useForm
  * @returns Default useMutation
  */
+
 export const useLogin = () => {
-  const { setToken } = useTokenStore();
+  const setToken = useTokenStore((s) => s.setToken);
   const mutate = authClient(authMiddleware)().useMutation('post', '/login', {
-    onSuccess:  ({ data }) => {
+    onSuccess: ({ data }) => {
       setToken(data.access_token);
     },
+
     onError: () => {
       console.log(mutate.error);
       notifications.show({
@@ -24,5 +26,5 @@ export const useLogin = () => {
     },
   });
 
-  return { ...mutate };
+  return mutate;
 };

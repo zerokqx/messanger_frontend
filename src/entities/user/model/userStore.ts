@@ -1,9 +1,9 @@
 import { createSelectors } from '@/shared/lib/zustand/selectors';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
-import type { TUserActions, TUserState } from '../types/userStore.type';
+import type { UserStore } from '../types/userStore.type';
 
-const useUserStoreBase = create<TUserState & TUserActions>()(
+const useUserStoreBase = create<UserStore>()(
   devtools(
     persist(
       (set, _, store) => ({

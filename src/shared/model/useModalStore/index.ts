@@ -8,7 +8,7 @@ import type { UseModalGlobal } from './types/useModalGlobal.type';
  * For extesible store you need add new key (modal) to type and all.
  * */
 const store = create<UseModalGlobal>()(
-  devtools((set, get) => ({
+  devtools((set, get, store) => ({
     login: false,
     register: false,
     settings: false,
@@ -38,9 +38,13 @@ const store = create<UseModalGlobal>()(
     pinToggle(key) {
       return get()._createPin(key, 'toggle');
     },
+
     toggle(key) {
       if (!get()._isKeyExist(key)) return;
       set({ [key]: !get()[key] });
+    },
+    reset() {
+      set(store.getInitialState());
     },
   }))
 );

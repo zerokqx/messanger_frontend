@@ -1,5 +1,5 @@
-import { useLogout } from '@/entities/user';
 import { useChangePassword } from '@/features/changePassword';
+import { useAuth } from '@/shared/model/authProviderContext';
 import { Form } from '@/shared/ui/Form';
 import { Modal } from '@/shared/ui/Modal';
 import { formOptions } from '@tanstack/react-form';
@@ -7,7 +7,7 @@ import type { CustomModalProps } from '../types/modal.type';
 
 export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
   const { mutate, isSuccess } = useChangePassword();
-  const logout = useLogout();
+  const logout = useAuth().useLogout();
 
   const options = formOptions({
     defaultValues: {
