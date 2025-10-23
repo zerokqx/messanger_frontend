@@ -1,6 +1,6 @@
 import { Flex, Divider, useMantineTheme } from '@mantine/core';
 import type { InfoBlockProp } from '../types/infoBlock.type';
-import { useBorder } from '@/shared/lib/hooks/settings';
+import { useBorder } from '@/widgets/Settings';
 
 export const InfoBlock = ({
   inline,
@@ -15,13 +15,10 @@ export const InfoBlock = ({
   return (
     <Flex
       gap={'md'}
-      p={'md'}
-      h={'3rem'}
       direction={'column'}
       mt={'md'}
       styles={{
         root: {
-          position: 'relative',
           cursor: 'pointer',
         },
       }}

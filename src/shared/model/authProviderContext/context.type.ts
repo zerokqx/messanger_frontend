@@ -1,19 +1,10 @@
-import type { useLogout } from '@/entities/user';
+import type { UseTokenStore } from '@/entities/token';
 import type { UserStore } from '@/entities/user/types/userStore.type';
-import type { useLogin } from '@/features/login';
-import type { useRegister } from '@/features/register';
 
-export interface AuthContextTypesAction {
-  useRegister: typeof useRegister;
-  useLogout: typeof useLogout;
-  useLogin: typeof useLogin;
-}
-
-export type AuthContextTypes = AuthContextTypesAction & {
+export interface AuthContextTypes {
   isAuth: boolean;
   user: UserStore;
-};
+  token: UseTokenStore;
+}
 
-export type UseAuth = <T>(
-  callback?: (ctx: AuthContextTypes) => T
-) => T;
+export type UseAuth = <T>(callback?: (ctx: AuthContextTypes) => T) => T;

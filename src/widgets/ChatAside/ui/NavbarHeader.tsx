@@ -1,14 +1,18 @@
-import { useBorder } from '@/shared/lib/hooks/settings';
+import { useSearch } from '@/features/search';
 import { CustomMantineInput } from '@/shared/ui/Input';
 import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
+import { useBorder } from '@/widgets/Settings';
 import { Flex, Burger, useMantineTheme } from '@mantine/core';
 import { Search } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 export const NavbarHeader = () => {
   const { isOpen, toggle } = useSideBarStore();
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
-
+  const timer = useRef<number | null>(null);
+  const [query, setQuery] = useState('');
+  useSearch(query);
   return (
     <Flex
       bg={t.black}
@@ -29,6 +33,13 @@ export const NavbarHeader = () => {
         aria-label="Toggle SideBar"
       />
       <CustomMantineInput
+        onChange={(e) => {
+          if (timer.current) timer.current = null;
+          timer.current = setTimeout(() => {
+            setQuery(e.target.value);
+          }, 2000);
+          return timer;
+        }}
         leftSection={<Search />}
         placeholder="Поиск"
         radius="xl"

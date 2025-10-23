@@ -1,6 +1,5 @@
 import type { FlexProps } from '@mantine/core';
 import type { ReactNode } from 'react';
-import type { IconType } from 'react-icons/lib';
 
 export interface InfoBlockProp {
   accent?: boolean;

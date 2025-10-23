@@ -1,14 +1,21 @@
-import { Badge, Divider, Flex, Space, Text } from '@mantine/core';
+import { Badge, Flex, Space, Text, useMantineTheme } from '@mantine/core';
 import { useAnimate } from 'motion/react';
 import { useEffectOnce } from 'react-use';
 import type { SideItemProps } from '../types/item.type';
+import { useId } from '@mantine/hooks';
+import { useSelected } from '../store/useSelected';
+import { useBorder } from '@/widgets/Settings';
 export const SideItem = ({
   children,
   text,
   inDev,
   ...props
 }: SideItemProps) => {
+  const bd = useBorder('0.1rem');
   const [scope, animate] = useAnimate<HTMLDivElement>();
+  const id = useId();
+  const { setSelected, id: selected } = useSelected();
+  const t = useMantineTheme();
   useEffectOnce(() => {
     if (!inDev) return;
     const a = animate(
@@ -27,10 +34,17 @@ export const SideItem = ({
     <Flex
       {...props}
       gap={'md'}
+      onClick={() => {
+        setSelected(id);
+      }}
       p={'md'}
+      bg={selected === id ? t.colors.dark[9] : 'none'}
       h={'3rem'}
       direction={'column'}
       mt={'md'}
+      bd={bd}
+      bdrs={'xl'}
+      justify={'center'}
       style={{
         position: 'relative',
         ...(inDev
@@ -43,7 +57,7 @@ export const SideItem = ({
             }),
       }}
     >
-      <Flex align={'center'} gap={'md'} direction={'row'}>
+      <Flex justify={'start'} gap={'md'} direction={'row'}>
         {children}
         <Text>{text}</Text>
         {inDev && (
@@ -53,7 +67,6 @@ export const SideItem = ({
           </>
         )}
       </Flex>
-      <Divider />
     </Flex>
   );
 };

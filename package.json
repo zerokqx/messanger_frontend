@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "test:ts": "tsc --noEmit",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "openapi:generate": "openapi-typescript https://api.yobble.org/docs/openapi/combined -o ./src/shared/types/v1.d.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.1",

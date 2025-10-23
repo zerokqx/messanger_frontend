@@ -1,21 +1,7 @@
-import { useSettings } from '@/shared/lib/hooks/settings/model/context';
 import { useModalGlobal } from '@/shared/model/useModalStore';
-import type { AllModals } from '@/shared/model/useModalStore/types/useModalGlobal.type';
-import {
-  Flex,
-  Modal as MantineModal,
-  useMantineTheme,
-  type ModalProps,
-} from '@mantine/core';
-import { type ReactNode } from 'react';
-
-interface ModalComponentProps extends Omit<ModalProps, 'onClose' | 'opened'> {
-  children: ReactNode;
-  onClose?: ModalProps['onClose'];
-  opened?: ModalProps['opened'];
-  full?: boolean;
-  keyModal: AllModals;
-}
+import { Flex, Modal as MantineModal, useMantineTheme } from '@mantine/core';
+import type { ModalComponentProps } from '../types';
+import { useBorder } from '@/widgets/Settings';
 
 export const Modal = ({
   children,
@@ -23,22 +9,18 @@ export const Modal = ({
   full = false,
   ...props
 }: ModalComponentProps) => {
-  const borderElements = useSettings()((s) => s.borderElements);
   const opened = useModalGlobal((s) => s[keyModal]);
 
   const close = useModalGlobal((s) => s.pinClose)(keyModal);
+  const zIndex = useModalGlobal((s) => s._zIndex)[keyModal];
   const t = useMantineTheme();
-  const border = full
-    ? ''
-    : borderElements
-      ? `1px ${t.colors.gray[8]} solid`
-      : 'none';
+  const bd = useBorder('0.1rem');
   return (
     <MantineModal
       transitionProps={{
         transition: 'slide-up',
       }}
-      zIndex={500}
+      zIndex={zIndex}
       overlayProps={{
         backgroundOpacity: 0.97,
       }}
@@ -54,7 +36,7 @@ export const Modal = ({
         },
         content: {
           overflowX: 'hidden',
-          border: border,
+          border: bd,
           background: t.black,
         },
       }}

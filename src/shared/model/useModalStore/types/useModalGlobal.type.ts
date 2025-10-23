@@ -22,6 +22,7 @@ interface UseModalGlobalAction<
     Record<ActionWithPin, Pin> {
   _isKeyExist: (key: Keys) => boolean;
   _createPin: (keyState: Keys, keyAction: ActionWithKey) => () => void;
+  _zIndex: Record<keyof UseModalGlobalState, number>;
 }
 // Ключи всех модалок
 export type AllModals = keyof UseModalGlobalState;

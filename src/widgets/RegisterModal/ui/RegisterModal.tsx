@@ -7,6 +7,7 @@ import { formOptions } from '@tanstack/react-form';
 export const RegisterModal = () => {
   const registerClose = useModalGlobal().pinClose('register');
   const loginOpen = useModalGlobal().pinOpen('login');
+  const { mutate } = useRegister();
   const options = formOptions({
     defaultValues: {
       userName: '',
@@ -34,7 +35,6 @@ export const RegisterModal = () => {
       );
     },
   });
-  const { mutate } = useRegister();
   return (
     <Modal keyModal="register">
       <Form

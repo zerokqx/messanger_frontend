@@ -1,6 +1,10 @@
 import { useTokenStore } from '@/entities/token/@x/user';
 import { useLayoutEffect, useState } from 'react';
 
+/**
+ * @deprecated
+ * @returns boolean
+ */
 function useCheckAuth(): boolean {
   const { validateToken, clearStore, access } = useTokenStore();
   const [isAuth, setIsAuth] = useState<boolean>(false);
@@ -23,11 +27,8 @@ function useCheckAuth(): boolean {
 useCheckAuth.check = (): boolean => {
   const { validateToken, clearStore } = useTokenStore.getState();
   const statusToken = validateToken();
-  if (statusToken) return true;
-
-  clearStore();
-
-  return false;
+  !statusToken && clearStore();
+  return statusToken;
 };
 
 export { useCheckAuth };

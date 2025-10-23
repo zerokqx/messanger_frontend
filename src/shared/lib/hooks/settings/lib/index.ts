@@ -1,1 +1,1 @@
-export { useBorder } from './hooks/useBorder.ts';
+export { useBorder } from '../../../../../widgets/Settings/model/useBorder.ts';

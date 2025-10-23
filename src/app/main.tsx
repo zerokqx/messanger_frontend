@@ -11,8 +11,8 @@ import ReactDOM from 'react-dom/client';
 import { routeTree } from './routeTree.gen';
 import { Modals } from './ui/Modals';
 import { NotificationStyled } from './ui/Notifications';
-import { useAppSettings, SettingsPovider } from '@/shared/lib/hooks/settings';
 import { AuthProvider } from './providers/auth/AuthProvide';
+import { SettingsProvider } from '@/widgets/Settings';
 export const router = createRouter({ routeTree });
 
 const queryClient = new QueryClient();
@@ -35,13 +35,13 @@ if (rootElement && !rootElement.innerHTML) {
       <QueryClientProvider client={queryClient}>
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <LazyMotion features={domAnimation}>
-            <SettingsPovider value={useAppSettings}>
-              <AuthProvider>
+            <AuthProvider>
+              <SettingsProvider>
                 <NotificationStyled />
                 <RouterProvider router={router} />
                 <Modals />
-              </AuthProvider>
-            </SettingsPovider>
+              </SettingsProvider>
+            </AuthProvider>
           </LazyMotion>
         </MantineProvider>
       </QueryClientProvider>
