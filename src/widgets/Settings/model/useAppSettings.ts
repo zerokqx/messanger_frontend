@@ -17,7 +17,7 @@ const useAppSettingsBase = create<UseAppSettings>()(
       },
     }),
     {
-      name: 'app-settings', // ключ для localStorage
+      name: 'app-settings',
     }
   )
 );

@@ -1,6 +1,5 @@
-import { useTokenStore } from '@/entities/token/@x/user';
-import { authMiddleware } from '@/entities/user';
 import { authClient } from '@/shared/api';
+import { useAuth } from '@/shared/model/authProviderContext';
 import { notifications } from '@mantine/notifications';
 
 /**
@@ -9,14 +8,13 @@ import { notifications } from '@mantine/notifications';
  */
 
 export const useLogin = () => {
-  const setToken = useTokenStore((s) => s.setToken);
-  const mutate = authClient(authMiddleware)().useMutation('post', '/login', {
+  const setToken = useAuth().token.setToken;
+  const mutate = authClient()().useMutation('post', '/login', {
     onSuccess: ({ data }) => {
       setToken(data.access_token);
     },
 
     onError: () => {
-      console.log(mutate.error);
       notifications.show({
         title: 'Опа ошибка!',
         message:
@@ -25,6 +23,5 @@ export const useLogin = () => {
       });
     },
   });
-
   return mutate;
 };

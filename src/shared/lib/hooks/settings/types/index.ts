@@ -1,1 +1,1 @@
-export type { UseAppSettings } from './useAppSettings.type.ts';
+export type { UseAppSettings } from '../../../../../widgets/Settings/types/useAppSettings.type.ts';

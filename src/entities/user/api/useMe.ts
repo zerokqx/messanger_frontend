@@ -1,13 +1,14 @@
 import { profileClient } from '@/shared/api';
 import { useEffect } from 'react';
-import { useUserStore } from '../model/userStore';
 import { authMiddleware } from './middlewares';
 import { useAuth } from '@/shared/model/authProviderContext';
 
 /** Hook for fetch user profile data */
 export const useMe = () => {
-  const { isAuth, user } = useAuth();
-  const { setUser } = user;
+  const {
+    user: { setUser },
+    isAuth,
+  } = useAuth();
   const { isSuccess, data } = profileClient(authMiddleware)().useQuery(
     'get',
     '/me',
@@ -19,8 +20,6 @@ export const useMe = () => {
     }
   );
   useEffect(() => {
-    if (isSuccess) {
-      setUser(data.data);
-    }
+    if (isSuccess) setUser(data.data);
   }, [isSuccess, data, setUser]);
 };

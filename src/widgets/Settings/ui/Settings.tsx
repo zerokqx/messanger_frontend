@@ -1,4 +1,5 @@
-import { useLogout, useUserStore } from '@/entities/user/model';
+import { useLogout } from '@/entities/user/model';
+import { useAuth } from '@/shared/model/authProviderContext';
 import { useModalGlobal } from '@/shared/model/useModalStore';
 import { CustomMantineButton } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox/ui';
@@ -6,8 +7,7 @@ import { Modal } from '@/shared/ui/Modal';
 import { UnstyledButton } from '@mantine/core';
 import { LayoutTemplate, LogOut, UserCog } from 'lucide-react';
 import { AccordionSetting } from './AccordionSettings';
-import { useSettings } from '@/shared/lib/hooks/settings/model/context';
-import { useAuth } from '@/shared/model/authProviderContext';
+import { useSettings } from '../model';
 export const SettingsModal = () => {
   const logout = useLogout();
   const {
@@ -15,8 +15,9 @@ export const SettingsModal = () => {
     setPermanentPanel,
     borderElements,
     setborderElements,
-  } = useSettings()();
-  const userName = useAuth().user.login;
+  } = useSettings();
+
+  const userName = useAuth((s) => s.user.login);
   const passwordChangeOpen = useModalGlobal((s) => s.pinOpen)('password');
 
   return (

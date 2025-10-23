@@ -1,4 +1,4 @@
-import { useCheckAuth } from '@/features/checkAuth';
+import { useAuth } from '@/shared/model/authProviderContext';
 import { LoaderSuspense } from '@/shared/ui/LoaderSuspense';
 import { LoaderProvider } from '@/shared/ui/LoaderSuspense/ui/LoaderProvider';
 import { lazy } from 'react';
@@ -25,7 +25,7 @@ const PasswordChangeModal = lazy(() =>
 );
 
 export const Modals = () => {
-  const isAuth = useCheckAuth();
+  const isAuth = useAuth((s) => s.isAuth);
 
   return (
     <>

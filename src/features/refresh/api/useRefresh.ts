@@ -1,14 +1,15 @@
 import { authClient } from '@/shared/api';
 import { useEffect } from 'react';
 
-import { useJwt } from 'react-jwt';
-import { useTokenStore } from '@/entities/token';
 import { authMiddleware } from '@/entities/user';
 import { useAuth } from '@/shared/model/authProviderContext';
+import { useJwt } from 'react-jwt';
 
 export const useRefresh = () => {
-  const isAuth = useAuth().isAuth;
-  const { access, setToken } = useTokenStore();
+  const {
+    token: { access, setToken },
+    isAuth,
+  } = useAuth();
   const { reEvaluateToken, isExpired } = useJwt(access);
 
   const { mutate } = authClient(authMiddleware)().useMutation(
@@ -20,6 +21,7 @@ export const useRefresh = () => {
         setToken(data.access_token);
         reEvaluateToken(data.access_token);
       },
+
       retry: 1,
     }
   );
@@ -27,7 +29,6 @@ export const useRefresh = () => {
     if (!isAuth) return;
     if (isExpired) {
       mutate({
-        // WARNING: Deprected types swagger. In currend doc swagger not exists refresh token in body key
         body: {
           access_token: access,
         },

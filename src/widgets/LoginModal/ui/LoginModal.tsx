@@ -1,5 +1,5 @@
+import { useLogin } from '@/features/login';
 import { loginFormSchema } from '@/features/login/model/loginSchema';
-import { useAuth } from '@/shared/model/authProviderContext';
 import { useModalGlobal } from '@/shared/model/useModalStore';
 import { Form } from '@/shared/ui/Form';
 import { Modal } from '@/shared/ui/Modal';
@@ -7,8 +7,7 @@ import { formOptions } from '@tanstack/react-form';
 
 export const LoginModal = () => {
   const close = useModalGlobal().pinClose('login');
-  const { mutate } = useAuth().useLogin();
-
+  const { mutate } = useLogin();
   const options = formOptions({
     defaultValues: {
       userName: '',

@@ -8,7 +8,7 @@ const useUserStoreBase = create<UserStore>()(
     persist(
       (set, _, store) => ({
         user_id: '00000000-0000-0000-0000-000000000000',
-
+        is_verified: false,
         login: 'Anonymous',
         full_name: 'Anonymous',
         bio: '',

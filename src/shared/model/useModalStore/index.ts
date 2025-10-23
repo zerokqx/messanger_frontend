@@ -25,6 +25,12 @@ const store = create<UseModalGlobal>()(
         get()[keyAction](keyState);
       };
     },
+    _zIndex: {
+      login: 500,
+      password: 500,
+      register: 500,
+      settings: 500,
+    },
     close(key) {
       if (!get()._isKeyExist(key)) return;
       set({ [key]: false });

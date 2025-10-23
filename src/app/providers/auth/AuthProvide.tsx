@@ -1,29 +1,34 @@
 import { useTokenStore } from '@/entities/token';
-import { useLogout, useUserStore } from '@/entities/user';
-import { useLogin } from '@/features/login';
-import { useRegister } from '@/features/register';
+import { useUserStore } from '@/entities/user';
 import { AuthContext } from '@/shared/model/authProviderContext';
-import { useMemo, useState } from 'react';
-import { useEffectOnce, useLogger } from 'react-use';
+import { useEffect, useMemo, useState } from 'react';
+import { AuthProviderHooks } from './AuthProvedHooks';
 import type { AuthProviderProps } from './authProvider.type';
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
-  const { validateToken } = useTokenStore();
+  const token = useTokenStore((s) => s);
+
+  const { validateToken, clearStore } = useTokenStore();
   const user = useUserStore();
-  useEffectOnce(() => {
-    setIsAuth(validateToken());
-  });
-  useLogger('AuthProvider', { isAuth });
   const value = useMemo(
     () => ({
       isAuth,
       user,
-      useLogin: useLogin,
-      useRegister: useRegister,
-      useLogout: useLogout,
+      token,
     }),
-    [isAuth, user]
+    [isAuth, user, token]
   );
-  return <AuthContext value={value}>{children}</AuthContext>;
+  useEffect(() => {
+    const status = validateToken();
+    setIsAuth(status);
+
+    if (!status) clearStore();
+  }, [token.access, clearStore, validateToken]);
+
+  return (
+    <AuthContext value={value}>
+      <AuthProviderHooks>{children}</AuthProviderHooks>
+    </AuthContext>
+  );
 };
