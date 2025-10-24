@@ -1,14 +1,15 @@
 import { useResponsive } from '@/shared/lib/hooks/useResponsive';
+import { useBorder } from '@/widgets/Settings';
 import { Drawer, useMantineTheme } from '@mantine/core';
 import { useSideBarStore } from '../store/useMenuStore';
 import type { SideBarCompouned } from '../types/sideBar.type';
 import { InfoBlock } from './InfoBlock';
 import { SideItem } from './Item';
 import { SelecedProvider } from './SelectedContext';
-import { useBorder } from '@/widgets/Settings';
 
 export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
   const { isOpen, close } = useSideBarStore();
+
   const { mobile } = useResponsive();
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');

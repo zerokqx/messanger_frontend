@@ -7,12 +7,16 @@ import { SideBar } from '@/shared/ui/SideBar';
 import { Flex, Text } from '@mantine/core';
 import { useRouter } from '@tanstack/react-router';
 import { Cog, Lightbulb, MessageCircle, User, Video } from 'lucide-react';
+import { useEffect } from 'react';
+import { useLogger } from 'react-use';
 
 export const SideBarLayout = () => {
   const settings = useModalGlobal((s) => s.pinOpen)('settings');
   const navigate = useRouter().navigate;
   const login = useModalGlobal((s) => s.pinOpen)('login');
   const register = useModalGlobal((s) => s.pinOpen)('register');
+  const is = useModalGlobal((s) => s.settings);
+  useLogger('Settings opened', { is });
   return (
     <>
       <SideBar renderUserBadge={() => <UserBadge />}>

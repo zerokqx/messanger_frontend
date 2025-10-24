@@ -9,6 +9,7 @@ export const SideItem = ({
   children,
   text,
   inDev,
+  onClick,
   ...props
 }: SideItemProps) => {
   const bd = useBorder('0.1rem');
@@ -57,7 +58,7 @@ export const SideItem = ({
             }),
       }}
     >
-      <Flex justify={'start'} gap={'md'} direction={'row'}>
+      <Flex onClick={onClick} justify={'start'} gap={'md'} direction={'row'}>
         {children}
         <Text>{text}</Text>
         {inDev && (
