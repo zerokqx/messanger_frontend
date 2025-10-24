@@ -19,6 +19,7 @@ export const SettingsModal = () => {
 
   const userName = useAuth((s) => s.user.login);
   const passwordChangeOpen = useModalGlobal((s) => s.pinOpen)('password');
+  console.log(1);
 
   return (
     <Modal size={'xs'} keyModal="settings">
