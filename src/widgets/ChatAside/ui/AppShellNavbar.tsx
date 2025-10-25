@@ -3,11 +3,19 @@ import { AppShellNavbar, Tabs, useMantineTheme } from '@mantine/core';
 import { NavbarHeader } from './NavbarHeader';
 import { SearchWindow } from './SearchWindow';
 import { useChatAsideTabStore } from '../model/useChatAsideTabStore';
+import { createTaber } from '@/shared/ui/Tabs/ui';
+import { useLogger } from 'react-use';
 
 export const AppShellNavbarWidget = () => {
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
-  const { currentTab, setCurrentTab } = useChatAsideTabStore();
+  const store = useChatAsideTabStore();
+  const [controll, Taber] = createTaber({
+    windows: ['chats', 'search'],
+    store,
+  });
+
+  useLogger('Hoc', { controll });
   return (
     <AppShellNavbar
       withBorder={false}
@@ -22,15 +30,15 @@ export const AppShellNavbarWidget = () => {
       <NavbarHeader
         input={{
           onFocus: () => {
-            setCurrentTab('search');
+            controll.set('search');
           },
         }}
       />
-      <Tabs value={currentTab}>
-        <Tabs.Panel value="search">
+      <Taber>
+        <Taber.Panel value="search">
           <SearchWindow />
-        </Tabs.Panel>
-      </Tabs>
+        </Taber.Panel>
+      </Taber>
     </AppShellNavbar>
   );
 };
