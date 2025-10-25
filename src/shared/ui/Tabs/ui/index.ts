@@ -1,1 +1,1 @@
-export { Taber } from './Taber.tsx';
+export { createTaber } from './Taber.tsx';
