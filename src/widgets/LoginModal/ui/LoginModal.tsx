@@ -4,9 +4,11 @@ import { useModalGlobal } from '@/shared/model/useModalStore';
 import { Form } from '@/shared/ui/Form';
 import { Modal } from '@/shared/ui/Modal';
 import { formOptions } from '@tanstack/react-form';
+import { useRouter } from '@tanstack/react-router';
 
 export const LoginModal = () => {
   const close = useModalGlobal.usePinClose()('login');
+  const router = useRouter();
   const { mutate } = useLogin();
   const options = formOptions({
     defaultValues: {
@@ -27,6 +29,7 @@ export const LoginModal = () => {
         },
         {
           onSuccess: () => {
+            void router.invalidate();
             close();
           },
         }

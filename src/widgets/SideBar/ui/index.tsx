@@ -38,35 +38,6 @@ export const SideBarLayout = () => {
             <ColoredIcons Icon={Cog} />
           </SideBar.Item>
         </IsAuth>
-
-        <IsAuth status={false}>
-          <SideBar.InfoBlock
-            inline
-            accent
-            icon={<ColoredIcons Icon={Lightbulb} />}
-            flexProps={{
-              onClick: (e) => {
-                console.log(e.timeStamp);
-              },
-              direction: 'column',
-              gap: 'md',
-            }}
-          >
-            <Text>Чтобы получить полный функционал необходимо войти</Text>
-            <Flex gap={'md'}>
-              <CustomMantineButton
-                onClick={register}
-                bdrs={'xl'}
-                variant="subtle"
-              >
-                Зарегистрироваться
-              </CustomMantineButton>
-              <CustomMantineButton bdrs={'xl'} onClick={login}>
-                Войти
-              </CustomMantineButton>
-            </Flex>
-          </SideBar.InfoBlock>
-        </IsAuth>
       </SideBar>
     </>
   );

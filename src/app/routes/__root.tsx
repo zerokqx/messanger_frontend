@@ -1,18 +1,24 @@
+import { useCheckAuth } from '@/features/checkAuth';
 import { IsAuth } from '@/features/checkAuth/ui';
+import type { AuthContextTypes } from '@/shared/model/authProviderContext/context.type';
 import { AppShellNavbar } from '@/widgets/ChatAside';
 import { LoginBadge } from '@/widgets/LoginBadge';
 import { SideBarLayout } from '@/widgets/SideBar';
 import { AppShell, useMantineTheme } from '@mantine/core';
-import { createRootRoute, Outlet } from '@tanstack/react-router';
+import {
+  createRootRouteWithContext,
+  Outlet,
+  redirect,
+} from '@tanstack/react-router';
 import { Modals } from '../ui/Modals';
 const RootLayout = () => {
   const t = useMantineTheme();
   return (
     <>
       <AppShell
-        padding={'md'}
+        p={'xs'}
         navbar={{
-          width: '300px',
+          width: '20rem',
           breakpoint: 'xs',
           collapsed: {
             mobile: false,
@@ -26,15 +32,28 @@ const RootLayout = () => {
             <LoginBadge />
           </IsAuth>
         </AppShell.Main>
-        <AppShellNavbar />
+        <IsAuth>
+          <SideBarLayout />
+          <AppShellNavbar />
+        </IsAuth>
+        <Modals />
       </AppShell>
-      <SideBarLayout />
-
-      <Modals />
     </>
   );
 };
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{ auth: AuthContextTypes }>()({
   component: RootLayout,
+
+  beforeLoad({ location }) {
+    if (location.pathname === '/auth') return;
+    if (!useCheckAuth.check()) {
+      throw redirect({
+        to: '/auth',
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
 });
