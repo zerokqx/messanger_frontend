@@ -1,5 +1,7 @@
+import { useAuth } from '@/shared/model/authProviderContext';
 import '@/shared/styles/root.css';
 import { theme } from '@/shared/theme';
+import { SettingsProvider } from '@/widgets/Settings';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -8,25 +10,40 @@ import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { domAnimation, LazyMotion } from 'motion/react';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import { routeTree } from './routeTree.gen';
-import { Modals } from './ui/Modals';
-import { NotificationStyled } from './ui/Notifications';
 import { AuthProvider } from './providers/auth/AuthProvide';
-import { SettingsProvider } from '@/widgets/Settings';
-export const router = createRouter({ routeTree });
+import { routeTree } from './routeTree.gen';
+import { NotificationStyled } from './ui/Notifications';
+import type { AuthContextTypes } from '@/shared/model/authProviderContext/context.type';
+export const router = createRouter({
+  routeTree,
+  defaultPreload: 'viewport',
+  scrollRestoration: true,
+  context: {
+    auth: {} as unknown as AuthContextTypes,
+  },
+});
 
 const queryClient = new QueryClient();
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
+    RouterContext: {
+      auth: AuthContextTypes;
+    };
   }
 }
+
 declare global {
   interface Window {
     __TANSTACK_QUERY_CLIENT__: import('@tanstack/query-core').QueryClient;
   }
 }
 window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+
+const InnerApp = () => {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />;
+};
 const rootElement = document.getElementById('root');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
@@ -37,8 +54,8 @@ if (rootElement && !rootElement.innerHTML) {
           <LazyMotion features={domAnimation}>
             <AuthProvider>
               <SettingsProvider>
+                <InnerApp />
                 <NotificationStyled />
-                <RouterProvider router={router} />
               </SettingsProvider>
             </AuthProvider>
           </LazyMotion>

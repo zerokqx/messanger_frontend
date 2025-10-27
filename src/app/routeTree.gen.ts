@@ -14,6 +14,7 @@ import { Route as DevpanelRouteRouteImport } from './routes/devpanel/route'
 import { Route as authenticationRouteRouteImport } from './routes/(authentication)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DevpanelIndexRouteImport } from './routes/devpanel/index'
+import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as authenticationProfileRouteImport } from './routes/(authentication)/profile'
 
 const VideosRoute = VideosRouteImport.update({
@@ -40,6 +41,11 @@ const DevpanelIndexRoute = DevpanelIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DevpanelRouteRoute,
 } as any)
+const AuthIndexRoute = AuthIndexRouteImport.update({
+  id: '/auth/',
+  path: '/auth/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authenticationProfileRoute = authenticationProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -51,12 +57,14 @@ export interface FileRoutesByFullPath {
   '/devpanel': typeof DevpanelRouteRouteWithChildren
   '/videos': typeof VideosRoute
   '/profile': typeof authenticationProfileRoute
+  '/auth': typeof AuthIndexRoute
   '/devpanel/': typeof DevpanelIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticationRouteRouteWithChildren
   '/videos': typeof VideosRoute
   '/profile': typeof authenticationProfileRoute
+  '/auth': typeof AuthIndexRoute
   '/devpanel': typeof DevpanelIndexRoute
 }
 export interface FileRoutesById {
@@ -66,13 +74,14 @@ export interface FileRoutesById {
   '/devpanel': typeof DevpanelRouteRouteWithChildren
   '/videos': typeof VideosRoute
   '/(authentication)/profile': typeof authenticationProfileRoute
+  '/auth/': typeof AuthIndexRoute
   '/devpanel/': typeof DevpanelIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/devpanel' | '/videos' | '/profile' | '/devpanel/'
+  fullPaths: '/' | '/devpanel' | '/videos' | '/profile' | '/auth' | '/devpanel/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/videos' | '/profile' | '/devpanel'
+  to: '/' | '/videos' | '/profile' | '/auth' | '/devpanel'
   id:
     | '__root__'
     | '/'
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/devpanel'
     | '/videos'
     | '/(authentication)/profile'
+    | '/auth/'
     | '/devpanel/'
   fileRoutesById: FileRoutesById
 }
@@ -88,6 +98,7 @@ export interface RootRouteChildren {
   authenticationRouteRoute: typeof authenticationRouteRouteWithChildren
   DevpanelRouteRoute: typeof DevpanelRouteRouteWithChildren
   VideosRoute: typeof VideosRoute
+  AuthIndexRoute: typeof AuthIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -127,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevpanelIndexRouteImport
       parentRoute: typeof DevpanelRouteRoute
     }
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(authentication)/profile': {
       id: '/(authentication)/profile'
       path: '/profile'
@@ -165,6 +183,7 @@ const rootRouteChildren: RootRouteChildren = {
   authenticationRouteRoute: authenticationRouteRouteWithChildren,
   DevpanelRouteRoute: DevpanelRouteRouteWithChildren,
   VideosRoute: VideosRoute,
+  AuthIndexRoute: AuthIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

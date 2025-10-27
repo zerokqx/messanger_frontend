@@ -35,8 +35,9 @@ const useUserStoreBase = create<UserStore>()(
         clearState() {
           set(store.getInitialState());
         },
+
         setUser(user) {
-          set(() => ({ ...user }));
+          set(() => ({ ...user, isAuth: true }));
         },
       }),
       {

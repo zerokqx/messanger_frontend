@@ -8,6 +8,7 @@ import tsParser from '@typescript-eslint/parser';
 import reactX from 'eslint-plugin-react-x';
 import reactDom from 'eslint-plugin-react-dom';
 import { fileURLToPath } from 'url';
+import pluginRouter from '@tanstack/eslint-plugin-router';
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url));
 export default defineConfig(
   [
@@ -22,6 +23,7 @@ export default defineConfig(
         reactRefresh.configs.vite,
         reactX.configs['recommended-typescript'],
         reactDom.configs.recommended,
+        ...pluginRouter.configs['flat/recommended'],
       ],
       rules: {
         '@typescript-eslint/only-throw-error': 'off',
