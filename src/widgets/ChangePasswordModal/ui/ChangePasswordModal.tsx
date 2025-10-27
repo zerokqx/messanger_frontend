@@ -4,6 +4,7 @@ import { Form } from '@/shared/ui/Form';
 import { Modal } from '@/shared/ui/Modal';
 import { formOptions } from '@tanstack/react-form';
 import type { CustomModalProps } from '../types/modal.type';
+import { PasswordInput } from '@mantine/core';
 
 export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
   const logout = useLogout();
