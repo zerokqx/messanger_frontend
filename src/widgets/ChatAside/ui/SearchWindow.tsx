@@ -1,21 +1,19 @@
 import { useSearchStore } from '@/features/search';
 import type { components } from '@/shared/types/v1';
 import { useBorder } from '@/widgets/Settings';
-import { Avatar, CloseButton, Flex, Text } from '@mantine/core';
-import { useAnimate } from 'motion/react';
+import { Avatar, Flex, Text } from '@mantine/core';
 import { useLogger } from 'react-use';
 
 export const SearchWindow = () => {
   const bd = useBorder('0.1rem');
-  const [scope, animate] = useAnimate();
-  const users = useSearchStore((s) => s.users);
+  const users = useSearchStore.useUsers();
   useLogger('SearchWindow');
 
   return (
     users &&
     users.length > 0 && (
-      <Flex p={'md'} w={'100%'} ref={scope} direction={'column'} gap={'md'}>
-        {users.map((user, index) => {
+      <Flex p={'md'} w={'inherit'} direction={'column'} gap={'md'}>
+        {users.map((user) => {
           const { login } =
             user.profile as components['schemas']['ProfileByUserIdData'];
           return (
@@ -24,7 +22,7 @@ export const SearchWindow = () => {
               align={'center'}
               bd={bd}
               direction={'row'}
-              key={index.toString() + user.user_id}
+              key={login}
               w={'inherit'}
               bdrs={'xl'}
               p={'xs'}
@@ -36,7 +34,6 @@ export const SearchWindow = () => {
             </Flex>
           );
         })}
-        <CloseButton />
       </Flex>
     )
   );

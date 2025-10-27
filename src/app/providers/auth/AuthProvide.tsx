@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const token = useTokenStore((s) => s);
 
-  const { validateToken, clearStore } = useTokenStore();
+  const { validateToken, clearStore } = token;
   const user = useUserStore();
   const value = useMemo(
     () => ({

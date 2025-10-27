@@ -9,3 +9,10 @@ export const useSettings = () => {
   if (!context) throw new Error('Hook is not in context!');
   return context;
 };
+
+export const useSettingsField = <T>(
+  callback: (context: UseAppSettings) => T
+): T => {
+  const context = useSettings();
+  return callback(context);
+};

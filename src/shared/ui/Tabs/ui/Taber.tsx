@@ -1,10 +1,16 @@
 import { Tabs } from '@mantine/core';
+import { motion } from 'motion/react';
+import { CustomMantineButton } from '../../Button';
+import { If } from '../../If';
 import type {
-  Windows,
-  TaberProps,
   ControlTaber,
+  TaberProps,
   TaberTemplate,
+  TaberTemplateReturn,
+  Windows,
 } from '../types';
+import { createTabStore } from '../model';
+import type { UseControllerTaber } from '../types/useControllerTaber.type';
 
 /**
  * `createTaber` - это функция-фабрика (Higher-Order Component - HOC),
@@ -49,40 +55,88 @@ import type {
  * }
  * ```
  */
-export const createTaber = <T extends Windows, Items extends T[number]>({
+export const createTaber = <T extends Windows>({
   windows,
-  store,
-}: TaberProps<T, Items>): [ControlTaber<Items>, TaberTemplate<T>] => {
+  initial,
+}: TaberProps<T>): TaberTemplateReturn<T> => {
+  const useStore = createTabStore<T[number]>(initial);
   const mapIndex = windows.map((_, index) => index);
-  const { currentTab, setCurrentTab } = store;
-
-  const controlTaber: ControlTaber<Items> = {
-    indexes: mapIndex,
-    get currentIndex() {
-      return windows.indexOf(store.currentTab as Lowercase<string>);
-    },
-    length: mapIndex.length,
-    next() {
-      this.currentIndex = (this.currentIndex + 1) % this.length;
-      setCurrentTab(windows[this.currentIndex] as Items);
-    },
-    prev() {
-      this.currentIndex = (this.currentIndex - 1 + this.length) % this.length;
-      setCurrentTab(windows[this.currentIndex] as Items);
-    },
-    set(key) {
-      setCurrentTab(key);
-    },
+  const useControllerTaber: UseControllerTaber<T> = () => {
+    const currentTab = useStore.useCurrentTab();
+    const setCurrentTab = useStore.useSetCurrentTab();
+    const controlTaber: ControlTaber<T[number]> = {
+      indexes: mapIndex,
+      get currentIndex() {
+        return windows.indexOf(currentTab as Lowercase<string>);
+      },
+      length: mapIndex.length,
+      next() {
+        this.currentIndex = (this.currentIndex + 1) % this.length;
+        setCurrentTab(windows[this.currentIndex] as T[number]);
+      },
+      prev() {
+        this.currentIndex = (this.currentIndex - 1 + this.length) % this.length;
+        setCurrentTab(windows[this.currentIndex] as T[number]);
+      },
+      set(key) {
+        setCurrentTab(key);
+      },
+    };
+    return controlTaber;
   };
 
+  const AnimatedPanel = motion.create(Tabs.Panel);
   const Panel: TaberTemplate<T>['Panel'] = ({ children, value }) => {
-    return <Tabs.Panel value={value}>{children}</Tabs.Panel>;
+    return (
+      <AnimatedPanel
+        keepMounted
+        key={value}
+        initial={{
+          scale: 0,
+        }}
+        animate={{ scale: [0, 1] }}
+        value={value}
+      >
+        {children}
+      </AnimatedPanel>
+    );
   };
 
-  const Taber: TaberTemplate<T> = ({ children }) => (
-    <Tabs value={currentTab}>{children}</Tabs>
-  );
+  const GoToButton: TaberTemplate<T>['GoToButton'] = ({ label, resetTo }) => {
+    const setCurrentTab = useStore.useSetCurrentTab();
+
+    return (
+      <CustomMantineButton
+        onClick={() => {
+          setCurrentTab(resetTo);
+        }}
+      >
+        {label ?? 'Reset'}
+      </CustomMantineButton>
+    );
+  };
+
+  const OnlyOnTab: TaberTemplate<T>['OnlyOnTab'] = ({ on, children }) => {
+    const currentTab = useStore.useCurrentTab();
+    return (
+      <If<T[number]> operandFirst={on} operandSecond={currentTab}>
+        {children}
+      </If>
+    );
+  };
+
+  const Taber: TaberTemplate<T> = ({ children }) => {
+    const currentTab = useStore.useCurrentTab();
+    return (
+      <Tabs value={currentTab} keepMounted={false}>
+        {children}
+      </Tabs>
+    );
+  };
+
+  Taber.OnlyOnTab = OnlyOnTab;
+  Taber.GoToButton = GoToButton;
   Taber.Panel = Panel;
 
-  return [controlTaber, Taber];
+  return [Taber, useStore, useControllerTaber];
 };

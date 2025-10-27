@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { UseSearchStore } from '../types/useSearchStore.type';
 import { createSelectors } from '@/shared/lib/zustand/selectors';
+import { createSelectorHooks } from 'auto-zustand-selectors-hook';
 
 const useSearchStoreBase = create<UseSearchStore>()((set) => ({
   users: null,
@@ -29,4 +30,4 @@ const useSearchStoreBase = create<UseSearchStore>()((set) => ({
     set({ searchOpened: true });
   },
 }));
-export const useSearchStore = createSelectors(useSearchStoreBase);
+export const useSearchStore = createSelectorHooks(useSearchStoreBase);

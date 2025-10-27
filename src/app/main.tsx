@@ -39,7 +39,6 @@ if (rootElement && !rootElement.innerHTML) {
               <SettingsProvider>
                 <NotificationStyled />
                 <RouterProvider router={router} />
-                <Modals />
               </SettingsProvider>
             </AuthProvider>
           </LazyMotion>

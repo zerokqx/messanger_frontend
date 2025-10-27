@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import type { CreateTabStore } from './createTabStore.type';
+import type { CreateTabStoreFunction } from '../model/createTabStore';
+import type { UseControllerTaber } from './useControllerTaber.type';
 
 /**
  * Тип, представляющий кортеж строк в нижнем регистре, исользуемый для определения доступных вкладок.
@@ -14,24 +15,24 @@ export type Windows = [Lowercase<string>, ...Lowercase<string>[]];
  * @template T - Тип кортежа `Windows`, определяющий доступные вкладки.
  * @template Items - Тип отдельных элементов из `T`, представляющий идентификатор вкладки.
  */
-export interface TaberProps<T extends Windows, Items extends T[number]> {
+export interface TaberProps<T extends Windows> {
   /**
    * Массив строк (кортеж), определяющий уникальные идентификаторы для каждой вкладки.
    * Эти идентификаторы используются как `value` для `Tabs.Tab` и `Taber.Panel`.
    */
   windows: T;
+  initial: T[number];
   /**
    * Объект хранилища состояния, который должен соответствовать интерфейсу `CreateTabStore`.
    * Используется для управления текущей акт��вной вкладкой.
    */
-  store: CreateTabStore<Items>;
 }
 
 /**
  * Интерфейс для объекта, возвращаемого `createTaber` для программного управления вкладками.
  * @template T - Тип идентификатора вкладки (один из элементов `Windows`).
  */
-export interface ControlTaber<T extends Windows[number]> {
+export interface ControlTaber<T extends string> {
   /** Массив индексов, соответствующих `windows`. */
   indexes: number[];
   /** Текущий индекс активной вкладки в массиве `windows`. */
@@ -70,6 +71,14 @@ interface TaberComponentProps<T extends Windows> {
   value: T[number];
 }
 
+export interface TaberGoToButtonProp<T extends Windows> {
+  resetTo: T[number] | 'zero';
+  label?: string;
+}
+export interface TaberOnlyOnTabProp<T extends Windows> {
+  on: T[number];
+  children: ReactNode;
+}
 /**
  * Интерфейс для возвращаемого компонента `Taber` и его вложенных компонентов.
  * @template T - Тип кортежа `Windows`, определяющий доступные вкладки.
@@ -84,4 +93,17 @@ export interface TaberTemplate<T extends Windows> {
    * ��ложенный компонент `Panel`, который должен использоваться для определения содержимого каждой вкладки.
    */
   Panel: (props: TaberComponentProps<T>) => ReactNode;
+  /**
+   * @description Кнопка для переключеня вкладок декларативно
+   * @param props
+   * @returns Button
+   */
+  GoToButton: (props: TaberGoToButtonProp<T>) => ReactNode;
+  OnlyOnTab: (props: TaberOnlyOnTabProp<T>) => ReactNode;
 }
+
+export type TaberTemplateReturn<T extends Windows> = [
+  TaberTemplate<T>,
+  ReturnType<CreateTabStoreFunction<T[number]>>,
+  UseControllerTaber<T>,
+];

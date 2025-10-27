@@ -8,11 +8,11 @@ import { SideItem } from './Item';
 import { SelecedProvider } from './SelectedContext';
 
 export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
-  const { isOpen, close } = useSideBarStore();
-
   const { mobile } = useResponsive();
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
+  const isOpen = useSideBarStore.useIsOpen();
+  const close = useSideBarStore.useClose();
   return (
     <>
       <SelecedProvider>

@@ -1,21 +1,16 @@
 import { useBorder } from '@/widgets/Settings';
-import { AppShellNavbar, Tabs, useMantineTheme } from '@mantine/core';
+import { AppShellNavbar, useMantineTheme } from '@mantine/core';
+import { useLogger } from 'react-use';
+import { assideTaber } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
 import { SearchWindow } from './SearchWindow';
-import { useChatAsideTabStore } from '../model/useChatAsideTabStore';
-import { createTaber } from '@/shared/ui/Tabs/ui';
-import { useLogger } from 'react-use';
 
 export const AppShellNavbarWidget = () => {
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
-  const store = useChatAsideTabStore();
-  const [controll, Taber] = createTaber({
-    windows: ['chats', 'search'],
-    store,
-  });
-
-  useLogger('Hoc', { controll });
+  const [Taber, , useControl] = assideTaber;
+  const controller = useControl();
+  useLogger('Asside Taber');
   return (
     <AppShellNavbar
       withBorder={false}
@@ -30,13 +25,16 @@ export const AppShellNavbarWidget = () => {
       <NavbarHeader
         input={{
           onFocus: () => {
-            controll.set('search');
+            controller.set('search');
           },
         }}
       />
       <Taber>
         <Taber.Panel value="search">
           <SearchWindow />
+        </Taber.Panel>
+        <Taber.Panel value="chats">
+          <p>Чаты </p>
         </Taber.Panel>
       </Taber>
     </AppShellNavbar>

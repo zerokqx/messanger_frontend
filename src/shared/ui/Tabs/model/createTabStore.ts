@@ -1,8 +1,19 @@
-import { createSelectors } from '@/shared/lib/zustand/selectors';
-import { create } from 'zustand';
+import {
+  createSelectorHooks,
+  type ZustandHookSelectors,
+} from 'auto-zustand-selectors-hook';
+import { create, type StoreApi, type UseBoundStore } from 'zustand';
 import type { CreateTabStore } from '../types/createTabStore.type';
 
-export const createTabStore = <T extends Lowercase<string>>(initial: T) => {
+export type CreateTabStoreFunction<T extends Lowercase<string>> = (
+  initial: T
+) => UseBoundStore<StoreApi<CreateTabStore<T>>> &
+  ZustandHookSelectors<CreateTabStore<T>>;
+
+export const createTabStore = <T extends Lowercase<string>>(
+  ...args: Parameters<CreateTabStoreFunction<T>>
+): ReturnType<CreateTabStoreFunction<T>> => {
+  const [initial] = args;
   const useTabStoreBase = create<CreateTabStore<T>>()((set, get, store) => ({
     currentTab: initial,
     prevTab: null,
@@ -17,5 +28,5 @@ export const createTabStore = <T extends Lowercase<string>>(initial: T) => {
       set(store.getInitialState());
     },
   }));
-  return createSelectors(useTabStoreBase);
+  return createSelectorHooks(useTabStoreBase);
 };
