@@ -4,6 +4,7 @@ import { useForm } from '@tanstack/react-form';
 import { CustomMantineButton } from '../../Button';
 import { CustomMantineInput } from '../../Input';
 import type { FormProps } from '../types';
+import type { ChangeEvent } from 'react';
 
 export const Form = <O extends object>({
   options,
@@ -36,7 +37,7 @@ export const Form = <O extends object>({
                   name={field.name}
                   value={field.state.value as string}
                   onBlur={field.handleBlur}
-                  onChange={(e) => {
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     field.handleChange(e.target.value);
                   }}
                   placeholder={fieldData.placeholder}

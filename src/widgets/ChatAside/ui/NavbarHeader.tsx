@@ -5,6 +5,7 @@ import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
 import { useBorder } from '@/widgets/Settings';
 import {
   Burger,
+  CloseButton,
   Flex,
   useMantineTheme,
   type TextInputProps,
@@ -27,9 +28,10 @@ export const NavbarHeader = ({
   const timer = useRef<number | null>(null);
 
   const setQuery = useSearchStore((s) => s.setQuery);
-  const [Taber, useStore] = assideTaber;
+  const [Taber, useStore, useControll, Buttons] = assideTaber;
   const { prevTab } = useStore();
   const currentTab = useStore.useCurrentTab();
+  const { goPrev } = useControll();
   useSearch();
 
   useLogger('Active Tab', { currentTab, prevTab });
@@ -47,7 +49,7 @@ export const NavbarHeader = ({
       }}
     >
       <Taber.OnlyOnTab on="search">
-        <Taber.GoToButton label="Выйти" resetTo="chats" />
+        <CloseButton onClick={goPrev} />
       </Taber.OnlyOnTab>
       <Taber.OnlyOnTab on="chats">
         <Burger

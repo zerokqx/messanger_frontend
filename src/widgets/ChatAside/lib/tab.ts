@@ -1,7 +1,6 @@
 import { createTaber } from '@/shared/ui/Tabs';
 
 export const assideTaber = createTaber({
-  windows: ['search', 'chats'],
+  windows: ['chats', 'search'],
   initial: 'chats',
-  
 });

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { CreateTabStoreFunction } from '../model/createTabStore';
 import type { UseControllerTaber } from './useControllerTaber.type';
+import type { TaberButtons } from './taberButton.type';
 
 /**
  * Тип, представляющий кортеж строк в нижнем регистре, исользуемый для определения доступных вкладок.
@@ -33,18 +34,18 @@ export interface TaberProps<T extends Windows> {
  * @template T - Тип идентификатора вкладки (один из элементов `Windows`).
  */
 export interface ControlTaber<T extends string> {
-  /** Массив индексов, соответствующих `windows`. */
-  indexes: number[];
-  /** Текущий индекс активной вкладки в массиве `windows`. */
+  /** Текущий индекс активной вкладки в массиве windows. */
   currentIndex: number;
-  /** Общее количество вкладок. */
-  length: number;
+  /** Индекс предыдущей вкладки (для удобства). */
+  prev: number;
+  /** Индекс следующей вкладки (для удобства). */
+  next: number;
   /** Переключает на следующую вкладку по кругу. */
-  next: () => void;
+  goNext: () => void;
   /** Переключает на предыдущую вкладку по кругу. */
-  prev: () => void;
+  goPrev: () => void;
   /**
-   * Устанавливает активную вкладку по ее идентификатору (`key`).
+   * Устанавливает активную вкладку по ее идентификатору (key).
    * @param key - Идентификатор вкладки, которую нужно сделать активной.
    */
   set: (key: T) => void;
@@ -71,10 +72,6 @@ interface TaberComponentProps<T extends Windows> {
   value: T[number];
 }
 
-export interface TaberGoToButtonProp<T extends Windows> {
-  resetTo: T[number] | 'zero';
-  label?: string;
-}
 export interface TaberOnlyOnTabProp<T extends Windows> {
   on: T[number];
   children: ReactNode;
@@ -98,7 +95,6 @@ export interface TaberTemplate<T extends Windows> {
    * @param props
    * @returns Button
    */
-  GoToButton: (props: TaberGoToButtonProp<T>) => ReactNode;
   OnlyOnTab: (props: TaberOnlyOnTabProp<T>) => ReactNode;
 }
 
@@ -106,4 +102,5 @@ export type TaberTemplateReturn<T extends Windows> = [
   TaberTemplate<T>,
   ReturnType<CreateTabStoreFunction<T[number]>>,
   UseControllerTaber<T>,
+  TaberButtons<T>,
 ];
