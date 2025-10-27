@@ -5,9 +5,9 @@ import { Modal } from '@/shared/ui/Modal';
 import { formOptions } from '@tanstack/react-form';
 
 export const RegisterModal = () => {
-  const registerClose = useModalGlobal().pinClose('register');
-  const loginOpen = useModalGlobal().pinOpen('login');
   const { mutate } = useRegister();
+  const registerClose = useModalGlobal.usePinClose()('register');
+  const loginOpen = useModalGlobal.usePinOpen()('login');
   const options = formOptions({
     defaultValues: {
       userName: '',

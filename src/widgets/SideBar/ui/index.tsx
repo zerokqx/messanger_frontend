@@ -7,7 +7,6 @@ import { SideBar } from '@/shared/ui/SideBar';
 import { Flex, Text } from '@mantine/core';
 import { useRouter } from '@tanstack/react-router';
 import { Cog, Lightbulb, MessageCircle, User, Video } from 'lucide-react';
-import { useEffect } from 'react';
 import { useLogger } from 'react-use';
 
 export const SideBarLayout = () => {

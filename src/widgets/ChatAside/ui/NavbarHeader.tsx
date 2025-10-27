@@ -5,29 +5,33 @@ import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
 import { useBorder } from '@/widgets/Settings';
 import {
   Burger,
-  CloseButton,
   Flex,
   useMantineTheme,
   type TextInputProps,
 } from '@mantine/core';
 import { Search } from 'lucide-react';
 import { useRef } from 'react';
-import { useChatAsideTabStore } from '../model/useChatAsideTabStore';
 import { useLogger } from 'react-use';
+import { assideTaber } from '../lib/tab';
 
 export const NavbarHeader = ({
   input,
 }: {
   input?: Partial<TextInputProps>;
 }) => {
-  const { isOpen, toggle } = useSideBarStore();
+  const isOpen = useSideBarStore.useIsOpen();
+  const toggle = useSideBarStore.useToggle();
   const t = useMantineTheme();
   const isAuth = useAuth((s) => s.isAuth);
   const bd = useBorder('0.1rem');
   const timer = useRef<number | null>(null);
+
   const setQuery = useSearchStore((s) => s.setQuery);
-  const { currentTab, setCurrentTab, prevTab, reset } = useChatAsideTabStore();
+  const [Taber, useStore] = assideTaber;
+  const { prevTab } = useStore();
+  const currentTab = useStore.useCurrentTab();
   useSearch();
+
   useLogger('Active Tab', { currentTab, prevTab });
   return (
     <Flex
@@ -42,17 +46,10 @@ export const NavbarHeader = ({
         borderBottom: bd,
       }}
     >
-      {currentTab === 'search' ? (
-        <CloseButton
-          onClick={() => {
-            if (prevTab) {
-              setCurrentTab(prevTab);
-              return;
-            }
-            reset();
-          }}
-        />
-      ) : (
+      <Taber.OnlyOnTab on="search">
+        <Taber.GoToButton label="Выйти" resetTo="chats" />
+      </Taber.OnlyOnTab>
+      <Taber.OnlyOnTab on="chats">
         <Burger
           size={'md'}
           opened={isOpen}
@@ -60,7 +57,7 @@ export const NavbarHeader = ({
           color="blue"
           aria-label="Toggle SideBar"
         />
-      )}
+      </Taber.OnlyOnTab>
       <CustomMantineInput
         disabled={!isAuth}
         onChange={(e) => {

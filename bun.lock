@@ -26,6 +26,7 @@
         "@tanstack/react-router-devtools": "^1.132.7",
         "@vanilla-extract/css": "^1.17.4",
         "@vanilla-extract/css-utils": "^0.1.6",
+        "auto-zustand-selectors-hook": "^3.0.1",
         "chroma-js": "^3.1.2",
         "dayjs": "^1.11.18",
         "lucide-react": "^0.545.0",
@@ -749,6 +750,8 @@
     "ast-utils": ["ast-utils@1.0.0", "", { "dependencies": { "lodash.get": "^4.4.2" } }, "sha512-i1c8M+A8GiOKkPsIljnlKqZuvxNNSJJmpreexwxs9nnczMBaC9Ev29OdrwBNo5/DirQBm4+D6b1XvKw47iN/aA=="],
 
     "async-function": ["async-function@1.0.0", "", {}, "sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA=="],
+
+    "auto-zustand-selectors-hook": ["auto-zustand-selectors-hook@3.0.1", "", { "peerDependencies": { "zustand": ">=5.0.0" } }, "sha512-BJHzxqdVPd0GKjieej0eALqUjXlb8SnDskeKXR85f0rEzErsXB3ttVOOZWy3IpMDle/F5F6ESAHm4tGsYP2hRw=="],
 
     "autoprefixer": ["autoprefixer@10.4.21", "", { "dependencies": { "browserslist": "^4.24.4", "caniuse-lite": "^1.0.30001702", "fraction.js": "^4.3.7", "normalize-range": "^0.1.2", "picocolors": "^1.1.1", "postcss-value-parser": "^4.2.0" }, "peerDependencies": { "postcss": "^8.1.0" }, "bin": { "autoprefixer": "bin/autoprefixer" } }, "sha512-O+A6LWV5LDHSJD3LjHYoNi4VLsj/Whi7k6zG12xTYaU4cQ8oxQGckXNX8cRHK5yOZ/ppVHe0ZBXGzSV9jXdVbQ=="],
 

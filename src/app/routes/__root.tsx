@@ -4,6 +4,7 @@ import { LoginBadge } from '@/widgets/LoginBadge';
 import { SideBarLayout } from '@/widgets/SideBar';
 import { AppShell, useMantineTheme } from '@mantine/core';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { Modals } from '../ui/Modals';
 const RootLayout = () => {
   const t = useMantineTheme();
   return (
@@ -28,6 +29,8 @@ const RootLayout = () => {
         <AppShellNavbar />
       </AppShell>
       <SideBarLayout />
+
+      <Modals />
     </>
   );
 };

@@ -6,8 +6,8 @@ import { formOptions } from '@tanstack/react-form';
 import type { CustomModalProps } from '../types/modal.type';
 
 export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
-  const { mutate, isSuccess } = useChangePassword();
   const logout = useLogout();
+  const { mutate, isSuccess } = useChangePassword();
   const options = formOptions({
     defaultValues: {
       currentPassword: '',
