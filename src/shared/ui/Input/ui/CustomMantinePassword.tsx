@@ -1,16 +1,24 @@
 import { useBorder } from '@/widgets/Settings';
-import { PasswordInput, type InputProps } from '@mantine/core';
-import { useSessionStorage } from '@mantine/hooks';
+import {
+  PasswordInput,
+  useMantineTheme,
+  type PasswordInputProps,
+} from '@mantine/core';
 
-export const CustomMantinePassword = () => {
+export const CustomMantinePassword = ({ ...props }: PasswordInputProps) => {
   const bd = useBorder('0.1rem');
+
+  const theme = useMantineTheme();
   return (
     <PasswordInput
       styles={{
         input: {
           border: bd,
+
+          background: theme.colors.dark[9],
         },
       }}
+      {...props}
     />
   );
 };

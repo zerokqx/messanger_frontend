@@ -4,7 +4,6 @@ import { useForm } from '@tanstack/react-form';
 import { CustomMantineButton } from '../../Button';
 import { CustomMantineInput } from '../../Input';
 import type { FormProps } from '../types';
-import type { ChangeEvent } from 'react';
 
 export const Form = <O extends object>({
   options,
@@ -26,32 +25,58 @@ export const Form = <O extends object>({
     >
       <Flex w={'100%'} direction={'column'} justify={'center'}>
         <Flex direction={'inherit'} w={'inherit'} gap={'sm'} p="lg">
-          <Text fw={700}>{title}</Text>
-          {fieldSet.map(({ fieldName, component, name, placeholder }) => {
-            const Input = component ?? CustomMantineInput;
-            return (
-              <form.Field
-                key={placeholder}
-                name={name.toString()}
-                children={(field) => (
-                  <>
-                    {fieldName && <InputLabel>{fieldName}</InputLabel>}
-                    <Input
-                      w="inherit"
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value as string}
-                      onBlur={field.handleBlur}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        field.handleChange(e.target.value);
-                      }}
-                      placeholder={placeholder}
-                    />
-                  </>
-                )}
-              />
-            );
-          })}
+          <Text fw={700} c={'blue'}>
+            {title}
+          </Text>
+          {fieldSet.map(
+            ({ label, fieldName, component, name, placeholder }) => {
+              return (
+                <form.Field
+                  key={placeholder}
+                  name={name.toString()}
+                  children={(field) => (
+                    <>
+                      {fieldName && label && (
+                        <InputLabel>{fieldName}</InputLabel>
+                      )}
+                      {component ? (
+                        component(
+                          field,
+                          {
+                            fieldName,
+                            name,
+                            label,
+                            placeholder,
+                          },
+                          {
+                            id: field.name,
+                            name: field.name,
+                            value: field.state.value,
+                            onChange: (e) => {
+                              field.handleChange(e.target.value);
+                            },
+                            onBlur: field.handleBlur,
+                          }
+                        )
+                      ) : (
+                        <CustomMantineInput
+                          w="inherit"
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value as string}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => {
+                            field.handleChange(e.target.value);
+                          }}
+                          placeholder={placeholder}
+                        />
+                      )}
+                    </>
+                  )}
+                />
+              );
+            }
+          )}
         </Flex>
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
