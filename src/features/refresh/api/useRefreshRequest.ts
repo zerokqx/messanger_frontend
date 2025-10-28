@@ -8,7 +8,6 @@ export const useRefreshRequest = () => {
     '/token/refresh',
 
     {
-      
       retry: 1,
     }
   );

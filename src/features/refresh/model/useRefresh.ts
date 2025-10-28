@@ -10,7 +10,7 @@ export const useRefresh = () => {
     isAuth,
   } = useAuth();
   const { mutate, isPending } = useRefreshRequest();
-  const { isExpired } = useJwt(access);
+  const { isExpired, reEvaluateToken } = useJwt(access);
   useLogger('New access token', { access });
   useEffect(() => {
     if (isPending || !isAuth) return;
@@ -24,6 +24,7 @@ export const useRefresh = () => {
         {
           onSuccess({ data: { access_token } }) {
             setToken(access_token);
+            reEvaluateToken(access_token);
           },
         }
       );

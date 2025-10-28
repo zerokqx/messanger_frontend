@@ -3,6 +3,7 @@ import { loginFormSchema } from '@/features/login/model/loginSchema';
 import { useModalGlobal } from '@/shared/model/useModalStore';
 import { CustomMantineButton } from '@/shared/ui/Button';
 import { Form } from '@/shared/ui/Form';
+import { CustomMantinePassword } from '@/shared/ui/Input/ui/CustomMantinePassword';
 import { Modal } from '@/shared/ui/Modal';
 import { PasswordInput } from '@mantine/core';
 import { formOptions } from '@tanstack/react-form';
@@ -43,14 +44,16 @@ export const LoginModal = () => {
       <Form
         fieldSet={[
           {
+            fieldName: 'Имя пользователя',
             name: 'userName',
             placeholder: 'Имя пользователя',
           },
 
           {
+            fieldName: 'Пароль',
             name: 'password',
             placeholder: 'Пороль',
-            component:PasswordInput 
+            component: CustomMantinePassword,
           },
         ]}
         options={options}
