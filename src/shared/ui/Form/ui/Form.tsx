@@ -1,4 +1,4 @@
-import { Flex, Text, TextInput } from '@mantine/core';
+import { Flex, InputLabel, Text, TextInput } from '@mantine/core';
 import { useForm } from '@tanstack/react-form';
 
 import { CustomMantineButton } from '../../Button';
@@ -24,26 +24,30 @@ export const Form = <O extends object>({
         void form.handleSubmit();
       }}
     >
-      <Flex direction={'column'} justify={'center'}>
-        <Text fw={700}>{title}</Text>
-        <Flex direction={'inherit'} w={'max-content'} gap={'sm'} p="lg">
-          {fieldSet.map(({ component, name, placeholder }) => {
+      <Flex w={'100%'} direction={'column'} justify={'center'}>
+        <Flex direction={'inherit'} w={'inherit'} gap={'sm'} p="lg">
+          <Text fw={700}>{title}</Text>
+          {fieldSet.map(({ fieldName, component, name, placeholder }) => {
             const Input = component ?? CustomMantineInput;
             return (
               <form.Field
                 key={placeholder}
                 name={name.toString()}
                 children={(field) => (
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value as string}
-                    onBlur={field.handleBlur}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      field.handleChange(e.target.value);
-                    }}
-                    placeholder={placeholder}
-                  />
+                  <>
+                    {fieldName && <InputLabel>{fieldName}</InputLabel>}
+                    <Input
+                      w="inherit"
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value as string}
+                      onBlur={field.handleBlur}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        field.handleChange(e.target.value);
+                      }}
+                      placeholder={placeholder}
+                    />
+                  </>
                 )}
               />
             );
@@ -52,7 +56,11 @@ export const Form = <O extends object>({
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
-            <CustomMantineButton type="submit" disabled={!canSubmit}>
+            <CustomMantineButton
+              w={'inherit'}
+              type="submit"
+              disabled={!canSubmit}
+            >
               {isSubmitting ? '...' : (buttonLabel ?? 'Submit')}
             </CustomMantineButton>
           )}

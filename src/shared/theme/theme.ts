@@ -100,13 +100,14 @@ export const theme = createTheme({
     TextInput: TextInput.extend({
       defaultProps: {
         radius: 'md',
-        variant: 'unstyled',
+        variant: 'filled',
+        c: 'dark',
       },
     }),
     PasswordInput: {
       defaultProps: {
         radius: 'md',
-        variant: 'unstyled',
+        variant: 'filled',
       },
     },
   },
