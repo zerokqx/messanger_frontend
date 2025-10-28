@@ -71,7 +71,6 @@ export const NavbarHeader = ({
         }}
         leftSection={<Search />}
         placeholder="Поиск"
-        radius="xl"
         w={'100%'}
         {...input}
       />

@@ -1,4 +1,4 @@
-import { Flex, Text } from '@mantine/core';
+import { Flex, Text, TextInput } from '@mantine/core';
 import { useForm } from '@tanstack/react-form';
 
 import { CustomMantineButton } from '../../Button';
@@ -24,27 +24,30 @@ export const Form = <O extends object>({
         void form.handleSubmit();
       }}
     >
-      <Flex w={'full'} direction={'column'} justify={'center'} align={'center'}>
+      <Flex direction={'column'} justify={'center'}>
         <Text fw={700}>{title}</Text>
-        <Flex direction={'column'} w={'max-content'} gap={'sm'} p="lg">
-          {fieldSet.map((fieldData) => (
-            <form.Field
-              key={fieldData.placeholder}
-              name={fieldData.name.toString()}
-              children={(field) => (
-                <CustomMantineInput
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value as string}
-                  onBlur={field.handleBlur}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    field.handleChange(e.target.value);
-                  }}
-                  placeholder={fieldData.placeholder}
-                />
-              )}
-            />
-          ))}
+        <Flex direction={'inherit'} w={'max-content'} gap={'sm'} p="lg">
+          {fieldSet.map(({ component, name, placeholder }) => {
+            const Input = component ?? CustomMantineInput;
+            return (
+              <form.Field
+                key={placeholder}
+                name={name.toString()}
+                children={(field) => (
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value as string}
+                    onBlur={field.handleBlur}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      field.handleChange(e.target.value);
+                    }}
+                    placeholder={placeholder}
+                  />
+                )}
+              />
+            );
+          })}
         </Flex>
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}

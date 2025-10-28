@@ -1,8 +1,10 @@
 import { useLogin } from '@/features/login';
 import { loginFormSchema } from '@/features/login/model/loginSchema';
 import { useModalGlobal } from '@/shared/model/useModalStore';
+import { CustomMantineButton } from '@/shared/ui/Button';
 import { Form } from '@/shared/ui/Form';
 import { Modal } from '@/shared/ui/Modal';
+import { PasswordInput } from '@mantine/core';
 import { formOptions } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
 
@@ -48,6 +50,7 @@ export const LoginModal = () => {
           {
             name: 'password',
             placeholder: 'Пороль',
+            component:PasswordInput 
           },
         ]}
         options={options}

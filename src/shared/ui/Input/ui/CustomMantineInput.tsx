@@ -1,3 +1,4 @@
+import { useBorder } from '@/widgets/Settings';
 import {
   Input,
   TextInput,
@@ -12,13 +13,14 @@ export const CustomMantineInput = ({ ...props }: TextInputProps) => {
     full: string;
   } | null>(null);
   const theme = useMantineTheme();
+  const bd = useBorder('0.1rem', 'default', 'none');
   return (
     <Input.Wrapper error={er ? er.full : ''}>
       <TextInput
-        radius={'sm'}
         styles={{
           input: {
-            backgroundColor: theme.colors.dark[8],
+            border: bd,
+            background: theme.colors.dark[9],
           },
         }}
         {...props}

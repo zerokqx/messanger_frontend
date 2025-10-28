@@ -64,12 +64,10 @@ export const createTaber = <T extends Windows>({
   const Panel: TaberTemplate<T>['Panel'] = ({ children, value }) => {
     return (
       <AnimatedPanel
-        keepMounted
-        key={value}
         initial={{
           scale: 0,
         }}
-        animate={{ scale: [0, 1] }}
+        animate={{ scale: 1 }}
         value={value}
       >
         {children}
@@ -100,7 +98,6 @@ export const createTaber = <T extends Windows>({
       />
     );
   };
-
   const Buttons: TaberButtons<T> = {
     GoTo: GoToButton,
     Reset: ResetButton,
@@ -116,11 +113,7 @@ export const createTaber = <T extends Windows>({
 
   const Taber: TaberTemplate<T> = ({ children }) => {
     const currentTab = useStore.useCurrentTab();
-    return (
-      <Tabs value={currentTab} keepMounted={false}>
-        {children}
-      </Tabs>
-    );
+    return <Tabs value={currentTab}>{children}</Tabs>;
   };
 
   Taber.OnlyOnTab = OnlyOnTab;
