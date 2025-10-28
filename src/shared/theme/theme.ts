@@ -101,13 +101,25 @@ export const theme = createTheme({
       defaultProps: {
         radius: 'md',
         variant: 'filled',
-        c: 'dark',
+
+        styles(theme) {
+          return {
+            input: {
+              background: theme.colors.dark[9],
+            },
+          };
+        },
       },
     }),
     PasswordInput: {
       defaultProps: {
         radius: 'md',
         variant: 'filled',
+      },
+    },
+    Text: {
+      defaultProps: {
+        c: 'white',
       },
     },
   },

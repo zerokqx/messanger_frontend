@@ -35,10 +35,14 @@ export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
           options={options}
           fieldSet={[
             {
+              fieldName: 'Текущий пороль',
+              label: true,
               name: 'currentPassword',
               placeholder: 'Текущий пароль',
             },
             {
+              fieldName: 'Повторите пороль',
+              label: true,
               name: 'newPassword',
               placeholder: 'Новый пороль',
             },

@@ -11,6 +11,7 @@ export const useRefresh = () => {
   } = useAuth();
   const { mutate, isPending } = useRefreshRequest();
   const { isExpired, reEvaluateToken } = useJwt(access);
+  useLogger('Token Status: ', isExpired);
   useLogger('New access token', { access });
   useEffect(() => {
     if (isPending || !isAuth) return;
@@ -30,5 +31,5 @@ export const useRefresh = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPending, isExpired, access, isAuth]);
+  }, [isPending, isExpired, isAuth, mutate, setToken, reEvaluateToken]);
 };

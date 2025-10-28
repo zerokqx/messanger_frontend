@@ -1,15 +1,15 @@
 import { useAuth } from '@/shared/model/authProviderContext';
 import { useGetBorder } from '@/shared/model/useGetBorder';
 import { useSettingsField } from './context';
+import { set } from 'zod';
 
 export const useBorder = (
   size: Parameters<typeof useGetBorder>[0],
   color?: string,
   type?: string
 ) => {
-  const isAuth = useAuth().isAuth;
   const setting = useSettingsField((c) => c.borderElements);
-  const bd = useGetBorder(isAuth ? (setting ? size : '0rem') : '0.1rem');
+  const bd = useGetBorder(setting ? size : '0rem');
   const devide = ' ';
   const newColor = bd.split(devide);
   if (type) newColor.splice(1, 1, type);

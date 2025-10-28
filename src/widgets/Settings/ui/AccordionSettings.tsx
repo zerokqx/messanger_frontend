@@ -16,13 +16,11 @@ export const AccordionSetting = ({
           borderRadius: t.radius.md,
           background: 'none',
         },
-        item: {
-          background: 'transparent',
-        },
+        item: { background: 'transparent' },
       }}
     >
       <Accordion.Item value={label}>
-        <Accordion.Control icon={<ColoredIcons Icon={icon} />} color="red">
+        <Accordion.Control icon={<ColoredIcons Icon={icon} />}>
           {label}
         </Accordion.Control>
         <Accordion.Panel>
