@@ -35,8 +35,9 @@ export const SideItem = ({
     <Flex
       {...props}
       gap={'md'}
-      onClick={() => {
+      onClick={(e) => {
         setSelected(id);
+        onClick?.(e);
       }}
       p={'md'}
       bg={selected === id ? t.colors.dark[9] : 'none'}
@@ -58,7 +59,7 @@ export const SideItem = ({
             }),
       }}
     >
-      <Flex onClick={onClick} justify={'start'} gap={'md'} direction={'row'}>
+      <Flex justify={'start'} gap={'md'} direction={'row'}>
         {children}
         <Text>{text}</Text>
         {inDev && (

@@ -1,4 +1,3 @@
-import { useResponsive } from '@/shared/lib/hooks/useResponsive';
 import { useBorder } from '@/widgets/Settings';
 import { Drawer, useMantineTheme } from '@mantine/core';
 import { useSideBarStore } from '../store/useMenuStore';
@@ -8,7 +7,6 @@ import { SideItem } from './Item';
 import { SelecedProvider } from './SelectedContext';
 
 export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
-  const { mobile } = useResponsive();
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
   const isOpen = useSideBarStore.useIsOpen();
@@ -22,18 +20,16 @@ export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
           transitionProps={{
             transition: 'slide-right',
           }}
-          size={mobile ? 'xl' : '400px'}
           styles={{
             content: {
               background: t.black,
               userSelect: 'none',
-              borderRight: !mobile ? bd : 'none',
+              borderRight: bd,
             },
           }}
           opened={isOpen}
           overlayProps={{ backgroundOpacity: 0.5 }}
           onClose={close}
-          offset={0}
         >
           <Drawer.Header bg={'black'}>
             {renderUserBadge?.()}

@@ -1,4 +1,12 @@
-import { createTheme, TextInput, type MantineColorsTuple } from '@mantine/core';
+import {
+  AppShell,
+  createTheme,
+  Drawer,
+  PasswordInput,
+  Text,
+  TextInput,
+  type MantineColorsTuple,
+} from '@mantine/core';
 
 const colors: Record<string, MantineColorsTuple> = {
   blue: [
@@ -96,6 +104,10 @@ export const theme = createTheme({
     lg: 'none',
     xl: 'none',
   },
+  defaultGradient: {
+    from: 'blue',
+    to: 'indigo',
+  },
   components: {
     TextInput: TextInput.extend({
       defaultProps: {
@@ -111,16 +123,34 @@ export const theme = createTheme({
         },
       },
     }),
-    PasswordInput: {
+    PasswordInput: PasswordInput.extend({
       defaultProps: {
         radius: 'md',
         variant: 'filled',
       },
-    },
-    Text: {
+    }),
+    Text: Text.extend({
       defaultProps: {
         c: 'white',
       },
-    },
+    }),
+
+    Drawer: Drawer.extend({
+      defaultProps: {
+        offset: 0,
+      },
+    }),
+    AppShell: AppShell.extend({
+      defaultProps: {
+        p: 'xs',
+        navbar: {
+          width: '20rem',
+          breakpoint: 'xs',
+          collapsed: { mobile: false },
+        },
+
+        bg: 'black',
+      },
+    }),
   },
 });
