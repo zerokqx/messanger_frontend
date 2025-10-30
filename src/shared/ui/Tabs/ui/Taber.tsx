@@ -105,7 +105,7 @@ export const createTaber = <T extends Windows>({
   const OnlyOnTab: TaberTemplate<T>['OnlyOnTab'] = ({ on, children }) => {
     const currentTab = useStore.useCurrentTab();
     return (
-      <If<T[number]> operandFirst={on} operandSecond={currentTab}>
+      <If operandFirst={on} operandSecond={currentTab}>
         {children}
       </If>
     );

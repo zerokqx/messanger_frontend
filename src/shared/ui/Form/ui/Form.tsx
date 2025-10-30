@@ -4,6 +4,7 @@ import { useForm } from '@tanstack/react-form';
 import { CustomMantineButton } from '../../Button';
 import { CustomMantineInput } from '../../Input';
 import type { FormProps } from '../types';
+import { If } from '../../If';
 
 export const Form = <O extends object>({
   options,
@@ -60,6 +61,7 @@ export const Form = <O extends object>({
                         )
                       ) : (
                         <CustomMantineInput
+                          key={field.name}
                           w="inherit"
                           id={field.name}
                           name={field.name}

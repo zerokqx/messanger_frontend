@@ -1,31 +1,24 @@
 import { useCheckAuth } from '@/features/checkAuth';
 import { IsAuth } from '@/features/checkAuth/ui';
 import type { AuthContextTypes } from '@/shared/model/authProviderContext/context.type';
+import { useModalGlobal } from '@/shared/model/useModalStore';
 import { AppShellNavbar } from '@/widgets/ChatAside';
 import { LoginBadge } from '@/widgets/LoginBadge';
 import { SideBarLayout } from '@/widgets/SideBar';
-import { AppShell, useMantineTheme } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import {
   createRootRouteWithContext,
   Outlet,
   redirect,
+  useRouter,
 } from '@tanstack/react-router';
 import { Modals } from '../ui/Modals';
 const RootLayout = () => {
-  const t = useMantineTheme();
+  const settings = useModalGlobal((s) => s.pinOpen)('settings');
+  const navigate = useRouter().navigate;
   return (
     <>
-      <AppShell
-        p={'xs'}
-        navbar={{
-          width: '20rem',
-          breakpoint: 'xs',
-          collapsed: {
-            mobile: false,
-          },
-        }}
-        bg={t.black}
-      >
+      <AppShell>
         <AppShell.Main>
           <Outlet />
           <IsAuth status={false}>
@@ -33,7 +26,7 @@ const RootLayout = () => {
           </IsAuth>
         </AppShell.Main>
         <IsAuth>
-          <SideBarLayout />
+          <SideBarLayout inject={() => ({ navigate, settings })} />
           <AppShellNavbar />
         </IsAuth>
         <Modals />
