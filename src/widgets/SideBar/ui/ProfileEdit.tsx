@@ -1,19 +1,11 @@
-import { sidebarTab } from '../model/tab';
-import { Form } from '@/shared/ui/Form';
-import { formOptions } from '@tanstack/react-form';
-import { ProfileDataDisplay, useUserStore } from '@/entities/user';
+import { ProfileDataDisplay } from '@/entities/user';
 import { CustomMantineButton } from '@/shared/ui/Button';
-import { SquarePen } from 'lucide-react';
 import { Space } from '@mantine/core';
+import { SquarePen } from 'lucide-react';
+import { sidebarTab } from '../model/tab';
 
 export const ProfileEdit = () => {
-  const [Taber, , , Buttons] = sidebarTab;
-  const login = useUserStore.use.login();
-  const opt = formOptions({
-    defaultValues: {
-      login,
-    },
-  });
+  const [Taber] = sidebarTab;
   return (
     <Taber.Panel value="profile">
       <ProfileDataDisplay />

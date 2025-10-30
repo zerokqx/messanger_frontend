@@ -31,11 +31,6 @@ export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
           overlayProps={{ backgroundOpacity: 0.5 }}
           onClose={close}
         >
-          <Drawer.Header bg={'black'}>
-            {renderUserBadge?.()}
-
-            <Drawer.CloseButton />
-          </Drawer.Header>
           {children}
         </Drawer>
       </SelecedProvider>
