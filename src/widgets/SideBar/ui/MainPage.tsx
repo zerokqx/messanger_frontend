@@ -37,6 +37,7 @@ export const MainPage = () => {
           <ColoredIcons Icon={Cog} />
         </SideBar.Item>
       </IsAuth>
+
     </Taber.Panel>
   );
 };

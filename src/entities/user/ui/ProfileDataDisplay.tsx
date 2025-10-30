@@ -4,8 +4,6 @@ import { UserAvatar } from './UserAvatar';
 import { createdAt } from '@/entities/lib/createAtData';
 import { Description } from '@/shared/ui/Description/ui';
 import { IsVerified } from './IsVerified';
-import { CustomMantineButton } from '@/shared/ui/Button';
-import { SquarePen } from 'lucide-react';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 
@@ -20,7 +18,7 @@ export const ProfileDataDisplay = () => {
 
       <Description
         onClick={() => {
-          lipboard.copy(user.login);
+          clipboard.copy(user.login);
           notifications.show({
             message: 'Логин скопирован',
           });
