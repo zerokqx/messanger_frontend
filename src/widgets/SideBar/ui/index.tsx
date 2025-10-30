@@ -7,11 +7,11 @@ import { MainPage } from './MainPage';
 import { ProfileEdit } from './ProfileEdit';
 import { ArrowLeft } from 'lucide-react';
 import { ColoredIcons } from '@/shared/ui/ColoredIcon';
+import { motion } from 'motion/react';
 
 export const SideBarLayout = ({ inject }: SideBarLayoutProp) => {
   const [Taber, useStore, useControll] = sidebarTab;
   const current = useStore.useCurrentTab();
-
   const { goPrev } = useControll();
 
   return (

@@ -3,7 +3,6 @@ import { useRefresh } from '@/features/refresh';
 import type { ReactNode } from 'react';
 
 export const AuthProviderHooks = ({ children }: { children: ReactNode }) => {
-  useRefresh();
   useMe();
 
   return children;

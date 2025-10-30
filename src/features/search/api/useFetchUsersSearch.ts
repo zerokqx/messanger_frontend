@@ -22,6 +22,7 @@ export const useFetchUsersSearch = (query: string) => {
       },
     },
     {
+      retry: 2,
       select(data) {
         return data.data.users;
       },
