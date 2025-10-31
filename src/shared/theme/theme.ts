@@ -2,8 +2,10 @@ import {
   AppShell,
   createTheme,
   Drawer,
+  Loader,
   PasswordInput,
   Text,
+  Textarea,
   TextInput,
   type MantineColorsTuple,
 } from '@mantine/core';
@@ -123,6 +125,21 @@ export const theme = createTheme({
         },
       },
     }),
+
+    Textarea: Textarea.extend({
+      defaultProps: {
+        radius: 'md',
+        variant: 'filled',
+
+        styles(theme) {
+          return {
+            input: {
+              background: theme.colors.dark[9],
+            },
+          };
+        },
+      },
+    }),
     PasswordInput: PasswordInput.extend({
       defaultProps: {
         radius: 'md',
@@ -134,7 +151,11 @@ export const theme = createTheme({
         c: 'white',
       },
     }),
-
+    Loader: Loader.extend({
+      defaultProps: {
+        c: 'white',
+      },
+    }),
     Drawer: Drawer.extend({
       defaultProps: {
         offset: 0,

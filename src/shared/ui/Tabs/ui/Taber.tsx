@@ -11,6 +11,7 @@ import type {
 import { createTabStore } from '../model';
 import type { UseControllerTaber } from '../types/useControllerTaber.type';
 import type { TaberButtons } from '../types/taberButton.type';
+import { useRef, type RefObject } from 'react';
 
 /**
  * `createTaber` — фабричная функция для создания системы вкладок на базе `@mantine/core/Tabs`.
@@ -56,19 +57,34 @@ export const createTaber = <T extends Windows>({
     const set = (key: T[number]) => {
       setCurrentTab(key);
     };
-
-    return { currentIndex, prev, next, goPrev, goNext, set };
+    const mainPage = () => ({
+      index: windows.indexOf(windows[0]),
+      name: windows[0],
+    });
+    return { currentIndex, mainPage, prev, next, goPrev, goNext, set };
   };
 
   const AnimatedPanel = motion.create(Tabs.Panel);
-  const Panel: TaberTemplate<T>['Panel'] = ({ children, value }) => {
+  const Panel: TaberTemplate<T>['Panel'] = ({ children, value, ...props }) => {
     return (
       <AnimatedPanel
-        initial={{
-          scale: 0,
+        key={value}
+        style={{
+          overflow: 'hidden',
         }}
-        animate={{ scale: 1 }}
+        initial={{
+          scale: 0.9,
+          opacity: 0,
+          y: '-5%',
+        }}
+        whileInView={{
+          height: 'auto',
+          opacity: 1,
+          y: '0%',
+          scale: 1,
+        }}
         value={value}
+        {...props}
       >
         {children}
       </AnimatedPanel>

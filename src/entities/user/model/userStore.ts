@@ -2,6 +2,7 @@ import { createSelectors } from '@/shared/lib/zustand/selectors';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import type { UserStore } from '../types/userStore.type';
+import localforage from 'localforage';
 
 const useUserStoreBase = create<UserStore>()(
   devtools(
@@ -35,6 +36,9 @@ const useUserStoreBase = create<UserStore>()(
         clearState() {
           set(store.getInitialState());
         },
+        setBio(bio) {
+          set({ bio: bio });
+        },
 
         setUser(user) {
           set(() => ({ ...user }));
@@ -42,7 +46,8 @@ const useUserStoreBase = create<UserStore>()(
       }),
       {
         name: 'user-storage',
-        storage: createJSONStorage(() => localStorage),
+        skipHydration: true,
+        storage: createJSONStorage(() => localforage),
       }
     )
   )
