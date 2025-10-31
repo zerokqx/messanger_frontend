@@ -1,10 +1,11 @@
-import { Flex, InputLabel, Text, TextInput } from '@mantine/core';
+import { Flex, InputLabel, Loader, Text } from '@mantine/core';
 import { useForm } from '@tanstack/react-form';
 
+import { getHotkeyHandler, useHotkeys } from '@mantine/hooks';
+import type { FormEvent } from 'react';
 import { CustomMantineButton } from '../../Button';
 import { CustomMantineInput } from '../../Input';
 import type { FormProps } from '../types';
-import { If } from '../../If';
 
 export const Form = <O extends object>({
   options,
@@ -18,6 +19,15 @@ export const Form = <O extends object>({
 
   return (
     <form
+      onKeyDown={getHotkeyHandler([
+        [
+          'Enter',
+          (e: FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          },
+        ],
+      ])}
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -88,7 +98,7 @@ export const Form = <O extends object>({
               type="submit"
               disabled={!canSubmit}
             >
-              {isSubmitting ? '...' : (buttonLabel ?? 'Submit')}
+              {isSubmitting ? <Loader /> : (buttonLabel ?? 'Submit')}
             </CustomMantineButton>
           )}
         />

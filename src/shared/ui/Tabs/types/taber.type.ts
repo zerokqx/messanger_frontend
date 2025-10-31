@@ -1,8 +1,12 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import type { CreateTabStoreFunction } from '../model/createTabStore';
 import type { UseControllerTaber } from './useControllerTaber.type';
 import type { TaberButtons } from './taberButton.type';
+import type { MotionProps } from 'motion/react';
+import type { Tabs } from '@mantine/core';
+import type { PanelBottom } from 'lucide-react';
 
+type PanelComponent = typeof Tabs.Panel;
 /**
  * Тип, представляющий кортеж строк в нижнем регистре, исользуемый для определения доступных вкладок.
  * Каждая строка является уникальным идентификатором вкладки.
@@ -34,6 +38,7 @@ export interface TaberProps<T extends Windows> {
  * @template T - Тип идентификатора вкладки (один из элементов `Windows`).
  */
 export interface ControlTaber<T extends string> {
+  mainPage: () => { index: number; name: string };
   /** Текущий индекс активной вкладки в массиве windows. */
   currentIndex: number;
   /** Индекс предыдущей вкладки (для удобства). */
@@ -63,7 +68,7 @@ interface TaberTemplateProp {
  * Пропсы для вложенного компонента `Taber.Panel`.
  * @template T - Тип кортежа `Windows`, определяющий доступные вкладки.
  */
-interface TaberComponentProps<T extends Windows> {
+interface TaberComponentProps<T extends Windows> extends MotionProps {
   /** Дочерние элементы, которые будут отображены внутри панели вкладки. */
   children: ReactNode;
   /**

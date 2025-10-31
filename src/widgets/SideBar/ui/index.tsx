@@ -1,34 +1,23 @@
 import { InjectContext } from '@/shared/providers/inject/ui/InjectContext';
 import { SideBar } from '@/shared/ui/SideBar';
-import { CloseButton, Drawer } from '@mantine/core';
 import { sidebarTab } from '../model/tab';
 import type { SideBarLayoutProp } from '../types/sideBarLayout.type';
+import { Header } from './Header';
 import { MainPage } from './MainPage';
+import { Profile } from './Profile';
 import { ProfileEdit } from './ProfileEdit';
-import { ArrowLeft } from 'lucide-react';
-import { ColoredIcons } from '@/shared/ui/ColoredIcon';
-import { motion } from 'motion/react';
 
 export const SideBarLayout = ({ inject }: SideBarLayoutProp) => {
-  const [Taber, useStore, useControll] = sidebarTab;
-  const current = useStore.useCurrentTab();
-  const { goPrev } = useControll();
+  const [Taber] = sidebarTab;
 
   return (
     <>
       <InjectContext value={inject}>
         <SideBar>
-          <Drawer.Header bg={'black'}>
-            {current !== 'main' && (
-              <CloseButton
-                onClick={goPrev}
-                icon={<ColoredIcons accent Icon={ArrowLeft} />}
-              />
-            )}
-            <Drawer.CloseButton />
-          </Drawer.Header>
+          <Header />
           <Taber>
             <MainPage />
+            <Profile />
             <ProfileEdit />
           </Taber>
         </SideBar>
