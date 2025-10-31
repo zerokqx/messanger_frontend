@@ -1,5 +1,6 @@
 import {
   AppShell,
+  Button,
   createTheme,
   Drawer,
   Loader,
@@ -154,6 +155,11 @@ export const theme = createTheme({
     Loader: Loader.extend({
       defaultProps: {
         c: 'white',
+      },
+    }),
+    Button: Button.extend({
+      defaultProps: {
+        bdrs: 'lg',
       },
     }),
     Drawer: Drawer.extend({

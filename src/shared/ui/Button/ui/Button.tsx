@@ -6,7 +6,7 @@ export const CustomMantineButton = ({
   ...props
 }: CustomButtonProps) => {
   return (
-    <ButtonMantine bdrs={'sm'} justify="center" {...props}>
+    <ButtonMantine justify="center" {...props}>
       {children}
     </ButtonMantine>
   );

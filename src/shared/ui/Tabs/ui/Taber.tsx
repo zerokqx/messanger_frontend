@@ -1,5 +1,5 @@
-import { Tabs } from '@mantine/core';
-import { motion } from 'motion/react';
+import { Center, Tabs } from '@mantine/core';
+import { AnimatePresence, motion } from 'motion/react';
 import { CustomMantineButton } from '../../Button';
 import { If } from '../../If';
 import type {
@@ -69,19 +69,13 @@ export const createTaber = <T extends Windows>({
     return (
       <AnimatedPanel
         key={value}
-        style={{
-          overflow: 'hidden',
-        }}
         initial={{
-          scale: 0.9,
           opacity: 0,
           y: '-5%',
         }}
         whileInView={{
-          height: 'auto',
           opacity: 1,
           y: '0%',
-          scale: 1,
         }}
         value={value}
         {...props}
@@ -129,7 +123,11 @@ export const createTaber = <T extends Windows>({
 
   const Taber: TaberTemplate<T> = ({ children }) => {
     const currentTab = useStore.useCurrentTab();
-    return <Tabs value={currentTab}>{children}</Tabs>;
+    return (
+      <Tabs value={currentTab}>
+        <AnimatePresence mode="wait">{children}</AnimatePresence>
+      </Tabs>
+    );
   };
 
   Taber.OnlyOnTab = OnlyOnTab;

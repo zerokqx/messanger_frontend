@@ -19,10 +19,9 @@ export const Profile = () => {
           onClick={() => {
             set('profile_edit');
           }}
-          initial={{ width: '100%' }}
+          initial={{ width: '0%' }}
+          whileInView={{ width: '100%' }}
           whileHover={{ width: '90%' }}
-          bdrs="xl"
-          variant="light"
         >
           <SquarePen />
           <Space w={'1rem'} />

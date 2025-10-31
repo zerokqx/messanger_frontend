@@ -6,7 +6,7 @@ import { InfoBlock } from './InfoBlock';
 import { SideItem } from './Item';
 import { SelecedProvider } from './SelectedContext';
 
-export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
+export const SideBar: SideBarCompouned = ({ children }) => {
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
   const isOpen = useSideBarStore.useIsOpen();
