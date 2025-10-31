@@ -31,7 +31,7 @@ export const ProfileEdit = () => {
         },
         {
           onSuccess(_, { body: { bio } }) {
-            if (bio) user.setBio(bio);
+            if (bio != null) user.setBio(bio);
             notifications.show({
               message: 'Профиль изменен',
             });

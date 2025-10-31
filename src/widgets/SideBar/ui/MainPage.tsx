@@ -24,20 +24,17 @@ export const MainPage = () => {
       >
         <ColoredIcons Icon={MessageCircle} />
       </SideBar.Item>
-      <IsAuth>
-        <SideBar.Item
-          onClick={() => {
-            set('profile');
-          }}
-          text="Профиль"
-        >
-          <ColoredIcons Icon={User} />
-        </SideBar.Item>
-        <SideBar.Item text="Настройки" onClick={settings}>
-          <ColoredIcons Icon={Cog} />
-        </SideBar.Item>
-      </IsAuth>
-
+      <SideBar.Item
+        onClick={() => {
+          set('profile');
+        }}
+        text="Профиль"
+      >
+        <ColoredIcons Icon={User} />
+      </SideBar.Item>
+      <SideBar.Item text="Настройки" onClick={settings}>
+        <ColoredIcons Icon={Cog} />
+      </SideBar.Item>
     </Taber.Panel>
   );
 };
