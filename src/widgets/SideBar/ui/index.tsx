@@ -6,6 +6,8 @@ import { Header } from './Header';
 import { MainPage } from './MainPage';
 import { Profile } from './Profile';
 import { ProfileEdit } from './ProfileEdit';
+import { Settings } from './SettingsTab';
+import { ProfileSettingsTab } from './ProfileSettingsTab';
 
 export const SideBarLayout = ({ inject }: SideBarLayoutProp) => {
   const [Taber] = sidebarTab;
@@ -19,6 +21,8 @@ export const SideBarLayout = ({ inject }: SideBarLayoutProp) => {
             <MainPage />
             <Profile />
             <ProfileEdit />
+            <Settings />
+            <ProfileSettingsTab />
           </Taber>
         </SideBar>
       </InjectContext>

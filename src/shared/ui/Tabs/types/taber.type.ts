@@ -106,6 +106,6 @@ export interface TaberTemplate<T extends Windows> {
 export type TaberTemplateReturn<T extends Windows> = [
   TaberTemplate<T>,
   ReturnType<CreateTabStoreFunction<T[number]>>,
-  UseControllerTaber<T>,
   TaberButtons<T>,
+  ()=> T[0]
 ];

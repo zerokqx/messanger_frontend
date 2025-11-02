@@ -1,4 +1,4 @@
-import { useAuth } from '@/shared/model/authProviderContext';
+import { asyncStoragePersister, queryClient } from '@/shared/api';
 import type { AuthContextTypes } from '@/shared/model/authProviderContext/context.type';
 import '@/shared/styles/root.css';
 import { theme } from '@/shared/theme';
@@ -6,34 +6,23 @@ import { SettingsProvider } from '@/widgets/Settings';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
-import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
-import { createRouter, RouterProvider } from '@tanstack/react-router';
-import localForage from 'localforage';
+import { createRouter } from '@tanstack/react-router';
 import { domAnimation, LazyMotion } from 'motion/react';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { AuthProvider } from './providers/auth/AuthProvide';
 import { routeTree } from './routeTree.gen';
+import { InnerApp } from './ui/InnerApp';
 import { NotificationStyled } from './ui/Notifications';
+import { I18nextProvider } from 'react-i18next';
+import i18next from '@/shared/i18next/clients';
 export const router = createRouter({
   routeTree,
   defaultPreload: 'viewport',
   scrollRestoration: true,
   context: {
     auth: {} as unknown as AuthContextTypes,
-  },
-});
-
-const asyncStoragePersister = createAsyncStoragePersister({
-  storage: localForage,
-});
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      gcTime: 1000 * 60 * 60 * 24,
-    },
   },
 });
 
@@ -45,18 +34,6 @@ declare module '@tanstack/react-router' {
     };
   }
 }
-
-declare global {
-  interface Window {
-    __TANSTACK_QUERY_CLIENT__: import('@tanstack/query-core').QueryClient;
-  }
-}
-window.__TANSTACK_QUERY_CLIENT__ = queryClient;
-
-const InnerApp = () => {
-  const auth = useAuth();
-  return <RouterProvider router={router} context={{ auth }} />;
-};
 const rootElement = document.getElementById('root');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
@@ -72,8 +49,10 @@ if (rootElement && !rootElement.innerHTML) {
           >
             <AuthProvider>
               <SettingsProvider>
-                <InnerApp />
-                <NotificationStyled />
+                <I18nextProvider i18n={i18next}>
+                  <InnerApp />
+                  <NotificationStyled />
+                </I18nextProvider>
               </SettingsProvider>
             </AuthProvider>
           </PersistQueryClientProvider>

@@ -4,15 +4,15 @@ import { ArrowLeft } from 'lucide-react';
 import { sidebarTab } from '../model/tab';
 
 export const Header = () => {
-  const [, useStore, useControll] = sidebarTab;
+  const [, useStore, , main] = sidebarTab;
   const current = useStore.useCurrentTab();
-  const { goPrev, mainPage } = useControll();
+  const goBack = useStore.useGoBack();
 
   return (
     <Drawer.Header bg={'black'}>
-      {current !== mainPage().name && (
+      {current !== main() && (
         <CloseButton
-          onClick={goPrev}
+          onClick={goBack}
           icon={<ColoredIcons accent Icon={ArrowLeft} />}
         />
       )}

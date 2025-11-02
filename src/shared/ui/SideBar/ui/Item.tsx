@@ -1,9 +1,17 @@
-import { Badge, Flex, Space, Text, useMantineTheme } from '@mantine/core';
-import { useAnimate } from 'motion/react';
-import { useEffectOnce } from 'react-use';
+import {
+  Badge,
+  Grid,
+  Text,
+  ThemeIcon,
+  useMantineTheme,
+  useMatches,
+} from '@mantine/core';
+import chroma from 'chroma-js';
+import { motion } from 'motion/react';
+import { If, Then } from 'react-if';
 import type { SideItemProps } from '../types/item.type';
-import { useId } from '@mantine/hooks';
-import { useSelected } from '../store/useSelected';
+import { useId } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
 import { useBorder } from '@/widgets/Settings';
 export const SideItem = ({
   children,
@@ -12,63 +20,50 @@ export const SideItem = ({
   onClick,
   ...props
 }: SideItemProps) => {
-  const bd = useBorder('0.1rem');
-  const [scope, animate] = useAnimate<HTMLDivElement>();
   const id = useId();
-  const { setSelected, id: selected } = useSelected();
+  const watches = useMediaQuery('(max-width: 250px)');
   const t = useMantineTheme();
-  useEffectOnce(() => {
-    if (!inDev) return;
-    const a = animate(
-      scope.current,
-      {
-        y: [0, 2, 0],
-      },
-      {
-        repeat: Infinity,
-        repeatType: 'loop',
-      }
-    );
-    return a.stop;
-  });
+  const MotionGridCol = motion.create(Grid.Col);
+  const MotionGrid = motion.create(Grid);
   return (
-    <Flex
+    <MotionGrid
+      key={id}
+      align="center"
       {...props}
-      gap={'md'}
-      onClick={(e) => {
-        setSelected(id);
-        onClick?.(e);
-      }}
-      p={'md'}
-      bg={selected === id ? t.colors.dark[9] : 'none'}
-      h={'3rem'}
-      direction={'column'}
-      mt={'md'}
-      bd={bd}
+      onClick={onClick}
       bdrs={'xl'}
-      justify={'center'}
-      style={{
-        position: 'relative',
-        ...(inDev
-          ? {
-              cursor: 'not-allowed',
-              pointerEvents: 'none',
-            }
-          : {
-              cursor: 'pointer',
-            }),
+      whileHover={{
+        background: chroma(t.white).luminance(0.01).css('hsl'),
       }}
     >
-      <Flex justify={'start'} gap={'md'} direction={'row'}>
-        {children}
+      {!watches && (
+        <MotionGridCol span={'content'}>
+          <ThemeIcon size={'xl'} autoContrast>
+            {children}
+          </ThemeIcon>
+        </MotionGridCol>
+      )}
+      <Grid.Col span={'auto'}>
         <Text>{text}</Text>
-        {inDev && (
-          <>
-            <Space style={{ flexGrow: 1 }} />
-            <Badge ref={scope}>В разработке</Badge>
-          </>
-        )}
-      </Flex>
-    </Flex>
+      </Grid.Col>
+      <If condition={inDev && !watches}>
+        <Then>
+          {(() => {
+            return (
+              <MotionGridCol
+                animate={{ y: [null, 2, 0] }}
+                transition={{
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                }}
+                span={'content'}
+              >
+                <Badge>В разработке</Badge>
+              </MotionGridCol>
+            );
+          })()}
+        </Then>
+      </If>
+    </MotionGrid>
   );
 };

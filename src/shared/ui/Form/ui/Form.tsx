@@ -1,10 +1,9 @@
-import { Flex, InputLabel, Loader, Text } from '@mantine/core';
+import { Flex, InputLabel, Loader, Text, TextInput } from '@mantine/core';
 import { useForm } from '@tanstack/react-form';
 
-import { getHotkeyHandler, useHotkeys } from '@mantine/hooks';
+import { getHotkeyHandler } from '@mantine/hooks';
 import type { FormEvent } from 'react';
 import { CustomMantineButton } from '../../Button';
-import { CustomMantineInput } from '../../Input';
 import type { FormProps } from '../types';
 
 export const Form = <O extends object>({
@@ -70,7 +69,7 @@ export const Form = <O extends object>({
                           }
                         )
                       ) : (
-                        <CustomMantineInput
+                        <TextInput
                           key={field.name}
                           w="inherit"
                           id={field.name}

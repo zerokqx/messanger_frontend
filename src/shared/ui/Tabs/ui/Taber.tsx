@@ -1,17 +1,15 @@
-import { Center, Tabs } from '@mantine/core';
-import { AnimatePresence, motion } from 'motion/react';
+import { Flex, Tabs } from '@mantine/core';
+import { motion } from 'motion/react';
 import { CustomMantineButton } from '../../Button';
 import { If } from '../../If';
+import { createTabStore } from '../model';
 import type {
   TaberProps,
   TaberTemplate,
   TaberTemplateReturn,
   Windows,
 } from '../types';
-import { createTabStore } from '../model';
-import type { UseControllerTaber } from '../types/useControllerTaber.type';
 import type { TaberButtons } from '../types/taberButton.type';
-import { useRef, type RefObject } from 'react';
 
 /**
  * `createTaber` — фабричная функция для создания системы вкладок на базе `@mantine/core/Tabs`.
@@ -39,31 +37,6 @@ export const createTaber = <T extends Windows>({
   initial,
 }: TaberProps<T>): TaberTemplateReturn<T> => {
   const useStore = createTabStore<T[number]>(initial);
-  const useControllerTaber: UseControllerTaber<T> = () => {
-    const currentTab = useStore.useCurrentTab();
-    const setCurrentTab = useStore.useSetCurrentTab();
-    const length = windows.length;
-
-    const currentIndex = windows.indexOf(currentTab);
-    const prev = (currentIndex - 1 + length) % length;
-    const next = (currentIndex + 1) % length;
-
-    const goPrev = () => {
-      setCurrentTab(windows[prev] as T[number]);
-    };
-    const goNext = () => {
-      setCurrentTab(windows[next] as T[number]);
-    };
-    const set = (key: T[number]) => {
-      setCurrentTab(key);
-    };
-    const mainPage = () => ({
-      index: windows.indexOf(windows[0]),
-      name: windows[0],
-    });
-    return { currentIndex, mainPage, prev, next, goPrev, goNext, set };
-  };
-
   const AnimatedPanel = motion.create(Tabs.Panel);
   const Panel: TaberTemplate<T>['Panel'] = ({ children, value, ...props }) => {
     return (
@@ -80,7 +53,9 @@ export const createTaber = <T extends Windows>({
         value={value}
         {...props}
       >
-        {children}
+        <Flex direction={'column'} gap={'xl'}>
+          {children}
+        </Flex>
       </AnimatedPanel>
     );
   };
@@ -98,15 +73,8 @@ export const createTaber = <T extends Windows>({
     );
   };
   const ResetButton: TaberButtons<T>['Reset'] = ({ children }) => {
-    const setCurrentTab = useStore.useSetCurrentTab();
-    return (
-      <CustomMantineButton
-        onClick={() => {
-          setCurrentTab(windows[0]);
-        }}
-        children={children}
-      />
-    );
+    const reset = useStore.useReset();
+    return <CustomMantineButton onClick={reset} children={children} />;
   };
   const Buttons: TaberButtons<T> = {
     GoTo: GoToButton,
@@ -123,15 +91,11 @@ export const createTaber = <T extends Windows>({
 
   const Taber: TaberTemplate<T> = ({ children }) => {
     const currentTab = useStore.useCurrentTab();
-    return (
-      <Tabs value={currentTab}>
-        <AnimatePresence mode="wait">{children}</AnimatePresence>
-      </Tabs>
-    );
+    return <Tabs value={currentTab}>{children}</Tabs>;
   };
 
   Taber.OnlyOnTab = OnlyOnTab;
   Taber.Panel = Panel;
 
-  return [Taber, useStore, useControllerTaber, Buttons];
+  return [Taber, useStore, Buttons, () => windows[0]];
 };

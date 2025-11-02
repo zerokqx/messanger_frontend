@@ -5,6 +5,7 @@ import type { Middleware } from 'openapi-fetch';
 export const authMiddleware: Middleware = {
   onRequest({ request }) {
     const { access } = useTokenStore.getState();
+    console.log(access)
     if (!useCheckAuth.check()) return new Response(null, { status: 401 });
     request.headers.set('Authorization', `Bearer ${access}`);
   },

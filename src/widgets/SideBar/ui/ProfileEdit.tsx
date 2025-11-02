@@ -1,14 +1,13 @@
+import { useProfilePut } from '@/features/profilePut';
+import { useAuth } from '@/shared/model/authProviderContext';
+import { DescText } from '@/shared/ui/Description/ui/DescText';
 import { Form } from '@/shared/ui/Form';
-import { Space, Text, Textarea, useMantineTheme } from '@mantine/core';
+import { useBorder } from '@/widgets/Settings';
+import { Space, Textarea, useMantineTheme } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { formOptions } from '@tanstack/react-form';
 import { usePutUserData } from '../lib/usePutUserData';
 import { sidebarTab } from '../model/tab';
-import { DescText } from '@/shared/ui/Description/ui/DescText';
-import { useBorder } from '@/widgets/Settings';
-import { useProfilePut } from '@/features/profilePut';
-import { notifications } from '@mantine/notifications';
-import { useAuth } from '@/shared/model/authProviderContext';
-import { useUserStore } from '@/entities/user';
 
 export const ProfileEdit = () => {
   const t = useMantineTheme();
@@ -16,8 +15,8 @@ export const ProfileEdit = () => {
   const { login, bio, fullName } = usePutUserData();
   const { mutate } = useProfilePut();
   const { user } = useAuth();
-  const [, , useControll] = sidebarTab;
-  const { goPrev } = useControll();
+  const [, useStore] = sidebarTab;
+  const goBack = useStore.useGoBack();
   const options = formOptions({
     defaultValues: {
       bio,
@@ -36,7 +35,7 @@ export const ProfileEdit = () => {
               message: 'Профиль изменен',
             });
 
-            goPrev();
+            goBack();
           },
         }
       );
