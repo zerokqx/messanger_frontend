@@ -1,4 +1,4 @@
-import { authClient } from '@/shared/api';
+import { authClient, queryClient } from '@/shared/api';
 import { useAuth } from '@/shared/model/authProviderContext';
 import { notifications } from '@mantine/notifications';
 
@@ -10,11 +10,26 @@ import { notifications } from '@mantine/notifications';
 export const useLogin = () => {
   const setToken = useAuth().token.setToken;
   const mutate = authClient()().useMutation('post', '/login', {
-    onSuccess: ({ data }) => {
-      setToken(data.access_token);
+    onSuccess: (response) => {
+      console.log('Full response:', response); // Посмотри что тут!
+
+      // Безопасная проверка
+      if (!response.data.access_token) {
+        console.error('Token not found in response!', response);
+        notifications.show({
+          title: 'Ошибка',
+          message: 'Токен не получен от сервера',
+          color: 'red',
+        });
+        return;
+      }
+
+      setToken(response.data.access_token);
+      window.location.reload();
     },
 
-    onError: () => {
+    onError: (error) => {
+      console.log(error);
       notifications.show({
         title: 'Опа ошибка!',
         message:

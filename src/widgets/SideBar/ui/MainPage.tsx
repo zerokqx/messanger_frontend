@@ -5,16 +5,17 @@ import { Video, MessageCircle, User, Cog } from 'lucide-react';
 import { sidebarTab } from '../model/tab';
 import { useInject } from '@/shared/providers/inject/model/useInject';
 import type { SideBarLayoutProp } from '../types/sideBarLayout.type';
+import { useNotice } from '@/shared/ui/Notice/lib';
+import { Group, ThemeIcon } from '@mantine/core';
 
 export const MainPage = () => {
-  const [Taber, , useControl] = sidebarTab;
-  const { set } = useControl();
-  const { settings, navigate } =
-    useInject<ReturnType<SideBarLayoutProp['inject']>>()();
+  const [Taber, useStore] = sidebarTab;
+  const set = useStore.useSetCurrentTab();
+  const { navigate } = useInject<ReturnType<SideBarLayoutProp['inject']>>()();
   return (
     <Taber.Panel value="main">
       <SideBar.Item inDev text="Видео">
-        <ColoredIcons Icon={Video} />
+        <Video />
       </SideBar.Item>
       <SideBar.Item
         onClick={() => {
@@ -22,7 +23,7 @@ export const MainPage = () => {
         }}
         text="Чаты"
       >
-        <ColoredIcons Icon={MessageCircle} />
+        <MessageCircle />
       </SideBar.Item>
       <SideBar.Item
         onClick={() => {
@@ -30,10 +31,15 @@ export const MainPage = () => {
         }}
         text="Профиль"
       >
-        <ColoredIcons Icon={User} />
+        <User />
       </SideBar.Item>
-      <SideBar.Item text="Настройки" onClick={settings}>
-        <ColoredIcons Icon={Cog} />
+      <SideBar.Item
+        text="Настройки"
+        onClick={() => {
+          set('settings');
+        }}
+      >
+        <Cog />
       </SideBar.Item>
     </Taber.Panel>
   );

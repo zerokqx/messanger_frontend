@@ -13,6 +13,7 @@ import {
   useRouter,
 } from '@tanstack/react-router';
 import { Modals } from '../ui/Modals';
+import { Notice } from '@/shared/ui/Notice';
 const RootLayout = () => {
   const settings = useModalGlobal((s) => s.pinOpen)('settings');
   const navigate = useRouter().navigate;

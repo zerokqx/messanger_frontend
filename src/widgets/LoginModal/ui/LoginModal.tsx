@@ -2,12 +2,10 @@ import { useLogin } from '@/features/login';
 import { loginFormSchema } from '@/features/login/model/loginSchema';
 import { useModalGlobal } from '@/shared/model/useModalStore';
 import { useCloseOpen } from '@/shared/model/useModalStore/lib/useCloseOpen';
-import { Checkbox } from '@/shared/ui/Checkbox';
 import { Form } from '@/shared/ui/Form';
-import { CustomMantinePassword } from '@/shared/ui/Input/ui/CustomMantinePassword';
 import { Modal } from '@/shared/ui/Modal';
 import { NotHaveAccount } from '@/shared/ui/NotHaveAccount';
-import { Flex, InputLabel } from '@mantine/core';
+import { Checkbox, Flex, InputLabel, PasswordInput } from '@mantine/core';
 import { formOptions } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
 
@@ -15,7 +13,7 @@ export const LoginModal = () => {
   const close = useModalGlobal.usePinClose()('login');
   const swapMode = useCloseOpen('login', 'register');
   const router = useRouter();
-  const { mutate } = useLogin();
+  const { mutate, error } = useLogin();
   const options = formOptions({
     defaultValues: {
       userName: '',
@@ -26,6 +24,7 @@ export const LoginModal = () => {
     },
 
     onSubmit: ({ value }) => {
+      console.log(value);
       mutate(
         {
           body: {
@@ -40,6 +39,7 @@ export const LoginModal = () => {
           },
         }
       );
+      console.log('Error:', error); // Есть ли ошибка?
     },
   });
   return (
@@ -58,7 +58,7 @@ export const LoginModal = () => {
             label: false,
             component: (f, fSet) => (
               <Flex direction={'row'} gap={'md'}>
-                <Checkbox />
+                <Checkbox/>
                 <InputLabel> {fSet.fieldName}</InputLabel>
               </Flex>
             ),
@@ -68,10 +68,7 @@ export const LoginModal = () => {
             name: 'password',
             placeholder: 'Пароль',
             component: (field, fSet, props) => (
-              <CustomMantinePassword
-                {...props}
-                placeholder={fSet.placeholder}
-              />
+              <PasswordInput {...props} placeholder={fSet.placeholder} />
             ),
           },
         ]}

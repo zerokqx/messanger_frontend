@@ -14,19 +14,31 @@ export const createTabStore = <T extends Lowercase<string>>(
   ...args: Parameters<CreateTabStoreFunction<T>>
 ): ReturnType<CreateTabStoreFunction<T>> => {
   const [initial] = args;
-  const useTabStoreBase = create<CreateTabStore<T>>()((set, get, store) => ({
+
+  const useTabStoreBase = create<CreateTabStore<T>>()((set, get) => ({
     currentTab: initial,
-    prevTab: null,
+    history: [initial],
     setCurrentTab: (tab) => {
-      if (tab === get().currentTab) return;
-      set((state) => ({
-        prevTab: state.currentTab,
+      const { currentTab, history } = get();
+      if (tab === currentTab) return;
+      set({
         currentTab: tab,
+        history: [...history, tab],
+      });
+    },
+    goBack: () => {
+      const { history } = get();
+      if (history.length < 2) return;
+      const prev = history[history.length - 2];
+      set((state) => ({
+        currentTab: prev,
+        history: state.history.slice(0, -1),
       }));
     },
     reset: () => {
-      set(store.getInitialState());
+      set({ currentTab: initial, history: [initial] });
     },
   }));
+
   return createSelectorHooks(useTabStoreBase);
 };

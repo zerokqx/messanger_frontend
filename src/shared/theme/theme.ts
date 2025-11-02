@@ -1,13 +1,16 @@
 import {
   AppShell,
   Button,
+  Checkbox,
   createTheme,
   Drawer,
   Loader,
   PasswordInput,
+  Select,
   Text,
   Textarea,
   TextInput,
+  ThemeIcon,
   type MantineColorsTuple,
 } from '@mantine/core';
 
@@ -145,6 +148,13 @@ export const theme = createTheme({
       defaultProps: {
         radius: 'md',
         variant: 'filled',
+        styles(theme) {
+          return {
+            input: {
+              background: theme.colors.dark[9],
+            },
+          };
+        },
       },
     }),
     Text: Text.extend({
@@ -177,6 +187,42 @@ export const theme = createTheme({
         },
 
         bg: 'black',
+      },
+    }),
+    Checkbox: Checkbox.extend({
+      defaultProps: {
+        size: 'md',
+        styles: {
+          input: {
+            background: 'black',
+          },
+        },
+        // styles(theme, props, ctx) {
+        //   return {
+        //     input: {
+        //       background: theme.black,
+        //     },
+        //   };
+        // },
+      },
+    }),
+    ThemeIcon: ThemeIcon.extend({
+      defaultProps: {
+        variant: 'transparent',
+      },
+    }),
+    Select: Select.extend({
+      defaultProps: {
+        styles(theme, props, ctx) {
+          return {
+            input: {
+              background: theme.black,
+            },
+            dropdown: {
+              background: theme.black,
+            },
+          };
+        },
       },
     }),
   },

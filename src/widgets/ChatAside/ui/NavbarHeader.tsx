@@ -1,12 +1,12 @@
 import { useSearch, useSearchStore } from '@/features/search';
 import { useAuth } from '@/shared/model/authProviderContext';
-import { CustomMantineInput } from '@/shared/ui/Input';
 import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
 import { useBorder } from '@/widgets/Settings';
 import {
   Burger,
   CloseButton,
   Flex,
+  TextInput,
   useMantineTheme,
   type TextInputProps,
 } from '@mantine/core';
@@ -28,13 +28,10 @@ export const NavbarHeader = ({
   const timer = useRef<number | null>(null);
 
   const setQuery = useSearchStore((s) => s.setQuery);
-  const [Taber, useStore, useControll, Buttons] = assideTaber;
-  const { prevTab } = useStore();
-  const currentTab = useStore.useCurrentTab();
-  const { goPrev } = useControll();
+  const [Taber, useStore] = assideTaber;
+  const goBack = useStore.useGoBack();
+  const set = useStore.useSetCurrentTab();
   useSearch();
-
-  useLogger('Active Tab', { currentTab, prevTab });
   return (
     <Flex
       bg={t.black}
@@ -49,7 +46,7 @@ export const NavbarHeader = ({
       }}
     >
       <Taber.OnlyOnTab on="search">
-        <CloseButton onClick={goPrev} />
+        <CloseButton onClick={goBack} />
       </Taber.OnlyOnTab>
       <Taber.OnlyOnTab on="chats">
         <Burger
@@ -60,7 +57,7 @@ export const NavbarHeader = ({
           aria-label="Toggle SideBar"
         />
       </Taber.OnlyOnTab>
-      <CustomMantineInput
+      <TextInput
         disabled={!isAuth}
         onChange={(e) => {
           if (timer.current) timer.current = null;

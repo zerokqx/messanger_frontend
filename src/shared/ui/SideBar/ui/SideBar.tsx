@@ -15,6 +15,7 @@ export const SideBar: SideBarCompouned = ({ children }) => {
     <>
       <SelecedProvider>
         <Drawer
+          keepMounted
           closeButtonProps={{ 'aria-label': 'Close drawer' }}
           withCloseButton={false}
           transitionProps={{

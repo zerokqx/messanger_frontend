@@ -39,12 +39,20 @@ export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
               label: true,
               name: 'currentPassword',
               placeholder: 'Текущий пароль',
+
+              component: (field, fSet, props) => (
+                <PasswordInput {...props} placeholder={fSet.placeholder} />
+              ),
             },
             {
               fieldName: 'Повторите пороль',
               label: true,
               name: 'newPassword',
               placeholder: 'Новый пороль',
+
+              component: (field, fSet, props) => (
+                <PasswordInput {...props} placeholder={fSet.placeholder} />
+              ),
             },
           ]}
         />

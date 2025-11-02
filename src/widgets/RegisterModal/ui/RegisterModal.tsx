@@ -1,8 +1,8 @@
 import { registerSchema, useRegister } from '@/features/register';
 import { useModalGlobal } from '@/shared/model/useModalStore';
 import { Form } from '@/shared/ui/Form';
-import { CustomMantinePassword } from '@/shared/ui/Input/ui/CustomMantinePassword';
 import { Modal } from '@/shared/ui/Modal';
+import { PasswordInput } from '@mantine/core';
 import { formOptions } from '@tanstack/react-form';
 
 export const RegisterModal = () => {
@@ -57,10 +57,7 @@ export const RegisterModal = () => {
 
             component(field, fSet, props) {
               return (
-                <CustomMantinePassword
-                  placeholder={fSet.placeholder}
-                  {...props}
-                />
+                <PasswordInput placeholder={fSet.placeholder} {...props} />
               );
             },
           },
@@ -72,7 +69,7 @@ export const RegisterModal = () => {
             placeholder: 'Повторите пороль',
             component(field, fSet) {
               return (
-                <CustomMantinePassword
+                <PasswordInput
                   id={field.name}
                   name={field.name}
                   value={field.state.value as string}

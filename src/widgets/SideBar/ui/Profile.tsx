@@ -1,14 +1,14 @@
 import { ProfileDataDisplay } from '@/entities/user';
 import { CustomMantineButton } from '@/shared/ui/Button';
-import { Center, Space } from '@mantine/core';
+import { Button, Center, Space } from '@mantine/core';
 import { SquarePen } from 'lucide-react';
 import { sidebarTab } from '../model/tab';
 import { motion } from 'motion/react';
 
 export const Profile = () => {
-  const [Taber, , useControll] = sidebarTab;
-  const { set } = useControll();
-  const MotionButton = motion.create(CustomMantineButton);
+  const [Taber, useStore] = sidebarTab;
+  const set = useStore.useSetCurrentTab();
+  const MotionButton = motion.create(Button);
   return (
     <Taber.Panel value="profile">
       <ProfileDataDisplay />

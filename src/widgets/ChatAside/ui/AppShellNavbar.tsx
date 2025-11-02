@@ -8,8 +8,8 @@ import { SearchWindow } from './SearchWindow';
 export const AppShellNavbarWidget = () => {
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
-  const [Taber, , useControl] = assideTaber;
-  const controller = useControl();
+  const [Taber, useStore] = assideTaber;
+  const set = useStore.useSetCurrentTab();
   useLogger('Asside Taber');
   return (
     <AppShellNavbar
@@ -25,7 +25,7 @@ export const AppShellNavbarWidget = () => {
       <NavbarHeader
         input={{
           onFocus: () => {
-            controller.set('search');
+            set('search');
           },
         }}
       />
