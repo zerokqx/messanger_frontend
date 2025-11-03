@@ -12,7 +12,7 @@ import { sidebarTab } from '../model/tab';
 export const ProfileEdit = () => {
   const t = useMantineTheme();
   const bd = useBorder('.1rem');
-  const { login, bio, fullName } = usePutUserData();
+  const {  bio  } = usePutUserData();
   const { mutate } = useProfilePut();
   const { user } = useAuth();
   const [, useStore] = sidebarTab;
@@ -67,7 +67,7 @@ export const ProfileEdit = () => {
         ]}
       />
       <Space h={'1rem'} />
-      <DescText p={'md'} bdrs={'xl'} bd={bd} c={t.colors.dark[2]} size="sm">
+      <DescText p={'md'} bdrs={'xl'} bd={bd} size="sm">
         Можно использовать a-z, 0-9 и подчёркивания. Минимальная длина — 3
         символа, максимальная — 32. Логин не может начинаться с подчёркивания
         или содержать двойные подчёркивания.

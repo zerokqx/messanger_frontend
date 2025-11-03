@@ -1,12 +1,8 @@
-import { IsAuth } from '@/features/checkAuth/ui';
-import { ColoredIcons } from '@/shared/ui/ColoredIcon';
 import { SideBar } from '@/shared/ui/SideBar';
 import { Video, MessageCircle, User, Cog } from 'lucide-react';
 import { sidebarTab } from '../model/tab';
 import { useInject } from '@/shared/providers/inject/model/useInject';
 import type { SideBarLayoutProp } from '../types/sideBarLayout.type';
-import { useNotice } from '@/shared/ui/Notice/lib';
-import { Group, ThemeIcon } from '@mantine/core';
 
 export const MainPage = () => {
   const [Taber, useStore] = sidebarTab;

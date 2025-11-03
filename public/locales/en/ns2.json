@@ -1,0 +1,22 @@
+{
+  "title": "Privacy settings",
+
+  "is_searchable": "Can users find you",
+  "allow_message_forwarding": "Allow message forwarding",
+  "allow_messages_from_non_contacts": "Accept messages from strangers",
+  "show_profile_photo_to_non_contacts": "Show photo to non‑contacts",
+  "show_bio_to_non_contacts": "Show bio to non‑contacts",
+  "show_stories_to_non_contacts": "Show stories to non‑contacts",
+  "allow_server_chats": "Allow chats to be stored on the server",
+  "force_auto_delete_messages_in_private": "Force auto‑delete in private chats",
+
+  "last_seen_visibility": "Who can see 'last seen'",
+  "public_invite_permission": "Who can invite to public groups",
+  "group_invite_permission": "Who can invite to conversations",
+  "call_permission": "Who can call you",
+  "max_message_auto_delete_seconds": "Maximum message auto‑delete timer",
+  "auto_delete_after_days": "Auto‑delete account after X days",
+  "everyone": "Everyone",
+  "contacts": "Contacts",
+  "nobody": "Nobody"
+}

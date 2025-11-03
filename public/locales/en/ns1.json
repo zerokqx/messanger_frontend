@@ -1,0 +1,11 @@
+{
+  "button": {
+    "profile_settings": "Profile settings"
+  },
+  "days_zero": "",
+  "days_one": "{{count}} day",
+  "days_other": "",
+  "hours_zero": "",
+  "hours_one": "{{count}} hour",
+  "hours_other": ""
+}

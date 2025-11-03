@@ -1,0 +1,15 @@
+{
+  "button": {
+    "profile_settings": "Настройки профиля"
+  },
+  "days_zero": "",
+  "days_one": "{{count}} День",
+  "days_few": "{{count}} Дня",
+  "days_many": "{{count}} Дней",
+  "days_other": "days",
+  "hours_zero": "",
+  "hours_one": "{{count}} Час",
+  "hours_few": "{{count}} Часа",
+  "hours_many": "{{count}} Часов",
+  "hours_other": "hours"
+}

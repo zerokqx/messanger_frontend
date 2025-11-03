@@ -20,8 +20,7 @@ export default defineConfig({
     react({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
-      },
-    }),
+      }  }),
 
     tailwindcss(),
 

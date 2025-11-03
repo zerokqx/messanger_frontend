@@ -27,5 +27,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "i18next.d.ts"]
+  "include": ["src", "i18next.d.ts", "public/locales"]
 }

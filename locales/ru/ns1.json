@@ -1,0 +1,31 @@
+{
+  "allow_message_forwarding": "allow_message_forwarding",
+  "allow_messages_from_non_contacts": "allow_messages_from_non_contacts",
+  "allow_server_chats": "allow_server_chats",
+  "auto_delete_after_days": "auto_delete_after_days",
+  "button": {
+    "profile_settings": "button.profile_settings"
+  },
+  "call_permission": "call_permission",
+  "contacts": "contacts",
+  "days_one": "days",
+  "days_few": "days",
+  "days_many": "days",
+  "days_other": "days",
+  "everyone": "everyone",
+  "force_auto_delete_messages_in_private": "force_auto_delete_messages_in_private",
+  "group_invite_permission": "group_invite_permission",
+  "hours_one": "hours",
+  "hours_few": "hours",
+  "hours_many": "hours",
+  "hours_other": "hours",
+  "is_searchable": "is_searchable",
+  "last_seen_visibility": "last_seen_visibility",
+  "max_message_auto_delete_seconds": "max_message_auto_delete_seconds",
+  "nobody": "nobody",
+  "public_invite_permission": "public_invite_permission",
+  "show_bio_to_non_contacts": "show_bio_to_non_contacts",
+  "show_profile_photo_to_non_contacts": "show_profile_photo_to_non_contacts",
+  "show_stories_to_non_contacts": "show_stories_to_non_contacts",
+  "title": "title"
+}

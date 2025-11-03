@@ -1,18 +1,10 @@
-import {
-  Badge,
-  Grid,
-  Text,
-  ThemeIcon,
-  useMantineTheme,
-  useMatches,
-} from '@mantine/core';
+import { Badge, Grid, Text, ThemeIcon, useMantineTheme } from '@mantine/core';
 import chroma from 'chroma-js';
 import { motion } from 'motion/react';
 import { If, Then } from 'react-if';
 import type { SideItemProps } from '../types/item.type';
 import { useId } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
-import { useBorder } from '@/widgets/Settings';
 export const SideItem = ({
   children,
   text,
@@ -51,7 +43,7 @@ export const SideItem = ({
           {(() => {
             return (
               <MotionGridCol
-                animate={{ y: [null, 2, 0] }}
+                pr={'md'}
                 transition={{
                   repeat: Infinity,
                   repeatType: 'loop',

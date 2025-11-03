@@ -20,9 +20,8 @@ function useCheckAuth(): boolean {
 }
 
 useCheckAuth.check = (): boolean => {
-  const { validateToken, clearStore } = useTokenStore.getState();
+  const { validateToken } = useTokenStore.getState();
   const statusToken = validateToken();
-  if (!statusToken) clearStore();
   return statusToken;
 };
 
