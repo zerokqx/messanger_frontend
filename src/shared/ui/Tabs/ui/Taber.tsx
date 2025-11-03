@@ -1,4 +1,4 @@
-import { Flex, Tabs } from '@mantine/core';
+import { Flex, Stack, Tabs } from '@mantine/core';
 import { motion } from 'motion/react';
 import { CustomMantineButton } from '../../Button';
 import { If } from '../../If';
@@ -51,9 +51,7 @@ export const createTaber = <T extends Windows>({
         value={value}
         {...props}
       >
-        <Flex direction={'column'} gap={'xl'}>
-          {children}
-        </Flex>
+        <Stack>{children}</Stack>
       </AnimatedPanel>
     );
   };

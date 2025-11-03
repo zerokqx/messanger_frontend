@@ -7,7 +7,9 @@ export const DirtyButton = ({ ...props }: ButtonProps) => {
   return (
     <form.Subscribe
       selector={(state) => [state.isDirty]}
-      children={([isDirty]) => isDirty && <Button type="submit" {...props} />}
+      children={([isDirty]) =>
+        isDirty && <Button type="submit" {...props}></Button>
+      }
     />
   );
 };

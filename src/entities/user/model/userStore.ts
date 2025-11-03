@@ -60,7 +60,7 @@ const useUserStoreBase = create<UserStore>()(
       {
         name: 'user-storage',
         skipHydration: true,
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => localforage),
       }
     )
   )

@@ -1,16 +1,18 @@
 import { useBorder } from '@/widgets/Settings';
-import { Drawer, useMantineTheme } from '@mantine/core';
+import { Drawer, LoadingOverlay, useMantineTheme } from '@mantine/core';
 import { useSideBarStore } from '../store/useMenuStore';
 import type { SideBarCompouned } from '../types/sideBar.type';
 import { InfoBlock } from './InfoBlock';
 import { SideItem } from './Item';
 import { SelecedProvider } from './SelectedContext';
+import { useLoaderStore } from '../model';
 
 export const SideBar: SideBarCompouned = ({ children }) => {
   const t = useMantineTheme();
   const bd = useBorder('0.1rem');
   const isOpen = useSideBarStore.useIsOpen();
   const close = useSideBarStore.useClose();
+  const load = useLoaderStore.useIsLoading();
   return (
     <>
       <SelecedProvider>
@@ -32,6 +34,16 @@ export const SideBar: SideBarCompouned = ({ children }) => {
           overlayProps={{ backgroundOpacity: 0.5 }}
           onClose={close}
         >
+          <LoadingOverlay
+            visible={load}
+            overlayProps={{
+              radius: 'xs',
+              blur: 2,
+              bg: 'black',
+              opacity: 0.3,
+            }}
+          />
+
           {children}
         </Drawer>
       </SelecedProvider>

@@ -20,7 +20,7 @@ const RootLayout = () => {
   return (
     <>
       <AppShell>
-        <AppShell.Main>
+        <AppShell.Main >
           <Outlet />
           <IsAuth status={false}>
             <LoginBadge />
