@@ -1,33 +1,16 @@
-import { useTokenStore } from '@/entities/token/@x/user';
-import { useCheckAuth } from '@/features/checkAuth';
-import { authClientNotQuery } from '@/shared/api/clients/authClient';
+import { refreshTokenWithoutQuery } from '@/features/refresh/api/refreshTokenWitoutQuery';
+import { authHeaderSet } from '@/shared/api';
 import type { Middleware } from 'openapi-fetch';
 export const authMiddleware: Middleware = {
   onRequest({ request }) {
-    const { access } = useTokenStore.getState();
-    console.log(access)
-    if (!useCheckAuth.check()) return new Response(null, { status: 401 });
-    request.headers.set('Authorization', `Bearer ${access}`);
+    return authHeaderSet(request);
   },
-  onResponse: async ({ request, response }) => {
-    const { setToken, access } = useTokenStore.getState();
+  async onResponse({ response, request }) {
     if (response.status === 401) {
-      const {
-        response: { ok },
-        data,
-      } = await authClientNotQuery(authMiddleware).POST('/token/refresh', {
-        body: {
-          access_token: access,
-        },
-      });
-
-      if (ok && data?.data.access_token) {
-        setToken(data.data.access_token);
-        const cloned = request.clone();
-        cloned.headers.set('Authorization', `Bearer ${data.data.access_token}`);
-        return await fetch(cloned);
-      }
-      useTokenStore.getState().clearStore();
+      await refreshTokenWithoutQuery();
+      const newRequest = request.clone();
+      return await fetch(authHeaderSet(newRequest));
     }
+    return response;
   },
 };

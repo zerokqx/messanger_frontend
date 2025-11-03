@@ -43,12 +43,10 @@ export const createTaber = <T extends Windows>({
       <AnimatedPanel
         key={value}
         initial={{
-          opacity: 0,
-          y: '-5%',
+          x: '-5%',
         }}
         whileInView={{
-          opacity: 1,
-          y: '0%',
+          x: '0%',
         }}
         value={value}
         {...props}

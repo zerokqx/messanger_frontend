@@ -6,7 +6,7 @@ export const DescText = ({
   ...props
 }: { children: ReactNode } & TextProps) => {
   return (
-    <Text fw={100} c={'dark'} {...props}>
+    <Text fw={100} c={'dark.3'} {...props}>
       {children}
     </Text>
   );

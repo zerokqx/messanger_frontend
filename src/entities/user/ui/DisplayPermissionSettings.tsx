@@ -1,86 +1,162 @@
+import { useProfilePut } from '@/features/profilePut';
 import { useAuth } from '@/shared/model/authProviderContext';
-import { Checkbox, Select, type ComboboxItem } from '@mantine/core';
-import { map } from 'lodash';
+import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
+import { Stack } from '@mantine/core';
 import { memo, useMemo } from 'react';
-import { useGetSettings } from '../lib';
-import type { TUserState } from '../types/userStore.type';
 import { useTranslation } from 'react-i18next';
-
 export const DisplayPermissionSettings = memo(() => {
-  const { t } = useTranslation('ns1');
-  const settings = useGetSettings();
+  const { t } = useTranslation(['ns1', 'ns2', 'ns3']);
+  const { mutate } = useProfilePut();
   const permissions = useAuth((s) => s.user.profile_permissions);
-  const editPermission = useAuth((s) => s.user.editPermission);
+  const form = useAppForm({
+    defaultValues: permissions,
+    onSubmit: ({ value }) => {
+      console.log(value);
+      mutate({
+        body: {
+          profile_permissions: value,
+        },
+      });
+    },
+  });
 
-  // Конфигурация для каждого поля
-  const selectConfig = useMemo(() => {
-    const everyoneContactsNobody: ComboboxItem[] = [
-      { label: 'Все', value: '0' },
-      { label: 'Контакты', value: '1' },
-      { label: 'Никто', value: '2' },
+  const selectData = useMemo(() => {
+    const everyoneContactsNobody = [
+      { label: t('ns2:everyone'), value: '0' },
+      { label: t('ns2:contacts'), value: '1' },
+      { label: t('ns2:nobody'), value: '2' },
     ];
 
-    const hours = map([2, 8, 12, 24], (item) => ({
-      label: t('hours', { count: item }),
-      value: (item * 3600).toString(), // переводим в секунды
+    const hoursValues = [2, 8, 12, 24];
+    const hours = hoursValues.map((hour) => ({
+      label: t('hours', { count: hour }),
+      value: String(hour * 3600),
     }));
 
-    const months = map([12, 24, 30], (month) => ({
-      label: t('months', { count: month }),
-      value: month.toString(),
-    }));
-
-    const days = map([1, 7, 14, 30, 60, 90, 180, 365], (day) => ({
+    const daysValues = [1, 7, 14, 30, 60, 90, 180, 365];
+    const days = daysValues.map((day) => ({
       label: t('days', { count: day }),
-      value: day.toString(),
+      value: String(day),
     }));
 
-    // Маппинг поля → данные для селекта
-    return {
-      last_seen_visibility: everyoneContactsNobody,
-      public_invite_permission: everyoneContactsNobody,
-      group_invite_permission: everyoneContactsNobody,
-      call_permission: everyoneContactsNobody,
-      max_message_auto_delete_seconds: hours,
-      auto_delete_after_days: days,
-    } as const;
+    return { everyoneContactsNobody, hours, days };
   }, [t]);
 
-  return settings.map(({ key, type, label }) => {
-    const typedKey = key as keyof TUserState['profile_permissions'];
+  return (
+    <form.AppForm>
+      <form.Form>
+        <Stack gap="md">
+          <form.Title text={t('ns2:title')} />
 
-    if (type === 'checkbox') {
-      return (
-        <Checkbox
-          label={label}
-          checked={permissions[typedKey] as boolean}
-          key={key}
-          onChange={(e) => {
-            editPermission({ [key]: e.target.checked });
-          }}
-        />
-      );
-    }
+          {/* Чекбоксы */}
+          <form.AppField name="is_searchable">
+            {(field) => <field.Checkbox label={t('ns2:is_searchable')} />}
+          </form.AppField>
 
-    // Проверяем, есть ли для этого поля данные селекта
-    if (typedKey in selectConfig) {
-      const data = selectConfig[typedKey as keyof typeof selectConfig];
-      return (
-        <Select
-          st={{
-            userSelect:'none'
-          }}
-          label={label}
-          data={data}
-          key={key}
-          value={String(permissions[typedKey])}
-          onChange={(value) => {
-            editPermission({ [typedKey]: Number(value) });
-          }}
-        />
-      );
-    }
+          <form.AppField name="allow_message_forwarding">
+            {(field) => (
+              <field.Checkbox label={t('ns2:allow_message_forwarding')} />
+            )}
+          </form.AppField>
 
-    return null;
-  });
+          <form.AppField name="allow_messages_from_non_contacts">
+            {(field) => (
+              <field.Checkbox
+                label={t('ns2:allow_messages_from_non_contacts')}
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="show_profile_photo_to_non_contacts">
+            {(field) => (
+              <field.Checkbox
+                label={t('ns2:show_profile_photo_to_non_contacts')}
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="show_bio_to_non_contacts">
+            {(field) => (
+              <field.Checkbox label={t('ns2:show_bio_to_non_contacts')} />
+            )}
+          </form.AppField>
+
+          <form.AppField name="show_stories_to_non_contacts">
+            {(field) => (
+              <field.Checkbox label={t('ns2:show_stories_to_non_contacts')} />
+            )}
+          </form.AppField>
+
+          <form.AppField name="allow_server_chats">
+            {(field) => <field.Checkbox label={t('ns2:allow_server_chats')} />}
+          </form.AppField>
+
+          <form.AppField name="force_auto_delete_messages_in_private">
+            {(field) => (
+              <field.Checkbox
+                label={t('ns2:force_auto_delete_messages_in_private')}
+              />
+            )}
+          </form.AppField>
+
+          {/* Селекты */}
+          <form.AppField name="last_seen_visibility">
+            {(field) => (
+              <field.Select
+                label={t('ns2:last_seen_visibility')}
+                data={selectData.everyoneContactsNobody}
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="public_invite_permission">
+            {(field) => (
+              <field.Select
+                label={t('ns2:public_invite_permission')}
+                data={selectData.everyoneContactsNobody}
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="group_invite_permission">
+            {(field) => (
+              <field.Select
+                label={t('ns2:group_invite_permission')}
+                data={selectData.everyoneContactsNobody}
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="call_permission">
+            {(field) => (
+              <field.Select
+                label={t('ns2:call_permission')}
+                data={selectData.everyoneContactsNobody}
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="max_message_auto_delete_seconds">
+            {(field) => (
+              <field.Select
+                label={t('ns2:max_message_auto_delete_seconds')}
+                data={selectData.hours}
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="auto_delete_after_days">
+            {(field) => (
+              <field.Select
+                label={t('ns2:auto_delete_after_days')}
+                data={selectData.days}
+              />
+            )}
+          </form.AppField>
+        </Stack>
+
+        <form.DirtyButton>{t('ns3:save')}</form.DirtyButton>
+      </form.Form>
+    </form.AppForm>
+  );
 });

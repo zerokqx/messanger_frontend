@@ -192,18 +192,13 @@ export const theme = createTheme({
     Checkbox: Checkbox.extend({
       defaultProps: {
         size: 'md',
-        styles: {
-          input: {
-            background: 'black',
-          },
+        styles(theme, props, ctx) {
+          return {
+            input: {
+              background: theme.black,
+            },
+          };
         },
-        // styles(theme, props, ctx) {
-        //   return {
-        //     input: {
-        //       background: theme.black,
-        //     },
-        //   };
-        // },
       },
     }),
     ThemeIcon: ThemeIcon.extend({

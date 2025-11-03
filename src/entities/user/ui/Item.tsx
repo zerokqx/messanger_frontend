@@ -22,12 +22,7 @@ export const DisplayItem = ({
 }: DisplayItemProp) => {
   if (!display) return null;
   return (
-    <WithIcon
-      onClick={onClick}
-      themeIconProps={{ variant: 'transparent' }}
-      {...withIconProp}
-      icon={icon}
-    >
+    <WithIcon onClick={onClick} {...withIconProp} icon={icon}>
       <Description {...descProp} desc={descText}>
         <Text>{display}</Text>
       </Description>
