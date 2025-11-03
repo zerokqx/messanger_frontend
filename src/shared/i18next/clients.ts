@@ -13,5 +13,8 @@ await i18next
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
+
   });
+
 export default i18next;
+

@@ -9,7 +9,7 @@ export const Header = () => {
   const goBack = useStore.useGoBack();
 
   return (
-    <Drawer.Header bg={'black'}>
+    <Drawer.Header bg={'none'}>
       {current !== main() && (
         <CloseButton
           onClick={goBack}
