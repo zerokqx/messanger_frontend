@@ -8,6 +8,7 @@ import { Profile } from './Profile';
 import { ProfileEdit } from './ProfileEdit';
 import { Settings } from './SettingsTab';
 import { ProfileSettingsTab } from './ProfileSettingsTab';
+import { Drawer } from '@mantine/core';
 
 export const SideBarLayout = ({ inject }: SideBarLayoutProp) => {
   const [Taber] = sidebarTab;

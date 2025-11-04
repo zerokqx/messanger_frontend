@@ -1,7 +1,4 @@
 {
-  "button": {
-    "profile_settings": "Настройки профиля"
-  },
   "days_zero": "",
   "days_one": "{{count}} День",
   "days_few": "{{count}} Дня",

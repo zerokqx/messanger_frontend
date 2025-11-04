@@ -14,9 +14,10 @@ export const useMe = () => {
     '/me',
     {},
     {
-      staleTime: 2 * 1000,
+      staleTime: 60 * 1000,
       retry: 3,
       enabled: isAuth,
+      refetchOnWindowFocus: false,
     }
   );
   useEffect(() => {

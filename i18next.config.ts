@@ -8,6 +8,6 @@ export default defineConfig({
   },
   extract: {
     input: 'src/**/*.{ts,tsx}',
-    output: 'locales/{{language}}/{{namespace}}.json',
+    output: './public/locales/{{language}}/{{namespace}}.json',
   },
 });
