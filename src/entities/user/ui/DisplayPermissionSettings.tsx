@@ -1,7 +1,9 @@
+import { catchAndChange } from '@/entities/lib/permissionsModificate';
 import { useProfilePut } from '@/features/profilePut';
 import { useAuth } from '@/shared/model/authProviderContext';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
 import { useLoaderStore } from '@/shared/ui/SideBar';
+import { useQueryClient } from '@tanstack/react-query';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 export const DisplayPermissionSettings = memo(() => {
@@ -10,22 +12,34 @@ export const DisplayPermissionSettings = memo(() => {
     'plurarData',
     'buttonLabels',
   ]);
+
+  const queryClient = useQueryClient();
   const { mutate } = useProfilePut();
   const permissions = useAuth((s) => s.user.profile_permissions);
+  const modPerm = catchAndChange(permissions, 'number', (_, v) => String(v));
   const setLoad = useLoaderStore.useSetLoading();
-
   const removeLoader = useLoaderStore.useRemoveLoading();
   const form = useAppForm({
-    defaultValues: permissions,
+    defaultValues: modPerm,
     onSubmit: ({ value }) => {
       setLoad();
+      const unModPerm = catchAndChange<string, number, typeof value>(
+        value,
+        'string',
+        (_, v) => Number(v)
+      );
       mutate(
         {
           body: {
-            profile_permissions: value,
+            profile_permissions: unModPerm,
           },
         },
         {
+          async onSuccess() {
+            await queryClient.invalidateQueries({
+              queryKey: ['get', '/me', {}],
+            });
+          },
           onSettled() {
             removeLoader();
           },
@@ -167,6 +181,7 @@ export const DisplayPermissionSettings = memo(() => {
             <form.AppField name="max_message_auto_delete_seconds">
               {(field) => (
                 <field.Select
+                  defaultValue={'0'}
                   label={t('settingsLabels:max_message_auto_delete_seconds')}
                   data={selectData.hours}
                 />
@@ -178,10 +193,13 @@ export const DisplayPermissionSettings = memo(() => {
                 <field.Select
                   label={t('settingsLabels:auto_delete_after_days')}
                   data={selectData.days}
+                  value={'0'}
                 />
               )}
             </form.AppField>
-            <form.DirtyButton>{t('buttonLabels:save')}</form.DirtyButton>
+            <form.DirtyButton type="submit">
+              {t('buttonLabels:save')}
+            </form.DirtyButton>
           </form.Vertical>
         </form.Form>
       </form.AppForm>
