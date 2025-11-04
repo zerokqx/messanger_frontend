@@ -37,7 +37,11 @@ const useUserStoreBase = create<UserStore>()(
         clearState() {
           set(store.getInitialState());
         },
-
+        setPermissions(permissions) {
+          set((state) => {
+            state.profile_permissions = permissions;
+          });
+        },
         setBio(bio) {
           set((state) => {
             state.bio = bio;
@@ -51,7 +55,6 @@ const useUserStoreBase = create<UserStore>()(
         },
 
         editPermission(permissions) {
-          
           set((state) => {
             Object.assign(state.profile_permissions, permissions);
           });

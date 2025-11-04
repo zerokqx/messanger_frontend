@@ -27,7 +27,6 @@ export const SubmitButton = ({ ...props }: FormButtonWithoutSelectorProp) => {
   return (
     <UnivButton
       selector={(s) => {
-        console.log(s.canSubmit);
         return [s.canSubmit];
       }}
       type="submit"
