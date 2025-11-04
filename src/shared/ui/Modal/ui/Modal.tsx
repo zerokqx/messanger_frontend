@@ -17,7 +17,7 @@ export const Modal = ({
   return (
     <MantineModal
       transitionProps={{
-        transition: 'slide-up',
+        transition: 'slide-right',
       }}
       zIndex={zIndex}
       overlayProps={{

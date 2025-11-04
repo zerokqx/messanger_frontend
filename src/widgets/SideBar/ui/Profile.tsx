@@ -3,8 +3,10 @@ import { Button, Center, Space, type ButtonProps } from '@mantine/core';
 import { SquarePen } from 'lucide-react';
 import { motion } from 'motion/react';
 import { sidebarTab } from '../model/tab';
+import { useTranslation } from 'react-i18next';
 
 export const Profile = () => {
+  const { t } = useTranslation('sideBar');
   const [Taber, useStore] = sidebarTab;
   const set = useStore.useSetCurrentTab();
   const MotionButton = motion.create<ButtonProps>(Button);
@@ -24,7 +26,7 @@ export const Profile = () => {
         >
           <SquarePen />
           <Space w={'1rem'} />
-          Изменить профиль
+          {t('change_profile')}
         </MotionButton>
       </Center>
     </Taber.Panel>

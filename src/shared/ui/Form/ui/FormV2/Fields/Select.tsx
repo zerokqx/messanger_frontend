@@ -1,6 +1,6 @@
 import type { SelectProps } from '@mantine/core';
-import { useFieldContext } from '../../model';
 import { Select as SelectM } from '@mantine/core';
+import { useFieldContext } from '../../../model';
 export const Select = ({ onChange, ...props }: SelectProps) => {
   const field = useFieldContext<string>();
   return (

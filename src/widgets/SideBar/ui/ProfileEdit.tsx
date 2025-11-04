@@ -1,23 +1,19 @@
 import { useProfilePut } from '@/features/profilePut';
 import { useAuth } from '@/shared/model/authProviderContext';
-import { DescText } from '@/shared/ui/Description/ui/DescText';
-import { Form } from '@/shared/ui/Form';
-import { useBorder } from '@/widgets/Settings';
-import { Space, Textarea, useMantineTheme } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { formOptions } from '@tanstack/react-form';
 import { usePutUserData } from '../lib/usePutUserData';
 import { sidebarTab } from '../model/tab';
+import { useTranslation } from 'react-i18next';
+import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
 
 export const ProfileEdit = () => {
-  const t = useMantineTheme();
-  const bd = useBorder('.1rem');
-  const {  bio  } = usePutUserData();
+  const { t } = useTranslation(['sideBar', 'fieldLabels', 'buttonLabels']);
+  const { bio } = usePutUserData();
   const { mutate } = useProfilePut();
   const { user } = useAuth();
   const [, useStore] = sidebarTab;
   const goBack = useStore.useGoBack();
-  const options = formOptions({
+  const form = useAppForm({
     defaultValues: {
       bio,
     },
@@ -46,32 +42,45 @@ export const ProfileEdit = () => {
 
   return (
     <Taber.Panel value="profile_edit">
-      <Form
-        title="Редактирование профиля"
-        buttonLabel="Сохранить изменения"
-        options={options}
-        fieldSet={[
-          {
-            name: 'bio',
-            fieldName: 'Биография',
-            label: true,
-            placeholder: 'Я учусь в колледже на 4 курсе и...',
-            component: (field, props, handlers) => (
-              <Textarea
-                placeholder={props.placeholder}
-                rows={4}
-                {...handlers}
-              />
-            ),
-          },
-        ]}
-      />
-      <Space h={'1rem'} />
-      <DescText p={'md'} bdrs={'xl'} bd={bd} size="sm">
-        Можно использовать a-z, 0-9 и подчёркивания. Минимальная длина — 3
-        символа, максимальная — 32. Логин не может начинаться с подчёркивания
-        или содержать двойные подчёркивания.
-      </DescText>
+      <form.AppForm>
+        <form.Form>
+          <form.Vertical>
+            <form.AppField
+              name="bio"
+              children={(field) => (
+                <field.TextArea rows={4} label={t('fieldLabels:bio_label')} />
+              )}
+            />
+            <form.DirtyButton type="submit" children={t('buttonLabels:save')} />
+          </form.Vertical>
+        </form.Form>
+      </form.AppForm>
+      {/* <fo */}
+      {/*   title="Редактирование профиля" */}
+      {/*   buttonLabel="Сохранить изменения" */}
+      {/*   options={options} */}
+      {/*   fieldSet={[ */}
+      {/*     { */}
+      {/*       name: 'bio', */}
+      {/*       fieldName: 'Биография', */}
+      {/*       label: true, */}
+      {/*       placeholder: 'Я учусь в колледже на 4 курсе и...', */}
+      {/*       component: (field, props, handlers) => ( */}
+      {/*         <Textarea */}
+      {/*           placeholder={props.placeholder} */}
+      {/*           rows={4} */}
+      {/*           {...handlers} */}
+      {/*         /> */}
+      {/*       ), */}
+      {/*     }, */}
+      {/*   ]} */}
+      {/* /> */}
+      {/* <Space h={'1rem'} /> */}
+      {/* <DescText p={'md'} bdrs={'xl'} bd={bd} size="sm"> */}
+      {/*   Можно использовать a-z, 0-9 и подчёркивания. Минимальная длина — 3 */}
+      {/*   символа, максимальная — 32. Логин не может начинаться с подчёркивания */}
+      {/*   или содержать двойные подчёркивания. */}
+      {/* </DescText> */}
     </Taber.Panel>
   );
 };

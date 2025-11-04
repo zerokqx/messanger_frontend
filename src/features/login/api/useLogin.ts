@@ -25,7 +25,7 @@ export const useLogin = () => {
       }
 
       setToken(response.data.access_token);
-      window.location.reload();
+      // window.location.reload();
     },
 
     onError: (error) => {

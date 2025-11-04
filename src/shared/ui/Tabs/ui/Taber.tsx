@@ -55,7 +55,6 @@ export const createTaber = <T extends Windows>({
       </AnimatedPanel>
     );
   };
-
   const GoToButton: TaberButtons<T>['GoTo'] = ({ children, resetTo }) => {
     const setCurrentTab = useStore.useSetCurrentTab();
 
