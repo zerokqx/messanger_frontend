@@ -1,8 +1,17 @@
+import { refreshTokenWithoutQuery } from '@/features/refresh/api/refreshTokenWitoutQuery';
+import { authHeaderSet } from '@/shared/api';
 import type { Middleware } from 'openapi-fetch';
-import { useTokenStore } from '@/entities/token/@x/user';
 export const authMiddleware: Middleware = {
   onRequest({ request }) {
-    const token = useTokenStore.getState().access;
-    request.headers.set('Authorization', `Bearer ${token}`);
+    return authHeaderSet(request);
+  },
+  async onResponse({ response, request }) {
+    console.log(1);
+    if (response.status === 401) {
+      await refreshTokenWithoutQuery();
+      const newRequest = request.clone();
+      return await fetch(authHeaderSet(newRequest));
+    }
+    return response;
   },
 };

@@ -1798,7 +1798,7 @@ components:
           anyOf:
             - type: string
               maxLength: 1024
-            - type: "null"
+call            - tycallpe: "null"
           title: Bio
           description: Биография
         last_seen:

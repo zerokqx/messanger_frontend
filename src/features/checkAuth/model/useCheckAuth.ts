@@ -1,29 +1,28 @@
 import { useTokenStore } from '@/entities/token/@x/user';
 import { useLayoutEffect, useState } from 'react';
 
-function useCheckAuth() {
-  const { validateToken, clearStore, access } = useTokenStore();
+/**
+ * @returns boolean
+ */
+function useCheckAuth(): boolean {
+  const validateToken = useTokenStore((s) => s.validateToken);
+  const clearStore = useTokenStore((s) => s.clearStore);
+  const access = useTokenStore((s) => s.access); // или useStore(state => state.access)
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
   useLayoutEffect(() => {
-    if (validateToken()) {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
-      clearStore();
-    }
-  }, [validateToken, access, clearStore]);
+    const status = validateToken();
+    setIsAuth(status);
+    if (!status) clearStore();
+  }, [access, validateToken, clearStore]);
 
   return isAuth;
 }
 
 useCheckAuth.check = (): boolean => {
-  const { validateToken, clearStore } = useTokenStore.getState();
-  if (validateToken()) {
-    return true;
-  }
-  clearStore();
-  return false;
+  const { validateToken } = useTokenStore.getState();
+  const statusToken = validateToken();
+  return statusToken;
 };
 
 export { useCheckAuth };

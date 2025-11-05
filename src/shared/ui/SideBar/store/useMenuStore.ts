@@ -1,6 +1,4 @@
 import { createIsOpenStore } from '@/shared/lib/isOpen';
-import { createSelectors } from '@/shared/lib/zustand/selectors';
+import { createSelectorHooks } from 'auto-zustand-selectors-hook';
 
-const useSideBarStoreBase = createIsOpenStore();
-
-export const useSideBarStore = createSelectors(useSideBarStoreBase);
+export const useSideBarStore = createSelectorHooks(createIsOpenStore());

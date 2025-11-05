@@ -6,6 +6,6 @@ export const useChangePassword = () => {
     'post',
     '/password/change'
   );
-  
+
   return mutate;
 };

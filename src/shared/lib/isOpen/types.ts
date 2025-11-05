@@ -1,9 +1,14 @@
-export interface UseSettingStoreState {
+import type { StoreApi, UseBoundStore } from 'zustand';
+
+export interface UseModalStoreState {
   isOpen: boolean;
 }
-export interface UseSettingStoreActions {
+export interface UseModalStoreActions {
   toggle: () => void;
   open: () => void;
   close: () => void;
 }
-export type UseSettingStore = UseSettingStoreState & UseSettingStoreActions;
+export type UseModalStore = UseModalStoreState & UseModalStoreActions;
+export type FabricStores = (
+  defaultState?: boolean
+) => UseBoundStore<StoreApi<UseModalStore>>;

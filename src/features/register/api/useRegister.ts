@@ -1,12 +1,12 @@
 import { authClient } from '@/shared/api';
 import { notifications } from '@mantine/notifications';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 
 /**
  * @param search - Return data from hook useForm
  * @returns Default useMutation
  */
-export const useRegister = (search: ReturnType<typeof useSearch>) => {
+export const useRegister = () => {
   const navigate = useNavigate();
 
   const mutate = authClient()().useMutation(
@@ -14,12 +14,8 @@ export const useRegister = (search: ReturnType<typeof useSearch>) => {
     '/register',
 
     {
-      onSuccess: ({ data }) => {
-        console.log(data);
-        navigate({
-          to: '/auth',
-          search,
-        });
+      onSuccess: () => {
+        void navigate({ to: '.', replace: true });
       },
 
       onError: () => {
