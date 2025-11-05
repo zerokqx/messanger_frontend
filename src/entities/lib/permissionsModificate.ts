@@ -1,5 +1,9 @@
 import type { ReplaceTypeKey } from '../user/types/permissionsModificate.type';
 import _ from 'lodash';
+/**
+ * Function for search type value and convert to target typed
+ *
+ */
 export const catchAndChange = <
   Extends = number,
   Replace = string,
@@ -22,3 +26,4 @@ export const catchAndChange = <
     {}
   ) as ReplaceTypeKey<T, Extends, Replace>;
 };
+const d = catchAndChange({ d: 1, W: '1' }, 'string', (_, v) => Number(v));
