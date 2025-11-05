@@ -1,50 +1,55 @@
-import { Drawer } from '@mantine/core';
-import { CustomMantineButton } from '../../Button';
+import { useBorder } from '@/widgets/Settings';
+import { Drawer, LoadingOverlay, useMantineTheme } from '@mantine/core';
 import { useSideBarStore } from '../store/useMenuStore';
-import { SideItem } from './Item';
 import type { SideBarCompouned } from '../types/sideBar.type';
-import { useMediaQuery } from '@mantine/hooks';
-import { useAppSettings } from '@/shared/lib/settings/model/useAppSettings';
+import { InfoBlock } from './InfoBlock';
+import { SideItem } from './Item';
+import { SelecedProvider } from './SelectedContext';
+import { useLoaderStore } from '../model';
 
-export const SideBar: SideBarCompouned = ({ renderUserBadge, children }) => {
-  const { isOpen, toggle, close } = useSideBarStore();
-  const mobile = useMediaQuery('(min-width: 56.25em)');
-  const { borderElements } = useAppSettings();
+export const SideBar: SideBarCompouned = ({ children }) => {
+  const t = useMantineTheme();
+  const bd = useBorder('0.1rem');
+  const isOpen = useSideBarStore.useIsOpen();
+  const close = useSideBarStore.useClose();
+  const load = useLoaderStore.useIsLoading();
   return (
     <>
-      <CustomMantineButton onClick={toggle}>Menu</CustomMantineButton>
-      <Drawer
-        withCloseButton={false}
-        p={'none'}
-        transitionProps={{
-          transition: 'slide-right',
-        }}
-        w={{ base: '100%' }}
-        styles={{
-          content: {
-            background: 'black',
-            userSelect: 'none',
-            borderRight: borderElements
-              ? mobile
-                ? '1px solid white'
-                : 'none'
-              : 'none',
-          },
-        }}
-        opened={isOpen}
-        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        onClose={close}
-        offset={0}
-      >
-        <Drawer.Header bg={'black'}>
-          {renderUserBadge?.()}
+      <SelecedProvider>
+        <Drawer
+          keepMounted
+          closeButtonProps={{ 'aria-label': 'Close drawer' }}
+          withCloseButton={false}
+          transitionProps={{
+            transition: 'slide-right',
+          }}
+          styles={{
+            content: {
+              background: t.black,
+              userSelect: 'none',
+              borderRight: bd,
+            },
+          }}
+          opened={isOpen}
+          overlayProps={{ backgroundOpacity: 0.5 }}
+          onClose={close}
+        >
+          <LoadingOverlay
+            visible={load}
+            overlayProps={{
+              radius: 'xs',
+              blur: 2,
+              bg: 'black',
+              opacity: 0.3,
+            }}
+          />
 
-          <Drawer.CloseButton />
-        </Drawer.Header>
-        {children}
-      </Drawer>
+          {children}
+        </Drawer>
+      </SelecedProvider>
     </>
   );
 };
 
 SideBar.Item = SideItem;
+SideBar.InfoBlock = InfoBlock;

@@ -1,20 +1,13 @@
-import { profileClient } from '@/shared/api';
 import { useEffect } from 'react';
-import { useUserStore } from '../model/userStore';
-import { authMiddleware } from './middlewares';
+import { useAuth } from '@/shared/model/authProviderContext';
+import { useMeRequest } from './useMeRequest';
 
-/** Hook for fetch user profile data */
 export const useMe = () => {
-  const { setUser } = useUserStore();
-  const { isSuccess, data } = profileClient(authMiddleware)().useQuery(
-    'get',
-    '/me',
-    {},
-    {
-      staleTime: 2 * 1000,
-      retry: 3,
-    }
-  );
+  const {
+    user: { setUser },
+  } = useAuth();
+  const { isSuccess, data } = useMeRequest();
+
   useEffect(() => {
     if (isSuccess) {
       setUser(data.data);

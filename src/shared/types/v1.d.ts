@@ -11,7 +11,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private/v1] Ping */
+        /** [/docs/proxy/socket_service/v1] Ping */
         get: operations["ping_ping_get"];
         put?: never;
         post?: never;
@@ -28,7 +28,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private/v1] Example Errors From Server */
+        /** [/docs/proxy/socket_service/v1] Example Errors From Server */
         get: operations["example_errors_from_server_errors_get"];
         put?: never;
         post?: never;
@@ -47,7 +47,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth/v1] Login */
+        /** [/docs/proxy/auth_service/v1] Login */
         post: operations["login_login_post"];
         delete?: never;
         options?: never;
@@ -64,7 +64,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth/v1] Register */
+        /** [/docs/proxy/auth_service/v1] Register */
         post: operations["register_register_post"];
         delete?: never;
         options?: never;
@@ -81,8 +81,8 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth/v1] Refresh Token */
-        post: operations["refresh_token_token_refresh_post"];
+        /** [/docs/proxy/auth_service/v1] Do Refresh Token */
+        post: operations["do_refresh_token_token_refresh_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -98,7 +98,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth/v1] Request Password Reset */
+        /** [/docs/proxy/auth_service/v1] Request Password Reset */
         post: operations["request_password_reset_password_reset_post"];
         delete?: never;
         options?: never;
@@ -115,7 +115,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth/v1] Confirm Password Reset */
+        /** [/docs/proxy/auth_service/v1] Confirm Password Reset */
         post: operations["confirm_password_reset_password_reset_confirm_post"];
         delete?: never;
         options?: never;
@@ -132,8 +132,25 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth/v1] Change Password */
+        /** [/docs/proxy/auth_service/v1] Change Password */
         post: operations["change_password_password_change_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bot/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [/docs/proxy/auth_service/v1] Register */
+        post: operations["register_bot_register_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -147,7 +164,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/user/v1] Get Contacts */
+        /** [/docs/proxy/user_service/v1] Get Contacts */
         get: operations["get_contacts_contact_list_get"];
         put?: never;
         post?: never;
@@ -167,7 +184,7 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * [/docs/proxy/user/v1] Add Contact
+         * [/docs/proxy/user_service/v1] Add Contact
          * @description Передать или user_id или login или friend_code
          */
         post: operations["add_contact_contact_add_post"];
@@ -190,7 +207,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        /** [/docs/proxy/user/v1] Update Contact */
+        /** [/docs/proxy/user_service/v1] Update Contact */
         patch: operations["update_contact_contact_update_patch"];
         trace?: never;
     };
@@ -204,7 +221,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** [/docs/proxy/user/v1] Remove Contact */
+        /** [/docs/proxy/user_service/v1] Remove Contact */
         delete: operations["remove_contact_contact_remove_delete"];
         options?: never;
         head?: never;
@@ -218,7 +235,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/user/v1] Get Blacklist */
+        /** [/docs/proxy/user_service/v1] Get Blacklist */
         get: operations["get_blacklist_blacklist_list_get"];
         put?: never;
         post?: never;
@@ -237,7 +254,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/user/v1] Add To Blacklist */
+        /** [/docs/proxy/user_service/v1] Add To Blacklist */
         post: operations["add_to_blacklist_blacklist_add_post"];
         delete?: never;
         options?: never;
@@ -255,7 +272,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** [/docs/proxy/user/v1] Remove From Blacklist */
+        /** [/docs/proxy/user_service/v1] Remove From Blacklist */
         delete: operations["remove_from_blacklist_blacklist_remove_delete"];
         options?: never;
         head?: never;
@@ -269,7 +286,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/user/v1] Get User Role */
+        /** [/docs/proxy/user_service/v1] Get User Role */
         get: operations["get_user_role_role_get"];
         put?: never;
         post?: never;
@@ -286,7 +303,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/profile/v1] Get My Profile */
+        /** [/docs/proxy/profile_service/v1] Get My Profile */
         get: operations["get_my_profile_me_get"];
         put?: never;
         post?: never;
@@ -304,7 +321,7 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** [/docs/proxy/profile/v1] Edit Profile */
+        /** [/docs/proxy/profile_service/v1] Edit Profile */
         put: operations["edit_profile_edit_put"];
         post?: never;
         delete?: never;
@@ -320,7 +337,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/profile/v1] Get User Profile By User Id */
+        /** [/docs/proxy/profile_service/v1] Get User Profile By User Id */
         get: operations["get_user_profile_by_user_id__user_id__get"];
         put?: never;
         post?: never;
@@ -339,7 +356,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/profile/v1] Get User Profile By User Id */
+        /** [/docs/proxy/profile_service/v1] Get User Profile By User Id */
         post: operations["get_user_profile_by_user_id_user_id_internal_post"];
         delete?: never;
         options?: never;
@@ -356,7 +373,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/profile/v1] [internal] Get Profiles Internal */
+        /** [/docs/proxy/profile_service/v1] [internal] Get Profiles Internal */
         post: operations["get_profiles_internal_user_ids_internal_post"];
         delete?: never;
         options?: never;
@@ -372,7 +389,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * [/docs/proxy/feed/v1] Search By Query
+         * [/docs/proxy/feed_service/v1] Search By Query
          * @description Поиск пользователей по логину (по префиксу, максимум 10 результатов).
          *
          *     Показываются пользователи:
@@ -400,6 +417,31 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/user/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * [/docs/proxy/feed_service/v1] Search By Query
+         * @description Поиск пользователей по логину (по префиксу, максимум 10 результатов).
+         *
+         *     Показываются пользователи:
+         *     - у которых is_searchable = true
+         *     - или находятся в контактах текущего пользователя
+         *     - или текущий пользователь находится у них в контактах
+         */
+        get: operations["search_by_query_user_search_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/delete": {
         parameters: {
             query?: never;
@@ -410,7 +452,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** [/docs/proxy/chat_private/v1] Delete Private Chat */
+        /** [/docs/proxy/chat_private_service/v1] Delete Private Chat */
         delete: operations["delete_private_chat_delete_delete"];
         options?: never;
         head?: never;
@@ -424,7 +466,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private/v1] Get List Private Chats */
+        /** [/docs/proxy/chat_private_service/v1] Get List Private Chats */
         get: operations["get_list_private_chats_list_get"];
         put?: never;
         post?: never;
@@ -441,7 +483,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/chat_private/v1] Get Private Chat History */
+        /** [/docs/proxy/chat_private_service/v1] Get Private Chat History */
         get: operations["get_private_chat_history_history_get"];
         put?: never;
         post?: never;
@@ -460,7 +502,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/chat_private/v1] Create Private Chat By Uuid */
+        /** [/docs/proxy/chat_private_service/v1] Create Private Chat By Uuid */
         post: operations["create_private_chat_by_uuid_create_post"];
         delete?: never;
         options?: never;
@@ -477,8 +519,42 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/chat_private/v1] Send Private Message With Uuid */
+        /** [/docs/proxy/chat_private_service/v1] Send Private Message With Uuid */
         post: operations["send_private_message_with_uuid_send_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/send": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [/docs/proxy/chat_private_service/v1] Internal Send Private Message With Login */
+        post: operations["internal_send_private_message_with_login_internal_send_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/send_to_user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [/docs/proxy/socket_service/v1] Send To User Post */
+        post: operations["send_to_user_post_internal_send_to_user_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -508,6 +584,11 @@ export interface components {
             access_token: string;
             /** Refresh Token */
             refresh_token: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
         };
         /** LoginRequest */
         LoginRequest: {
@@ -530,8 +611,54 @@ export interface components {
             /** Message */
             message: string;
         };
+        /** TokenData */
+        TokenData: {
+            /** Access Token */
+            access_token: string;
+            /** Refresh Token */
+            refresh_token: string;
+        };
+        /** TokenRefreshRequest */
+        TokenRefreshRequest: {
+            /** Access Token */
+            access_token: string;
+            /** Refresh Token */
+            refresh_token?: string | null;
+        };
+        /** TokenRefreshResponse */
+        TokenRefreshResponse: {
+            /**
+             * Status
+             * @default fine
+             */
+            status: string;
+            data: components["schemas"]["TokenData"];
+        };
         /** RegisterData */
-        RegisterData: {
+        api__schemas__bot__RegisterData: {
+            /** Message */
+            message: string;
+            /**
+             * Bot Id
+             * Format: uuid
+             */
+            bot_id: string;
+            /** Token */
+            token: string;
+        };
+        /** RegisterRequest */
+        api__schemas__bot__RegisterRequest: {
+            /** Login */
+            login: string;
+        };
+        /** RegisterResponse */
+        api__schemas__bot__RegisterResponse: {
+            /** Status */
+            status: string;
+            data: components["schemas"]["api__schemas__bot__RegisterData"];
+        };
+        /** RegisterData */
+        api__schemas__register__RegisterData: {
             /** Message */
             message: string;
             /**
@@ -541,7 +668,7 @@ export interface components {
             user_id: string;
         };
         /** RegisterRequest */
-        RegisterRequest: {
+        api__schemas__register__RegisterRequest: {
             /** Login */
             login: string;
             /** Password */
@@ -550,28 +677,10 @@ export interface components {
             invite?: string | null;
         };
         /** RegisterResponse */
-        RegisterResponse: {
+        api__schemas__register__RegisterResponse: {
             /** Status */
             status: string;
-            data: components["schemas"]["RegisterData"];
-        };
-        /** TokenData */
-        TokenData: {
-            /** Access Token */
-            access_token: string;
-        };
-        /** TokenRefreshRequest */
-        TokenRefreshRequest: {
-            /** Access Token */
-            access_token: string;
-            /** Refresh Token */
-            refresh_token: string;
-        };
-        /** TokenRefreshResponse */
-        TokenRefreshResponse: {
-            /** Status */
-            status: string;
-            data: components["schemas"]["TokenData"];
+            data: components["schemas"]["api__schemas__register__RegisterData"];
         };
         /** BlacklistCreateRequest */
         BlacklistCreateRequest: {
@@ -779,6 +888,18 @@ export interface components {
              */
             bio?: string | null;
             /**
+             * Is Verified
+             * @description Подтвержденный (официальный) аккаунт
+             * @default false
+             */
+            is_verified: boolean | null;
+            /**
+             * Is System
+             * @description Системный аккаунт
+             * @default false
+             */
+            is_system: boolean | null;
+            /**
              * Last Seen
              * @description Последний раз 'был в сети' разница в секундах или null если скрыто
              */
@@ -845,6 +966,12 @@ export interface components {
              * @description Биография
              */
             bio?: string | null;
+            /**
+             * Is Verified
+             * @description Подтвержденный (официальный) аккаунт
+             * @default false
+             */
+            is_verified: boolean | null;
             /**
              * Balances
              * @description Список доступных балансов пользователя
@@ -945,11 +1072,6 @@ export interface components {
         };
         /** ProfileUpdateRequest */
         ProfileUpdateRequest: {
-            /**
-             * Full Name
-             * @description Полное имя
-             */
-            full_name?: string | null;
             /**
              * Bio
              * @description Биография
@@ -1132,8 +1254,33 @@ export interface components {
              */
             max_message_auto_delete_seconds?: number | null;
         };
+        /** SearchResponse */
+        SearchResponse: {
+            /** Status */
+            status: string;
+            data: components["schemas"]["api__schemas__search__SearchData"];
+        };
+        /** UserSearchResponse */
+        UserSearchResponse: {
+            /** Status */
+            status: string;
+            data: components["schemas"]["api__schemas__user__search__SearchData"];
+        };
+        /** UserSearchResult */
+        UserSearchResult: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Profile
+             * @description Модель как у /profile/{user_id}
+             */
+            profile?: unknown | null;
+        };
         /** SearchData */
-        SearchData: {
+        api__schemas__search__SearchData: {
             /** Users */
             users: components["schemas"]["UserSearchResult"][];
             /**
@@ -1152,36 +1299,29 @@ export interface components {
              */
             messages: unknown[];
         };
-        /** SearchResponse */
-        SearchResponse: {
-            /** Status */
-            status: string;
-            data: components["schemas"]["SearchData"];
+        /** SearchData */
+        api__schemas__user__search__SearchData: {
+            /** Users */
+            users: components["schemas"]["UserSearchResult"][];
         };
-        /** UserSearchResult */
-        UserSearchResult: {
+        /** InternalPrivateMessageSendRequest */
+        InternalPrivateMessageSendRequest: {
+            /**
+             * Sender
+             * @description Системный отправитель (yobble, support, feedback, yobble_system)
+             * @enum {string}
+             */
+            sender: "yobble" | "support" | "feedback" | "yobble_system";
             /**
              * User Id
              * Format: uuid
              */
             user_id: string;
-            /** Login */
-            login: string;
-            /** Full Name */
-            full_name?: string | null;
-            /** Custom Name */
-            custom_name?: string | null;
             /**
-             * Created At
-             * Format: date-time
-             * @description Дата регистрации
+             * Content
+             * @description Содержимое сообщения (макс. 4096 символов)
              */
-            created_at: string;
-            /**
-             * Profile
-             * @description Модель как у /profile/{user_id}
-             */
-            profile?: unknown | null;
+            content?: string | null;
         };
         /** MessageForward */
         MessageForward: {
@@ -1246,6 +1386,11 @@ export interface components {
              * @description Ссылка на медиа (заглушка)
              */
             media_link?: unknown | null;
+            /**
+             * Is Viewed
+             * @description Флаг просмотра
+             */
+            is_viewed: boolean;
             /**
              * Created At
              * Format: date-time
@@ -1353,6 +1498,11 @@ export interface components {
              * @description Дата создания чата
              */
             created_at: string;
+            /**
+             * Unread Count
+             * @description Кол-во непрочитанных сообщений
+             */
+            unread_count: number;
         };
         /** PrivateChatListResponse */
         PrivateChatListResponse: {
@@ -1398,6 +1548,23 @@ export interface components {
             /** Status */
             status: string;
             data: components["schemas"]["PrivateMessageSendData"];
+        };
+        /** SendToUserBody */
+        SendToUserBody: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Message */
+            message: {
+                [key: string]: unknown;
+            };
+            /**
+             * Event
+             * @enum {string}
+             */
+            event: "chat_private:new_message" | "achievement:received" | "achievement:progress";
         };
     };
     responses: never;
@@ -1613,7 +1780,9 @@ export interface operations {
     login_login_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "X-Client-Type"?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -1697,7 +1866,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["RegisterRequest"];
+                "application/json": components["schemas"]["api__schemas__register__RegisterRequest"];
             };
         };
         responses: {
@@ -1707,7 +1876,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RegisterResponse"];
+                    "application/json": components["schemas"]["api__schemas__register__RegisterResponse"];
                 };
             };
             /** @description Bad Request */
@@ -1784,7 +1953,7 @@ export interface operations {
             };
         };
     };
-    refresh_token_token_refresh_post: {
+    do_refresh_token_token_refresh_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -1990,6 +2159,102 @@ export interface operations {
                      *         {
                      *           "field": "permission",
                      *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    register_bot_register_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api__schemas__bot__RegisterRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api__schemas__bot__RegisterResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "general",
+                     *           "message": "Bad request syntax or invalid parameters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "conflict",
+                     *           "message": "Resource already exists or conflict occurred"
                      *         }
                      *       ]
                      *     } */
@@ -3027,6 +3292,64 @@ export interface operations {
             };
         };
     };
+    search_by_query_user_search_get: {
+        parameters: {
+            query: {
+                query: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSearchResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
     delete_private_chat_delete_delete: {
         parameters: {
             query?: never;
@@ -3364,7 +3687,9 @@ export interface operations {
     send_private_message_with_uuid_send_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "is-bot"?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -3453,6 +3778,135 @@ export interface operations {
                      *       ]
                      *     } */
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    internal_send_private_message_with_login_internal_send_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InternalPrivateMessageSendRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrivateMessageSendResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "resource",
+                     *           "message": "Requested resource not found"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    send_to_user_post_internal_send_to_user_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendToUserBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

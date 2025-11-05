@@ -1,28 +1,35 @@
+import { authClient, queryClient } from '@/shared/api';
+import { useAuth } from '@/shared/model/authProviderContext';
 import { notifications } from '@mantine/notifications';
-import { useNavigate, useSearch } from '@tanstack/react-router';
-import { authClient } from '@/shared/api';
-import { useTokenStore } from '@/entities/token/@x/user';
-import { authMiddleware } from '@/entities/user';
 
 /**
  * @param search - Return data from hook useForm
  * @returns Default useMutation
  */
-export const useLogin = (search: ReturnType<typeof useSearch>) => {
-  const { setToken } = useTokenStore();
-  const navigate = useNavigate();
-  // WARN: authMiddleware in user entites
-  const mutate = authClient(authMiddleware)().useMutation('post', '/login', {
-    onSuccess: async ({ data }) => {
-      setToken(data.access_token);
-      // WARNING: need regenerate scheme openapi. In currend SchemaV1 not exists data.uuid in response /login
-      // setUuid(data.uuid)
-      await navigate({
-        to: search.location,
-      });
+
+export const useLogin = () => {
+  const setToken = useAuth().token.setToken;
+  const mutate = authClient()().useMutation('post', '/login', {
+    onSuccess: (response) => {
+      console.log('Full response:', response); // Посмотри что тут!
+
+      // Безопасная проверка
+      if (!response.data.access_token) {
+        console.error('Token not found in response!', response);
+        notifications.show({
+          title: 'Ошибка',
+          message: 'Токен не получен от сервера',
+          color: 'red',
+        });
+        return;
+      }
+
+      setToken(response.data.access_token);
+      // window.location.reload();
     },
-    onError: () => {
-      console.log(mutate.error);
+
+    onError: (error) => {
+      console.log(error);
       notifications.show({
         title: 'Опа ошибка!',
         message:
@@ -31,6 +38,5 @@ export const useLogin = (search: ReturnType<typeof useSearch>) => {
       });
     },
   });
-
-  return { ...mutate };
+  return mutate;
 };

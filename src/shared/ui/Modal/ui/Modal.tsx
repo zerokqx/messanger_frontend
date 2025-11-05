@@ -1,33 +1,44 @@
-import { useAppSettings } from '@/shared/lib/settings';
-import { useSettingsStore } from '@/widgets/Settings/model';
-import { Flex, Modal as MantineModal, type ModalProps } from '@mantine/core';
-import type { ReactNode } from 'react';
+import { useModalGlobal } from '@/shared/model/useModalStore';
+import { useBorder } from '@/widgets/Settings';
+import { Flex, Modal as MantineModal, useMantineTheme } from '@mantine/core';
+import type { ModalComponentProps } from '../types';
 
-export const Modal = ({ children,...props }: { children: ReactNode }& ModalProps) => {
-  const { borderElements } = useAppSettings();
+export const Modal = ({
+  children,
+  keyModal,
+  full = false,
+  ...props
+}: ModalComponentProps) => {
+  const opened = useModalGlobal((s) => s[keyModal]);
+  const close = useModalGlobal.usePinClose()(keyModal);
+  const zIndex = useModalGlobal.use_zIndex()[keyModal];
+  const t = useMantineTheme();
+  const bd = useBorder('0.1rem');
   return (
     <MantineModal
       transitionProps={{
-        transition: 'slide-up',
+        transition: 'slide-right',
       }}
-      zIndex={500}
+      zIndex={zIndex}
       overlayProps={{
-        backgroundOpacity: 0.55,
-
-        blur: 3,
+        backgroundOpacity: 0.97,
       }}
+      fullScreen={full}
+      opened={opened}
+      xOffset={10}
+      yOffset={10}
+      onClose={close}
+      centered
       styles={{
         header: {
-          background: 'black',
+          background: 'transparent',
         },
         content: {
-          userSelect: 'none',
-          borderRadius: '0px',
-          border: borderElements ? '1px white solid' : 'none',
-          background: 'black',
+          overflowX: 'hidden',
+          border: bd,
+          background: t.black,
         },
       }}
-      centered
       {...props}
     >
       <Flex direction={'column'} gap={'md'}>

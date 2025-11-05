@@ -1,5 +1,5 @@
-export type Services = "auth" | "user" | "profile" | "feed" | "chat";
-export type Version = "v1";
+export type Services = 'auth' | 'user' | 'profile' | 'feed' | 'chat';
+export type Version = 'v1';
 export type BaseUrlDomain = `https://${string}`;
 /**
  * @param service
@@ -11,20 +11,20 @@ export type BaseUrlDomain = `https://${string}`;
  *
  */
 export function createBaseUrl<S extends Services>(
-  service: S,
+  service: S
 ): `https://api.yobble.org/v1/${S}`;
 export function createBaseUrl<U extends BaseUrlDomain, S extends Services>(
   service: S,
   version: Version,
-  url: U,
+  url: U
 ): `${U}/${Version}/${S}`;
 export function createBaseUrl<
-  U extends BaseUrlDomain = "https://api.yobble.org",
+  U extends BaseUrlDomain = 'https://api.yobble.org',
   S extends Services = Services,
 >(
   service: S,
-  version: Version = "v1",
-  url: U = "https://api.yobble.org" as U,
+  version: Version = 'v1',
+  url: U = 'https://api.yobble.org' as U
 ): `${U}/${Version}/${S}` {
   return `${url}/${version}/${service}`;
 }

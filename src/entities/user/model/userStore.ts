@@ -1,20 +1,22 @@
 import { createSelectors } from '@/shared/lib/zustand/selectors';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
-import type { TUserActions, TUserState } from '../types/userStore.type';
+import { immer } from 'zustand/middleware/immer';
+import type { UserStore } from '../types/userStore.type';
+import localforage from 'localforage';
 
-const useUserStoreBase = create<TUserState & TUserActions>()(
+const useUserStoreBase = create<UserStore>()(
   devtools(
     persist(
-      (set, _, store) => ({
+      immer((set, _, store) => ({
         user_id: '00000000-0000-0000-0000-000000000000',
-
+        is_verified: false,
         login: 'Anonymous',
         full_name: 'Anonymous',
         bio: '',
-        balances: [], // пустой массив WalletBalance
+        balances: [],
         created_at: new Date().toISOString(),
-        stories: [], // пустой массив (тип unknown[])
+        stories: [],
         profile_permissions: {
           is_searchable: false,
           allow_message_forwarding: false,
@@ -35,15 +37,36 @@ const useUserStoreBase = create<TUserState & TUserActions>()(
         clearState() {
           set(store.getInitialState());
         },
-        setUser(user) {
-          set(() => ({ ...user }));
+        setPermissions(permissions) {
+          set((state) => {
+            state.profile_permissions = permissions;
+          });
         },
-      }),
+        setBio(bio) {
+          set((state) => {
+            state.bio = bio;
+          });
+        },
+
+        setUser(user) {
+          set((state) => {
+            Object.assign(state, user);
+          });
+        },
+
+        editPermission(permissions) {
+          set((state) => {
+            Object.assign(state.profile_permissions, permissions);
+          });
+        },
+      })),
       {
         name: 'user-storage',
-        storage: createJSONStorage(() => localStorage),
+        skipHydration: true,
+        storage: createJSONStorage(() => localforage),
       }
     )
   )
 );
+
 export const useUserStore = createSelectors(useUserStoreBase);

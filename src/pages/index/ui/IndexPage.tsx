@@ -1,5 +1,7 @@
-import { NotAuthorized } from '@/widgets/NotAuthorized';
-
 export const IndexPage = () => {
-  return <NotAuthorized />;
+  return (
+    <>
+      <p>This page with current chat</p>
+    </>
+  );
 };

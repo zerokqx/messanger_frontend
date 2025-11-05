@@ -1,25 +1,61 @@
-import { Flex, Text } from '@mantine/core';
-import styles from '../hover/SideItem.module.css';
+import { Badge, Grid, Text, ThemeIcon, useMantineTheme } from '@mantine/core';
+import chroma from 'chroma-js';
+import { motion } from 'motion/react';
+import { If, Then } from 'react-if';
 import type { SideItemProps } from '../types/item.type';
-export const SideItem = ({ children, text, ...props }: SideItemProps) => {
+import { useId } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
+export const SideItem = ({
+  children,
+  text,
+  inDev,
+  onClick,
+  ...props
+}: SideItemProps) => {
+  const id = useId();
+  const watches = useMediaQuery('(max-width: 250px)');
+  const t = useMantineTheme();
+  const MotionGridCol = motion.create(Grid.Col);
+  const MotionGrid = motion.create(Grid);
   return (
-    <Flex
+    <MotionGrid
+      key={id}
+      align="center"
       {...props}
-      className={styles.hoverItem}
-      w={'100%'}
-      gap={'md'}
-      p={'xs'}
-      justify={'start'}
-      align={'center'}
-      h={'2rem'}
-      styles={{
-        root: {
-          cursor: 'pointer',
-        },
+      onClick={onClick}
+      bdrs={'xl'}
+      whileHover={{
+        background: chroma(t.white).luminance(0.01).css('hsl'),
       }}
     >
-      {children}
-      <Text>{text}</Text>
-    </Flex>
+      {!watches && (
+        <MotionGridCol span={'content'}>
+          <ThemeIcon size={'xl'} autoContrast>
+            {children}
+          </ThemeIcon>
+        </MotionGridCol>
+      )}
+      <Grid.Col span={'auto'}>
+        <Text>{text}</Text>
+      </Grid.Col>
+      <If condition={inDev && !watches}>
+        <Then>
+          {(() => {
+            return (
+              <MotionGridCol
+                pr={'md'}
+                transition={{
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                }}
+                span={'content'}
+              >
+                <Badge>В разработке</Badge>
+              </MotionGridCol>
+            );
+          })()}
+        </Then>
+      </If>
+    </MotionGrid>
   );
 };

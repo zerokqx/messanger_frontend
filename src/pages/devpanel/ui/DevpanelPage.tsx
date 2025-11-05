@@ -1,12 +1,10 @@
 import { useTokenStore } from '@/entities/token';
 import { CustomMantineButton } from '@/shared/ui/Button';
 import { useRef } from 'react';
-import { ThemeToggle } from '@/shared/ui/ThemeToggle';
 import { notifications } from '@mantine/notifications';
 import { CustomMantineInput } from '@/shared/ui/Input';
 import { Flex } from '@mantine/core';
 export const DevpanelPage = () => {
-  const { clearStore } = useTokenStore();
   const { setToken } = useTokenStore();
   const ref = useRef('');
   return (

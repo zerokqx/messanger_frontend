@@ -1,32 +1,11 @@
-import { useMe } from '@/entities/user';
-import { useCheckAuth } from '@/features/checkAuth/index.ts';
-import { useRefresh } from '@/features/refresh/api/useRefresh.ts';
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
-import { lazy } from 'react';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 export const Route = createFileRoute('/(authentication)')({
   component: RouteComponent,
-  beforeLoad: ({ location }) => {
-    const token = useCheckAuth.check();
-
-    if (!token) {
-      return redirect({
-        to: '/auth',
-        search: {
-          location: location.href,
-        },
-      });
-    }
-  },
 });
-
-const SideBarLazy = lazy(() => import('./_layout.tsx'));
 function RouteComponent() {
-  useRefresh();
-  useMe();
   return (
     <>
       <Outlet />
-      <SideBarLazy />
     </>
   );
 }
