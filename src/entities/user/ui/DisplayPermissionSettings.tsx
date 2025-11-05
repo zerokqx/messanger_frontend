@@ -1,5 +1,6 @@
 import { catchAndChange } from '@/entities/lib/permissionsModificate';
 import { useProfilePut } from '@/features/profilePut';
+import { usePlurarDates } from '@/shared/lib/hooks/useDate';
 import { useAuth } from '@/shared/model/authProviderContext';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
 import { useLoaderStore } from '@/shared/ui/SideBar';
@@ -13,6 +14,8 @@ export const DisplayPermissionSettings = memo(() => {
     'buttonLabels',
   ]);
 
+  const hoursPlurar = usePlurarDates((s) => s.hours);
+  const daysPlurar = usePlurarDates((s) => s.days);
   const queryClient = useQueryClient();
   const { mutate } = useProfilePut();
   const permissions = useAuth((s) => s.user.profile_permissions);
@@ -54,20 +57,18 @@ export const DisplayPermissionSettings = memo(() => {
       { label: t('settingsLabels:nobody'), value: '2' },
     ];
 
-    const hoursValues = [2, 8, 12, 24];
-    const hours = hoursValues.map((hour) => ({
-      label: t('plurarData:hours', { count: hour }),
-      value: String(hour * 3600),
+    const hours = hoursPlurar.map(([oriignal, hour]) => ({
+      label: hour,
+      value: String(oriignal * 3600),
     }));
 
-    const daysValues = [1, 7, 14, 30, 60, 90, 180, 365];
-    const days = daysValues.map((day) => ({
-      label: t('plurarData:days', { count: day }),
-      value: String(day),
+    const days = daysPlurar.map(([original, day]) => ({
+      label: day,
+      value: original.toString(),
     }));
 
     return { everyoneContactsNobody, hours, days };
-  }, [t]);
+  }, [t, hoursPlurar, daysPlurar]);
 
   return (
     <>

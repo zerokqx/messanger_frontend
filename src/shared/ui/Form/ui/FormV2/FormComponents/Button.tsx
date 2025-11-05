@@ -4,6 +4,7 @@ import type {
   FormButtonProp,
   FormButtonWithoutSelectorProp,
 } from '../../../types/formButtonProp.type';
+import { useStore } from '@tanstack/react-form';
 
 export const UnivButton = (props: FormButtonProp) => {
   const defaultProps: FormButtonProp = {
@@ -11,7 +12,6 @@ export const UnivButton = (props: FormButtonProp) => {
   };
   const { selector } = useProps('ResetButton', defaultProps, props);
   const form = useFormContext();
-
   return (
     <form.Subscribe
       selector={selector}
@@ -23,13 +23,15 @@ export const DirtyButton = ({ ...props }: FormButtonWithoutSelectorProp) => {
   return <UnivButton selector={(s) => [s.isDirty]} {...props} />;
 };
 
-export const SubmitButton = ({ ...props }: FormButtonWithoutSelectorProp) => {
+export const SubmitButton = ({ ...props }) => {
+  const form = useFormContext();
+  const [isSubmitting] = useStore(form.store, (s) => [s.isSubmitted]);
+  console.log(isSubmitting);
   return (
     <UnivButton
-      selector={(s) => {
-        return [s.canSubmit];
-      }}
       type="submit"
+      disabled={isSubmitting}
+      selector={(s) => [s.canSubmit]}
       {...props}
     />
   );
