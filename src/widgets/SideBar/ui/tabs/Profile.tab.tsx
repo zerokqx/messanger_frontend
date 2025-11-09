@@ -2,8 +2,8 @@ import { ProfileDataDisplay } from '@/entities/user';
 import { Button, Center, Space, type ButtonProps } from '@mantine/core';
 import { SquarePen } from 'lucide-react';
 import { motion } from 'motion/react';
-import { sidebarTab } from '../model/tab';
 import { useTranslation } from 'react-i18next';
+import { sidebarTab } from '../../model/tab';
 
 export const Profile = () => {
   const { t } = useTranslation('sideBar');

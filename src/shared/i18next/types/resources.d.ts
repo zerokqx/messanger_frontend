@@ -43,10 +43,12 @@ interface Resources {
   "sideBar": {
     "change_profile": "Change your profile",
     "chats": "Chats",
+    "interface_edit": "Inerface",
     "profile": "Profile",
-    "profile_settings": "",
+    "profile_settings": "Profile settings",
     "settings": "Settings",
-    "turn_up_border_elements": "Outline of the elements",
+    "toggle_border": "Outline of the elements",
+    "toggle_border_description": "Disables or enables the stroke on some elements.",
     "video": "Video"
   },
   "titles": {

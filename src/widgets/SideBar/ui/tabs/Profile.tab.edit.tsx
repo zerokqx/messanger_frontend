@@ -1,14 +1,13 @@
 import { useProfilePut } from '@/features/profilePut';
 import { useAuth } from '@/shared/model/authProviderContext';
 import { notifications } from '@mantine/notifications';
-import { usePutUserData } from '../lib/usePutUserData';
-import { sidebarTab } from '../model/tab';
 import { useTranslation } from 'react-i18next';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
+import { sidebarTab } from '../../model/tab';
 
 export const ProfileEdit = () => {
   const { t } = useTranslation(['sideBar', 'fieldLabels', 'buttonLabels']);
-  const { bio } = usePutUserData();
+  const bio = useAuth((s) => s.user.bio);
   const { mutate } = useProfilePut();
   const { user } = useAuth();
   const [, useStore] = sidebarTab;
@@ -55,32 +54,6 @@ export const ProfileEdit = () => {
           </form.Vertical>
         </form.Form>
       </form.AppForm>
-      {/* <fo */}
-      {/*   title="Редактирование профиля" */}
-      {/*   buttonLabel="Сохранить изменения" */}
-      {/*   options={options} */}
-      {/*   fieldSet={[ */}
-      {/*     { */}
-      {/*       name: 'bio', */}
-      {/*       fieldName: 'Биография', */}
-      {/*       label: true, */}
-      {/*       placeholder: 'Я учусь в колледже на 4 курсе и...', */}
-      {/*       component: (field, props, handlers) => ( */}
-      {/*         <Textarea */}
-      {/*           placeholder={props.placeholder} */}
-      {/*           rows={4} */}
-      {/*           {...handlers} */}
-      {/*         /> */}
-      {/*       ), */}
-      {/*     }, */}
-      {/*   ]} */}
-      {/* /> */}
-      {/* <Space h={'1rem'} /> */}
-      {/* <DescText p={'md'} bdrs={'xl'} bd={bd} size="sm"> */}
-      {/*   Можно использовать a-z, 0-9 и подчёркивания. Минимальная длина — 3 */}
-      {/*   символа, максимальная — 32. Логин не может начинаться с подчёркивания */}
-      {/*   или содержать двойные подчёркивания. */}
-      {/* </DescText> */}
     </Taber.Panel>
   );
 };

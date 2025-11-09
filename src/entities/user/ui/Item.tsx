@@ -1,30 +1,25 @@
-import type { DescriptionProp } from '@/shared/ui/Description/types/description.type';
 import { Description } from '@/shared/ui/Description/ui';
 import { WithIcon } from '@/shared/ui/WithIcon';
-import type { WithIconProp } from '@/shared/ui/WithIcon/types';
-import { Text } from '@mantine/core';
 
-export interface DisplayItemProp {
-  descText: string;
-  icon: WithIconProp['icon'];
-  display: string | null | undefined;
-  descProp?: Omit<DescriptionProp, 'desc'>;
-  onClick?: WithIconProp['onClick'];
-  withIconProp?: Omit<WithIconProp, 'icon' | 'onClick'>;
-}
+import { Text } from '@mantine/core';
+import type { DisplayItemProp } from '../types/displayItem.type';
+
 export const DisplayItem = ({
   descProp,
   withIconProp,
   display,
   descText,
   onClick,
+  textProp,
   icon,
+  children,
 }: DisplayItemProp) => {
   if (!display) return null;
   return (
     <WithIcon onClick={onClick} {...withIconProp} icon={icon}>
       <Description {...descProp} desc={descText}>
-        <Text>{display}</Text>
+        <Text {...textProp}>{display}</Text>
+        {children}
       </Description>
     </WithIcon>
   );

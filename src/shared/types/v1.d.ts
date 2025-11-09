@@ -11,7 +11,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/socket_service/v1] Ping */
+        /** [/docs/proxy/rating_service/v1] Ping */
         get: operations["ping_ping_get"];
         put?: never;
         post?: never;
@@ -28,7 +28,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** [/docs/proxy/socket_service/v1] Example Errors From Server */
+        /** [/docs/proxy/rating_service/v1] Example Errors From Server */
         get: operations["example_errors_from_server_errors_get"];
         put?: never;
         post?: never;
@@ -149,8 +149,109 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/auth_service/v1] Register */
-        post: operations["register_bot_register_post"];
+        /** [/docs/proxy/auth_service/v1] Bot Register */
+        post: operations["bot_register_bot_register_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bot/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * [/docs/proxy/auth_service/v1] Get User Bots
+         * @description Получение списка ботов текущего пользователя с пагинацией (offset/limit)
+         */
+        get: operations["get_user_bots_bot_list_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sessions/list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * [/docs/proxy/auth_service/v1] Sessions List
+         * @description Возвращает список всех активных сессий текущего пользователя.
+         */
+        get: operations["sessions_list_sessions_list_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sessions/revoke/{session_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * [/docs/proxy/auth_service/v1] Revoke Session
+         * @description Деактивирует (отключает) конкретную сессию пользователя.
+         */
+        post: operations["revoke_session_sessions_revoke__session_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sessions/revoke_all_except_current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * [/docs/proxy/auth_service/v1] Revoke All Except Current
+         * @description Деактивирует все сессии пользователя, кроме текущей.
+         *     Новая сессия должна быть доверенной (существовать не менее N дней).
+         */
+        post: operations["revoke_all_except_current_sessions_revoke_all_except_current_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/contact/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * [/docs/proxy/user_service/v1] Get Contact Count
+         * @description Возвращает количество контактов текущего пользователя.
+         */
+        get: operations["get_contact_count_contact_count_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -561,6 +662,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/internal/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * [/docs/proxy/rating_service/v1] Get Users Ratings
+         * @description Получение рейтингов сразу для нескольких пользователей
+         */
+        post: operations["get_users_ratings_internal_users_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -570,6 +691,34 @@ export interface components {
             /** Status */
             status: string;
             data: components["schemas"]["MessageData"];
+        };
+        /** BotListData */
+        BotListData: {
+            /** Items */
+            items: components["schemas"]["BotListItem"][];
+            /** Has More */
+            has_more: boolean;
+        };
+        /** BotListItem */
+        BotListItem: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Login */
+            login: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** BotListResponse */
+        BotListResponse: {
+            /** Status */
+            status: string;
+            data: components["schemas"]["BotListData"];
         };
         /** ChangePasswordRequest */
         ChangePasswordRequest: {
@@ -611,6 +760,20 @@ export interface components {
             /** Message */
             message: string;
         };
+        /** SessionsListData */
+        SessionsListData: {
+            /** Sessions */
+            sessions: components["schemas"]["UserSessionItem"][];
+        };
+        /** SessionsListResponse */
+        SessionsListResponse: {
+            /**
+             * Status
+             * @default fine
+             */
+            status: string;
+            data: components["schemas"]["SessionsListData"];
+        };
         /** TokenData */
         TokenData: {
             /** Access Token */
@@ -633,6 +796,51 @@ export interface components {
              */
             status: string;
             data: components["schemas"]["TokenData"];
+        };
+        /** UserSessionItem */
+        UserSessionItem: {
+            /**
+             * Id
+             * @description UUID сессии
+             */
+            id: string;
+            /**
+             * Ip Address
+             * @description IP-адрес клиента
+             */
+            ip_address?: string | null;
+            /**
+             * User Agent
+             * @description User-Agent клиента
+             */
+            user_agent?: string | null;
+            /**
+             * Client Type
+             * @description Тип клиента (web, mobile, bot и т.п.)
+             */
+            client_type: string;
+            /**
+             * Is Active
+             * @description Активна ли сессия
+             */
+            is_active: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Дата создания сессии
+             */
+            created_at: string;
+            /**
+             * Last Refresh At
+             * Format: date-time
+             * @description Последнее обновление токена
+             */
+            last_refresh_at: string;
+            /**
+             * Is Current
+             * @description Текущая ли это сессия
+             */
+            is_current: boolean;
         };
         /** RegisterData */
         api__schemas__bot__RegisterData: {
@@ -723,12 +931,29 @@ export interface components {
              */
             created_at: string;
         };
+        /** BlacklistInfoData */
+        BlacklistInfoData: {
+            /** Items */
+            items: components["schemas"]["BlacklistInfo"][];
+            /** Has More */
+            has_more: boolean;
+        };
         /** BlacklistInfoResponse */
         BlacklistInfoResponse: {
             /** Status */
             status: string;
-            /** Data */
-            data: components["schemas"]["BlacklistInfo"][];
+            data: components["schemas"]["BlacklistInfoData"];
+        };
+        /** ContactCountData */
+        ContactCountData: {
+            /** Count */
+            count: number;
+        };
+        /** ContactCountResponse */
+        ContactCountResponse: {
+            /** Status */
+            status: string;
+            data: components["schemas"]["ContactCountData"];
         };
         /** ContactCreateRequest */
         ContactCreateRequest: {
@@ -776,13 +1001,24 @@ export interface components {
              * @description Дата добавления в контакты
              */
             created_at: string;
+            /**
+             * Last Seen At
+             * @description Дата последнего онлайна
+             */
+            last_seen_at?: string | null;
+        };
+        /** ContactInfoData */
+        ContactInfoData: {
+            /** Items */
+            items: components["schemas"]["ContactInfo"][];
+            /** Has More */
+            has_more: boolean;
         };
         /** ContactInfoResponse */
         ContactInfoResponse: {
             /** Status */
             status: string;
-            /** Data */
-            data: components["schemas"]["ContactInfo"][];
+            data: components["schemas"]["ContactInfoData"];
         };
         /** ContactUpdateRequest */
         ContactUpdateRequest: {
@@ -899,6 +1135,8 @@ export interface components {
              * @default false
              */
             is_system: boolean | null;
+            /** @description Рейтинг пользователя */
+            rating: components["schemas"]["RatingData"];
             /**
              * Last Seen
              * @description Последний раз 'был в сети' разница в секундах или null если скрыто
@@ -972,6 +1210,8 @@ export interface components {
              * @default false
              */
             is_verified: boolean | null;
+            /** @description Рейтинг пользователя */
+            rating: components["schemas"]["RatingData"];
             /**
              * Balances
              * @description Список доступных балансов пользователя
@@ -1079,6 +1319,17 @@ export interface components {
             bio?: string | null;
             /** @description что настроено в профиле целевого пользователя */
             profile_permissions?: components["schemas"]["ProfilePermissionsRequest"];
+        };
+        /** RatingData */
+        RatingData: {
+            /** Rating */
+            rating?: number | null;
+            /**
+             * Status
+             * @description fine | unavailable | blocked | deleted
+             * @default unavailable
+             */
+            status: string;
         };
         /** RelationshipStatusResponse */
         RelationshipStatusResponse: {
@@ -1311,7 +1562,7 @@ export interface components {
              * @description Системный отправитель (yobble, support, feedback, yobble_system)
              * @enum {string}
              */
-            sender: "yobble" | "support" | "feedback" | "yobble_system";
+            sender: "yobble" | "support" | "feedback" | "yobble_system" | "feedback_idea" | "feedback_issue" | "feedback_praise" | "feedback_content";
             /**
              * User Id
              * Format: uuid
@@ -1564,7 +1815,54 @@ export interface components {
              * Event
              * @enum {string}
              */
-            event: "chat_private:new_message" | "achievement:received" | "achievement:progress";
+            event: "chat_private:new_message" | "achievement:received" | "achievement:progress" | "session:revoked" | "session:revoked_all_except";
+        };
+        /** UserRatingData */
+        UserRatingData: {
+            /**
+             * Real
+             * @description Реальный рейтинг пользователя (0–5)
+             */
+            real?: number | null;
+            /**
+             * Displayed
+             * @description Отображаемый рейтинг пользователя (0–5)
+             */
+            displayed?: number | null;
+        };
+        /** UserRatingsItem */
+        UserRatingsItem: {
+            /**
+             * User Id
+             * Format: uuid
+             * @description ID пользователя
+             */
+            user_id: string;
+            /**
+             * Status
+             * @description Статус ответа на пользователя
+             */
+            status: number;
+            /** @description Рейтинг пользователя */
+            rating: components["schemas"]["UserRatingData"];
+        };
+        /** UsersRatingsRequest */
+        UsersRatingsRequest: {
+            /** User Ids */
+            user_ids: string[];
+        };
+        /** UsersRatingsResponse */
+        UsersRatingsResponse: {
+            /**
+             * Status
+             * @description Статус ответа
+             */
+            status: string;
+            /**
+             * Data
+             * @description Список рейтингов пользователей
+             */
+            data: components["schemas"]["UserRatingsItem"][];
         };
     };
     responses: never;
@@ -2185,7 +2483,7 @@ export interface operations {
             };
         };
     };
-    register_bot_register_post: {
+    bot_register_bot_register_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -2281,9 +2579,355 @@ export interface operations {
             };
         };
     };
-    get_contacts_contact_list_get: {
+    get_user_bots_bot_list_get: {
+        parameters: {
+            query?: {
+                /** @description Смещение для пагинации */
+                offset?: number;
+                /** @description Количество ботов для загрузки */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BotListResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    sessions_list_sessions_list_get: {
         parameters: {
             query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionsListResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    revoke_session_sessions_revoke__session_id__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    revoke_all_except_current_sessions_revoke_all_except_current_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "resource",
+                     *           "message": "Requested resource not found"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    get_contact_count_contact_count_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContactCountResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    get_contacts_contact_list_get: {
+        parameters: {
+            query?: {
+                /** @description Смещение для пагинации */
+                offset?: number;
+                /** @description Количество юзеров для загрузки */
+                limit?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -2627,7 +3271,12 @@ export interface operations {
     };
     get_blacklist_blacklist_list_get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Смещение для пагинации */
+                offset?: number;
+                /** @description Количество юзеров для загрузки */
+                limit?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -3595,7 +4244,9 @@ export interface operations {
             query: {
                 target_user_id: string;
             };
-            header?: never;
+            header?: {
+                "is-bot"?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -3907,6 +4558,66 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_users_ratings_internal_users_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UsersRatingsRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsersRatingsResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
                 };
             };
         };

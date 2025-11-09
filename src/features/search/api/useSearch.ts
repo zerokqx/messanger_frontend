@@ -10,8 +10,8 @@ import { useFetchUsersSearch } from './useFetchUsersSearch';
  * @returns The result of the `useFetchUsersSearch` hook, including fetched data and query status.
  */
 export const useSearch = () => {
-  const setUsers = useSearchStore((s) => s.setUsers);
-  const setOpened = useSearchStore((s) => s.setOpened);
+  const setUsers = useSearchStore.useSetUsers();
+  const setOpened = useSearchStore.useSetOpened();
   const query = useSearchStore((s) => s.queryForSearch);
 
   const { data, ...rest } = useFetchUsersSearch(query);

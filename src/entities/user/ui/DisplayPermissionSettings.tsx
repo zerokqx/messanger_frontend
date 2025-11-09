@@ -77,7 +77,6 @@ export const DisplayPermissionSettings = memo(() => {
           <form.Vertical>
             <form.Title text={t('settingsLabels:title')} />
 
-            {/* Чекбоксы */}
             <form.AppField name="is_searchable">
               {(field) => (
                 <field.Checkbox label={t('settingsLabels:is_searchable')} />

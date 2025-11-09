@@ -6,7 +6,6 @@ export const authMiddleware: Middleware = {
     return authHeaderSet(request);
   },
   async onResponse({ response, request }) {
-    console.log(1);
     if (response.status === 401) {
       await refreshTokenWithoutQuery();
       const newRequest = request.clone();

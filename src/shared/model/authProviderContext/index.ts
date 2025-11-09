@@ -1,6 +1,5 @@
 import { createContext, use } from 'react';
 import type { AuthContextTypes } from './context.type';
-import { useLogger } from '@mantine/hooks';
 
 export const AuthContext = createContext<AuthContextTypes | undefined>(
   undefined

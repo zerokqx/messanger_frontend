@@ -22,7 +22,11 @@ export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
             old_password: value.currentPassword,
           },
         },
-        { onSuccess: () => logout() }
+        {
+          onSuccess: () => {
+            logout();
+          },
+        }
       );
     },
   });

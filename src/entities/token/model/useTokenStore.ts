@@ -4,6 +4,7 @@ import type { UseTokenStore } from '../types/useTokenStore.type';
 import z from 'zod';
 import { createSelectors } from '@/shared/lib/zustand/selectors';
 import { validateToken } from './middleware';
+import localforage from 'localforage';
 
 const useTokenStoreBase = create<UseTokenStore>()(
   devtools(
@@ -23,7 +24,7 @@ const useTokenStoreBase = create<UseTokenStore>()(
 
       {
         name: 'token-storage',
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => localforage),
       }
     )
   )

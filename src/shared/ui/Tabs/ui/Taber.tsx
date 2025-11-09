@@ -1,4 +1,4 @@
-import { Flex, Stack, Tabs } from '@mantine/core';
+import { Stack, Tabs } from '@mantine/core';
 import { motion } from 'motion/react';
 import { CustomMantineButton } from '../../Button';
 import { If } from '../../If';
@@ -10,6 +10,7 @@ import type {
   Windows,
 } from '../types';
 import type { TaberButtons } from '../types/taberButton.type';
+import { useEffect } from 'react';
 
 /**
  * `createTaber` — фабричная функция для создания системы вкладок на базе `@mantine/core/Tabs`.
@@ -38,7 +39,20 @@ export const createTaber = <T extends Windows>({
 }: TaberProps<T>): TaberTemplateReturn<T> => {
   const useStore = createTabStore<T[number]>(initial);
   const AnimatedPanel = motion.create(Tabs.Panel);
-  const Panel: TaberTemplate<T>['Panel'] = ({ children, value, ...props }) => {
+  const Panel: TaberTemplate<T>['Panel'] = ({
+    autoSet,
+    children,
+    value,
+    ...props
+  }) => {
+    const cur = useStore.useCurrentTab();
+    const set = useStore.useSetCurrentTab();
+    useEffect(() => {
+      if (!autoSet) return;
+      if (value === cur) return;
+      set(value);
+    }, [autoSet, cur, value, set]);
+
     return (
       <AnimatedPanel
         key={value}
@@ -75,6 +89,7 @@ export const createTaber = <T extends Windows>({
     GoTo: GoToButton,
     Reset: ResetButton,
   };
+
   const OnlyOnTab: TaberTemplate<T>['OnlyOnTab'] = ({ on, children }) => {
     const currentTab = useStore.useCurrentTab();
     return (
