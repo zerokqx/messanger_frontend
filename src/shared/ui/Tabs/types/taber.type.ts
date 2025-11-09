@@ -69,6 +69,7 @@ interface TaberTemplateProp {
  * @template T - Тип кортежа `Windows`, определяющий доступные вкладки.
  */
 interface TaberComponentProps<T extends Windows> extends MotionProps {
+  autoSet?: boolean;
   /** Дочерние элементы, которые будут отображены внутри панели вкладки. */
   children: ReactNode;
   /**
@@ -107,5 +108,5 @@ export type TaberTemplateReturn<T extends Windows> = [
   TaberTemplate<T>,
   ReturnType<CreateTabStoreFunction<T[number]>>,
   TaberButtons<T>,
-  ()=> T[0]
+  () => T[0],
 ];

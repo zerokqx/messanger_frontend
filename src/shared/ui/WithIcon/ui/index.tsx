@@ -6,11 +6,12 @@ export const WithIcon = ({
   children,
   icon,
   themeIconProps,
+  iconSpan = 'content',
   ...props
 }: WithIconProp) => {
   return (
     <Grid align="center" gutter={'xl'} justify="start" {...props}>
-      <Grid.Col span={'content'}>
+      <Grid.Col span={iconSpan}>
         <ThemeIcon {...themeIconProps}>{icon}</ThemeIcon>
       </Grid.Col>
       <Grid.Col span={'content'}>{children}</Grid.Col>

@@ -1,8 +1,5 @@
-import { useAuth } from '@/shared/model/authProviderContext';
 import { useGetBorder } from '@/shared/model/useGetBorder';
 import { useSettingsField } from './context';
-import { set } from 'zod';
-
 export const useBorder = (
   size: Parameters<typeof useGetBorder>[0],
   color?: string,

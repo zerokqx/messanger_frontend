@@ -1,7 +1,11 @@
-import type { GridProps, ThemeIconProps } from "@mantine/core";
-import type { ReactNode } from "react";
+import type { GridColProps, GridProps, ThemeIconProps } from '@mantine/core';
+import type { ReactNode } from 'react';
 
-export interface WithIconProp extends GridProps {
+type Span = 'icon';
+
+export interface WithIconProp
+  extends GridProps,
+    Record<`${Span}Span`, GridColProps['span']> {
   themeIconProps?: ThemeIconProps;
   children: ReactNode;
   icon: ReactNode;

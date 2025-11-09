@@ -1,6 +1,6 @@
 import { DisplayPermissionSettings } from '@/entities/user';
 import { Flex } from '@mantine/core';
-import { sidebarTab } from '../model/tab';
+import { sidebarTab } from '../../model/tab';
 
 export const ProfileSettingsTab = () => {
   const [Taber] = sidebarTab;

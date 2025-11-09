@@ -4,6 +4,7 @@ export interface UseSearchStoreState {
   users: components['schemas']['SearchResponse']['data']['users'] | null;
   _lenght: number;
   queryForSearch: string;
+  dirty: boolean;
   searchOpened: boolean;
 }
 export interface UseSearchStoreAction {

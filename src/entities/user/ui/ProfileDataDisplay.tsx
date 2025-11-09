@@ -5,20 +5,23 @@ import { IsVerified } from './IsVerified';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 
-import { Clock, IdCard, Info, User } from 'lucide-react';
+import { Clock, IdCard, Info, Star, User } from 'lucide-react';
 import { DisplayItem } from './Item';
-import { Flex, Divider } from '@mantine/core';
-import { usePutUserData } from '@/widgets/SideBar/lib/usePutUserData';
+import { Flex, Divider, Rating } from '@mantine/core';
+import { useUserStore } from '../model';
+import { useDefault } from 'react-use';
 export const ProfileDataDisplay = () => {
-  const { fullName, login, bio } = usePutUserData();
-
+  const login = useUserStore((s) => s.login);
+  const bio = useUserStore((s) => s.bio);
+  const fullName = useUserStore((s) => s.full_name);
+  const ratingValue = useUserStore((s) => s.rating);
   const clipboard = useClipboard();
+  const [rating] = useDefault({ rating: 0, status: 'undefined' }, ratingValue);
   return (
     <Flex direction={'column'} gap={'md'}>
       <Flex w={'inherit'} justify={'center'}>
         <UserAvatar size={'xl'} />
       </Flex>
-
       <DisplayItem
         descText="Логин"
         onClick={() => {
@@ -40,7 +43,26 @@ export const ProfileDataDisplay = () => {
         icon={<Clock />}
         display={createdAt()}
       />
-
+      <DisplayItem
+        descProp={{
+          direction: 'row',
+        }}
+        textProp={{
+          c:
+            rating.rating === null || rating.rating === undefined
+              ? 'red.8'
+              : rating.rating >= 4
+                ? 'blue.8'
+                : rating.rating >= 2.5
+                  ? 'yellow.8'
+                  : 'red.8',
+        }}
+        descText="Рейтинг"
+        icon={<Star />}
+        display={rating.rating?.toString()}
+      >
+        <Rating value={rating.rating ?? 0} color="blue" readOnly />
+      </DisplayItem>
       <DisplayItem descText="Биография" display={bio} icon={<Info />} />
       <Divider />
       <Description desc="Статус верификации">

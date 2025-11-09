@@ -1,1 +1,1 @@
-export { useGetSettings } from './useSettingsGet.ts';
+export { useGetSettings } from './useGetSettings.ts';

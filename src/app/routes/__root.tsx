@@ -13,14 +13,13 @@ import {
   useRouter,
 } from '@tanstack/react-router';
 import { Modals } from '../ui/Modals';
-import { Notice } from '@/shared/ui/Notice';
 const RootLayout = () => {
   const settings = useModalGlobal((s) => s.pinOpen)('settings');
   const navigate = useRouter().navigate;
   return (
     <>
-      <AppShell>
-        <AppShell.Main >
+      <AppShell padding={'md'}>
+        <AppShell.Main>
           <Outlet />
           <IsAuth status={false}>
             <LoginBadge />

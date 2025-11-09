@@ -5,4 +5,5 @@ export type ThemeIconRecord = Record<MantineColorScheme, IconType>;
 export type UseThemeHook = () => {
   Icon: IconType;
   set: () => void;
+  colorScheme: MantineColorScheme;
 };

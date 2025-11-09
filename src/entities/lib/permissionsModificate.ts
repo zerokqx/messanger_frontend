@@ -26,4 +26,3 @@ export const catchAndChange = <
     {}
   ) as ReplaceTypeKey<T, Extends, Replace>;
 };
-const d = catchAndChange({ d: 1, W: '1' }, 'string', (_, v) => Number(v));

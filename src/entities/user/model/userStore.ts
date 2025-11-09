@@ -9,7 +9,12 @@ const useUserStoreBase = create<UserStore>()(
   devtools(
     persist(
       immer((set, _, store) => ({
-        user_id: '00000000-0000-0000-0000-000000000000',
+        rating: {
+          status: 'unavailable',
+          rating: 2.5,
+        },
+
+        user_id: '',
         is_verified: false,
         login: 'Anonymous',
         full_name: 'Anonymous',
@@ -29,6 +34,7 @@ const useUserStoreBase = create<UserStore>()(
           public_invite_permission: 0,
           group_invite_permission: 0,
           call_permission: 0,
+
           force_auto_delete_messages_in_private: false,
           max_message_auto_delete_seconds: null,
           auto_delete_after_days: null,

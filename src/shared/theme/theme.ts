@@ -1,5 +1,6 @@
 import {
   AppShell,
+  Avatar,
   Button,
   Checkbox,
   createTheme,
@@ -206,9 +207,14 @@ export const theme = createTheme({
         variant: 'transparent',
       },
     }),
+    Avatar: Avatar.extend({
+      defaultProps: {
+        color: 'white',
+      },
+    }),
     Select: Select.extend({
       defaultProps: {
-        styles(theme, props, ctx) {
+        styles(theme) {
           return {
             input: {
               background: theme.black,

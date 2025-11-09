@@ -1,7 +1,6 @@
 import { useSearch, useSearchStore } from '@/features/search';
 import { useAuth } from '@/shared/model/authProviderContext';
 import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
-import { useBorder } from '@/widgets/Settings';
 import {
   Burger,
   CloseButton,
@@ -12,7 +11,6 @@ import {
 } from '@mantine/core';
 import { Search } from 'lucide-react';
 import { useRef } from 'react';
-import { useLogger } from 'react-use';
 import { assideTaber } from '../lib/tab';
 
 export const NavbarHeader = ({
@@ -24,7 +22,6 @@ export const NavbarHeader = ({
   const toggle = useSideBarStore.useToggle();
   const t = useMantineTheme();
   const isAuth = useAuth((s) => s.isAuth);
-  const bd = useBorder('0.1rem');
   const timer = useRef<number | null>(null);
 
   const setQuery = useSearchStore((s) => s.setQuery);
@@ -41,9 +38,6 @@ export const NavbarHeader = ({
       direction={'row'}
       w={'100%'}
       align={'center'}
-      style={{
-        borderBottom: bd,
-      }}
     >
       <Taber.OnlyOnTab on="search">
         <CloseButton onClick={goBack} />
@@ -58,6 +52,9 @@ export const NavbarHeader = ({
         />
       </Taber.OnlyOnTab>
       <TextInput
+        onDragStartCapture={() => {
+          set('search');
+        }}
         disabled={!isAuth}
         onChange={(e) => {
           if (timer.current) timer.current = null;
