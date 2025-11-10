@@ -83,7 +83,7 @@ export const createTaber = <T extends Windows>({
   };
   const ResetButton: TaberButtons<T>['Reset'] = ({ children }) => {
     const reset = useStore.useReset();
-    return <CustomMantineButton onClick={reset} children={children} />;
+    return <Button onClick={reset} children={children} />;
   };
   const Buttons: TaberButtons<T> = {
     GoTo: GoToButton,

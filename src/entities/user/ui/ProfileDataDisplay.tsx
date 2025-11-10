@@ -8,20 +8,22 @@ import { notifications } from '@mantine/notifications';
 import { Clock, IdCard, Info, Star, User } from 'lucide-react';
 import { DisplayItem } from './Item';
 import { Flex, Divider, Rating } from '@mantine/core';
-import { useUserStore } from '../model';
-import { useDefault } from 'react-use';
-export const ProfileDataDisplay = () => {
-  const login = useUserStore((s) => s.login);
-  const bio = useUserStore((s) => s.bio);
-  const fullName = useUserStore((s) => s.full_name);
-  const ratingValue = useUserStore((s) => s.rating);
+import type { ProfileDataDisplayProp } from '../types/profileDataDisplay.type';
+
+export const ProfileDataDisplay = ({
+  bio,
+  fullName,
+  login,
+  rating,
+}: ProfileDataDisplayProp) => {
   const clipboard = useClipboard();
-  const [rating] = useDefault({ rating: 0, status: 'undefined' }, ratingValue);
+
   return (
-    <Flex direction={'column'} gap={'md'}>
-      <Flex w={'inherit'} justify={'center'}>
-        <UserAvatar size={'xl'} />
+    <Flex direction="column" gap="md">
+      <Flex w="inherit" justify="center">
+        <UserAvatar size="xl" />
       </Flex>
+
       <DisplayItem
         descText="Логин"
         onClick={() => {
@@ -33,38 +35,42 @@ export const ProfileDataDisplay = () => {
         display={login}
         icon={<User />}
       />
+
       <DisplayItem
         display={fullName}
         icon={<IdCard />}
         descText="Имя пользователя"
       />
+
       <DisplayItem
-        descText="Учетная запись создан"
+        descText="Учетная запись создана"
         icon={<Clock />}
         display={createdAt()}
       />
+
       <DisplayItem
-        descProp={{
-          direction: 'row',
-        }}
+        descProp={{ direction: 'row' }}
         textProp={{
           c:
-            rating.rating === null || rating.rating === undefined
+            rating < 2.5
               ? 'red.8'
-              : rating.rating >= 4
+              : rating >= 4
                 ? 'blue.8'
-                : rating.rating >= 2.5
+                : rating >= 2.5
                   ? 'yellow.8'
                   : 'red.8',
         }}
         descText="Рейтинг"
         icon={<Star />}
-        display={rating.rating?.toString()}
+        display={rating.toString()}
       >
-        <Rating value={rating.rating ?? 0} color="blue" readOnly />
+        <Rating value={rating} color="blue" readOnly />
       </DisplayItem>
+
       <DisplayItem descText="Биография" display={bio} icon={<Info />} />
+
       <Divider />
+
       <Description desc="Статус верификации">
         <IsVerified />
       </Description>
