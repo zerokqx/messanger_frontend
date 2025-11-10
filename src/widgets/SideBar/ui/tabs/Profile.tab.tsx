@@ -4,15 +4,21 @@ import { SquarePen } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { sidebarTab } from '../../model/tab';
+import { useAuth } from '@/shared/model/authProviderContext';
 
 export const Profile = () => {
   const { t } = useTranslation('sideBar');
   const [Taber, useStore] = sidebarTab;
   const set = useStore.useSetCurrentTab();
+  const login = useAuth((s) => s.user.login) || 'Anonymous';
+
+  const fullName = useAuth((s) => s.user.full_name ?? 'Anonymous');
+  const bio = useAuth((s) => s.user.bio ?? '');
+  const rating = useAuth((s) => s.user.rating.rating ?? 0);
   const MotionButton = motion.create<ButtonProps>(Button);
   return (
     <Taber.Panel value="profile">
-      <ProfileDataDisplay />
+      <ProfileDataDisplay {...{ bio, login, fullName, rating }} />
 
       <Space h={'1rem'} />
       <Center>
