@@ -12,8 +12,8 @@ export const Profile = () => {
   const set = useStore.useSetCurrentTab();
   const login = useAuth((s) => s.user.login) || 'Anonymous';
 
-  const fullName = useAuth((s) => s.user.full_name ?? 'Anonymous');
-  const bio = useAuth((s) => s.user.bio ?? '');
+  const fullName = useAuth((s) => s.user.full_name ?? '');
+  const bio = useAuth((s) => s.user.bio ?? 'Anonymous');
   const rating = useAuth((s) => s.user.rating.rating ?? 0);
   const MotionButton = motion.create<ButtonProps>(Button);
   return (

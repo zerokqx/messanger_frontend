@@ -43,6 +43,7 @@ interface Resources {
   "sideBar": {
     "change_profile": "Change your profile",
     "chats": "Chats",
+    "dark_theme": "Dark theme",
     "interface_edit": "Inerface",
     "profile": "Profile",
     "profile_settings": "Profile settings",
@@ -53,6 +54,8 @@ interface Resources {
   },
   "titles": {
     "enter": "Login",
+    "invalid_login": "Invalid login",
+    "invalid_message_login": "Invalid login. Please retry",
     "register": "Register"
   }
 }

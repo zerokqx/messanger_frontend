@@ -1,4 +1,6 @@
 {
   "enter": "Вход",
+  "invalid_login": "Ошибка входа",
+  "invalid_message_login": "Ошибка входа. Пожалуйста повторите",
   "register": "Регистрация"
 }

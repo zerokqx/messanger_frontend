@@ -31,9 +31,9 @@ export const useLogin = () => {
     onError: (error) => {
       console.log(error);
       notifications.show({
-        title: 'Опа ошибка!',
+        title: 'Опа, ошибка!',
         message:
-          'Не пережевайте - это на нашей стороне скоро все будет исправлено',
+          'Не переживайте - это на нашей стороне скоро все будет исправлено',
         color: 'red',
       });
     },
