@@ -1,4 +1,6 @@
 {
   "enter": "Login",
+  "invalid_login": "Invalid login",
+  "invalid_message_login": "Invalid login. Please retry",
   "register": "Register"
 }

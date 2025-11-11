@@ -9,13 +9,13 @@ export const NotificationStyled = () => {
   const bd = useGetBorder('0.1rem');
   return (
     <Notifications
+      zIndex={'1000000'}
       position={mobile ? 'bottom-right' : 'top-right'}
       styles={{
         root: {
           borderRadius: t.radius.xl,
         },
 
-        
         notification: {
           borderRadius: t.radius.xl,
           border: bd,

@@ -1,11 +1,10 @@
-import { Button, useProps } from '@mantine/core';
+import { Button, useProps, Loader } from '@mantine/core';
 import { useFormContext } from '../../../model';
 import type {
   FormButtonProp,
   FormButtonWithoutSelectorProp,
 } from '../../../types/formButtonProp.type';
 import { useStore } from '@tanstack/react-form';
-
 export const UnivButton = (props: FormButtonProp) => {
   const defaultProps: FormButtonProp = {
     selector: () => [true],
@@ -22,21 +21,18 @@ export const UnivButton = (props: FormButtonProp) => {
 export const DirtyButton = ({ ...props }: FormButtonWithoutSelectorProp) => {
   return <UnivButton selector={(s) => [s.isDirty]} {...props} />;
 };
-
-export const SubmitButton = ({ ...props }) => {
+export const SubmitButton = ({
+  children,
+  ...props
+}: FormButtonWithoutSelectorProp) => {
   const form = useFormContext();
-  const [isSubmitting] = useStore(form.store, (s) => [s.isSubmitted]);
-  console.log(isSubmitting);
+  const [isSubmitting] = useStore(form.store, (s) => [s.isSubmitting]);
   return (
-    <UnivButton
-      type="submit"
-      disabled={isSubmitting}
-      selector={(s) => [s.canSubmit]}
-      {...props}
-    />
+    <UnivButton type="submit" disabled={isSubmitting} {...props}>
+      {isSubmitting ? <Loader size={16} /> : children}
+    </UnivButton>
   );
 };
-
 export const ResetButton = (props: Omit<FormButtonProp, 'onClick'>) => {
   const form = useFormContext();
   return (

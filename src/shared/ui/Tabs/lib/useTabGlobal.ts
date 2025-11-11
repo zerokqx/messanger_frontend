@@ -1,5 +1,5 @@
 import { use } from 'react';
-import { TaberContext } from '../model/context';
+import { TaberGlobalContext, TaberLocalContext } from '../model/context';
 import type { CreateTabStore } from '../types';
 
 declare global {
@@ -19,7 +19,7 @@ declare global {
 export const useTabGlobal = <T extends TabsSources, R extends TabsWindows[T]>(
   source: T
 ): CreateTabStore<R> => {
-  const context = use(TaberContext) as Record<
+  const context = use(TaberGlobalContext) as Record<
     TabsSources,
     CreateTabStore<R>
   > | null;

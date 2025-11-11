@@ -5,6 +5,7 @@ import { useCloseOpen } from '@/shared/model/useModalStore/lib/useCloseOpen';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
 import { FieldGroutpUserNamePassword } from '@/shared/ui/Form/ui/FormV2/Groups/UserNamePassword';
 import { Modal } from '@/shared/ui/Modal';
+import { notifications } from '@mantine/notifications';
 import { useStore } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
 import { ListRestart } from 'lucide-react';
@@ -16,7 +17,7 @@ export const LoginModal = () => {
   const close = useModalGlobal.usePinClose()('login');
   const swapMode = useCloseOpen('login', 'register');
   const router = useRouter();
-  const { mutate } = useLogin();
+  const { mutateAsync } = useLogin();
   const form = useAppForm({
     defaultValues: {
       password: '',
@@ -27,8 +28,8 @@ export const LoginModal = () => {
       onChange: loginFormSchema,
     },
 
-    onSubmit: ({ value: { password, userName } }) => {
-      mutate(
+    onSubmit: async ({ value: { password, userName } }) => {
+      await mutateAsync(
         {
           body: {
             password: password,
@@ -36,6 +37,12 @@ export const LoginModal = () => {
           },
         },
         {
+          onError() {
+            notifications.show({
+              title: t('invalid_login'),
+              message: t('invalid_message_login'),
+            });
+          },
           onSuccess: () => {
             void router.invalidate();
             close();
@@ -65,16 +72,12 @@ export const LoginModal = () => {
               </form.ResetButton>
             </form.Horizontal>
             <form.Vertical justify="center" w={'100%'}>
-              <If condition={!isDirty}>
-                <Then>
-                  <form.SecondAction
-                    title={t('fieldLabels:have_account')}
-                    onClick={swapMode}
-                  >
-                    {t('buttonLabels:create')}
-                  </form.SecondAction>
-                </Then>
-              </If>
+              <form.SecondAction
+                title={t('fieldLabels:have_account')}
+                onClick={swapMode}
+              >
+                {t('buttonLabels:create')}
+              </form.SecondAction>
             </form.Vertical>
           </form.Vertical>
         </form.Form>

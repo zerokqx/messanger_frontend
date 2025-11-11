@@ -1,4 +1,4 @@
-import { Stack, Tabs } from '@mantine/core';
+import { Button, Stack, Tabs } from '@mantine/core';
 import { motion } from 'motion/react';
 import { CustomMantineButton } from '../../Button';
 import { If } from '../../If';
@@ -73,7 +73,7 @@ export const createTaber = <T extends Windows>({
     const setCurrentTab = useStore.useSetCurrentTab();
 
     return (
-      <CustomMantineButton
+      <Button
         onClick={() => {
           setCurrentTab(resetTo);
         }}

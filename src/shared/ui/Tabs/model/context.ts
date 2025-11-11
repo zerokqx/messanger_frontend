@@ -1,3 +1,5 @@
 import { createContext } from 'react';
 
-export const TaberContext = createContext({});
+export const TaberLocalContext = createContext({});
+
+export const TaberGlobalContext = createContext({});
