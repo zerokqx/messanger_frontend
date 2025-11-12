@@ -1,6 +1,5 @@
 import { Button, Stack, Tabs } from '@mantine/core';
 import { motion } from 'motion/react';
-import { CustomMantineButton } from '../../Button';
 import { If } from '../../If';
 import { createTabStore } from '../model';
 import type {
