@@ -5,7 +5,7 @@ import { useModalGlobal } from '@/shared/model/useModalStore';
 import { AppShellNavbar } from '@/widgets/ChatAside';
 import { LoginBadge } from '@/widgets/LoginBadge';
 import { SideBarLayout } from '@/widgets/SideBar';
-import { AppShell } from '@mantine/core';
+import { AppShell, Button } from '@mantine/core';
 import {
   createRootRouteWithContext,
   Outlet,
@@ -13,6 +13,30 @@ import {
   useRouter,
 } from '@tanstack/react-router';
 import { Modals } from '../ui/Modals';
+import { TaberProvider, useTab } from '@/shared/ui/Tabs/ui/TaberProvider';
+
+const Tes = () => {
+  const { handlers } = useTab('asside');
+
+  return (
+    <>
+      <Button
+        onClick={() => {
+          handlers.set();
+        }}
+      >
+        GoNext
+      </Button>{' '}
+      <Button
+        onClick={() => {
+          handlers.back();
+        }}
+      >
+        GoNext
+      </Button>{' '}
+    </>
+  );
+};
 const RootLayout = () => {
   const settings = useModalGlobal((s) => s.pinOpen)('settings');
   const navigate = useRouter().navigate;
@@ -20,7 +44,14 @@ const RootLayout = () => {
     <>
       <AppShell padding={'md'}>
         <AppShell.Main>
-          <Outlet />
+          <TaberProvider
+            source="asside"
+            windows={['chats', 'profile', 'search']}
+            initial="chats"
+          >
+            <Tes />
+            <Outlet />
+          </TaberProvider>
           <IsAuth status={false}>
             <LoginBadge />
           </IsAuth>
