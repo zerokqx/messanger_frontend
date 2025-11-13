@@ -1,23 +1,6 @@
-import {
-  useListState,
-  useLogger,
-  useStateHistory,
-  type UseStateHistoryHandlers,
-  type UseStateHistoryReturnValue,
-} from '@mantine/hooks';
-import { keys } from 'localforage';
-import {
-  createContext,
-  use,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type Context,
-  type ReactNode,
-} from 'react';
-import { useEffectOnce, useStateWithHistory } from 'react-use';
-import type { UseStateHistoryReturn } from 'react-use/lib/useStateWithHistory';
+import { usePrevious, useStateHistory } from '@mantine/hooks';
+import { use, useCallback, useEffect, useMemo } from 'react';
+import { useEffectOnce, useLogger } from 'react-use';
 import { usesSources } from '../lib/usesSources';
 import type {
   TaberProviderActions,
@@ -25,10 +8,16 @@ import type {
 } from '../types/taberProvider.type';
 import { singletoneContext } from '../lib/singletoneContexts';
 import { indexOf } from 'lodash';
+import type { ArrayIndices } from 'type-fest';
+
+export interface UseHistoryString<T extends string[]> {
+  initial: T[number];
+  strings: T;
+}
 
 export const TaberProvider = <
   V extends TabsSources,
-  const W extends readonly TabsWindows[V][],
+  const W extends TabsWindows[V][],
 >({
   source,
   windows,
@@ -41,14 +30,27 @@ export const TaberProvider = <
     [windows, initial]
   );
   const [, handlers, { current }] = useStateHistory(initialIndex);
-  const handleChangeTab = useCallback(() => onChangeTab, [onChangeTab]);
 
+  const handleChangeTab = useCallback(() => onChangeTab, [onChangeTab]);
+  const previousTab = usePrevious(current);
   useEffect(() => {
-    memoOnChangeTab?.({
-      index: current,
-      name: windows[current] as W[number],
+    if (current >= windows.length) handlers.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current]);
+  useEffect(() => {
+    handleChangeTab()?.({
+      current: {
+        index: current,
+        name: windows[current],
+      },
+      handlers,
+      prev: {
+        index: previousTab,
+        name: windows[previousTab ?? 0],
+      },
     });
-  }, [current, windows]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, previousTab]);
   useEffectOnce(() => {
     usesSources.add(source);
     return () => {
@@ -59,12 +61,16 @@ export const TaberProvider = <
     () =>
       ({
         handlers,
+
         current: {
-          index: history.current,
-          name: windows[history.current] as string,
+          index: current,
+          name: windows[current] as string,
         },
-      }) satisfies TaberProviderActions,
-    [handlers, history, windows]
+        meta: {
+          windows: windows as TabsWindows[V][],
+        },
+      }) satisfies TaberProviderActions<V, TabsWindows[V][]>,
+    [handlers, current, windows]
   );
   const Context = singletoneContext(source);
 
@@ -73,10 +79,4 @@ export const TaberProvider = <
       <Context {...{ value }}>{children}</Context>
     </>
   );
-};
-
-export const useTab = (source: TabsSources) => {
-  const context = use(singletoneContext(source));
-  if (!context) throw new Error('Hook caled in not context');
-  return context as TaberProviderActions satisfies TaberProviderActions;
 };

@@ -7,7 +7,7 @@ import { notifications } from '@mantine/notifications';
 
 import { Clock, IdCard, Info, Star, User } from 'lucide-react';
 import { DisplayItem } from './Item';
-import { Flex, Divider, Rating } from '@mantine/core';
+import { Flex, Divider, Rating, Stack, Center } from '@mantine/core';
 import type { ProfileDataDisplayProp } from '../types/profileDataDisplay.type';
 
 export const ProfileDataDisplay = ({
@@ -19,11 +19,10 @@ export const ProfileDataDisplay = ({
   const clipboard = useClipboard();
 
   return (
-    <Flex direction="column" gap="md">
-      <Flex w="inherit" justify="center">
+    <Stack>
+      <Center>
         <UserAvatar size="xl" />
-      </Flex>
-
+      </Center>
       <DisplayItem
         descText="Логин"
         onClick={() => {
@@ -74,6 +73,6 @@ export const ProfileDataDisplay = ({
       <Description desc="Статус верификации">
         <IsVerified />
       </Description>
-    </Flex>
+    </Stack>
   );
 };

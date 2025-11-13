@@ -1,11 +1,21 @@
-{ pkgs, lib, config, inputs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}:
 
 {
   # https://devenv.sh/basics/
   env.GREET = "Yobble";
 
   # https://devenv.sh/packages/
-  packages = with pkgs; [ git eslint bun ];
+  packages = with pkgs; [
+    git
+    eslint
+    bun
+  ];
 
   scripts = {
 
@@ -17,8 +27,7 @@
     "i18n:status".exec = "bunx i18next-cli status";
     "i18n:lint".exec = "bunx i18next-cli lint";
     "i18n:watch".exec = "bunx i18next-cli extract --watch";
-    "i18n:full".exec =
-      "bunx i18next-cli extract && bunx i18next-cli sync && bunx i18next-cli types";
+    "i18n:full".exec = "bunx i18next-cli extract && bunx i18next-cli sync && bunx i18next-cli types";
     "i18n:ci".exec = "bunx i18next-cli extract --ci";
   };
 
@@ -27,7 +36,9 @@
     git --version
   '';
 
-  processes.docker = { exec = "./deploy.bash"; };
+  processes.docker = {
+    exec = "./deploy.bash";
+  };
 
   enterTest = ''
     echo "Running tests"

@@ -11,7 +11,8 @@ import {
 } from '@mantine/core';
 import { Search } from 'lucide-react';
 import { useRef } from 'react';
-import { assideTaber } from '../lib/tab';
+import { appShellReset, AppShellTaber, useTabAppShell } from '../lib/tab';
+import { current } from 'immer';
 
 export const NavbarHeader = ({
   input,
@@ -25,9 +26,10 @@ export const NavbarHeader = ({
   const timer = useRef<number | null>(null);
 
   const setQuery = useSearchStore((s) => s.setQuery);
-  const [Taber, useStore] = assideTaber;
-  const goBack = useStore.useGoBack();
-  const set = useStore.useSetCurrentTab();
+  const goBack = useTabAppShell.useGoBack();
+  const set = useTabAppShell.useSetCurrentTab();
+  const currentTab = useTabAppShell.useCurrentTab();
+
   useSearch();
   return (
     <Flex
@@ -39,10 +41,8 @@ export const NavbarHeader = ({
       w={'100%'}
       align={'center'}
     >
-      <Taber.OnlyOnTab on="search">
-        <CloseButton onClick={goBack} />
-      </Taber.OnlyOnTab>
-      <Taber.OnlyOnTab on="chats">
+      {currentTab !== appShellReset() && <CloseButton onClick={goBack} />}
+      <AppShellTaber.OnlyOnTab on="chats">
         <Burger
           size={'md'}
           opened={isOpen}
@@ -50,7 +50,7 @@ export const NavbarHeader = ({
           color="blue"
           aria-label="Toggle SideBar"
         />
-      </Taber.OnlyOnTab>
+      </AppShellTaber.OnlyOnTab>
       <TextInput
         onDragStartCapture={() => {
           set('search');

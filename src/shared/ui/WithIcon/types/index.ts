@@ -5,7 +5,7 @@ type Span = 'icon';
 
 export interface WithIconProp
   extends GridProps,
-    Record<`${Span}Span`, GridColProps['span']> {
+    Partial<Record<`${Span}Span`, GridColProps['span']>> {
   themeIconProps?: ThemeIconProps;
   children: ReactNode;
   icon: ReactNode;

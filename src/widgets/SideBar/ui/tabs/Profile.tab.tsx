@@ -3,13 +3,12 @@ import { Button, Center, Space, type ButtonProps } from '@mantine/core';
 import { SquarePen } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
-import { sidebarTab } from '../../model/tab';
+import { SideBarTaber, useTabSidebar } from '../../model/tab';
 import { useAuth } from '@/shared/model/authProviderContext';
 
 export const Profile = () => {
   const { t } = useTranslation('sideBar');
-  const [Taber, useStore] = sidebarTab;
-  const set = useStore.useSetCurrentTab();
+  const set = useTabSidebar.useSetCurrentTab();
   const login = useAuth((s) => s.user.login) || 'Anonymous';
 
   const fullName = useAuth((s) => s.user.full_name ?? '');
@@ -17,7 +16,7 @@ export const Profile = () => {
   const rating = useAuth((s) => s.user.rating.rating ?? 0);
   const MotionButton = motion.create<ButtonProps>(Button);
   return (
-    <Taber.Panel value="profile">
+    <SideBarTaber.Panel value="profile">
       <ProfileDataDisplay {...{ bio, login, fullName, rating }} />
 
       <Space h={'1rem'} />
@@ -35,6 +34,6 @@ export const Profile = () => {
           {t('change_profile')}
         </MotionButton>
       </Center>
-    </Taber.Panel>
+    </SideBarTaber.Panel>
   );
 };

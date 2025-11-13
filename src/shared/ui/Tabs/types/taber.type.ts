@@ -6,7 +6,6 @@ import type { MotionProps } from 'motion/react';
 import type { Tabs } from '@mantine/core';
 import type { PanelBottom } from 'lucide-react';
 
-type PanelComponent = typeof Tabs.Panel;
 /**
  * Тип, представляющий кортеж строк в нижнем регистре, исользуемый для определения доступных вкладок.
  * Каждая строка является уникальным идентификатором вкладки.
@@ -69,6 +68,7 @@ interface TaberTemplateProp {
  * @template T - Тип кортежа `Windows`, определяющий доступные вкладки.
  */
 interface TaberComponentProps<T extends Windows> extends MotionProps {
+  animationVariant?: 'top-down' | 'down-top' | 'right-left' | 'left-right';
   autoSet?: boolean;
   /** Дочерние элементы, которые будут отображены внутри панели вкладки. */
   children: ReactNode;
@@ -76,6 +76,7 @@ interface TaberComponentProps<T extends Windows> extends MotionProps {
    * Значение, соответствующее идентификатору вкладки. Должно совпадать с одним из элементов `windows`.
    */
   value: T[number];
+  keepMounetd?: boolean;
 }
 
 export interface TaberOnlyOnTabProp<T extends Windows> {

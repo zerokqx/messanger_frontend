@@ -5,7 +5,7 @@ import { useModalGlobal } from '@/shared/model/useModalStore';
 import { AppShellNavbar } from '@/widgets/ChatAside';
 import { LoginBadge } from '@/widgets/LoginBadge';
 import { SideBarLayout } from '@/widgets/SideBar';
-import { AppShell, Button } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import {
   createRootRouteWithContext,
   Outlet,
@@ -13,30 +13,9 @@ import {
   useRouter,
 } from '@tanstack/react-router';
 import { Modals } from '../ui/Modals';
-import { TaberProvider, useTab } from '@/shared/ui/Tabs/ui/TaberProvider';
+import { TaberProvider } from '@/shared/ui/Tabs/ui/TaberProvider';
+import z from 'zod';
 
-const Tes = () => {
-  const { handlers } = useTab('asside');
-
-  return (
-    <>
-      <Button
-        onClick={() => {
-          handlers.set();
-        }}
-      >
-        GoNext
-      </Button>{' '}
-      <Button
-        onClick={() => {
-          handlers.back();
-        }}
-      >
-        GoNext
-      </Button>{' '}
-    </>
-  );
-};
 const RootLayout = () => {
   const settings = useModalGlobal((s) => s.pinOpen)('settings');
   const navigate = useRouter().navigate;
@@ -44,14 +23,7 @@ const RootLayout = () => {
     <>
       <AppShell padding={'md'}>
         <AppShell.Main>
-          <TaberProvider
-            source="asside"
-            windows={['chats', 'profile', 'search']}
-            initial="chats"
-          >
-            <Tes />
-            <Outlet />
-          </TaberProvider>
+          <Outlet />
           <IsAuth status={false}>
             <LoginBadge />
           </IsAuth>
@@ -68,13 +40,18 @@ const RootLayout = () => {
 
 export const Route = createRootRouteWithContext<{ auth: AuthContextTypes }>()({
   component: RootLayout,
-
-  beforeLoad({ location }) {
+  validateSearch: z.object({
+    query: z.string().catch(''),
+    redirect: z.string().catch(''),
+    user_uuid: z.uuid().catch(''),
+  }),
+  beforeLoad({ location, search }) {
     if (location.pathname === '/auth') return;
     if (!useCheckAuth.check()) {
       throw redirect({
         to: '/auth',
         search: {
+          ...search,
           redirect: location.href,
         },
       });
