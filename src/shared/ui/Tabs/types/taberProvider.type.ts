@@ -1,10 +1,11 @@
-import type {
-  UseStateHistoryHandlers,
-  UseStateHistoryReturnValue,
-} from '@mantine/hooks';
+import type { UseStateHistoryHandlers } from '@mantine/hooks';
 import type { ReactNode } from 'react';
-import type { UseStateHistoryReturn } from 'react-use/lib/useStateWithHistory';
 
+import type { ArrayValues } from 'type-fest';
+interface TabDataType<V extends string> {
+  index: number | undefined;
+  name: V | undefined;
+}
 export interface TaberProviderProp<
   V extends TabsSources,
   W extends readonly TabsWindows[V][],
@@ -13,16 +14,24 @@ export interface TaberProviderProp<
   windows: W;
   initial: W[number];
   children?: ReactNode;
-  onPostChangeTab?: (reset: () => void) => void;
-  onPreChangeTab?: (next: { index: number; name: W[number] }) => null | boolean;
-  onChangeTab?: (prev: { index: number; name: W[number] }) => null | boolean;
+  onChangeTab?: (args: {
+    prev: TabDataType<W[number]>;
+    current: TabDataType<W[number]>;
+    handlers: TaberProviderActions<V, W>['handlers'];
+  }) => void;
 }
 
-export interface TaberProviderActions {
+export interface TaberProviderActions<
+  V extends TabsSources,
+  W extends readonly TabsWindows[V][],
+> {
   handlers: UseStateHistoryHandlers<number>;
   current: {
     index: number;
     name: string;
+  };
+  meta: {
+    windows: W;
   };
 }
 

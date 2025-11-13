@@ -7,8 +7,15 @@ RUN bun install --frozen-lockfile
 COPY . .
 RUN bun run vite build
 
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+FROM oven/bun:1
+
+WORKDIR /app
+
+COPY package.json bun.lock ./
+RUN bun install --production
+
+COPY --from=build /app/dist ./dist
+
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["bunx", "serve", "-s", "dist", "-l", "80"]

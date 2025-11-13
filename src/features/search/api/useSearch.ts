@@ -16,7 +16,6 @@ export const useSearch = () => {
 
   const { data, ...rest } = useFetchUsersSearch(query);
   useLogger('Search', { query });
-
   useEffect(() => {
     if (data) {
       setUsers(data);

@@ -21,10 +21,20 @@ export const createTabStore = <T extends Lowercase<string>>(
     setCurrentTab: (tab) => {
       const { currentTab, history } = get();
       if (tab === currentTab) return;
-      set({
-        currentTab: tab,
-        history: [...history, tab],
-      });
+
+      const previousTab = history[history.length - 2];
+
+      if (tab === previousTab) {
+        set((state) => ({
+          currentTab: tab,
+          history: state.history.slice(0, -1),
+        }));
+      } else {
+        set((state) => ({
+          currentTab: tab,
+          history: [...state.history, tab],
+        }));
+      }
     },
     goBack: () => {
       const { history } = get();

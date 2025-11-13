@@ -3,15 +3,14 @@ import { useAuth } from '@/shared/model/authProviderContext';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
-import { sidebarTab } from '../../model/tab';
+import { SideBarTaber, useTabSidebar } from '../../model/tab';
 
 export const ProfileEdit = () => {
   const { t } = useTranslation(['sideBar', 'fieldLabels', 'buttonLabels']);
   const bio = useAuth((s) => s.user.bio);
   const { mutate } = useProfilePut();
   const { user } = useAuth();
-  const [, useStore] = sidebarTab;
-  const goBack = useStore.useGoBack();
+  const goBack = useTabSidebar.useGoBack();
   const form = useAppForm({
     defaultValues: {
       bio,
@@ -37,10 +36,8 @@ export const ProfileEdit = () => {
     },
   });
 
-  const [Taber] = sidebarTab;
-
   return (
-    <Taber.Panel value="profile_edit">
+    <SideBarTaber.Panel value="profile_edit">
       <form.AppForm>
         <form.Form>
           <form.Vertical>
@@ -54,6 +51,6 @@ export const ProfileEdit = () => {
           </form.Vertical>
         </form.Form>
       </form.AppForm>
-    </Taber.Panel>
+    </SideBarTaber.Panel>
   );
 };

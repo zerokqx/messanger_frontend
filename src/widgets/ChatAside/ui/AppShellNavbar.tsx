@@ -1,20 +1,13 @@
 import { AppShellNavbar, useMantineTheme } from '@mantine/core';
 import { useLogger } from 'react-use';
-import { assideTaber } from '../lib/tab';
+import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
-import { SearchWindow } from './SearchWindow';
-import { useSearch } from '@tanstack/react-router';
-import { useEffect } from 'react';
-import { useHash } from 'react-use';
+import { SearchTab } from './tabs/Search.tab';
+import { SelectProfileTab } from './tabs/SelectProfile.tab';
 
 export const AppShellNavbarWidget = () => {
   const t = useMantineTheme();
-  const [Taber, useStore] = assideTaber;
-  const set = useStore.useSetCurrentTab();
-  const [hash] = useHash();
-  useEffect(() => {
-    console.log(hash);
-  });
+  const set = useTabAppShell.useSetCurrentTab();
   useLogger('Asside Taber');
   return (
     <AppShellNavbar
@@ -34,17 +27,13 @@ export const AppShellNavbarWidget = () => {
           },
         }}
       />
-      <Taber>
-        <Taber.Panel value="profile" autoSet={hash.length > 0}>
-          <p>Profile suka</p>
-        </Taber.Panel>
-        <Taber.Panel value="search">
-          <SearchWindow />
-        </Taber.Panel>
-        <Taber.Panel value="chats">
+      <AppShellTaber>
+        <SearchTab />
+        <SelectProfileTab />
+        <AppShellTaber.Panel value="chats">
           <p>chats</p>
-        </Taber.Panel>
-      </Taber>
+        </AppShellTaber.Panel>
+      </AppShellTaber>
     </AppShellNavbar>
   );
 };

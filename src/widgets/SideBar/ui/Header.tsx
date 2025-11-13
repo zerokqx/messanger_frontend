@@ -1,24 +1,15 @@
 import { ColoredIcons } from '@/shared/ui/ColoredIcon';
 import { Drawer, CloseButton } from '@mantine/core';
 import { ArrowLeft } from 'lucide-react';
-import { sidebarTab } from '../model/tab';
-
-
+import { sideBarReset, useTabSidebar } from '../model/tab';
 
 export const Header = () => {
-  const [, useStore, , main] = sidebarTab;
-  const current = useStore.useCurrentTab();
-  const goBack = useStore.useGoBack();
-
-
+  const goBack = useTabSidebar.useGoBack();
+  const current = useTabSidebar.useCurrentTab();
 
   return (
-
-
-
-
     <Drawer.Header bg={'none'}>
-      {current !== main() && (
+      {current !== sideBarReset() && (
         <CloseButton
           onClick={goBack}
           icon={<ColoredIcons accent Icon={ArrowLeft} />}

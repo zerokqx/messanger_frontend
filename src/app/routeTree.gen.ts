@@ -10,21 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VideosRouteImport } from './routes/videos'
-import { Route as DevpanelRouteRouteImport } from './routes/devpanel/route'
 import { Route as authenticationRouteRouteImport } from './routes/(authentication)/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DevpanelIndexRouteImport } from './routes/devpanel/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as authenticationProfileRouteImport } from './routes/(authentication)/profile'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevpanelRouteRoute = DevpanelRouteRouteImport.update({
-  id: '/devpanel',
-  path: '/devpanel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authenticationRouteRoute = authenticationRouteRouteImport.update({
@@ -35,11 +28,6 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const DevpanelIndexRoute = DevpanelIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DevpanelRouteRoute,
 } as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
   id: '/auth/',
@@ -54,49 +42,41 @@ const authenticationProfileRoute = authenticationProfileRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof authenticationRouteRouteWithChildren
-  '/devpanel': typeof DevpanelRouteRouteWithChildren
   '/videos': typeof VideosRoute
   '/profile': typeof authenticationProfileRoute
   '/auth': typeof AuthIndexRoute
-  '/devpanel/': typeof DevpanelIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof authenticationRouteRouteWithChildren
   '/videos': typeof VideosRoute
   '/profile': typeof authenticationProfileRoute
   '/auth': typeof AuthIndexRoute
-  '/devpanel': typeof DevpanelIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/(authentication)': typeof authenticationRouteRouteWithChildren
-  '/devpanel': typeof DevpanelRouteRouteWithChildren
   '/videos': typeof VideosRoute
   '/(authentication)/profile': typeof authenticationProfileRoute
   '/auth/': typeof AuthIndexRoute
-  '/devpanel/': typeof DevpanelIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/devpanel' | '/videos' | '/profile' | '/auth' | '/devpanel/'
+  fullPaths: '/' | '/videos' | '/profile' | '/auth'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/videos' | '/profile' | '/auth' | '/devpanel'
+  to: '/' | '/videos' | '/profile' | '/auth'
   id:
     | '__root__'
     | '/'
     | '/(authentication)'
-    | '/devpanel'
     | '/videos'
     | '/(authentication)/profile'
     | '/auth/'
-    | '/devpanel/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   authenticationRouteRoute: typeof authenticationRouteRouteWithChildren
-  DevpanelRouteRoute: typeof DevpanelRouteRouteWithChildren
   VideosRoute: typeof VideosRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
@@ -108,13 +88,6 @@ declare module '@tanstack/react-router' {
       path: '/videos'
       fullPath: '/videos'
       preLoaderRoute: typeof VideosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/devpanel': {
-      id: '/devpanel'
-      path: '/devpanel'
-      fullPath: '/devpanel'
-      preLoaderRoute: typeof DevpanelRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(authentication)': {
@@ -130,13 +103,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/devpanel/': {
-      id: '/devpanel/'
-      path: '/'
-      fullPath: '/devpanel/'
-      preLoaderRoute: typeof DevpanelIndexRouteImport
-      parentRoute: typeof DevpanelRouteRoute
     }
     '/auth/': {
       id: '/auth/'
@@ -166,22 +132,9 @@ const authenticationRouteRouteChildren: authenticationRouteRouteChildren = {
 const authenticationRouteRouteWithChildren =
   authenticationRouteRoute._addFileChildren(authenticationRouteRouteChildren)
 
-interface DevpanelRouteRouteChildren {
-  DevpanelIndexRoute: typeof DevpanelIndexRoute
-}
-
-const DevpanelRouteRouteChildren: DevpanelRouteRouteChildren = {
-  DevpanelIndexRoute: DevpanelIndexRoute,
-}
-
-const DevpanelRouteRouteWithChildren = DevpanelRouteRoute._addFileChildren(
-  DevpanelRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authenticationRouteRoute: authenticationRouteRouteWithChildren,
-  DevpanelRouteRoute: DevpanelRouteRouteWithChildren,
   VideosRoute: VideosRoute,
   AuthIndexRoute: AuthIndexRoute,
 }

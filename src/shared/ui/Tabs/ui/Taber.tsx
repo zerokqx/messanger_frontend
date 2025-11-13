@@ -9,7 +9,7 @@ import type {
   Windows,
 } from '../types';
 import type { TaberButtons } from '../types/taberButton.type';
-import { useEffect } from 'react';
+import { useEffect, useMemo, type ComponentProps } from 'react';
 
 /**
  * `createTaber` — фабричная функция для создания системы вкладок на базе `@mantine/core/Tabs`.
@@ -41,6 +41,7 @@ export const createTaber = <T extends Windows>({
   const Panel: TaberTemplate<T>['Panel'] = ({
     autoSet,
     children,
+    animationVariant = 'left-right',
     value,
     ...props
   }) => {
@@ -52,6 +53,17 @@ export const createTaber = <T extends Windows>({
       set(value);
     }, [autoSet, cur, value, set]);
 
+    type Animations = ComponentProps<
+      TaberTemplate<T>['Panel']
+    >['animationVariant'];
+    // TODO: Сделать анимации
+    // const animation = useMemo(() => {
+    //   const animations: Record<Animations, { initial: object; whileInView: object }> = {
+    //     'top-down': { initial: { y: '-20px', opacity: 0 }, whileInView: { y: '0px', opacity: 1 } },
+    //     'down-top': { initial: { y: '20px', opacity: 0 }, whileInView: { y: '0px', opacity: 1 } },
+    //     'right-left': { initial: { x: '20%', opacity: 0 }, whileInView: { x: '0%', opacity: 1 } },
+    //     'left-right': { initial: { x: '-20%', opacity: 0 }, whileInView: { x: '0%', opacity: 1 } },
+    //   };
     return (
       <AnimatedPanel
         key={value}
