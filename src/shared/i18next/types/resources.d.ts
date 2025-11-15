@@ -2,6 +2,7 @@ interface Resources {
   "buttonLabels": {
     "create": "Create",
     "enter": "Enter",
+    "register": "Register",
     "save": "Save",
     "submit": "Send"
   },
@@ -52,11 +53,18 @@ interface Resources {
     "toggle_border_description": "Disables or enables the stroke on some elements.",
     "video": "Video"
   },
+  "texts": {
+    "enter_to_account_for_communicate_friend": "Log in to your account to continue chatting with your friends",
+    "glad_see_you": "We are glad to see you",
+    "please_check_address": ""
+  },
   "titles": {
     "enter": "Login",
     "invalid_login": "Invalid login",
     "invalid_message_login": "Invalid login. Please retry",
-    "register": "Register"
+    "not_found_page": "",
+    "register": "Register",
+    "return_to_yobble": "Welcome back to Yobble"
   }
 }
 

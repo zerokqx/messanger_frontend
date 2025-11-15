@@ -3,6 +3,7 @@ import { WithIcon } from '@/shared/ui/WithIcon';
 
 import { Text } from '@mantine/core';
 import type { DisplayItemProp } from '../types/displayItem.type';
+import { hover } from '@/shared/styles/HoverOpacity.css';
 
 export const DisplayItem = ({
   descProp,
@@ -16,7 +17,18 @@ export const DisplayItem = ({
 }: DisplayItemProp) => {
   if (!display) return null;
   return (
-    <WithIcon onClick={onClick} {...withIconProp} icon={icon}>
+    <WithIcon
+      p={'xs'}
+      bdrs={'xl'}
+      className={hover}
+      style={{
+        cursor: 'pointer',
+        userSelect: 'none',
+      }}
+      onClick={onClick}
+      {...withIconProp}
+      icon={icon}
+    >
       <Description {...descProp} desc={descText}>
         <Text {...textProp}>{display}</Text>
         {children}

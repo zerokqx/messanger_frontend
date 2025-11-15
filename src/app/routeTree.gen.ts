@@ -9,19 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VideosRouteImport } from './routes/videos'
-import { Route as authenticationRouteRouteImport } from './routes/(authentication)/route'
+import { Route as AuthRouteRouteImport } from './routes/auth/route'
+import { Route as AuthorizedRouteRouteImport } from './routes/_authorized/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as authenticationProfileRouteImport } from './routes/(authentication)/profile'
+import { Route as SearchUserRouteImport } from './routes/search/user'
+import { Route as AuthorizedYRouteImport } from './routes/_authorized/y'
 
-const VideosRoute = VideosRouteImport.update({
-  id: '/videos',
-  path: '/videos',
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const authenticationRouteRoute = authenticationRouteRouteImport.update({
-  id: '/(authentication)',
+const AuthorizedRouteRoute = AuthorizedRouteRouteImport.update({
+  id: '/_authorized',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -30,71 +31,79 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
-  id: '/auth/',
-  path: '/auth/',
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const SearchUserRoute = SearchUserRouteImport.update({
+  id: '/search/user',
+  path: '/search/user',
   getParentRoute: () => rootRouteImport,
 } as any)
-const authenticationProfileRoute = authenticationProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => authenticationRouteRoute,
+const AuthorizedYRoute = AuthorizedYRouteImport.update({
+  id: '/y',
+  path: '/y',
+  getParentRoute: () => AuthorizedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof authenticationRouteRouteWithChildren
-  '/videos': typeof VideosRoute
-  '/profile': typeof authenticationProfileRoute
-  '/auth': typeof AuthIndexRoute
+  '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/y': typeof AuthorizedYRoute
+  '/search/user': typeof SearchUserRoute
+  '/auth/': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof authenticationRouteRouteWithChildren
-  '/videos': typeof VideosRoute
-  '/profile': typeof authenticationProfileRoute
+  '/': typeof IndexRoute
+  '/y': typeof AuthorizedYRoute
+  '/search/user': typeof SearchUserRoute
   '/auth': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/(authentication)': typeof authenticationRouteRouteWithChildren
-  '/videos': typeof VideosRoute
-  '/(authentication)/profile': typeof authenticationProfileRoute
+  '/_authorized': typeof AuthorizedRouteRouteWithChildren
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/_authorized/y': typeof AuthorizedYRoute
+  '/search/user': typeof SearchUserRoute
   '/auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/videos' | '/profile' | '/auth'
+  fullPaths: '/' | '/auth' | '/y' | '/search/user' | '/auth/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/videos' | '/profile' | '/auth'
+  to: '/' | '/y' | '/search/user' | '/auth'
   id:
     | '__root__'
     | '/'
-    | '/(authentication)'
-    | '/videos'
-    | '/(authentication)/profile'
+    | '/_authorized'
+    | '/auth'
+    | '/_authorized/y'
+    | '/search/user'
     | '/auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  authenticationRouteRoute: typeof authenticationRouteRouteWithChildren
-  VideosRoute: typeof VideosRoute
-  AuthIndexRoute: typeof AuthIndexRoute
+  AuthorizedRouteRoute: typeof AuthorizedRouteRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  SearchUserRoute: typeof SearchUserRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/videos': {
-      id: '/videos'
-      path: '/videos'
-      fullPath: '/videos'
-      preLoaderRoute: typeof VideosRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(authentication)': {
-      id: '/(authentication)'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof authenticationRouteRouteImport
+    '/_authorized': {
+      id: '/_authorized'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthorizedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -106,37 +115,57 @@ declare module '@tanstack/react-router' {
     }
     '/auth/': {
       id: '/auth/'
-      path: '/auth'
-      fullPath: '/auth'
+      path: '/'
+      fullPath: '/auth/'
       preLoaderRoute: typeof AuthIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/search/user': {
+      id: '/search/user'
+      path: '/search/user'
+      fullPath: '/search/user'
+      preLoaderRoute: typeof SearchUserRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(authentication)/profile': {
-      id: '/(authentication)/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof authenticationProfileRouteImport
-      parentRoute: typeof authenticationRouteRoute
+    '/_authorized/y': {
+      id: '/_authorized/y'
+      path: '/y'
+      fullPath: '/y'
+      preLoaderRoute: typeof AuthorizedYRouteImport
+      parentRoute: typeof AuthorizedRouteRoute
     }
   }
 }
 
-interface authenticationRouteRouteChildren {
-  authenticationProfileRoute: typeof authenticationProfileRoute
+interface AuthorizedRouteRouteChildren {
+  AuthorizedYRoute: typeof AuthorizedYRoute
 }
 
-const authenticationRouteRouteChildren: authenticationRouteRouteChildren = {
-  authenticationProfileRoute: authenticationProfileRoute,
+const AuthorizedRouteRouteChildren: AuthorizedRouteRouteChildren = {
+  AuthorizedYRoute: AuthorizedYRoute,
 }
 
-const authenticationRouteRouteWithChildren =
-  authenticationRouteRoute._addFileChildren(authenticationRouteRouteChildren)
+const AuthorizedRouteRouteWithChildren = AuthorizedRouteRoute._addFileChildren(
+  AuthorizedRouteRouteChildren,
+)
+
+interface AuthRouteRouteChildren {
+  AuthIndexRoute: typeof AuthIndexRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthIndexRoute: AuthIndexRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  authenticationRouteRoute: authenticationRouteRouteWithChildren,
-  VideosRoute: VideosRoute,
-  AuthIndexRoute: AuthIndexRoute,
+  AuthorizedRouteRoute: AuthorizedRouteRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
+  SearchUserRoute: SearchUserRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

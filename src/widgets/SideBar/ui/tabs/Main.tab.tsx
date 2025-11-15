@@ -8,14 +8,12 @@ import type { SideBarLayoutProp } from '../../types/sideBarLayout.type';
 export const MainPage = () => {
   const { t } = useTranslation('sideBar');
   const set = useTabSidebar.useSetCurrentTab();
-  const { navigate } = useInject<ReturnType<SideBarLayoutProp['inject']>>()();
 
   return (
     <SideBarTaber.Panel value="main">
       <SideBar.Item inDev text={t('video')}>
         <Video />
       </SideBar.Item>
-
       <SideBar.Item text={t('chats')}>
         <MessageCircle />
       </SideBar.Item>

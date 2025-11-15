@@ -18,7 +18,6 @@ export const Profile = () => {
   return (
     <SideBarTaber.Panel value="profile">
       <ProfileDataDisplay {...{ bio, login, fullName, rating }} />
-
       <Space h={'1rem'} />
       <Center>
         <MotionButton
