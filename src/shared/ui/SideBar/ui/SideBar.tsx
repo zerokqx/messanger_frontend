@@ -4,7 +4,6 @@ import { useSideBarStore } from '../store/useMenuStore';
 import type { SideBarCompouned } from '../types/sideBar.type';
 import { InfoBlock } from './InfoBlock';
 import { SideItem } from './Item';
-import { SelecedProvider } from './SelectedContext';
 import { useLoaderStore } from '../model';
 
 export const SideBar: SideBarCompouned = ({ children }) => {

@@ -1,14 +1,29 @@
-import { AppShellNavbar, useMantineTheme } from '@mantine/core';
+import { Suspense, lazy } from 'react';
+import {
+  AppShellNavbar,
+  Container,
+  Group,
+  useMantineTheme,
+} from '@mantine/core';
 import { useLogger } from 'react-use';
 import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
-import { SearchTab } from './tabs/Search.tab';
-import { SelectProfileTab } from './tabs/SelectProfile.tab';
+
+const SearchTabLazy = lazy(() =>
+  import('./tabs/Search.tab').then((m) => ({ default: m.SearchTab }))
+);
+
+const SelectProfileTabLazy = lazy(() =>
+  import('./tabs/SelectProfile.tab').then((m) => ({
+    default: m.SelectProfileTab,
+  }))
+);
 
 export const AppShellNavbarWidget = () => {
   const t = useMantineTheme();
   const set = useTabAppShell.useSetCurrentTab();
   useLogger('Asside Taber');
+
   return (
     <AppShellNavbar
       bg="black"
@@ -27,13 +42,18 @@ export const AppShellNavbarWidget = () => {
           },
         }}
       />
-      <AppShellTaber>
-        <SearchTab />
-        <SelectProfileTab />
-        <AppShellTaber.Panel value="chats">
-          <p>chats</p>
-        </AppShellTaber.Panel>
-      </AppShellTaber>
+
+      <Group p={'md'} grow>
+        <Suspense fallback={null}>
+          <AppShellTaber>
+            <SearchTabLazy />
+            <SelectProfileTabLazy />
+            <AppShellTaber.Panel value="chats">
+              <p>chats</p>
+            </AppShellTaber.Panel>
+          </AppShellTaber>
+        </Suspense>
+      </Group>
     </AppShellNavbar>
   );
 };

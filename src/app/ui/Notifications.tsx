@@ -9,8 +9,9 @@ export const NotificationStyled = () => {
   const bd = useGetBorder('0.1rem');
   return (
     <Notifications
+      limit={mobile ? 2 : 4}
       zIndex={'1000000'}
-      position={mobile ? 'bottom-right' : 'top-right'}
+      position={mobile ? 'top-right' : 'top-right'}
       styles={{
         root: {
           borderRadius: t.radius.xl,

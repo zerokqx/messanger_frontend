@@ -12,6 +12,7 @@ import {
   Textarea,
   TextInput,
   ThemeIcon,
+  Title,
   type MantineColorsTuple,
 } from '@mantine/core';
 
@@ -178,6 +179,7 @@ export const theme = createTheme({
         offset: 0,
       },
     }),
+
     AppShell: AppShell.extend({
       defaultProps: {
         p: 'xs',
@@ -209,7 +211,13 @@ export const theme = createTheme({
     }),
     Avatar: Avatar.extend({
       defaultProps: {
+        bg: 'blue',
         color: 'white',
+      },
+    }),
+    Title: Title.extend({
+      defaultProps: {
+        c: 'blue',
       },
     }),
     Select: Select.extend({

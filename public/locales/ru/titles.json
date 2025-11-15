@@ -2,5 +2,7 @@
   "enter": "Вход",
   "invalid_login": "Ошибка входа",
   "invalid_message_login": "Ошибка входа. Пожалуйста повторите",
-  "register": "Регистрация"
+  "not_found_page": "Страница не найдена",
+  "register": "Регистрация",
+  "return_to_yobble": "С возращением в Yobble"
 }

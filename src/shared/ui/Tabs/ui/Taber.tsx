@@ -73,6 +73,10 @@ export const createTaber = <T extends Windows>({
         whileInView={{
           x: '0%',
         }}
+        transition={{
+          type: 'keyframes', // или вообще без type
+          duration: 0.1, // фактически отключает анимацию
+        }}
         value={value}
         {...props}
       >

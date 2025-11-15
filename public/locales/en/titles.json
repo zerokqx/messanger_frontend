@@ -2,5 +2,7 @@
   "enter": "Login",
   "invalid_login": "Invalid login",
   "invalid_message_login": "Invalid login. Please retry",
-  "register": "Register"
+  "not_found_page": "Page not found",
+  "register": "Register",
+  "return_to_yobble": "Welcome back to Yobble"
 }

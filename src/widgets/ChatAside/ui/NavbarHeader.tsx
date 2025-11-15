@@ -4,7 +4,9 @@ import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
 import {
   Burger,
   CloseButton,
-  Flex,
+  Grid,
+  Group,
+  Loader,
   TextInput,
   useMantineTheme,
   type TextInputProps,
@@ -12,7 +14,8 @@ import {
 import { Search } from 'lucide-react';
 import { useRef } from 'react';
 import { appShellReset, AppShellTaber, useTabAppShell } from '../lib/tab';
-import { current } from 'immer';
+import { Else, Fallback, If, Then } from 'react-if';
+import { SearchInput } from '@/shared/ui/SearchInput';
 
 export const NavbarHeader = ({
   input,
@@ -21,7 +24,6 @@ export const NavbarHeader = ({
 }) => {
   const isOpen = useSideBarStore.useIsOpen();
   const toggle = useSideBarStore.useToggle();
-  const t = useMantineTheme();
   const isAuth = useAuth((s) => s.isAuth);
   const timer = useRef<number | null>(null);
 
@@ -30,44 +32,36 @@ export const NavbarHeader = ({
   const set = useTabAppShell.useSetCurrentTab();
   const currentTab = useTabAppShell.useCurrentTab();
 
-  useSearch();
+  const searcher = useSearch();
   return (
-    <Flex
-      bg={t.black}
-      gap={'md'}
-      p={'md'}
-      justify={'center'}
-      direction={'row'}
-      w={'100%'}
-      align={'center'}
-    >
-      {currentTab !== appShellReset() && <CloseButton onClick={goBack} />}
-      <AppShellTaber.OnlyOnTab on="chats">
-        <Burger
-          size={'md'}
-          opened={isOpen}
-          onClick={toggle}
-          color="blue"
-          aria-label="Toggle SideBar"
+    <Grid p={'md'} align="center">
+      <Grid.Col span={'content'}>
+        <If condition={currentTab !== appShellReset()}>
+          <Then>
+            <CloseButton onClick={goBack} />
+          </Then>
+          <Else>
+            <AppShellTaber.OnlyOnTab on={appShellReset()}>
+              <Burger
+                size={'md'}
+                opened={isOpen}
+                onClick={toggle}
+                color="blue"
+                aria-label="Toggle SideBar"
+              />
+            </AppShellTaber.OnlyOnTab>
+          </Else>
+        </If>
+      </Grid.Col>
+      <Grid.Col span={'auto'}>
+        <SearchInput
+          rightSection={
+            searcher.isLoading && <Loader pr={'xs'} type="dots" size={'md'} />
+          }
+          onFocus={() => set('search')}
+          action={(e) => setQuery(e.target.value)}
         />
-      </AppShellTaber.OnlyOnTab>
-      <TextInput
-        onDragStartCapture={() => {
-          set('search');
-        }}
-        disabled={!isAuth}
-        onChange={(e) => {
-          if (timer.current) timer.current = null;
-          timer.current = setTimeout(() => {
-            setQuery(e.target.value);
-          }, 200);
-          return timer;
-        }}
-        leftSection={<Search />}
-        placeholder="Поиск"
-        w={'100%'}
-        {...input}
-      />
-    </Flex>
+      </Grid.Col>
+    </Grid>
   );
 };
