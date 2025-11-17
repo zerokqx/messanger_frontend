@@ -18,7 +18,8 @@ export const DisplayItem = ({
   if (!display) return null;
   return (
     <WithIcon
-      p={'xs'}
+      pl={'xs'}
+      gutter={'md'}
       bdrs={'xl'}
       className={hover}
       style={{

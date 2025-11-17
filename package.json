@@ -12,6 +12,7 @@
     "openapi:generate": "openapi-typescript https://api.yobble.org/docs/openapi/combined -o ./src/shared/types/v1.d.ts"
   },
   "dependencies": {
+    "@feature-sliced/cli": "^1.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.1",
     "@fortawesome/free-solid-svg-icons": "^7.0.1",
     "@fortawesome/react-fontawesome": "^3.0.2",
@@ -34,11 +35,13 @@
     "@tanstack/react-query-persist-client": "^5.90.7",
     "@tanstack/react-router": "^1.132.7",
     "@tanstack/react-router-devtools": "^1.132.7",
+    "@tanstack/react-virtual": "^3.13.12",
     "@vanilla-extract/css": "^1.17.4",
     "@vanilla-extract/css-utils": "^0.1.6",
     "auto-zustand-selectors-hook": "^3.0.1",
     "chroma-js": "^3.1.2",
     "dayjs": "^1.11.18",
+    "derive-zustand": "^0.2.0",
     "i18next": "^25.6.0",
     "i18next-cli": "^1.20.1",
     "i18next-http-backend": "^3.0.2",
@@ -64,7 +67,8 @@
     "tailwindcss-classnames": "^3.2.0",
     "translation-check": "^1.1.1",
     "zod": "^4.1.11",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "zustand-computed": "^2.1.1"
   },
   "devDependencies": {
     "@eryshev/eslint-plugin-fsd": "^0.0.17",

@@ -2,6 +2,7 @@ import { useSearchStore } from '../model/useSearchStore';
 import { useEffect } from 'react';
 import { useLogger } from 'react-use';
 import { useFetchUsersSearch } from './useFetchUsersSearch';
+import { useLogin } from '@/features/login';
 
 /**
  * A feature hook that orchestrates user search functionality.
@@ -13,7 +14,6 @@ export const useSearch = () => {
   const setUsers = useSearchStore.useSetUsers();
   const setOpened = useSearchStore.useSetOpened();
   const query = useSearchStore((s) => s.queryForSearch);
-
   const { data, ...rest } = useFetchUsersSearch(query);
   useLogger('Search', { query });
   useEffect(() => {

@@ -1,4 +1,3 @@
-import { UserAvatar } from './UserAvatar';
 import { createdAt } from '@/entities/lib/createAtData';
 import { Description } from '@/shared/ui/Description/ui';
 import { IsVerified } from './IsVerified';
@@ -9,13 +8,17 @@ import { Clock, IdCard, Info, Star, User } from 'lucide-react';
 import { DisplayItem } from './Item';
 import { Divider, Rating, Stack, Center, Avatar, Space } from '@mantine/core';
 import type { ProfileDataDisplayProp } from '../types/profileDataDisplay.type';
+import { useDefault } from 'react-use';
+import type { ReactNode } from 'react';
 
-export const ProfileDataDisplay = ({
-  bio,
-  fullName,
-  login,
-  rating,
-}: ProfileDataDisplayProp) => {
+export const ProfileDataDisplay = (props: ProfileDataDisplayProp) => {
+  const { bio, fullName, login, rating, header } = props;
+  const [headerProp] = useDefault<ReactNode>(
+    <Center>
+      <Avatar size="xl" name={login} />
+    </Center>,
+    () => header?.(props)
+  );
   const clipboard = useClipboard();
 
   const handleCopy = (value: string, label: string) => {
@@ -37,16 +40,14 @@ export const ProfileDataDisplay = ({
   const createdAtValue = createdAt();
 
   return (
-    <Stack>
-      <Center>
-        <Avatar size="xl" name={login} />
-      </Center>
-      <Space h="1rem" />
+    <Stack gap={'xl'}>
+      {headerProp}
 
-      {/* Логин */}
       <DisplayItem
         descText="Логин"
-        onClick={() => handleCopy(login, 'Логин')}
+        onClick={() => {
+          handleCopy(login, 'Логин');
+        }}
         display={login}
         icon={<User />}
       />
@@ -56,7 +57,9 @@ export const ProfileDataDisplay = ({
         display={fullName}
         icon={<IdCard />}
         descText="Имя пользователя"
-        onClick={() => handleCopy(fullName, 'Имя пользователя')}
+        onClick={() => {
+          handleCopy(fullName, 'Имя пользователя');
+        }}
       />
 
       {/* Дата создания учётки */}
@@ -64,7 +67,9 @@ export const ProfileDataDisplay = ({
         descText="Учетная запись создана"
         icon={<Clock />}
         display={createdAtValue}
-        onClick={() => handleCopy(createdAtValue, 'Дата создания')}
+        onClick={() => {
+          handleCopy(createdAtValue ?? '', 'Дата создания');
+        }}
       />
 
       {/* Рейтинг */}
@@ -76,7 +81,9 @@ export const ProfileDataDisplay = ({
         descText="Рейтинг"
         icon={<Star />}
         display={rating.toString()}
-        onClick={() => handleCopy(rating.toString(), 'Рейтинг')}
+        onClick={() => {
+          handleCopy(rating.toString(), 'Рейтинг');
+        }}
       >
         <Rating value={rating} color="blue" readOnly />
       </DisplayItem>
@@ -86,7 +93,9 @@ export const ProfileDataDisplay = ({
         descText="Биография"
         display={bio}
         icon={<Info />}
-        onClick={() => handleCopy(bio, 'Биография')}
+        onClick={() => {
+          handleCopy(bio, 'Биография');
+        }}
       />
 
       <Divider />

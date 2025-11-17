@@ -31,7 +31,7 @@ export const SearchTab = () => {
                     query,
                     uuid: user.user_id,
                   }}
-                  to="/search/user"
+                  to="/y"
                   key={user.user_id}
                   onClick={() => {
                     set('profile');

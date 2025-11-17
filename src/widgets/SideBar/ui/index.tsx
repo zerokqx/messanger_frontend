@@ -2,8 +2,13 @@ import { Suspense, lazy } from 'react';
 import { SideBar } from '@/shared/ui/SideBar';
 import { Header } from './Header';
 import { SideBarTaber } from '../model/tab';
+import { Contact } from 'lucide-react';
 
 // ленивые импорты табов
+
+const Contacts = lazy(() =>
+  import('./tabs/Contacts.tab').then((m) => ({ default: m.ContactsTab }))
+);
 const MainPageLazy = lazy(() =>
   import('./tabs/Main.tab').then((m) => ({ default: m.MainPage }))
 );
@@ -38,6 +43,7 @@ export const SideBarWidget = () => {
       <Header />
       <Suspense fallback={null}>
         <SideBarTaber>
+          <Contacts />
           <MainPageLazy />
           <ProfileLazy />
           <ProfileEditLazy />

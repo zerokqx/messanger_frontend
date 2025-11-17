@@ -1,5 +1,5 @@
 import { SideBar } from '@/shared/ui/SideBar';
-import { Video, MessageCircle, User, Cog } from 'lucide-react';
+import { Video, MessageCircle, User, Cog, Contact } from 'lucide-react';
 import { useInject } from '@/shared/providers/inject/model/useInject';
 import { useTranslation } from 'react-i18next';
 import { SideBarTaber, useTabSidebar } from '../../model/tab';
@@ -14,8 +14,13 @@ export const MainPage = () => {
       <SideBar.Item inDev text={t('video')}>
         <Video />
       </SideBar.Item>
-      <SideBar.Item text={t('chats')}>
-        <MessageCircle />
+      <SideBar.Item
+        onClick={() => {
+          set('contacts');
+        }}
+        text={t('contacts')}
+      >
+        <Contact />
       </SideBar.Item>
 
       <SideBar.Item
