@@ -10,6 +10,7 @@ export const [SideBarTaber, useTabSidebar, SideBarButtons, sideBarReset] =
       'settings',
       'profile_settings',
       'interface_edit',
+      'contacts',
     ],
     initial: 'main',
   });

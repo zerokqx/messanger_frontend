@@ -1,6 +1,7 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import {
   AppShellNavbar,
+  Button,
   Container,
   Group,
   useMantineTheme,
@@ -8,6 +9,8 @@ import {
 import { useLogger } from 'react-use';
 import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
+import { useAppshelData } from './appshell.dataprvoder';
+import { useStore } from 'zustand';
 
 const SearchTabLazy = lazy(() =>
   import('./tabs/Search.tab').then((m) => ({ default: m.SearchTab }))
@@ -20,17 +23,14 @@ const SelectProfileTabLazy = lazy(() =>
 );
 
 export const AppShellNavbarWidget = () => {
+  const assideLength = useAppshelData((s) => s.d('asside').assidePush);
   const t = useMantineTheme();
   const set = useTabAppShell.useSetCurrentTab();
-  useLogger('Asside Taber');
-
   return (
     <AppShellNavbar
       bg="black"
       styles={{
         navbar: {
-          overflow: 'hidden',
-          overflowY: 'auto',
           gap: t.spacing.md,
         },
       }}
@@ -44,6 +44,13 @@ export const AppShellNavbarWidget = () => {
       />
 
       <Group p={'md'} grow>
+        {/* <Button */}
+        {/*   onClick={() => { */}
+        {/*     assideLength({ type: 'number', data: { value: Math.random() } }); */}
+        {/*   }} */}
+        {/* > */}
+        {/*   dwd */}
+        {/* </Button> */}
         <Suspense fallback={null}>
           <AppShellTaber>
             <SearchTabLazy />

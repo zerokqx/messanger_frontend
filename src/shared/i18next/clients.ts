@@ -8,11 +8,11 @@ await i18next
   .use(HttpBackend)
   .init({
     lng: 'ru',
+
     defaultNS: 'buttonLabels',
     debug: true,
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
   });
-
-export default i18next;
+export { i18next as i18n };

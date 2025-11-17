@@ -13,7 +13,6 @@ import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as AuthorizedRouteRouteImport } from './routes/_authorized/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as SearchUserRouteImport } from './routes/search/user'
 import { Route as AuthorizedYRouteImport } from './routes/_authorized/y'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
@@ -35,11 +34,6 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const SearchUserRoute = SearchUserRouteImport.update({
-  id: '/search/user',
-  path: '/search/user',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthorizedYRoute = AuthorizedYRouteImport.update({
   id: '/y',
   path: '/y',
@@ -50,13 +44,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/y': typeof AuthorizedYRoute
-  '/search/user': typeof SearchUserRoute
   '/auth/': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/y': typeof AuthorizedYRoute
-  '/search/user': typeof SearchUserRoute
   '/auth': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
@@ -65,29 +57,20 @@ export interface FileRoutesById {
   '/_authorized': typeof AuthorizedRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/_authorized/y': typeof AuthorizedYRoute
-  '/search/user': typeof SearchUserRoute
   '/auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/y' | '/search/user' | '/auth/'
+  fullPaths: '/' | '/auth' | '/y' | '/auth/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/y' | '/search/user' | '/auth'
-  id:
-    | '__root__'
-    | '/'
-    | '/_authorized'
-    | '/auth'
-    | '/_authorized/y'
-    | '/search/user'
-    | '/auth/'
+  to: '/' | '/y' | '/auth'
+  id: '__root__' | '/' | '/_authorized' | '/auth' | '/_authorized/y' | '/auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthorizedRouteRoute: typeof AuthorizedRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  SearchUserRoute: typeof SearchUserRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -119,13 +102,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/'
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRouteRoute
-    }
-    '/search/user': {
-      id: '/search/user'
-      path: '/search/user'
-      fullPath: '/search/user'
-      preLoaderRoute: typeof SearchUserRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/_authorized/y': {
       id: '/_authorized/y'
@@ -165,7 +141,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthorizedRouteRoute: AuthorizedRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  SearchUserRoute: SearchUserRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -11,9 +11,6 @@ export const useLogin = () => {
   const setToken = useAuth().token.setToken;
   const mutate = authClient()().useMutation('post', '/login', {
     onSuccess: (response) => {
-      console.log('Full response:', response); // Посмотри что тут!
-
-      // Безопасная проверка
       if (!response.data.access_token) {
         console.error('Token not found in response!', response);
         notifications.show({
@@ -23,9 +20,7 @@ export const useLogin = () => {
         });
         return;
       }
-
       setToken(response.data.access_token);
-      // window.location.reload();
     },
 
     onError: (error) => {
