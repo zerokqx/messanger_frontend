@@ -12,6 +12,7 @@
     "openapi:generate": "openapi-typescript https://api.yobble.org/docs/openapi/combined -o ./src/shared/types/v1.d.ts"
   },
   "dependencies": {
+    "@colorfy-software/zfy": "^1.0.0",
     "@feature-sliced/cli": "^1.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.1",
     "@fortawesome/free-solid-svg-icons": "^7.0.1",
@@ -46,7 +47,7 @@
     "i18next-cli": "^1.20.1",
     "i18next-http-backend": "^3.0.2",
     "i18next-react": "^0.2.2",
-    "immer": "^10.2.0",
+    "immer": "9",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.545.0",
