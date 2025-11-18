@@ -16,7 +16,12 @@ interface TextBuffer extends BufferDataBase {
     value: string;
   };
 }
-
+interface EventBuffer extends BufferDataBase {
+  type: 'event';
+  data: {
+    event: keyof GlobalEventHandlersEventMap;
+  };
+}
 interface NumberBuffer extends BufferDataBase {
   type: 'number';
   data: {
@@ -24,9 +29,6 @@ interface NumberBuffer extends BufferDataBase {
   };
 }
 
-interface TriggerBuffer extends BufferDataBase {
-  type: 'trigger';
-}
 interface CounterBuffer extends BufferDataBase {
   type: 'counter';
   data: {
@@ -38,4 +40,4 @@ export type BufferData =
   | TextBuffer
   | CounterBuffer
   | NumberBuffer
-  | TriggerBuffer;
+  | EventBuffer;

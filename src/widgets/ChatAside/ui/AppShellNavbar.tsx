@@ -11,6 +11,8 @@ import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
 import { useAppshelData } from './appshell.dataprvoder';
 import { useStore } from 'zustand';
+import { useBus } from '@/shared/lib/hooks/useDataProvider';
+import { number } from 'zod';
 
 const SearchTabLazy = lazy(() =>
   import('./tabs/Search.tab').then((m) => ({ default: m.SearchTab }))
@@ -24,6 +26,7 @@ const SelectProfileTabLazy = lazy(() =>
 
 export const AppShellNavbarWidget = () => {
   const assideLength = useAppshelData((s) => s.d('asside').assidePush);
+  const p = useBus.usePush();
   const t = useMantineTheme();
   const set = useTabAppShell.useSetCurrentTab();
   return (
@@ -44,13 +47,6 @@ export const AppShellNavbarWidget = () => {
       />
 
       <Group p={'md'} grow>
-        {/* <Button */}
-        {/*   onClick={() => { */}
-        {/*     assideLength({ type: 'number', data: { value: Math.random() } }); */}
-        {/*   }} */}
-        {/* > */}
-        {/*   dwd */}
-        {/* </Button> */}
         <Suspense fallback={null}>
           <AppShellTaber>
             <SearchTabLazy />

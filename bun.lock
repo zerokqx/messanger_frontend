@@ -4,6 +4,7 @@
     "": {
       "name": "msg",
       "dependencies": {
+        "@colorfy-software/zfy": "^1.0.0",
         "@feature-sliced/cli": "^1.0.0",
         "@fortawesome/fontawesome-svg-core": "^7.0.1",
         "@fortawesome/free-solid-svg-icons": "^7.0.1",
@@ -38,7 +39,7 @@
         "i18next-cli": "^1.20.1",
         "i18next-http-backend": "^3.0.2",
         "i18next-react": "^0.2.2",
-        "immer": "^10.2.0",
+        "immer": "9",
         "localforage": "^1.10.0",
         "lodash": "^4.17.21",
         "lucide-react": "^0.545.0",
@@ -209,6 +210,8 @@
     "@bcoe/v8-coverage": ["@bcoe/v8-coverage@0.2.3", "", {}, "sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw=="],
 
     "@bufbuild/protobuf": ["@bufbuild/protobuf@2.9.0", "", {}, "sha512-rnJenoStJ8nvmt9Gzye8nkYd6V22xUAnu4086ER7h1zJ508vStko4pMvDeQ446ilDTFpV5wnoc5YS7XvMwwMqA=="],
+
+    "@colorfy-software/zfy": ["@colorfy-software/zfy@1.0.0", "", { "dependencies": { "zustand": "^3.4.1" }, "peerDependencies": { "immer": ">=7", "react": ">=16.8.3" } }, "sha512-aa/k2ZYHY/U1ux4JPkx0lKHoliEHSvNDx7OrRm8ze2Wy0ormXNgAQ0kSswsL1GeUTU/VR2QOCEjZAoSoKjDdgw=="],
 
     "@colors/colors": ["@colors/colors@1.6.0", "", {}, "sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA=="],
 
@@ -1358,7 +1361,7 @@
 
     "immediate": ["immediate@3.0.6", "", {}, "sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ=="],
 
-    "immer": ["immer@10.2.0", "", {}, "sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw=="],
+    "immer": ["immer@9.0.21", "", {}, "sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA=="],
 
     "immutable": ["immutable@5.1.4", "", {}, "sha512-p6u1bG3YSnINT5RQmx/yRZBpenIl30kVxkTLDyHLIMk0gict704Q9n+thfDI7lTRm9vXdDYutVzXhzcThxTnXA=="],
 
@@ -2331,6 +2334,8 @@
     "zustand-computed": ["zustand-computed@2.1.1", "", { "peerDependencies": { "react": ">=18.2.0 <20.0.0", "zustand": ">=5.0.0 <6.0.0" } }, "sha512-dlKYldwQlsVHV/tHKL01ZpKgboXVcgam0B75iPGIiEimLrdWBOI/or1uB3G0BmjTDp1Ske0rfI4YHxC5ZoMiiQ=="],
 
     "@babel/helper-compilation-targets/lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="],
+
+    "@colorfy-software/zfy/zustand": ["zustand@3.7.2", "", { "peerDependencies": { "react": ">=16.8" }, "optionalPeers": ["react"] }, "sha512-PIJDIZKtokhof+9+60cpockVOq05sJzHCriyvaLBmEJixseQ1a5Kdov6fWZfWOu5SK9c+FhH1jU0tntLxRJYMA=="],
 
     "@eslint-community/eslint-utils/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
 

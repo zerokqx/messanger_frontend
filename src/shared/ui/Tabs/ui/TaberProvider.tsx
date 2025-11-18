@@ -8,7 +8,6 @@ import type {
 } from '../types/taberProvider.type';
 import { singletoneContext } from '../lib/singletoneContexts';
 import { indexOf } from 'lodash';
-import type { ArrayIndices } from 'type-fest';
 
 export interface UseHistoryString<T extends string[]> {
   initial: T[number];

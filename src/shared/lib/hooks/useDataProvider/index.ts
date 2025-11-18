@@ -1,8 +1,7 @@
 import type { LiteralFromArray } from '@/shared/types/utils/literal';
-import { derive } from 'derive-zustand';
 import { forEach as foreachDash } from 'lodash';
 import type { UnknownArray, UnknownRecord } from 'type-fest';
-import { create, useStore, type StoreApi, type UseBoundStore } from 'zustand';
+import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import type { BufferData } from './data.type';
 import type {
@@ -12,8 +11,7 @@ import type {
   BufferActionClear,
 } from './buffer.type';
 import type { DType } from './d.type';
-import { createComputed } from 'zustand-computed';
-import { useMemo } from 'react';
+import { createSelectorHooks } from 'auto-zustand-selectors-hook';
 type Buffers<A extends LiteralFromArray> = Record<A[number], BufferData[]>;
 type RecipientsStructure<A extends LiteralFromArray> = Record<
   A[number],
@@ -34,12 +32,6 @@ export const createDataHook = <
   });
 
   type StoreState = { d: DType<R> } & D & Buffers<R>;
-  const useL = (r: R[number]) => {
-    const devide = useMemo(
-      () => derive((get) => get(store).d(r)[`${r}L`]),
-      [r]
-    );
-  };
   const store = create<StoreState>()(
     immer<StoreState>((set, get) => ({
       ...dataStructures,
@@ -85,3 +77,49 @@ export const createDataHook = <
   );
   return store;
 };
+
+// 1. Описываем состояние стора: один буфер и три экшена
+export interface EventBusState {
+  events: BufferData[];
+  push: (value: BufferData) => void;
+  peekLast: () => BufferData | undefined; // Переименовал 'l' для ясности
+  clear: () => void;
+}
+
+// 2. Создаём хук-стор с помощью create
+export const useEventBusStore = create<EventBusState>()(
+  // Оборачиваем в immer для удобной работы с массивом
+  immer((set, get) => ({
+    // Начальное состояние
+    events: [],
+
+    /**
+     * Добавляет новое событие (транзакцию) в общую шину.
+     */
+    push: (value) => {
+      // Можно по-прежнему добавлять уникальный ID, если нужно
+      value.id = Symbol();
+      set((state) => {
+        state.events.push(value);
+      });
+    },
+
+    /**
+     * Возвращает последнее событие из шины, НЕ удаляя его.
+     */
+    peekLast: () => {
+      // get() позволяет прочитать состояние без вызова set
+      return get().events.at(-1);
+    },
+
+    /**
+     * Полностью очищает шину событий.
+     */
+    clear: () => {
+      set((state) => {
+        state.events = [];
+      });
+    },
+  }))
+);
+export const useBus = createSelectorHooks(useEventBusStore);
