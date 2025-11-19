@@ -1,28 +1,29 @@
 import { useTokenStore } from '@/entities/token/@x/user';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLogger } from 'react-use';
+import z from 'zod';
 
 /**
  * @returns boolean
+ * @deprecated
  */
 function useCheckAuth(): boolean {
-  const validateToken = useTokenStore((s) => s.validateToken);
-  const access = useTokenStore((s) => s.access); // или useStore(state => state.access)
+  const validate = useCallback((t: string) => z.jwt().safeParse(t).success, []);
+  const access = useTokenStore((s) => s.data.access);
   const [isAuth, setIsAuth] = useState<boolean>(false);
-
-  useLogger('useCheckAuth validation', { status: validateToken() });
+  useLogger('useCheckAuth validation', { status: validate(access) });
   useEffect(() => {
-    const status = validateToken(access);
+    const status = validate(access);
     setIsAuth(status);
-  }, [access, validateToken]);
+  }, [access, validate]);
 
   return isAuth;
 }
 
 useCheckAuth.check = (): boolean => {
-  const { validateToken } = useTokenStore.getState();
-  const statusToken = validateToken();
-  return statusToken;
+  const validate = (t: string) => z.jwt().safeParse(t).success;
+  const token = useTokenStore.getState().data.access;
+  return validate(token);
 };
 
 export { useCheckAuth };

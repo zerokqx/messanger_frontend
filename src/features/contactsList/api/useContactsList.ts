@@ -1,9 +1,9 @@
+import { useIsAuth } from '@/entities/session';
 import { authMiddleware } from '@/entities/user';
 import { userClient } from '@/shared/api';
-import { useAuth } from '@/shared/model/authProviderContext';
 
 export const useContactsList = (limit: number, offset: number) => {
-  const isAuth = useAuth((s) => s.isAuth);
+  const isAuth = useIsAuth();
   const query = userClient(authMiddleware)().useQuery(
     'get',
     '/contact/list',

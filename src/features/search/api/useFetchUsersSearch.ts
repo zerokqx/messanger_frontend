@@ -1,7 +1,6 @@
+import { useIsAuth } from '@/entities/session';
 import { authMiddleware } from '@/entities/user';
 import { feedClient } from '@/shared/api';
-import { useAuth } from '@/shared/model/authProviderContext';
-
 /**
  * A hook to fetch users from the search API based on a query.
  * It handles the API request and returns the query results without managing global search state.
@@ -9,7 +8,7 @@ import { useAuth } from '@/shared/model/authProviderContext';
  * @returns The result of the TanStack Query hook for fetching users.
  */
 export const useFetchUsersSearch = (query: string) => {
-  const isAuth = useAuth((s) => s.isAuth);
+  const isAuth = useIsAuth();
 
   return feedClient(authMiddleware)().useQuery(
     'get',

@@ -23,6 +23,7 @@ export const createFetcher = <P extends paths = paths>({
     }
 
     fetcher.use(generalMiddleware);
+    createClient<P>(fetcher);
     return () => createClient<P>(fetcher);
   };
 };

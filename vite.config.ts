@@ -8,7 +8,10 @@ import { devtools } from '@tanstack/devtools-vite';
 const APP = './src/app';
 export default defineConfig({
   build: {
-    sourcemap: true,
+    copyPublicDir: true,
+    sourcemap: false,
+    minify: 'esbuild',
+    cssMinify: 'esbuild',
     cssCodeSplit: true,
   },
   plugins: [
@@ -25,7 +28,7 @@ export default defineConfig({
 
     tailwindcss(),
 
-    devtools(),
+    devtools({}),
     tsPaths(),
     vanillaExtractPlugin(),
   ],

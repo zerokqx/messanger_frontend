@@ -1,12 +1,13 @@
 import { catchAndChange } from '@/entities/lib/permissionsModificate';
 import { useProfilePut } from '@/features/profilePut';
 import { usePlurarDates } from '@/shared/lib/hooks/useDate';
-import { useAuth } from '@/shared/model/authProviderContext';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
 import { useLoaderStore } from '@/shared/ui/SideBar';
 import { useQueryClient } from '@tanstack/react-query';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useUserStore } from '../model';
+// TODO вынести в widgets
 export const DisplayPermissionSettings = memo(() => {
   const { t } = useTranslation([
     'settingsLabels',
@@ -18,7 +19,7 @@ export const DisplayPermissionSettings = memo(() => {
   const daysPlurar = usePlurarDates((s) => s.days);
   const queryClient = useQueryClient();
   const { mutate } = useProfilePut();
-  const permissions = useAuth((s) => s.user.profile_permissions);
+  const permissions = useUserStore((s) => s.data.profile_permissions);
   const modPerm = catchAndChange(permissions, 'number', (_, v) => String(v));
   const setLoad = useLoaderStore.useSetLoading();
   const removeLoader = useLoaderStore.useRemoveLoading();

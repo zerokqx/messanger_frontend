@@ -11,7 +11,6 @@ import { createRouter } from '@tanstack/react-router';
 import { domAnimation, LazyMotion } from 'motion/react';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import { AuthProvider } from './providers/auth/AuthProvide';
 import { routeTree } from './routeTree.gen';
 import { InnerApp } from './ui/InnerApp';
 import { NotificationStyled } from './ui/Notifications';
@@ -47,14 +46,12 @@ if (rootElement && !rootElement.innerHTML) {
               persister: asyncStoragePersister,
             }}
           >
-            <AuthProvider>
-              <SettingsProvider>
-                <I18nextProvider i18n={i18n}>
-                  <InnerApp />
-                  <NotificationStyled />
-                </I18nextProvider>
-              </SettingsProvider>
-            </AuthProvider>
+            <SettingsProvider>
+              <I18nextProvider i18n={i18n}>
+                <InnerApp />
+                <NotificationStyled />
+              </I18nextProvider>
+            </SettingsProvider>
           </PersistQueryClientProvider>
         </LazyMotion>
       </MantineProvider>

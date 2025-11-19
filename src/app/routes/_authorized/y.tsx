@@ -1,9 +1,5 @@
 import { useCheckAuth } from '@/features/checkAuth/model';
-import {
-  createFileRoute,
-  redirect,
-  stripSearchParams,
-} from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import z from 'zod';
 
 export const Route = createFileRoute('/_authorized/y')({

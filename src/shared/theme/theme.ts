@@ -1,5 +1,6 @@
 import {
   AppShell,
+  AppShellNavbar,
   Avatar,
   Button,
   Checkbox,
@@ -218,6 +219,12 @@ export const theme = createTheme({
     Title: Title.extend({
       defaultProps: {
         c: 'blue',
+      },
+    }),
+    
+    AppShellNavbar: AppShellNavbar.extend({
+      defaultProps: {
+        bg: 'black',
       },
     }),
     Select: Select.extend({

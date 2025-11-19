@@ -1,8 +1,8 @@
+import type { IconNode, LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
-import type { IconType } from 'react-icons/lib';
 
 export interface AccordionSettingsProp {
-  icon: IconType;
+  icon: LucideIcon;
   label: string;
   children: ReactNode;
 }

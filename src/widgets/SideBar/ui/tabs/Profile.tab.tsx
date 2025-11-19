@@ -1,19 +1,18 @@
-import { ProfileDataDisplay } from '@/entities/user';
+import { ProfileDataDisplay, useUserStore } from '@/entities/user';
 import { Button, Center, Space, type ButtonProps } from '@mantine/core';
 import { SquarePen } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { SideBarTaber, useTabSidebar } from '../../model/tab';
-import { useAuth } from '@/shared/model/authProviderContext';
 
 export const Profile = () => {
   const { t } = useTranslation('sideBar');
   const set = useTabSidebar.useSetCurrentTab();
-  const login = useAuth((s) => s.user.login) || 'Anonymous';
+  const login = useUserStore((s) => s.data.login) || 'Anonymous';
 
-  const fullName = useAuth((s) => s.user.full_name ?? '');
-  const bio = useAuth((s) => s.user.bio ?? 'Anonymous');
-  const rating = useAuth((s) => s.user.rating.rating ?? 0);
+  const fullName = useUserStore((s) => s.data.full_name ?? '');
+  const bio = useUserStore((s) => s.data.bio ?? 'Anonymous');
+  const rating = useUserStore((s) => s.data.rating.rating ?? 0);
   const MotionButton = motion.create<ButtonProps>(Button);
   return (
     <SideBarTaber.Panel value="profile">

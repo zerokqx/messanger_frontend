@@ -18,7 +18,7 @@
   ];
 
   scripts = {
-
+    testProdBuild.exec = "bun vite build && bun serve ./dist -l 5173 -c ../serve.json";
     build.exec = "bun run build";
     run.exec = "bun run dev";
     "i18n:extract".exec = "bunx i18next-cli extract";

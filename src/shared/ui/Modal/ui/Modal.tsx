@@ -2,7 +2,6 @@ import { useModalGlobal } from '@/shared/model/useModalStore';
 import { useBorder } from '@/widgets/Settings';
 import { Flex, Modal as MantineModal, useMantineTheme } from '@mantine/core';
 import type { ModalComponentProps } from '../types';
-
 export const Modal = ({
   children,
   keyModal,

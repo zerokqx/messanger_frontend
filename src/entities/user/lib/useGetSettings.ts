@@ -1,13 +1,13 @@
-import { useAuth } from '@/shared/model/authProviderContext';
 import { upperFirst, lowerCase } from 'lodash';
 import { useMemo } from 'react';
 import type {
   UseSettingsGet,
   UseSettingsReturnType,
 } from '../types/useSettingsGet.type';
+import { useUserStore } from '../model';
 
 export const useGetSettings: UseSettingsGet = () => {
-  const allPermissions = useAuth((s) => s.user.profile_permissions);
+  const allPermissions = useUserStore((s) => s.data.profile_permissions);
   const keys = useMemo(
     () => Object.keys(allPermissions) as (keyof typeof allPermissions)[],
     [allPermissions]
@@ -22,7 +22,7 @@ export const useGetSettings: UseSettingsGet = () => {
     return keys.map((key, i) => ({
       label: labels[i],
       type: typeof allPermissions[key] === 'boolean' ? 'checkbox' : 'select',
-      key, // если нужно
+      key,
     })) as UseSettingsReturnType[];
   }, [keys, labels, allPermissions]);
 

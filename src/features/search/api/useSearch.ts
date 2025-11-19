@@ -2,7 +2,6 @@ import { useSearchStore } from '../model/useSearchStore';
 import { useEffect } from 'react';
 import { useLogger } from 'react-use';
 import { useFetchUsersSearch } from './useFetchUsersSearch';
-import { useLogin } from '@/features/login';
 
 /**
  * A feature hook that orchestrates user search functionality.
