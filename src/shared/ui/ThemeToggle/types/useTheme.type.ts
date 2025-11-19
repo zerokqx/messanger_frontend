@@ -1,9 +1,9 @@
 import { type MantineColorScheme } from '@mantine/core';
-import type { IconType } from 'react-icons/lib';
+import type { IconNode, LucideIcon } from 'lucide-react';
 
-export type ThemeIconRecord = Record<MantineColorScheme, IconType>;
+export type ThemeIconRecord = Record<MantineColorScheme, LucideIcon>;
 export type UseThemeHook = () => {
-  Icon: IconType;
+  Icon: LucideIcon;
   set: () => void;
   colorScheme: MantineColorScheme;
 };

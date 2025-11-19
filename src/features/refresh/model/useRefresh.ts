@@ -1,14 +1,12 @@
-import { useAuth } from '@/shared/model/authProviderContext';
 import { useEffect } from 'react';
 import { useJwt } from 'react-jwt';
 import { useRefreshRequest } from '../api';
 import { useLogger } from 'react-use';
 
+/**
+ * @deprecated
+ */
 export const useRefresh = () => {
-  const {
-    token: { access, setToken },
-    isAuth,
-  } = useAuth();
   const { mutate, isPending } = useRefreshRequest();
   const { isExpired, reEvaluateToken } = useJwt(access);
   useLogger('Token Status: ', isExpired);

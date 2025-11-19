@@ -1,15 +1,17 @@
 import { useProfilePut } from '@/features/profilePut';
-import { useAuth } from '@/shared/model/authProviderContext';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
 import { SideBarTaber, useTabSidebar } from '../../model/tab';
+import { useUserStore } from '@/entities/user';
 
 export const ProfileEdit = () => {
   const { t } = useTranslation(['sideBar', 'fieldLabels', 'buttonLabels']);
-  const bio = useAuth((s) => s.user.bio);
+  const { bio, update } = useUserStore((s) => ({
+    bio: s.data.bio,
+    update: s.update,
+  }));
   const { mutate } = useProfilePut();
-  const { user } = useAuth();
   const goBack = useTabSidebar.useGoBack();
   const form = useAppForm({
     defaultValues: {
@@ -24,7 +26,7 @@ export const ProfileEdit = () => {
         },
         {
           onSuccess(_, { body: { bio } }) {
-            if (bio != null) user.setBio(bio);
+            if (bio != null) update((s) => (s.bio = bio));
             notifications.show({
               message: 'Профиль изменен',
             });

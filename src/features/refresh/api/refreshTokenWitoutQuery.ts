@@ -1,3 +1,4 @@
+import { useIsAuth } from '@/entities/session';
 import { useTokenStore } from '@/entities/token';
 import type { UseTokenStoreState } from '@/entities/token/types/useTokenStore.type';
 import { useCheckAuth } from '@/features/checkAuth';
@@ -13,8 +14,10 @@ export const refreshTokenWithoutQueryRequest = async (
   });
 };
 export const refreshTokenWithoutQuery = async () => {
-  const setToken = useTokenStore.getState().setToken;
-  const access = useTokenStore.getState().access;
+  const {
+    update,
+    data: { access },
+  } = useTokenStore.getState();
   const response = await refreshTokenWithoutQueryRequest(access);
   const {
     response: { ok },
@@ -22,13 +25,13 @@ export const refreshTokenWithoutQuery = async () => {
   } = response;
   const newAccess = data?.data.access_token;
   if (ok && newAccess) {
-    setToken(newAccess);
+    update((s) => (s.access = newAccess));
     return response;
   }
-  throw new Error('request not success')
+  throw new Error('request not success');
 };
 export const refreshTokenWithoutQueryWithGuard = async () => {
-  if (useCheckAuth.check()) return;
+  if (useIsAuth.check()) return;
 
   return refreshTokenWithoutQuery();
 };

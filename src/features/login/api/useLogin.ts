@@ -1,6 +1,6 @@
-import { authClient, queryClient } from '@/shared/api';
-import { useAuth } from '@/shared/model/authProviderContext';
-import { notifications } from '@mantine/notifications';
+import { useTokenStore } from '@/entities/token';
+import { authClient } from '@/shared/api';
+import { useRouter } from '@tanstack/react-router';
 
 /**
  * @param search - Return data from hook useForm
@@ -8,29 +8,12 @@ import { notifications } from '@mantine/notifications';
  */
 
 export const useLogin = () => {
-  const setToken = useAuth().token.setToken;
+  const router = useRouter();
+  const setToken = useTokenStore((s) => s.update);
   const mutate = authClient()().useMutation('post', '/login', {
-    onSuccess: (response) => {
-      if (!response.data.access_token) {
-        console.error('Token not found in response!', response);
-        notifications.show({
-          title: 'Ошибка',
-          message: 'Токен не получен от сервера',
-          color: 'red',
-        });
-        return;
-      }
-      setToken(response.data.access_token);
-    },
-
-    onError: (error) => {
-      console.log(error);
-      notifications.show({
-        title: 'Опа, ошибка!',
-        message:
-          'Не переживайте - это на нашей стороне скоро все будет исправлено',
-        color: 'red',
-      });
+    onSuccess: async ({ data: { access_token } }) => {
+      setToken((s) => (s.access = access_token));
+      await router.invalidate();
     },
   });
   return mutate;

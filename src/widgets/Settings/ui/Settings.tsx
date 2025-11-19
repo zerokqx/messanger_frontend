@@ -15,7 +15,6 @@ export const SettingsModal = () => {
     setPermanentPanel,
     borderElements,
     setborderElements,
-
   } = useSettings();
 
   const userName = useAuth((s) => s.user.login);

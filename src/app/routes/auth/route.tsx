@@ -1,10 +1,10 @@
-import { useCheckAuth } from '@/features/checkAuth/model';
+import { useIsAuth } from '@/entities/session';
 import { AppShell, AppShellMain, Center, Stack } from '@mantine/core';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/auth')({
   beforeLoad({ search }) {
-    if (useCheckAuth.check()) {
+    if (useIsAuth.check()) {
       redirect({
         throw: true,
         to: '/',

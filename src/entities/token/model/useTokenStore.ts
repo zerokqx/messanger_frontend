@@ -1,11 +1,21 @@
 import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
-import type { UseTokenStore } from '../types/useTokenStore.type';
+import {
+  createJSONStorage,
+  devtools,
+  persist,
+  subscribeWithSelector,
+} from 'zustand/middleware';
+import type {
+  UseTokenStore,
+  UseTokenStoreState,
+} from '../types/useTokenStore.type';
 import z from 'zod';
 import { createSelectors } from '@/shared/lib/zustand/selectors';
 import { validateToken } from './middleware';
 import localforage from 'localforage';
+import { createStore } from '@colorfy-software/zfy';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const useTokenStoreBase = create<UseTokenStore>()(
   devtools(
     persist(
@@ -29,4 +39,18 @@ const useTokenStoreBase = create<UseTokenStore>()(
     )
   )
 );
-export const useTokenStore = createSelectors(useTokenStoreBase);
+
+export const useTokenStore = createStore<UseTokenStoreState>(
+  'token',
+  { access: '' },
+  {
+    subscribe: true,
+    persist: {
+      getStorage: () => AsyncStorage,
+    },
+  }
+);
+
+export const doValidateToken = (t: string) => {
+  return z.jwt().safeParse(t).success;
+};

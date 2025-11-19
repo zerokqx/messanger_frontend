@@ -1,31 +1,19 @@
 import { useSearch, useSearchStore } from '@/features/search';
-import { useAuth } from '@/shared/model/authProviderContext';
 import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
 import {
   Burger,
   CloseButton,
   Grid,
-  Group,
   Loader,
-  TextInput,
-  useMantineTheme,
   type TextInputProps,
 } from '@mantine/core';
-import { Search } from 'lucide-react';
-import { useRef } from 'react';
 import { appShellReset, AppShellTaber, useTabAppShell } from '../lib/tab';
-import { Else, Fallback, If, Then } from 'react-if';
+import { Else, If, Then } from 'react-if';
 import { SearchInput } from '@/shared/ui/SearchInput';
 
-export const NavbarHeader = ({
-  input,
-}: {
-  input?: Partial<TextInputProps>;
-}) => {
+export const NavbarHeader = ({}: { input?: Partial<TextInputProps> }) => {
   const isOpen = useSideBarStore.useIsOpen();
   const toggle = useSideBarStore.useToggle();
-  const isAuth = useAuth((s) => s.isAuth);
-  const timer = useRef<number | null>(null);
 
   const setQuery = useSearchStore((s) => s.setQuery);
   const goBack = useTabAppShell.useGoBack();
@@ -58,8 +46,12 @@ export const NavbarHeader = ({
           rightSection={
             searcher.isLoading && <Loader pr={'xs'} type="dots" size={'md'} />
           }
-          onFocus={() => set('search')}
-          action={(e) => setQuery(e.target.value)}
+          onFocus={() => {
+            set('search');
+          }}
+          action={(e) => {
+            setQuery(e.target.value);
+          }}
         />
       </Grid.Col>
     </Grid>

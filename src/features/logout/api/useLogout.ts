@@ -1,11 +1,14 @@
-import { useAuth } from '@/shared/model/authProviderContext';
+import { useTokenStore } from '@/entities/token';
+import { useUserStore } from '@/entities/user';
+import { useRouter } from '@tanstack/react-router';
 
 export const useLogout = () => {
-  const { clearStore: tokenClear } = useAuth().token;
-  const { clearState: userClear } = useAuth().user;
+  const router = useRouter();
+  const tokenReset = useTokenStore((s) => s.reset);
+  const userReset = useUserStore((s) => s.reset);
   return () => {
-    tokenClear();
-    userClear();
-    window.location.reload();
+    tokenReset();
+    userReset();
+    void router.invalidate();
   };
 };
