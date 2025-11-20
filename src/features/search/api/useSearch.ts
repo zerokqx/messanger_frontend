@@ -1,7 +1,7 @@
 import { useSearchStore } from '../model/useSearchStore';
 import { useEffect } from 'react';
-import { useLogger } from 'react-use';
 import { useFetchUsersSearch } from './useFetchUsersSearch';
+import { useLogger } from '@mantine/hooks';
 
 /**
  * A feature hook that orchestrates user search functionality.
@@ -10,17 +10,15 @@ import { useFetchUsersSearch } from './useFetchUsersSearch';
  * @returns The result of the `useFetchUsersSearch` hook, including fetched data and query status.
  */
 export const useSearch = () => {
-  const setUsers = useSearchStore.useSetUsers();
-  const setOpened = useSearchStore.useSetOpened();
-  const query = useSearchStore((s) => s.queryForSearch);
+  const updateSearch = useSearchStore((s) => s.update);
+  const query = useSearchStore((s) => s.data.query);
+  useLogger('SEAR', [query]);
   const { data, ...rest } = useFetchUsersSearch(query);
-  useLogger('Search', { query });
   useEffect(() => {
     if (data) {
-      setUsers(data);
-      setOpened(true);
+      updateSearch((s) => (s.users = data));
     }
-  }, [data, setUsers, setOpened]);
+  }, [data, updateSearch]);
 
   return { data, ...rest };
 };

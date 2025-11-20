@@ -7,8 +7,10 @@ import { feedClient } from '@/shared/api';
  * @param query The search query string.
  * @returns The result of the TanStack Query hook for fetching users.
  */
-export const useFetchUsersSearch = (query: string) => {
+export const useFetchUsersSearch = (rawQuery: string | undefined | null) => {
   const isAuth = useIsAuth();
+
+  const query = rawQuery ?? ''; 
 
   return feedClient(authMiddleware)().useQuery(
     'get',

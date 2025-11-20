@@ -221,7 +221,7 @@ export const theme = createTheme({
         c: 'blue',
       },
     }),
-    
+
     AppShellNavbar: AppShellNavbar.extend({
       defaultProps: {
         bg: 'black',
