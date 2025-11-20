@@ -1,8 +1,5 @@
 import { Suspense, lazy } from 'react';
-import {
-  AppShellNavbar,
-  Group,
-} from '@mantine/core';
+import { AppShellNavbar, Group } from '@mantine/core';
 import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
 
@@ -11,7 +8,7 @@ const SearchTabLazy = lazy(() =>
 );
 
 const SelectProfileTabLazy = lazy(() =>
-  import('./tabs/SelectProfile.tab').then((m) => ({
+  import('./tabs/SelectProfile/SelectProfile.tab').then((m) => ({
     default: m.SelectProfileTab,
   }))
 );

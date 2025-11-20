@@ -4,9 +4,7 @@ import { userClient } from '@/shared/api';
 export const useContactAdd = () => {
   const mutate = userClient(authMiddleware)().useMutation(
     'post',
-    '/contact/add',
-    {
-      onError() {},
-    }
+    '/contact/add'
   );
+  return mutate;
 };

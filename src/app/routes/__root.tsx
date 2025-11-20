@@ -1,5 +1,5 @@
 import { NotFoundError } from '@/pages/404';
-import { createRootRoute, Outlet, redirect } from '@tanstack/react-router';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 import z from 'zod';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';

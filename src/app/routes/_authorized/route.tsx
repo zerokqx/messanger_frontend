@@ -1,5 +1,6 @@
 import { createFileRoute, useSearch } from '@tanstack/react-router';
 import { AppShell } from '@mantine/core';
+
 import { Outlet } from '@tanstack/react-router';
 import z from 'zod';
 import { Suspense, lazy } from 'react';

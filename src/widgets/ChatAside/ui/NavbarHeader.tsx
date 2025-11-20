@@ -10,14 +10,17 @@ import {
 import { appShellReset, AppShellTaber, useTabAppShell } from '../lib/tab';
 import { Else, If, Then } from 'react-if';
 import { SearchInput } from '@/shared/ui/SearchInput';
+import { combinedSelectSearch } from '../model/useSearchUnion';
 
-export const NavbarHeader = ({}: { input?: Partial<TextInputProps> }) => {
+export const NavbarHeader = ({
+  input,
+}: {
+  input?: Partial<TextInputProps>;
+}) => {
   const isOpen = useSideBarStore.useIsOpen();
   const toggle = useSideBarStore.useToggle();
-
-  const setQuery = useSearchStore((s) => s.setQuery);
+  const setQuery = combinedSelectSearch.search((s) => s.update);
   const goBack = useTabAppShell.useGoBack();
-  const set = useTabAppShell.useSetCurrentTab();
   const currentTab = useTabAppShell.useCurrentTab();
 
   const searcher = useSearch();
@@ -43,14 +46,13 @@ export const NavbarHeader = ({}: { input?: Partial<TextInputProps> }) => {
       </Grid.Col>
       <Grid.Col span={'auto'}>
         <SearchInput
+          bdrs={'xl'}
           rightSection={
             searcher.isLoading && <Loader pr={'xs'} type="dots" size={'md'} />
           }
-          onFocus={() => {
-            set('search');
-          }}
+          {...input}
           action={(e) => {
-            setQuery(e.target.value);
+            setQuery((s) => (s.query = e.target.value));
           }}
         />
       </Grid.Col>
