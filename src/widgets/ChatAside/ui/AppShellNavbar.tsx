@@ -7,12 +7,6 @@ const SearchTabLazy = lazy(() =>
   import('./tabs/Search.tab').then((m) => ({ default: m.SearchTab }))
 );
 
-const SelectProfileTabLazy = lazy(() =>
-  import('./tabs/SelectProfile/SelectProfile.tab').then((m) => ({
-    default: m.SelectProfileTab,
-  }))
-);
-
 export const AppShellNavbarWidget = () => {
   const set = useTabAppShell.useSetCurrentTab();
   return (
@@ -25,11 +19,10 @@ export const AppShellNavbarWidget = () => {
         }}
       />
 
-      <Group p={'md'} grow>
+      <Group p={'xs'} grow>
         <Suspense fallback={null}>
           <AppShellTaber>
             <SearchTabLazy />
-            <SelectProfileTabLazy />
             <AppShellTaber.Panel value="chats">
               <p>chats</p>
             </AppShellTaber.Panel>

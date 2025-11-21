@@ -1,13 +1,12 @@
-import type { TUserState } from '@/entities/user/types/userStore.type';
 import { useSearchStore } from '@/features/search';
 import type { UseSearchStoreState } from '@/features/search/types/useSearchStore.type';
 import { initStores } from '@colorfy-software/zfy';
 import { useSelectedUser } from './useSelectedUser';
-import type { UseSelectedStore } from '../types/useSelectedStore.type';
+import type { UserSearchItem, UserWithUUID } from '@/shared/types/api/schemas';
 
 interface StoresDataType {
   search: UseSearchStoreState;
-  selectedUser: UseSelectedStore;
+  selectedUser: UserSearchItem;
 }
 export const {
   stores: combinedSelectSearch,

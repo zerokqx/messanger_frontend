@@ -4,18 +4,21 @@ import { WithIcon } from '@/shared/ui/WithIcon';
 import { Text } from '@mantine/core';
 import type { DisplayItemProp } from '../types/displayItem.type';
 import { hover } from '@/shared/styles/HoverOpacity.css';
+import { useNotifyClipboard } from '@/shared/lib/hooks/useNotifyClipboard';
 
 export const DisplayItem = ({
   descProp,
   withIconProp,
   display,
   descText,
-  onClick,
   textProp,
   icon,
+  copied,
   children,
 }: DisplayItemProp) => {
+  const copy = useNotifyClipboard();
   if (!display) return null;
+
   return (
     <WithIcon
       pl={'xs'}
@@ -26,7 +29,9 @@ export const DisplayItem = ({
         cursor: 'pointer',
         userSelect: 'none',
       }}
-      onClick={onClick}
+      onClick={() => {
+        if (copied) copy(display, descText);
+      }}
       {...withIconProp}
       icon={icon}
     >

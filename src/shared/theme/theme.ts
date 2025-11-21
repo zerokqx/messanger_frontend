@@ -1,5 +1,6 @@
 import {
   AppShell,
+  AppShellAside,
   AppShellNavbar,
   Avatar,
   Button,
@@ -7,6 +8,8 @@ import {
   createTheme,
   Drawer,
   Loader,
+  MenuDropdown,
+  MenuItem,
   PasswordInput,
   Select,
   Text,
@@ -16,6 +19,7 @@ import {
   Title,
   type MantineColorsTuple,
 } from '@mantine/core';
+import { hover } from '../styles/HoverOpacity.css';
 
 const colors: Record<string, MantineColorsTuple> = {
   blue: [
@@ -225,6 +229,21 @@ export const theme = createTheme({
     AppShellNavbar: AppShellNavbar.extend({
       defaultProps: {
         bg: 'black',
+      },
+    }),
+    AppShellAside: AppShellAside.extend({
+      defaultProps: {
+        bg: 'black',
+      },
+    }),
+    MenuDropdown: MenuDropdown.extend({
+      defaultProps: {
+        bg: 'black',
+      },
+    }),
+    MenuItem: MenuItem.extend({
+      defaultProps: {
+        className: hover,
       },
     }),
     Select: Select.extend({

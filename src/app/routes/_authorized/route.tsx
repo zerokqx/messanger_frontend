@@ -1,9 +1,10 @@
 import { createFileRoute, useSearch } from '@tanstack/react-router';
-import { AppShell } from '@mantine/core';
+import { AppShell, AppShellAside, useMantineTheme } from '@mantine/core';
 
 import { Outlet } from '@tanstack/react-router';
-import z from 'zod';
 import { Suspense, lazy } from 'react';
+import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
+import { AssideProfile } from '@/widgets/Aside';
 
 const LazySideBarWidget = lazy(() =>
   import('@/widgets/SideBar').then((m) => ({ default: m.SideBarWidget }))
@@ -14,27 +15,29 @@ const LazyAppShellNavbar = lazy(() =>
 );
 
 export const Route = createFileRoute('/_authorized')({
-  validateSearch: z.object({
-    aside: z.boolean().default(false),
-  }),
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { aside } = useSearch({ from: '/_authorized' });
-
+  const asside = useLayoutStore((s) => s.data.asside);
+  const t = useMantineTheme();
   return (
     <AppShell
       transitionDuration={300}
       transitionTimingFunction="ease"
       navbar={{
         width: 350,
-        collapsed: { desktop: false, mobile: true },
         breakpoint: 'sm',
       }}
+      styles={{
+        aside: {
+          zIndex: 1000,
+          padding: t.spacing.md,
+        },
+      }}
       aside={{
-        width: 300,
-        collapsed: { desktop: !aside, mobile: !aside },
+        width: 350,
+        collapsed: { desktop: !asside, mobile: !asside },
         breakpoint: 'sm',
       }}
       p="md"
@@ -42,6 +45,7 @@ function RouteComponent() {
       <AppShell.Main bg="black">
         <Outlet />
 
+        <AssideProfile />
         <Suspense fallback={null}>
           <LazySideBarWidget />
         </Suspense>
