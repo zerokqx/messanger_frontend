@@ -8,15 +8,13 @@ import { SideBarTaber, useTabSidebar } from '../../model/tab';
 export const Profile = () => {
   const { t } = useTranslation('sideBar');
   const set = useTabSidebar.useSetCurrentTab();
-  const login = useUserStore((s) => s.data.login) || 'Anonymous';
 
-  const fullName = useUserStore((s) => s.data.full_name ?? '');
-  const bio = useUserStore((s) => s.data.bio ?? 'Anonymous');
-  const rating = useUserStore((s) => s.data.rating.rating ?? 0);
+  const login = useUserStore((s) => s.data);
+
   const MotionButton = motion.create<ButtonProps>(Button);
   return (
     <SideBarTaber.Panel value="profile">
-      <ProfileDataDisplay {...{ bio, login, fullName, rating }} />
+      <ProfileDataDisplay {...login} />
       <Space h={'1rem'} />
       <Center>
         <MotionButton

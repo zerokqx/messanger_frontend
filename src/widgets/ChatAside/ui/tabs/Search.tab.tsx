@@ -1,35 +1,33 @@
-import type { components } from '@/shared/types/v1';
 import { Search } from '@/shared/ui/Search';
 import { AppShellTaber, useTabAppShell } from '../../lib/tab';
-import { Link } from '@tanstack/react-router';
-import { Else, If, Then, When } from 'react-if';
-import { combinedSelectSearch } from '../../model/useSearchUnion';
+import { Else, If, Then } from 'react-if';
+import {
+  combinedSelectSearch,
+  useCombinedSelectSearch,
+} from '../../model/useSearchUnion';
 import { Box } from '@mantine/core';
+import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 
 export const SearchTab = () => {
   const selectedUser = combinedSelectSearch.selectedUser.setState;
-  const { users, query } = combinedSelectSearch.search((s) => ({
-    users: s.data.users,
-    query: s.data.query,
-  }));
+  const users = useCombinedSelectSearch('search', (s) => s.users);
   const set = useTabAppShell.useSetCurrentTab();
+  const update = useLayoutStore((s) => s.update);
   return (
     <AppShellTaber.Panel value="search">
-      <If condition={users && users.length > 0}>
+      <If condition={users?.length ?? 0}>
         <Then>
           <Search>
             {users?.map((user) => {
-              if (!user.profile) return;
-              const profile =
-                user.profile as components['schemas']['ProfileByUserIdData'];
+              const profile = user.profile;
               const login = profile.login ?? 'Anonymous';
               return (
                 <Box
                   style={{ cursor: 'pointer' }}
                   key={user.user_id}
                   onClick={() => {
+                    update((s) => (s.asside = true));
                     selectedUser({ data: user });
-                    set('profile');
                   }}
                 >
                   <Search.Item

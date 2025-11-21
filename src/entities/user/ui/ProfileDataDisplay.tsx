@@ -1,102 +1,75 @@
 import { createdAt } from '@/entities/lib/createAtData';
 import { Description } from '@/shared/ui/Description/ui';
 import { IsVerified } from './IsVerified';
-import { useClipboard } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 
-import { Clock, IdCard, Info, Star, User } from 'lucide-react';
+import { Clock, Edit, Ellipsis, IdCard, Info, Star, User } from 'lucide-react';
 import { DisplayItem } from './Item';
-import { Divider, Rating, Stack, Center, Avatar, Space } from '@mantine/core';
+import {
+  Divider,
+  Rating,
+  Stack,
+  Center,
+  Avatar,
+  Space,
+  Menu,
+  Button,
+  ActionIcon,
+} from '@mantine/core';
 import type { ProfileDataDisplayProp } from '../types/profileDataDisplay.type';
 import { useDefault } from 'react-use';
 import type { ReactNode } from 'react';
+import { ratingColor } from '../lib/ratingColor';
 
 export const ProfileDataDisplay = (props: ProfileDataDisplayProp) => {
-  const { bio, fullName, login, rating, header } = props;
+  const { bio, full_name, login, rating, header } = props;
   const [headerProp] = useDefault<ReactNode>(
     <Center>
-      <Avatar size="xl" name={login} />
+      <Avatar size="xl" name={login} />{' '}
     </Center>,
     () => header?.(props)
   );
-  const clipboard = useClipboard();
-
-  const handleCopy = (value: string, label: string) => {
-    clipboard.copy(value);
-    notifications.show({
-      message: `${label} скопирован`,
-    });
-  };
-
-  const ratingColor =
-    rating < 2.5
-      ? 'red.8'
-      : rating >= 4
-        ? 'blue.8'
-        : rating >= 2.5
-          ? 'yellow.8'
-          : 'red.8';
-
+  const ratingSafe = rating.rating ?? 0;
   const createdAtValue = createdAt();
 
   return (
-    <Stack gap={'xl'}>
+    <Stack>
       {headerProp}
-
       <DisplayItem
         descText="Логин"
-        onClick={() => {
-          handleCopy(login, 'Логин');
-        }}
-        display={login}
+        copied
+        display={`@${login}`}
         icon={<User />}
       />
 
-      {/* Имя пользователя */}
       <DisplayItem
-        display={fullName}
+        copied
+        display={full_name}
         icon={<IdCard />}
         descText="Имя пользователя"
-        onClick={() => {
-          handleCopy(fullName, 'Имя пользователя');
-        }}
       />
 
-      {/* Дата создания учётки */}
       <DisplayItem
+        copied
         descText="Учетная запись создана"
         icon={<Clock />}
         display={createdAtValue}
-        onClick={() => {
-          handleCopy(createdAtValue ?? '', 'Дата создания');
-        }}
       />
 
-      {/* Рейтинг */}
       <DisplayItem
+        copied
         descProp={{ direction: 'row' }}
         textProp={{
-          c: ratingColor,
+          c: ratingColor(ratingSafe),
         }}
         descText="Рейтинг"
         icon={<Star />}
-        display={rating.toString()}
-        onClick={() => {
-          handleCopy(rating.toString(), 'Рейтинг');
-        }}
+        display={ratingSafe.toString()}
       >
-        <Rating value={rating} color="blue" readOnly />
+        <Rating value={ratingSafe} color="blue" readOnly />
       </DisplayItem>
 
       {/* Биография */}
-      <DisplayItem
-        descText="Биография"
-        display={bio}
-        icon={<Info />}
-        onClick={() => {
-          handleCopy(bio, 'Биография');
-        }}
-      />
+      <DisplayItem copied descText="Биография" display={bio} icon={<Info />} />
 
       <Divider />
 

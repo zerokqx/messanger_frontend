@@ -4,7 +4,7 @@ import type { LayoutStoreType } from './store.type';
 export const useLayoutStore = createStore<LayoutStoreType>(
   'layout',
   {
-    asside: true,
+    asside: false,
     disable: false,
     footer: false,
     header: false,

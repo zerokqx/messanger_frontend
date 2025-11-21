@@ -1,11 +1,17 @@
 import { useContactAdd } from '@/features/contactAdd';
 import { useCombinedSelectSearch } from '@/widgets/ChatAside/model/useSearchUnion';
-import { Stack, Group, Button } from '@mantine/core';
+import { Stack, Group, Button, TextInput } from '@mantine/core';
 import { Trash } from 'lucide-react';
+import type { ComponentProps } from 'react';
 
-export const SelectedProfileButtonAction = () => {
+export const SelectedProfileButtonAction = ({
+  renameProps,
+}: {
+  renameProps?: ComponentProps<'button'>;
+}) => {
   const uuid = useCombinedSelectSearch('selectedUser', (s) => s.user_id);
   const add = useContactAdd();
+
   return (
     <Stack bdrs={'xl'}>
       <Button
@@ -24,7 +30,7 @@ export const SelectedProfileButtonAction = () => {
       </Button>
 
       <Group grow>
-        <Button variant="light" bdrs={'xl'} color="gray">
+        <Button variant="light" bdrs={'xl'} color="gray" {...renameProps}>
           Переименовать
         </Button>
 

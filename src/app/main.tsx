@@ -4,6 +4,7 @@ import '@/shared/styles/root.css';
 import { theme } from '@/shared/theme';
 import { SettingsProvider } from '@/widgets/Settings';
 import { MantineProvider } from '@mantine/core';
+import '@mantine/carousel/styles.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';

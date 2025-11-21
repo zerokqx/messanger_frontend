@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react';
+import type { TUserState } from './userStore.type';
 
-export interface ProfileDataDisplayProp {
-  login: string;
+export interface ProfileDataDisplayProp extends TUserState {
   header?: (props: Omit<ProfileDataDisplayProp, 'header'>) => ReactNode;
-  rating: number;
-  bio: string;
-  fullName: string;
 }

@@ -6,10 +6,10 @@ import type { ReactNode } from 'react';
 export interface DisplayItemProp {
   descText: string;
   children?: ReactNode;
+  copied?: boolean;
   icon: WithIconProp['icon'];
   display: string | null | undefined;
   descProp?: Omit<DescriptionProp, 'desc' | 'children'>;
-  onClick?: WithIconProp['onClick'];
-  withIconProp?: Omit<WithIconProp, 'icon' | 'onClick'>;
+  withIconProp?: Omit<WithIconProp, 'icon'>;
   textProp?: TextProps;
 }

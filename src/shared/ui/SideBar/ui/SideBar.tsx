@@ -15,6 +15,7 @@ export const SideBar: SideBarCompouned = ({ children }) => {
   return (
     <>
       <Drawer
+        zIndex={1005}
         keepMounted
         closeButtonProps={{ 'aria-label': 'Close drawer' }}
         withCloseButton={false}
