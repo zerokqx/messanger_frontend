@@ -17,6 +17,7 @@ import { InnerApp } from './ui/InnerApp';
 import { NotificationStyled } from './ui/Notifications';
 import { I18nextProvider } from 'react-i18next';
 import { i18n } from '@/shared/i18next/clients';
+import { QueryClientProvider } from '@tanstack/react-query';
 export const router = createRouter({
   routeTree,
   defaultPreload: 'viewport',
@@ -41,19 +42,14 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <MantineProvider theme={theme} defaultColorScheme="dark">
         <LazyMotion features={domAnimation}>
-          <PersistQueryClientProvider
-            client={queryClient}
-            persistOptions={{
-              persister: asyncStoragePersister,
-            }}
-          >
+          <QueryClientProvider client={queryClient}>
             <SettingsProvider>
               <I18nextProvider i18n={i18n}>
                 <InnerApp />
                 <NotificationStyled />
               </I18nextProvider>
             </SettingsProvider>
-          </PersistQueryClientProvider>
+          </QueryClientProvider>
         </LazyMotion>
       </MantineProvider>
     </StrictMode>

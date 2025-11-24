@@ -8,8 +8,6 @@ import { authMiddleware, useUserStore } from '@/entities/user';
 import { profileClientNotQuery } from '@/shared/api/clients/profileClient';
 
 const Com = () => {
-  const d = Route.useLoaderData();
-  console.log(d);
   return (
     <>
       <Outlet />

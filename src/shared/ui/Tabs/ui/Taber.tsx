@@ -9,7 +9,6 @@ import type {
   Windows,
 } from '../types';
 import type { TaberButtons } from '../types/taberButton.type';
-import { useEffect, useMemo, type ComponentProps } from 'react';
 
 /**
  * `createTaber` — фабричная функция для создания системы вкладок на базе `@mantine/core/Tabs`.
@@ -37,45 +36,18 @@ export const createTaber = <T extends Windows>({
   initial,
 }: TaberProps<T>): TaberTemplateReturn<T> => {
   const useStore = createTabStore<T[number]>(initial);
+ 
   const AnimatedPanel = motion.create(Tabs.Panel);
-  const Panel: TaberTemplate<T>['Panel'] = ({
-    autoSet,
-    children,
-    animationVariant = 'left-right',
-    value,
-    ...props
-  }) => {
-    const cur = useStore.useCurrentTab();
-    const set = useStore.useSetCurrentTab();
-    useEffect(() => {
-      if (!autoSet) return;
-      if (value === cur) return;
-      set(value);
-    }, [autoSet, cur, value, set]);
-
-    type Animations = ComponentProps<
-      TaberTemplate<T>['Panel']
-    >['animationVariant'];
-    // TODO: Сделать анимации
-    // const animation = useMemo(() => {
-    //   const animations: Record<Animations, { initial: object; whileInView: object }> = {
-    //     'top-down': { initial: { y: '-20px', opacity: 0 }, whileInView: { y: '0px', opacity: 1 } },
-    //     'down-top': { initial: { y: '20px', opacity: 0 }, whileInView: { y: '0px', opacity: 1 } },
-    //     'right-left': { initial: { x: '20%', opacity: 0 }, whileInView: { x: '0%', opacity: 1 } },
-    //     'left-right': { initial: { x: '-20%', opacity: 0 }, whileInView: { x: '0%', opacity: 1 } },
-    //   };
+  const Panel: TaberTemplate<T>['Panel'] = ({ children, value, ...props }) => {
     return (
       <AnimatedPanel
         key={value}
+        h={'100%'}
         initial={{
           x: '-5%',
         }}
         whileInView={{
           x: '0%',
-        }}
-        transition={{
-          type: 'keyframes', // или вообще без type
-          duration: 0.1, // фактически отключает анимацию
         }}
         value={value}
         {...props}
@@ -116,7 +88,11 @@ export const createTaber = <T extends Windows>({
 
   const Taber: TaberTemplate<T> = ({ children }) => {
     const currentTab = useStore.useCurrentTab();
-    return <Tabs value={currentTab}>{children}</Tabs>;
+    return (
+      <Tabs keepMounted value={currentTab}>
+        {children}
+      </Tabs>
+    );
   };
 
   Taber.OnlyOnTab = OnlyOnTab;

@@ -41,6 +41,7 @@ function RouteComponent() {
         breakpoint: 'sm',
       }}
       p="md"
+      h={'100dvh'}
     >
       <AppShell.Main bg="black">
         <Outlet />

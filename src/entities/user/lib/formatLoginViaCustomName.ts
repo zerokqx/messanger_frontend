@@ -1,10 +1,13 @@
-import type { ProfileDataDisplaySearchProp } from '../types/profileDataDisplaySearch.type';
+import type { FormatLoginViaCutomNameFn } from '../types/formatLoginViaCustomName.type';
 
-export const formatLoginViaCustomName = (
-  login: ProfileDataDisplaySearchProp['profile']['login'],
-  customName: ProfileDataDisplaySearchProp['profile']['custom_name']
+export const formatLoginViaCustomName: FormatLoginViaCutomNameFn = (
+  login,
+  customName
 ) => {
-  if (login) {
-    return customName ? `${customName}(@${login})` : `@${login}`;
-  } else return null;
+  const loginFallback = login ?? '';
+  const format = customName
+    ? `${customName}(@${loginFallback})`
+    : `@${loginFallback}`;
+  const name = customName ?? login ?? '';
+  return { format, name, params: [login, customName] };
 };
