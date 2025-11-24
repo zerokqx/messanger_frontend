@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { SideBar } from '@/shared/ui/SideBar';
 import { Header } from './Header';
 import { SideBarTaber } from '../model/tab';
-import { Contact } from 'lucide-react';
+import { Center, Loader } from '@mantine/core';
 
 // ленивые импорты табов
 
@@ -41,7 +41,13 @@ export const SideBarWidget = () => {
   return (
     <SideBar>
       <Header />
-      <Suspense fallback={null}>
+      <Suspense
+        fallback={
+          <Center>
+            <Loader type="oval" />
+          </Center>
+        }
+      >
         <SideBarTaber>
           <Contacts />
           <MainPageLazy />

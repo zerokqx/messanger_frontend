@@ -5,7 +5,9 @@
 
 export interface paths {
     "/ping": {
+
         parameters: {
+
             query?: never;
             header?: never;
             path?: never;

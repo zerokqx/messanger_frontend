@@ -1,5 +1,11 @@
 import { useBorder } from '@/widgets/Settings';
-import { Drawer, LoadingOverlay, useMantineTheme } from '@mantine/core';
+import {
+  Box,
+  Drawer,
+  LoadingOverlay,
+  ScrollArea,
+  useMantineTheme,
+} from '@mantine/core';
 import { useSideBarStore } from '../store/useMenuStore';
 import type { SideBarCompouned } from '../types/sideBar.type';
 import { InfoBlock } from './InfoBlock';
@@ -15,7 +21,6 @@ export const SideBar: SideBarCompouned = ({ children }) => {
   return (
     <>
       <Drawer
-        zIndex={1005}
         keepMounted
         closeButtonProps={{ 'aria-label': 'Close drawer' }}
         withCloseButton={false}
@@ -23,6 +28,14 @@ export const SideBar: SideBarCompouned = ({ children }) => {
           transition: 'slide-right',
         }}
         styles={{
+          root: {
+            display: 'flex',
+            flexDirection: 'column',
+          },
+          body: {
+            flexGrow: 1,
+            overflowY: 'auto',
+          },
           content: {
             background: t.black,
             userSelect: 'none',

@@ -25,15 +25,16 @@ export const ProfileDataDisplaySearch = ({
   const currentUser = useUserStore.getState().data.user_id;
   const isThatMe = user_id === currentUser;
 
+  const format = formatLoginViaCustomName(login ?? '', custom_name);
   return (
     <Stack>
       <Center>
-        <Avatar size={'xl'} name={custom_name ?? login ?? ''} />
+        <Avatar size={'xl'} name={format.name} />
       </Center>
       <DisplayItem
         descText="Логин"
         copied
-        display={formatLoginViaCustomName(login ?? '', custom_name)}
+        display={format.format}
         icon={<User />}
       />
 

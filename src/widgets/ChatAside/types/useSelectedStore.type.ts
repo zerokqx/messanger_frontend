@@ -1,4 +1,6 @@
 import type { components } from '@/shared/types/v1';
 
-export type UseSelectedStore =
-  components['schemas']['UserSearchResponse']['data']['users'][number];
+export interface UseSelectedStore {
+  profile: components['schemas']['UserSearchResponse']['data']['users'][number]['profile'];
+  user_id: string;
+}

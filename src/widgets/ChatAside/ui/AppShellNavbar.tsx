@@ -1,7 +1,8 @@
 import { Suspense, lazy } from 'react';
-import { AppShellNavbar, Group } from '@mantine/core';
+import { AppShellNavbar, Center, Group } from '@mantine/core';
 import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
+import { Loader } from 'lucide-react';
 
 const SearchTabLazy = lazy(() =>
   import('./tabs/Search.tab').then((m) => ({ default: m.SearchTab }))
@@ -20,7 +21,13 @@ export const AppShellNavbarWidget = () => {
       />
 
       <Group p={'xs'} grow>
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <Center>
+              <Loader />
+            </Center>
+          }
+        >
           <AppShellTaber>
             <SearchTabLazy />
             <AppShellTaber.Panel value="chats">

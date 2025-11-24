@@ -3,7 +3,7 @@ import type { CreateTabStoreFunction } from '../model/createTabStore';
 import type { UseControllerTaber } from './useControllerTaber.type';
 import type { TaberButtons } from './taberButton.type';
 import type { MotionProps } from 'motion/react';
-import type { Tabs } from '@mantine/core';
+import type { Tabs, TabsProps } from '@mantine/core';
 import type { PanelBottom } from 'lucide-react';
 
 /**
