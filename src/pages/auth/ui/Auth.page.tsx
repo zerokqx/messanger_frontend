@@ -1,8 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { useModalGlobal } from '@/shared/model/useModalStore';
-import { CustomMantineButton } from '@/shared/ui/Button';
 import {
-  Flex,
   Blockquote,
   Title,
   Space,
@@ -12,7 +10,6 @@ import {
   Group,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { Search } from '@/shared/ui/Search';
 
 const LoginModalLazy = lazy(() =>
   import('@/widgets/LoginModal').then((m) => ({ default: m.LoginModal }))
@@ -28,7 +25,9 @@ export function AuhtPage() {
   const { t } = useTranslation(['titles', 'buttonLabels', 'texts']);
   const openLogin = useModalGlobal.usePinOpen()('login');
   const openRegister = useModalGlobal.usePinOpen()('register');
+  const d = useModalGlobal((s) => s.register);
 
+  console.log(d);
   return (
     <>
       <Suspense fallback={null}>

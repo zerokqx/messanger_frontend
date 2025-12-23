@@ -11,6 +11,7 @@ import type {
 import type { TaberButtons } from '../types/taberButton.type';
 
 /**
+ *
  * `createTaber` — фабричная функция для создания системы вкладок на базе `@mantine/core/Tabs`.
  *
  * Позволяет управлять активной вкладкой, переключаться между ними и использовать анимацию при смене.
@@ -36,7 +37,7 @@ export const createTaber = <T extends Windows>({
   initial,
 }: TaberProps<T>): TaberTemplateReturn<T> => {
   const useStore = createTabStore<T[number]>(initial);
- 
+
   const AnimatedPanel = motion.create(Tabs.Panel);
   const Panel: TaberTemplate<T>['Panel'] = ({ children, value, ...props }) => {
     return (

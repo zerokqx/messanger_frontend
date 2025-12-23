@@ -1,4 +1,3 @@
-import { createSelectors } from '@/shared/lib/zustand/selectors';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { UseModalGlobal } from './types/useModalGlobal.type';
