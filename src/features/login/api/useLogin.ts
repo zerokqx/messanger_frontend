@@ -11,7 +11,7 @@ export const useLogin = () => {
   const router = useRouter();
   const search = useSearch({ from: '/auth' });
   const setToken = useTokenStore((s) => s.update);
-  const mutate = authClient()().useMutation('post', '/login', {
+  const mutate = authClient()().useMutation('post', '/login/password', {
     onSuccess: async ({ data: { access_token } }) => {
       setToken((s) => (s.access = access_token));
       await router.invalidate();
