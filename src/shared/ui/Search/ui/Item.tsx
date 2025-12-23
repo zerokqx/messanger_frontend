@@ -1,4 +1,4 @@
-import { Avatar, Grid, Group, Text, useProps } from '@mantine/core';
+import { Avatar, Group, Text, useProps } from '@mantine/core';
 import type { SearchItemProp } from '../types/item.type';
 export function Item(props: SearchItemProp) {
   const defaultProps: SearchItemProp = {

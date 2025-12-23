@@ -10,7 +10,7 @@ import { feedClient } from '@/shared/api';
 export const useFetchUsersSearch = (rawQuery: string | undefined | null) => {
   const isAuth = useIsAuth();
 
-  const query = rawQuery ?? ''; 
+  const query = rawQuery ?? '';
 
   return feedClient(authMiddleware)().useQuery(
     'get',
