@@ -20,6 +20,8 @@ export const NavbarHeader = ({
   const isOpen = useSideBarStore.useIsOpen();
   const toggle = useSideBarStore.useToggle();
   const setQuery = combinedSelectSearch.search((s) => s.update);
+  const q = combinedSelectSearch.search((s) => s.data.query);
+
   const goBack = useTabAppShell.useGoBack();
   const currentTab = useTabAppShell.useCurrentTab();
 
@@ -51,8 +53,8 @@ export const NavbarHeader = ({
             searcher.isLoading && <Loader pr={'xs'} type="dots" size={'md'} />
           }
           {...input}
-          action={(e) => {
-            setQuery((s) => (s.query = e.target.value));
+          action={(value) => {
+            setQuery((s) => (s.query = value));
           }}
         />
       </Grid.Col>

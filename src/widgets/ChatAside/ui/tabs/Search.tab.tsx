@@ -1,6 +1,6 @@
 import { Search } from '@/shared/ui/Search';
-import { AppShellTaber, useTabAppShell } from '../../lib/tab';
-import { Else, If, Then } from 'react-if';
+import { AppShellTaber } from '../../lib/tab';
+import { If, Then } from 'react-if';
 import {
   combinedSelectSearch,
   useCombinedSelectSearch,
@@ -11,7 +11,6 @@ import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 export const SearchTab = () => {
   const selectedUser = combinedSelectSearch.selectedUser.setState;
   const users = useCombinedSelectSearch('search', (s) => s.users);
-  const set = useTabAppShell.useSetCurrentTab();
   const update = useLayoutStore((s) => s.update);
   return (
     <AppShellTaber.Panel value="search">
@@ -41,11 +40,6 @@ export const SearchTab = () => {
             })}
           </Search>
         </Then>
-        <Else>
-          {/* <When condition={dirty}> */}
-          {/*   <NotData text="Ничго не найдено" /> */}
-          {/* </When> */}
-        </Else>
       </If>
     </AppShellTaber.Panel>
   );
