@@ -1,10 +1,9 @@
 import { useIsAuth } from '@/entities/session';
-import { authMiddleware } from '@/entities/user';
-import { userClient } from '@/shared/api';
+import { $api } from '@/shared/api/repository/$api';
 
 export const useContactsCountFetch = () => {
   const isAuth = useIsAuth();
-  const query = userClient(authMiddleware)().useQuery(
+  const query = $api.jwtUser.query.useQuery(
     'get',
     '/contact/count',
     {},

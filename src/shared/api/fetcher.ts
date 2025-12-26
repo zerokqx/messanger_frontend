@@ -23,7 +23,6 @@ export const createFetcher = <P extends paths = paths>({
     }
 
     fetcher.use(generalMiddleware);
-    createClient<P>(fetcher);
     return () => createClient<P>(fetcher);
   };
 };
@@ -47,3 +46,24 @@ export const createFetcherNotQuery = <P extends paths = paths>({
     return fetcher;
   };
 };
+
+export const createFetcherWithCreateClient = <P extends paths = paths>({
+  clientOptions,
+}: {
+  clientOptions?: ClientOptions;
+}) => {
+  const fetcher = createFetchClient<P>({
+    ...clientOptions,
+  });
+  return (...midlewares: Middleware[]) => {
+    if (midlewares.length > 0) {
+      midlewares.forEach((midleware) => {
+        fetcher.use(midleware);
+      });
+    }
+
+    fetcher.use(generalMiddleware);
+    return createClient<P>(fetcher);
+  };
+};
+

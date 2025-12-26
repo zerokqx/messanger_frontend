@@ -1,3 +1,4 @@
+import { fetchMe } from '@/entities/user/model/useQueryUser';
 import { useCheckAuth } from '@/features/checkAuth/model';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import z from 'zod';

@@ -1,6 +1,5 @@
-import { authMiddleware } from '@/entities/user';
-import { userClient } from '@/shared/api';
+import { $api } from '@/shared/api/repository/$api';
 
 export const useContactRemove = () => {
-  return userClient(authMiddleware)().useMutation('delete', '/contact/remove');
+  return $api.jwtUser.query.useMutation('delete', '/contact/remove');
 };

@@ -1,6 +1,5 @@
-import { authMiddleware } from '@/entities/user';
-import { profileClient } from '@/shared/api';
+import { $api } from '@/shared/api/repository/$api';
 
 export const useGetUserById = () => {
-  return profileClient(authMiddleware)().useMutation('get', '/{user_id}', {});
+  return $api.jwtProfile.query.useMutation('get', '/{user_id}', {});
 };

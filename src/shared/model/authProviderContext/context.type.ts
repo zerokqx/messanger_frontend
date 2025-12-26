@@ -1,4 +1,4 @@
-import type { UseTokenStore } from '@/entities/token';
+import type { UseTokenStore } from '@/shared/token';
 import type { UserStore } from '@/entities/user/types/userStore.type';
 import type { StoreType } from '@colorfy-software/zfy';
 

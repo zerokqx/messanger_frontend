@@ -1,4 +1,4 @@
-import { useTokenStore } from '@/entities/token';
+import { tokenAction } from '@/shared/token';
 import { authClient } from '@/shared/api';
 import { useRouter, useSearch } from '@tanstack/react-router';
 
@@ -10,10 +10,9 @@ import { useRouter, useSearch } from '@tanstack/react-router';
 export const useLogin = () => {
   const router = useRouter();
   const search = useSearch({ from: '/auth' });
-  const setToken = useTokenStore((s) => s.update);
   const mutate = authClient()().useMutation('post', '/login/password', {
     onSuccess: async ({ data: { access_token } }) => {
-      setToken((s) => (s.access = access_token));
+      tokenAction.doSetToken(access_token);
       await router.invalidate();
       await router.navigate({ to: search.redirect });
     },
