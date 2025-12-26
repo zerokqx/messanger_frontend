@@ -3,8 +3,16 @@ import type { I$ApiRepositoryQuery } from '../types/fetchersRepository.interface
 import { coupleOfFetchers } from './coupleOfFetchers';
 
 export const $api = {
-  ...coupleOfFetchers('user', { autoBaseUrl: true, clientOption: {} }),
-  ...coupleOfFetchers('feed', { autoBaseUrl: true, clientOption: {} }),
+  ...coupleOfFetchers('user', {
+    autoBaseUrl: true,
+    clientOption: {},
+    authMiddleware,
+  }),
+  ...coupleOfFetchers('feed', {
+    autoBaseUrl: true,
+    clientOption: {},
+    authMiddleware,
+  }),
   ...coupleOfFetchers('profile', {
     autoBaseUrl: true,
     clientOption: {},

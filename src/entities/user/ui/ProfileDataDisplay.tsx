@@ -1,4 +1,4 @@
-import { createdAt } from '@/entities/lib/createAtData';
+import { createdAt } from '@/entities/user/lib/createAtData';
 import { Description } from '@/shared/ui/Description/ui';
 import { IsVerified } from './IsVerified';
 

@@ -1,5 +1,4 @@
-import { tokenAction, useTokenStore } from '@/shared/token';
-import { head } from 'lodash';
+import { tokenAction } from '@/shared/token';
 
 export const authHeaderSet = (req: Request, access?: string) => {
   const token = access ?? tokenAction.doGetToken();

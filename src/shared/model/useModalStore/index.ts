@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { UseModalGlobal } from './types/useModalGlobal.type';
+import type { AllModals, UseModalGlobal } from './types/useModalGlobal.type';
 import { createSelectorHooks } from 'auto-zustand-selectors-hook';
+import { useCloseOpen } from './lib';
 
 /*
  * This store need for global state Modals.
@@ -56,3 +57,4 @@ const store = create<UseModalGlobal>()(
 );
 
 export const useModalGlobal = createSelectorHooks(store);
+export { useCloseOpen, type AllModals };

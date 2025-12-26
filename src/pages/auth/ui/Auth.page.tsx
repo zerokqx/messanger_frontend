@@ -12,11 +12,11 @@ import {
 import { useTranslation } from 'react-i18next';
 
 const LoginModalLazy = lazy(() =>
-  import('@/widgets/LoginModal').then((m) => ({ default: m.LoginModal }))
+  import('@/features/login').then((m) => ({ default: m.LoginModal }))
 );
 
 const RegisterModalLazy = lazy(() =>
-  import('@/widgets/RegisterModal/ui/RegisterModal').then((m) => ({
+  import('@/features/register').then((m) => ({
     default: m.RegisterModal,
   }))
 );
@@ -25,13 +25,11 @@ export function AuhtPage() {
   const { t } = useTranslation(['titles', 'buttonLabels', 'texts']);
   const openLogin = useModalGlobal.usePinOpen()('login');
   const openRegister = useModalGlobal.usePinOpen()('register');
-  const d = useModalGlobal((s) => s.register);
 
-  console.log(d);
   return (
     <>
       <Suspense fallback={null}>
-        <LoginModalLazy />
+        <LoginModalLazy whatClose="register" />
         <RegisterModalLazy />
       </Suspense>
 

@@ -1,12 +1,11 @@
-import { createFileRoute, useSearch } from '@tanstack/react-router';
-import { AppShell, AppShellAside, useMantineTheme } from '@mantine/core';
+import { createFileRoute } from '@tanstack/react-router';
+import { AppShell, useMantineTheme } from '@mantine/core';
 
 import { Outlet } from '@tanstack/react-router';
 import { Suspense, lazy } from 'react';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { AssideProfile } from '@/widgets/Aside';
-import { useQueryClient } from '@tanstack/react-query';
-import { useUserQuery } from '@/entities/user/model/useQueryUser';
+import { useUserQuery } from '@/entities/user/model/me.query';
 
 const LazySideBarWidget = lazy(() =>
   import('@/widgets/SideBar').then((m) => ({ default: m.SideBarWidget }))
@@ -24,7 +23,6 @@ function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const d = useUserQuery();
-  console.log(d);
   return (
     <AppShell
       transitionDuration={300}

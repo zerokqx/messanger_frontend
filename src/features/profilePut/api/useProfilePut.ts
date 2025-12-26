@@ -1,7 +1,6 @@
-import { profileClient } from '@/shared/api';
-import { authMiddleware } from '@/shared/middlewares/auth';
+import { $api } from '@/shared/api/repository/$api';
 
 export const useProfilePut = () => {
-  const mutate = profileClient(authMiddleware)().useMutation('put', '/edit');
+  const mutate = $api.jwtProfile.query.useMutation('put', '/edit');
   return mutate;
 };

@@ -1,4 +1,4 @@
-import { Grid, ThemeIcon, useMatches } from '@mantine/core';
+import { Grid, ThemeIcon } from '@mantine/core';
 import type { WithIconProp } from '../types';
 export const WithIcon = ({
   children,

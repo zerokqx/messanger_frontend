@@ -1,4 +1,4 @@
-import { useUserStore } from '../user';
+import { useUserStore } from '..';
 
 export const createdAt = () => {
   const createdAt = useUserStore.getState().data.created_at;

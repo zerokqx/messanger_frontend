@@ -7,7 +7,7 @@ import { Description } from '@/shared/ui/Description/ui';
 import { User, IdCard, Clock, Star, Info } from 'lucide-react';
 import { ratingColor } from '../lib/ratingColor';
 import { IsVerified } from './IsVerified';
-import { createdAtUserSearch } from '@/entities/lib/createAtData';
+import { createdAtUserSearch } from '@/entities/user/lib/createAtData';
 import { formatLoginViaCustomName } from '../lib/formatLoginViaCustomName';
 
 export const ProfileDataDisplaySearch = ({

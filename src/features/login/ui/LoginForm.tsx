@@ -6,7 +6,10 @@ import { FieldGroutpUserNamePassword } from '@/shared/ui/Form/ui/FormV2/Groups/U
 import { useTranslation } from 'react-i18next';
 import { ListRestart } from 'lucide-react';
 
-export const LoginForm = ({ mutateProps }: LoginFormProp) => {
+export const LoginForm = ({
+  mutateProps,
+  onSecondActionClick,
+}: LoginFormProp) => {
   const { t } = useTranslation(['titles', 'buttonLabels', 'fieldLabels']);
   const { mutateAsync } = useLogin();
   const form = useAppForm({
@@ -51,7 +54,10 @@ export const LoginForm = ({ mutateProps }: LoginFormProp) => {
             </form.ResetButton>
           </form.Horizontal>
           <form.Vertical justify="center" w={'100%'}>
-            <form.SecondAction title={t('fieldLabels:have_account')}>
+            <form.SecondAction
+              onClick={onSecondActionClick}
+              title={t('fieldLabels:have_account')}
+            >
               {t('buttonLabels:create')}
             </form.SecondAction>
           </form.Vertical>

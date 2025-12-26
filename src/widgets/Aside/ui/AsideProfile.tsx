@@ -1,8 +1,4 @@
-import {
-  ProfileDataDisplaySearch,
-  SkeletonProfile,
-  useIsThatMe,
-} from '@/entities/user';
+import { ProfileDataDisplaySearch, SkeletonProfile } from '@/entities/user';
 import { UpdateContactForm } from '@/features/contactUpdate';
 import { useEmblaApi } from '@/shared/lib/hooks/useEmbalaApi';
 import { useCombinedSelectSearch } from '@/widgets/ChatAside/model/useSearchUnion';
@@ -10,12 +6,13 @@ import { SelectedProfileButtonAction } from '@/widgets/ChatAside/ui/tabs/SelectP
 import { Carousel } from '@mantine/carousel';
 import { AppShellAside, Space } from '@mantine/core';
 import { AsideHaeader } from './Header';
-import { asideLoaderHooks, useAsideLoader } from '../model/loader-store';
+import { asideLoaderHooks } from '../model/loader-store';
+import { userAction } from '@/entities/user/model/userStore';
 
 export const AssideProfile = () => {
   const user = useCombinedSelectSearch('selectedUser', (s) => s);
-  const uuid = useCombinedSelectSearch('selectedUser', (s) => s?.user_id);
-  const isMe = useIsThatMe(uuid);
+  const uuid = useCombinedSelectSearch('selectedUser', (s) => s.user_id);
+  const isMe = userAction.doIsThatMe(uuid);
   const loader = asideLoaderHooks.useLoad();
   const [setEmbla, { next }] = useEmblaApi();
   return (
