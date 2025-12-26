@@ -5,6 +5,8 @@ import { Outlet } from '@tanstack/react-router';
 import { Suspense, lazy } from 'react';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { AssideProfile } from '@/widgets/Aside';
+import { useQueryClient } from '@tanstack/react-query';
+import { useUserQuery } from '@/entities/user/model/useQueryUser';
 
 const LazySideBarWidget = lazy(() =>
   import('@/widgets/SideBar').then((m) => ({ default: m.SideBarWidget }))
@@ -21,6 +23,8 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
+  const d = useUserQuery();
+  console.log(d);
   return (
     <AppShell
       transitionDuration={300}

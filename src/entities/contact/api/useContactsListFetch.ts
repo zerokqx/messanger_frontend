@@ -1,13 +1,12 @@
 import { useIsAuth } from '@/entities/session';
-import { authMiddleware } from '@/entities/user';
-import { userClient } from '@/shared/api';
+import { $api } from '@/shared/api/repository/$api';
 import type { UserSearchItem } from '@/shared/types/api/schemas';
 import { keepPreviousData } from '@tanstack/react-query';
 
 export const useContactsListFetch = (limit: number) => {
   const isAuth = useIsAuth();
 
-  return userClient(authMiddleware)().useInfiniteQuery(
+  return $api.jwtUser.query.useInfiniteQuery(
     'get',
     '/contact/list',
     {

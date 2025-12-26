@@ -2,7 +2,6 @@ import { useUserStore } from '../user';
 
 export const createdAt = () => {
   const createdAt = useUserStore.getState().data.created_at;
-
   const data = new Date(createdAt)
     .toLocaleString('ru-RU', {
       timeZone: 'UTC',

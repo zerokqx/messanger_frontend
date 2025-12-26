@@ -1,14 +1,12 @@
-import { useTokenStore } from '@/entities/token';
-import { useUserStore } from '@/entities/user';
+import { tokenAction } from '@/shared/token';
+import { userAction } from '@/entities/user/model/userStore';
 import { useRouter } from '@tanstack/react-router';
 
 export const useLogout = () => {
   const router = useRouter();
-  const tokenReset = useTokenStore((s) => s.reset);
-  const userReset = useUserStore((s) => s.reset);
   return () => {
-    tokenReset();
-    userReset();
+    tokenAction.doReset();
+    userAction.doReset();
     void router.invalidate();
   };
 };

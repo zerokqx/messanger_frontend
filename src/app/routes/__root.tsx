@@ -4,8 +4,10 @@ import z from 'zod';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import { authMiddleware, useUserStore } from '@/entities/user';
+import { useUserStore } from '@/entities/user';
 import { profileClientNotQuery } from '@/shared/api/clients/profileClient';
+import { authMiddleware } from '@/shared/middlewares/auth';
+import { fetchMe } from '@/entities/user/model/useQueryUser';
 
 const Com = () => {
   return (
@@ -35,10 +37,8 @@ export const Route = createRootRoute({
     redirect: z.string().optional(),
   }),
   loader: async () => {
-    const user = await profileClientNotQuery(authMiddleware).GET('/me', {});
-    if (user.data?.data) {
-      useUserStore.setState({ data: user.data.data });
-    }
+    const user = await fetchMe();
+    useUserStore.setState({ data: user.data });
     return { user };
   },
   component: Com,

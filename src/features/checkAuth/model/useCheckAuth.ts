@@ -1,4 +1,4 @@
-import { useTokenStore } from '@/entities/token/@x/user';
+import { useTokenStore } from '@/shared/token';
 import { useCallback, useEffect, useState } from 'react';
 import { useLogger } from 'react-use';
 import z from 'zod';

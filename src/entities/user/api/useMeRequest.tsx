@@ -1,7 +1,7 @@
 import { profileClient } from '@/shared/api';
-import { authMiddleware } from './middlewares';
 import { useIsAuth } from '@/entities/session';
 import { useLogger } from '@mantine/hooks';
+import { authMiddleware } from '@/shared/middlewares/auth';
 
 export const useMeRequest = () => {
   const isAuth = useIsAuth();
