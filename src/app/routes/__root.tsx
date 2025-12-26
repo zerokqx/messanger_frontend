@@ -5,9 +5,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { useUserStore } from '@/entities/user';
-import { profileClientNotQuery } from '@/shared/api/clients/profileClient';
-import { authMiddleware } from '@/shared/middlewares/auth';
-import { fetchMe } from '@/entities/user/model/useQueryUser';
+import { fetchMe } from '@/entities/user/model/me.query';
 
 const Com = () => {
   return (
@@ -36,11 +34,6 @@ export const Route = createRootRoute({
   validateSearch: z.object({
     redirect: z.string().optional(),
   }),
-  loader: async () => {
-    const user = await fetchMe();
-    useUserStore.setState({ data: user.data });
-    return { user };
-  },
   component: Com,
   notFoundComponent: () => <NotFoundError />,
 });

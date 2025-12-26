@@ -1,24 +1,54 @@
-import { capitalize } from 'lodash';
+import { capitalize, forEach } from 'lodash';
 import { createBaseUrl, type Services } from '../baseUrl';
 import type { ICoupleFetchers } from '../types/fetchersRepository.interface';
-import type { ClientOptions, Middleware } from 'openapi-fetch';
+import type { Client, ClientOptions, Middleware } from 'openapi-fetch';
 
 import createNativeClient from 'openapi-fetch';
-import createQueryClient from 'openapi-react-query';
+import createQueryClient, {
+  type OpenapiQueryClient,
+} from 'openapi-react-query';
 import type { paths } from '@/shared/types/v1';
-import { generalMiddleware } from '@/shared/midlewares';
+import { generalMiddleware } from '@/shared/middlewares/set-headers';
+import { authMiddleware } from '@/shared/middlewares/auth';
 
 type CoupleOptions =
   | {
       autoBaseUrl: true;
       clientOption: Omit<ClientOptions, 'baseUrl'>;
+      middlewares?: Middleware[];
       authMiddleware?: Middleware;
     }
   | {
       autoBaseUrl?: false;
       clientOption: ClientOptions;
+      middlewares?: Middleware[];
       authMiddleware?: Middleware;
     };
+
+const applayMiddlewares = (
+  client: Client<paths>,
+  middlewares?: Middleware[]
+) => {
+  if (middlewares && middlewares.length > 0) {
+    forEach(middlewares, (middleware) => {
+      client.use(middleware);
+    });
+    return client;
+  }
+};
+
+const createCouple = (
+  opts?: CoupleOptions['clientOption'],
+  preHook?: (client: Client<paths>) => void
+): {
+  query: OpenapiQueryClient<paths>;
+  native: Client<paths>;
+} => {
+  const native = createNativeClient<paths>(opts);
+  preHook?.(native);
+  const query = createQueryClient<paths>(native);
+  return { query, native };
+};
 
 export function coupleOfFetchers<Key extends Services>(
   key: Key,
@@ -28,22 +58,24 @@ export function coupleOfFetchers<Key extends Services>(
     ? { ...options.clientOption, baseUrl: createBaseUrl(key) }
     : options.clientOption;
 
-  const nativeClient = createNativeClient<paths>(opts);
-  nativeClient.use(generalMiddleware);
-  const queryClient = createQueryClient<paths>(nativeClient);
+  const defaultClients = createCouple(opts, (client) => {
+    applayMiddlewares(client, options.middlewares);
+    client.use(generalMiddleware);
+  });
 
-  const jwtNativeClient = createNativeClient<paths>(opts);
-  if (options.authMiddleware) jwtNativeClient.use(options.authMiddleware);
-  jwtNativeClient.use(generalMiddleware);
-  const jwtQueryClient = createQueryClient<paths>(jwtNativeClient);
+  const jwtClients = createCouple(opts, (client) => {
+    applayMiddlewares(client, options.middlewares);
+    client.use(generalMiddleware);
+    if (options.authMiddleware) client.use(authMiddleware);
+  });
 
   const nativeKey = `native${capitalize(key)}` as const;
   const queryKey = `query${capitalize(key)}` as const;
   const jwtKey = `jwt${capitalize(key)}` as const;
 
   return {
-    [nativeKey]: nativeClient,
-    [queryKey]: queryClient,
-    [jwtKey]: { query: jwtQueryClient, native: jwtNativeClient },
+    [nativeKey]: defaultClients.native,
+    [queryKey]: defaultClients.query,
+    [jwtKey]: { query: jwtClients.query, native: jwtClients.native },
   } as ICoupleFetchers<Key>;
 }

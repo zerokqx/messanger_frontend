@@ -3,7 +3,7 @@ import createFetchClient, {
   type Middleware,
 } from 'openapi-fetch';
 import createClient from 'openapi-react-query';
-import { generalMiddleware } from '../midlewares';
+import { generalMiddleware } from '../middlewares/set-headers.ts';
 import type { paths } from '../types/v1';
 
 export const createFetcher = <P extends paths = paths>({
@@ -66,4 +66,3 @@ export const createFetcherWithCreateClient = <P extends paths = paths>({
     return createClient<P>(fetcher);
   };
 };
-

@@ -1,5 +1,5 @@
-import type { ReplaceTypeKey } from '../user/types/permissionsModificate.type';
 import _ from 'lodash';
+import type { ReplaceTypeKey } from '../types/permissionsModificate.type';
 /**
  * Function for search type value and convert to target typed
  *

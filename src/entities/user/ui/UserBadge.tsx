@@ -4,7 +4,7 @@ import { useUserStore } from '../model/userStore';
 import { UserAvatar } from './UserAvatar';
 
 export const UserBadge = () => {
-  const { login } = useUserStore();
+  const login = useUserStore((s) => s.data.login);
   const { mobile } = useResponsive();
   return (
     <Flex

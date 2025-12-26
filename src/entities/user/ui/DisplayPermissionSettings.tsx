@@ -1,4 +1,4 @@
-import { catchAndChange } from '@/entities/lib/permissionsModificate';
+import { catchAndChange } from '../lib/permissionsModificate';
 import { useProfilePut } from '@/features/profilePut';
 import { usePlurarDates } from '@/shared/lib/hooks/useDate';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
@@ -7,7 +7,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserStore } from '../model';
-// TODO вынести в widgets
 export const DisplayPermissionSettings = memo(() => {
   const { t } = useTranslation([
     'settingsLabels',

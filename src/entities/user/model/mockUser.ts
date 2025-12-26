@@ -8,8 +8,7 @@ export const mockUser = {
   is_verified: false,
   login: '',
   full_name: '',
-  bio: '',
-  balances: [],
+  bio: '', balances: [],
 
   created_at: new Date().toISOString(),
   stories: [],
