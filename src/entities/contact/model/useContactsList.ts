@@ -6,6 +6,7 @@ import { flatMap, forEach } from 'lodash';
 
 /**
  * Connector logic for `useContacts` store
+ * @deprecated
  */
 export const useCSContactsList: Fn<
   [ReturnType<typeof useContactsListFetch>['data']],

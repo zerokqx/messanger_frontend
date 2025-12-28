@@ -1,9 +1,6 @@
-import type { FormatLoginViaCutomNameFn } from '../types/formatLoginViaCustomName.type';
+import type { FormatLoginViaCutomNameFn } from './format-login.types.ts';
 
-export const formatLoginViaCustomName: FormatLoginViaCutomNameFn = (
-  login,
-  customName
-) => {
+export const formatLogin: FormatLoginViaCutomNameFn = (login, customName) => {
   const loginFallback = login ?? '';
   const format = customName
     ? `${customName}(@${loginFallback})`

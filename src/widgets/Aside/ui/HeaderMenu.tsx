@@ -1,4 +1,4 @@
-import { useCombinedSelectSearch } from '@/widgets/ChatAside/model/useSearchUnion';
+import { selectedUserActions } from '@/shared/model/stores/selected-user';
 import { ActionIcon, Box, Button, Menu, useMantineTheme } from '@mantine/core';
 import { useLogger } from '@mantine/hooks';
 import { Edit, Ellipsis, Trash } from 'lucide-react';
@@ -7,10 +7,6 @@ import { useState } from 'react';
 export const HeaderMenu = () => {
   const t = useMantineTheme();
   const [opened, setOpened] = useState(false);
-  const { user_id, profile } = useCombinedSelectSearch(
-    'selectedUser',
-    (s) => s
-  );
 
   return (
     <Menu

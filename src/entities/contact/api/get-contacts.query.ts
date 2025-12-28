@@ -3,7 +3,11 @@ import { $api } from '@/shared/api/repository/$api';
 import type { UserSearchItem } from '@/shared/types/api/schemas';
 import { keepPreviousData } from '@tanstack/react-query';
 
-export const useContactsListFetch = (limit: number) => {
+/**
+ * @description Хук для получения всех контктов текущего пользователя
+ * @param limit Сколько записей максимально можно вернуть (Backend Option)
+ */
+export const useContactsQuery = (limit: number) => {
   const isAuth = useIsAuth();
 
   return $api.jwtUser.query.useInfiniteQuery(
@@ -17,8 +21,8 @@ export const useContactsListFetch = (limit: number) => {
       },
     },
     {
-      staleTime: 1000 * 60 * 10, // 10 минут данные считаются свежими
-      gcTime: 1000 * 60 * 60 * 24, // сутки не вычищать из кэша
+      staleTime: 1000 * 60 * 10,
+      gcTime: 1000 * 60 * 60 * 24,
       placeholderData: keepPreviousData,
       initialPageParam: 0,
       pageParamName: 'offset',

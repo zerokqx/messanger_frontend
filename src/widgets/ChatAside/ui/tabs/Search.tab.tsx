@@ -1,16 +1,14 @@
 import { Search } from '@/shared/ui/Search';
 import { AppShellTaber } from '../../lib/tab';
 import { If, Then } from 'react-if';
-import {
-  combinedSelectSearch,
-  useCombinedSelectSearch,
-} from '../../model/useSearchUnion';
 import { Box } from '@mantine/core';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
+import { selectedUserActions } from '@/shared/model/stores/selected-user';
+import { useSearchCache } from '@/features/search';
+import type { components } from '@/shared/types/v1';
 
 export const SearchTab = () => {
-  const selectedUser = combinedSelectSearch.selectedUser.setState;
-  const users = useCombinedSelectSearch('search', (s) => s.users);
+  const users = useSearchCache()?.data.users;
   const update = useLayoutStore((s) => s.update);
   return (
     <AppShellTaber.Panel value="search">
@@ -18,7 +16,8 @@ export const SearchTab = () => {
         <Then>
           <Search>
             {users?.map((user) => {
-              const profile = user.profile;
+              const profile =
+                user.profile as components['schemas']['ProfileByUserIdData'];
               const login = profile.login ?? 'Anonymous';
               return (
                 <Box
@@ -26,7 +25,7 @@ export const SearchTab = () => {
                   key={user.user_id}
                   onClick={() => {
                     update((s) => (s.asside = true));
-                    selectedUser({ data: user });
+                    selectedUserActions.doSelect(user);
                   }}
                 >
                   <Search.Item

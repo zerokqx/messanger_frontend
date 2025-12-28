@@ -6,7 +6,3 @@ type User =
 export interface UserWithUUID extends User {
   profile: components['schemas']['ProfileResponse']['data'];
 }
-
-export interface UserSearchItem extends User {
-  profile: components['schemas']['ProfileByUserIdsResponse']['data'][number];
-}

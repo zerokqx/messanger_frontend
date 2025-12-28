@@ -1,4 +1,5 @@
 import { catchAndChange } from '../lib/permissionsModificate';
+// WARN features use
 import { useProfilePut } from '@/features/profilePut';
 import { usePlurarDates } from '@/shared/lib/hooks/useDate';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';

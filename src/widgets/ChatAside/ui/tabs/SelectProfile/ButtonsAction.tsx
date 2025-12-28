@@ -1,5 +1,5 @@
 import { useContactAdd } from '@/features/contactAdd';
-import { useCombinedSelectSearch } from '@/widgets/ChatAside/model/useSearchUnion';
+import { selectedUserActions } from '@/shared/model/stores/selected-user';
 import { Stack, Group, Button, TextInput } from '@mantine/core';
 import { Trash } from 'lucide-react';
 import type { ComponentProps } from 'react';
@@ -9,7 +9,7 @@ export const SelectedProfileButtonAction = ({
 }: {
   renameProps?: ComponentProps<'button'>;
 }) => {
-  const uuid = useCombinedSelectSearch('selectedUser', (s) => s.user_id);
+  const uuid = selectedUserActions.doGetUser()?.user_id;
   const add = useContactAdd();
 
   return (

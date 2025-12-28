@@ -2,19 +2,9 @@ import { createdAt } from '@/entities/user/lib/createAtData';
 import { Description } from '@/shared/ui/Description/ui';
 import { IsVerified } from './IsVerified';
 
-import { Clock, Edit, Ellipsis, IdCard, Info, Star, User } from 'lucide-react';
+import { Clock, IdCard, Info, Star, User } from 'lucide-react';
 import { DisplayItem } from './Item';
-import {
-  Divider,
-  Rating,
-  Stack,
-  Center,
-  Avatar,
-  Space,
-  Menu,
-  Button,
-  ActionIcon,
-} from '@mantine/core';
+import { Divider, Rating, Stack, Center, Avatar } from '@mantine/core';
 import type { ProfileDataDisplayProp } from '../types/profileDataDisplay.type';
 import { useDefault } from 'react-use';
 import type { ReactNode } from 'react';
@@ -28,6 +18,7 @@ export const ProfileDataDisplay = (props: ProfileDataDisplayProp) => {
     </Center>,
     () => header?.(props)
   );
+  
   const ratingSafe = rating.rating ?? 0;
   const createdAtValue = createdAt();
 

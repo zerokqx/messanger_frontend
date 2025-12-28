@@ -8,6 +8,7 @@ export interface UseContactsStore<U extends string[] = string[]> {
   uuids: U | never[];
   users: Record<U[number], UserSearchItem> | UnknownRecord;
 }
+/** @deprecated */
 export const useContacts = createStore<UseContactsStore>(
   'contacts',
   {
