@@ -1,5 +1,6 @@
 import { camelCase, capitalize, fromPairs, zip } from 'lodash';
 import type { Fn } from '@/shared/types/utils/functions';
+import type { CreateStoreType } from '@colorfy-software/zfy';
 
 type AnyFn = (...args: any[]) => any; // чтобы не потерять конкретные сигнатуры функций
 type TupleKeys<T extends readonly unknown[]> = Extract<keyof T, `${number}`>;
@@ -27,7 +28,7 @@ export const createStoreAction = <
   const Actions extends readonly [AnyFn, ...AnyFn[]],
   const Names extends readonly [string, ...string[]],
 >(
-  actions: Actions & readonly Fn[], // оставил совместимость с твоим Fn, но выводим сигнатуры через AnyFn
+  actions: Actions & readonly Fn[],
   names: Names & { length: Actions['length'] }
 ): ZipToDoObject<Names, Actions> => {
   if (names.length !== actions.length) {

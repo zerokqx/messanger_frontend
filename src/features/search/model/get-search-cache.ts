@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * @description Получает данные из кеша котоыре установил запрос. Замена zustand стору
+ * @deprecated
  */
 export const useSearchCache = () => {
   const client = useQueryClient();
@@ -17,3 +18,6 @@ export const useSearchCache = () => {
     }).queryKey
   );
 };
+
+
+

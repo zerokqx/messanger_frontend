@@ -3,7 +3,7 @@ import { AppShellNavbar, Center, Group } from '@mantine/core';
 import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
 import { Loader } from 'lucide-react';
-
+import { useQueryClient } from '@tanstack/react-query';
 const SearchTabLazy = lazy(() =>
   import('./tabs/Search.tab').then((m) => ({ default: m.SearchTab }))
 );
