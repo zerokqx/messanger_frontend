@@ -1,16 +1,8 @@
-import { useSearch, useSearchStore } from '@/features/search';
+import { SearchInputWrapper } from '@/features/search';
 import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
-import {
-  Burger,
-  CloseButton,
-  Grid,
-  Loader,
-  type TextInputProps,
-} from '@mantine/core';
+import { Burger, CloseButton, Grid, type TextInputProps } from '@mantine/core';
 import { appShellReset, AppShellTaber, useTabAppShell } from '../lib/tab';
 import { Else, If, Then } from 'react-if';
-import { SearchInput } from '@/shared/ui/SearchInput';
-import { combinedSelectSearch } from '../model/useSearchUnion';
 
 export const NavbarHeader = ({
   input,
@@ -19,13 +11,9 @@ export const NavbarHeader = ({
 }) => {
   const isOpen = useSideBarStore.useIsOpen();
   const toggle = useSideBarStore.useToggle();
-  const setQuery = combinedSelectSearch.search((s) => s.update);
-  const q = combinedSelectSearch.search((s) => s.data.query);
-
   const goBack = useTabAppShell.useGoBack();
   const currentTab = useTabAppShell.useCurrentTab();
 
-  const searcher = useSearch();
   return (
     <Grid p={'md'} align="center">
       <Grid.Col span={'content'}>
@@ -47,16 +35,7 @@ export const NavbarHeader = ({
         </If>
       </Grid.Col>
       <Grid.Col span={'auto'}>
-        <SearchInput
-          bdrs={'xl'}
-          rightSection={
-            searcher.isLoading && <Loader pr={'xs'} type="dots" size={'md'} />
-          }
-          {...input}
-          action={(value) => {
-            setQuery((s) => (s.query = value));
-          }}
-        />
+        <SearchInputWrapper {...input} />
       </Grid.Col>
     </Grid>
   );

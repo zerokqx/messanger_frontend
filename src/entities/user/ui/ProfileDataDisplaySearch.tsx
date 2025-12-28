@@ -8,24 +8,13 @@ import { User, IdCard, Clock, Star, Info } from 'lucide-react';
 import { ratingColor } from '../lib/ratingColor';
 import { IsVerified } from './IsVerified';
 import { createdAtUserSearch } from '@/entities/user/lib/createAtData';
-import { formatLoginViaCustomName } from '../lib/formatLoginViaCustomName';
+import { formatLogin } from '@/shared/lib/formaters';
 
 export const ProfileDataDisplaySearch = ({
-  user_id,
-  profile: {
-    login,
-    full_name,
-    bio,
-    created_at,
-    rating: { rating },
-    custom_name,
-  },
+  user,
   header,
 }: ProfileDataDisplaySearchProp) => {
-  const currentUser = useUserStore.getState().data.user_id;
-  const isThatMe = user_id === currentUser;
-
-  const format = formatLoginViaCustomName(login ?? '', custom_name);
+  const format = formatLogin(login, custom_name);
   return (
     <Stack>
       <Center>

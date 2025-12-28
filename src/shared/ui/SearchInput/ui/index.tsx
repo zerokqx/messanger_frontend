@@ -4,6 +4,9 @@ import { debounceTime, filter, Subject } from 'rxjs';
 import { TextInput } from '@mantine/core';
 import type { SearchInputProp } from '../types/searchInput.type';
 
+/**
+ * @description Input for search. Provides debounce effect in 1000ms.
+ */
 export const SearchInput = ({ action, ...props }: SearchInputProp) => {
   const searchSubject = useRef(new Subject<string>()).current;
 

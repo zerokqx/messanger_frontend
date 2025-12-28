@@ -3,7 +3,9 @@ import { $api } from '@/shared/api/repository/$api';
 /**
  * A hook to fetch users from the search API based on a query.
  * It handles the API request and returns the query results without managing global search state.
+ * Use via hook use search.
  * @param query The search query string.
+ * @see `useSearch`
  * @returns The result of the TanStack Query hook for fetching users.
  */
 export const useFetchUsersSearch = (rawQuery: string | undefined | null) => {

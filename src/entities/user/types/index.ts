@@ -1,2 +1,1 @@
-export type { User } from './user.type.ts';
-export type { TUserActions } from './userStore.type.ts';
+export type { TUser as User } from './user.type.ts';

@@ -1,5 +1,5 @@
 import type { UseTokenStore } from '@/shared/token';
-import type { UserStore } from '@/entities/user/types/userStore.type';
+import type { UserStore } from '@/entities/user/types/user-store.type';
 import type { StoreType } from '@colorfy-software/zfy';
 
 export interface AuthContextTypes {

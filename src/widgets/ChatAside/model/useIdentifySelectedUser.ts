@@ -1,7 +1,5 @@
 import type { components, paths } from '@/shared/types/v1';
 import { useQueryClient } from '@tanstack/react-query';
-import { useSearch } from '@tanstack/react-router';
-import { UserSearch } from 'lucide-react';
 import { combinedSelectSearch } from './useSearchUnion';
 import { searchUser } from '../lib/searchUser';
 
