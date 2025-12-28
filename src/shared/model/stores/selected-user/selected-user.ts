@@ -1,7 +1,10 @@
 import { createStore } from '@colorfy-software/zfy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStoreAction } from '@/shared/lib/zustand/createStoreAction/createStoreAction';
-import type { IUseSelectedUserStore } from './selected-user.interface';
+import type {
+  IUserProfile,
+  IUseSelectedUserStore,
+} from './selected-user.interface';
 
 /**
  * @description Store for track selected user via search.
@@ -34,6 +37,9 @@ export const selectedUserActions = createStoreAction(
       });
     },
     () => useSelectedUser.getState().data.user,
+    (): IUserProfile | undefined =>
+      useSelectedUser.getState().data.user
+        ?.profile as IUserProfile satisfies IUserProfile,
   ],
-  ['select', 'getUser']
+  ['select', 'getUser', 'extractProfile']
 );

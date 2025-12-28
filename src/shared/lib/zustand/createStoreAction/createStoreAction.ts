@@ -1,6 +1,7 @@
 import { camelCase, capitalize, fromPairs, zip } from 'lodash';
 import type { Fn } from '@/shared/types/utils/functions';
 import type { CreateStoreType } from '@colorfy-software/zfy';
+import type { IsAny } from 'type-fest';
 
 type AnyFn = (...args: any[]) => any; // чтобы не потерять конкретные сигнатуры функций
 type TupleKeys<T extends readonly unknown[]> = Extract<keyof T, `${number}`>;
@@ -24,12 +25,19 @@ type ZipToDoObject<
   [I in TupleKeys<Names> & TupleKeys<Actions> as DoKey<Names[I]>]: Actions[I];
 };
 
+// interface ISettings {
+//   store: CreateStoreType<any>;
+//   defaultAction?: boolean;
+// }
+
 export const createStoreAction = <
   const Actions extends readonly [AnyFn, ...AnyFn[]],
   const Names extends readonly [string, ...string[]],
+  // Settings extends ISettings,
 >(
   actions: Actions & readonly Fn[],
   names: Names & { length: Actions['length'] }
+  // settings?: Settings
 ): ZipToDoObject<Names, Actions> => {
   if (names.length !== actions.length) {
     throw new Error('Array length first and second param not equals');
