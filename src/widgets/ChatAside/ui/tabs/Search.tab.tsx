@@ -4,12 +4,14 @@ import { If, Then } from 'react-if';
 import { Box } from '@mantine/core';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { selectedUserActions } from '@/shared/model/stores/selected-user';
-import { useSearchCache } from '@/features/search';
+import { useSearchCache, useSearchStore } from '@/features/search';
 import type { components } from '@/shared/types/v1';
+import { useLogger } from '@mantine/hooks';
+import { searchStoreAction } from '@/features/search/model/search-store';
 
 export const SearchTab = () => {
-  const users = useSearchCache()?.data.users;
   const update = useLayoutStore((s) => s.update);
+  const users = useSearchStore((s) => s.data);
   return (
     <AppShellTaber.Panel value="search">
       <If condition={users?.length ?? 0}>

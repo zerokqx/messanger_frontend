@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetchUsersSearch } from './useFetchUsersSearch';
+import { searchStoreAction } from '../model/search-store';
 
 /**
  * A feature hook that orchestrates user search functionality.
@@ -11,6 +12,9 @@ import { useFetchUsersSearch } from './useFetchUsersSearch';
  */
 export const useSearch = () => {
   const [query, setQuery] = useState('');
-  const { data, ...rest } = useFetchUsersSearch(query);
-  return { data, ...rest, setQuery };
+  const { data, dataUpdatedAt, ...rest } = useFetchUsersSearch(query);
+  useEffect(() => {
+    if (data && data.length > 0) searchStoreAction.doSetUsers(data);
+  }, [dataUpdatedAt, data]);
+  return { data, dataUpdatedAt, ...rest, setQuery };
 };
