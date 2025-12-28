@@ -9,11 +9,22 @@ import { ratingColor } from '../lib/ratingColor';
 import { IsVerified } from './IsVerified';
 import { createdAtUserSearch } from '@/entities/user/lib/createAtData';
 import { formatLogin } from '@/shared/lib/formaters';
+import Logger from '@/shared/lib/logger/logger';
 
 export const ProfileDataDisplaySearch = ({
-  user,
+  user: {
+    user_id,
+    login,
+    full_name,
+    bio,
+    created_at,
+    custom_name,
+    rating: { rating },
+  },
   header,
 }: ProfileDataDisplaySearchProp) => {
+  Logger.debug('ProfileDataDisplaySearch', 'user_id', user_id);
+  console.log(login);
   const format = formatLogin(login, custom_name);
   return (
     <Stack>

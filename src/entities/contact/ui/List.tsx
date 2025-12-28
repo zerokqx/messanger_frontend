@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useContactCountQuery, useContactsQuery } from '../api';
 import { pagesMap } from '../lib/pagesMap';
 import { selectedUserActions } from '@/shared/model/stores/selected-user';
+import Logger from '@/shared/lib/logger/logger';
 
 export const List = () => {
   const {
@@ -27,6 +28,10 @@ export const List = () => {
       layout((s) => (s.asside = true));
     }
   }, [data, isSuccess, layout]);
+  useEffect(() => {
+    Logger.info('List', 'New page', pages);
+  }, [pages]);
+
   return (
     <VirtualList<typeof contacts>
       count={count ?? 0}

@@ -1,5 +1,6 @@
 import { useIsAuth } from '@/entities/session';
 import { $api } from '@/shared/api/repository/$api';
+import Logger from '@/shared/lib/logger/logger';
 import type { UserSearchItem } from '@/shared/types/api/schemas';
 import { keepPreviousData } from '@tanstack/react-query';
 
@@ -32,6 +33,12 @@ export const useContactsQuery = (limit: number) => {
         lastPageParam: number
       ) => {
         if (lastPage.data.has_more) {
+          Logger.debug('useContactsQuery', 'has_more=true', {
+            preData: lastPage.data,
+          });
+          Logger.debug('useContactsQuery', 'has_more=false', {
+            preData: lastPage.data,
+          });
           return lastPageParam + lastPage.data.items.length;
         }
 

@@ -7,16 +7,20 @@ import { AppShellAside, Space } from '@mantine/core';
 import { AsideHaeader } from './Header';
 import { asideLoaderHooks } from '../model/loader-store';
 import { userAction } from '@/entities/user/model/userStore';
-import { selectedUserActions } from '@/shared/model/stores/selected-user';
+import {
+  useSelectedUser,
+  type IUserProfile,
+} from '@/shared/model/stores/selected-user';
+import Logger from '@/shared/lib/logger/logger';
 
 export const AssideProfile = () => {
-  const user = selectedUserActions.doGetUser();
+  const user = useSelectedUser((s) => s.data.user?.profile) as IUserProfile;
   const isMe = userAction.doIsThatMe(user?.user_id ?? '');
   const loader = asideLoaderHooks.useLoad();
   const [setEmbla, { next }] = useEmblaApi();
 
-  if (user === null) return;
-  console.debug('User selected', user);
+  Logger.info('AsideProfile', 'profile user', user);
+  if (!user) return;
   return (
     <AppShellAside zIndex={10000} style={{ overflow: 'clip' }}>
       <AsideHaeader />
@@ -39,7 +43,7 @@ export const AssideProfile = () => {
             initialState={{
               custom_name: user.login,
             }}
-            uuid={uuid}
+            uuid={user.user_id}
           />
         </Carousel.Slide>
       </Carousel>
