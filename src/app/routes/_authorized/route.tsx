@@ -22,11 +22,8 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
-  const d = useUserQuery();
   return (
     <AppShell
-      transitionDuration={300}
-      transitionTimingFunction="ease"
       navbar={{
         width: 350,
         breakpoint: 'sm',
@@ -45,18 +42,15 @@ function RouteComponent() {
       p="md"
       h={'100dvh'}
     >
+      <AssideProfile />
       <AppShell.Main bg="black">
         <Outlet />
 
-        <AssideProfile />
         <Suspense fallback={null}>
           <LazySideBarWidget />
         </Suspense>
-
-        <Suspense fallback={null}>
-          <LazyAppShellNavbar />
-        </Suspense>
       </AppShell.Main>
+      <LazyAppShellNavbar />
     </AppShell>
   );
 }

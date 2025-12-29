@@ -39,19 +39,17 @@ const rootElement = document.getElementById('root');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <StrictMode>
-      <MantineProvider theme={theme} defaultColorScheme="dark">
-        <LazyMotion features={domAnimation}>
-          <QueryClientProvider client={queryClient}>
-            <SettingsProvider>
-              <I18nextProvider i18n={i18n}>
-                <InnerApp />
-                <NotificationStyled />
-              </I18nextProvider>
-            </SettingsProvider>
-          </QueryClientProvider>
-        </LazyMotion>
-      </MantineProvider>
-    </StrictMode>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <LazyMotion features={domAnimation}>
+        <QueryClientProvider client={queryClient}>
+          <SettingsProvider>
+            <I18nextProvider i18n={i18n}>
+              <InnerApp />
+              <NotificationStyled />
+            </I18nextProvider>
+          </SettingsProvider>
+        </QueryClientProvider>
+      </LazyMotion>
+    </MantineProvider>
   );
 }

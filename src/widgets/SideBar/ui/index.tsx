@@ -41,14 +41,14 @@ export const SideBarWidget = () => {
   return (
     <SideBar>
       <Header />
-      <Suspense
-        fallback={
-          <Center>
-            <Loader type="oval" />
-          </Center>
-        }
-      >
-        <SideBarTaber>
+      <SideBarTaber >
+        <Suspense
+          fallback={
+            <Center>
+              <Loader type="oval" />
+            </Center>
+          }
+        >
           <Contacts />
           <MainPageLazy />
           <ProfileLazy />
@@ -56,8 +56,8 @@ export const SideBarWidget = () => {
           <SettingsLazy />
           <ProfileSettingsTabLazy />
           <InterfaceEditLazy />
-        </SideBarTaber>
-      </Suspense>
+        </Suspense>
+      </SideBarTaber>
     </SideBar>
   );
 };

@@ -8,6 +8,9 @@ export const useLayoutStore = createStore<LayoutStoreType>(
     disable: false,
     footer: false,
     header: false,
+    asideOptions: {
+      mode: 'none',
+    },
   },
   { log: true }
 );
