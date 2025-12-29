@@ -3,5 +3,7 @@ export interface LayoutStoreType {
   header: boolean;
   disable: boolean;
   footer: boolean;
-  
+  asideOptions: {
+    mode: 'user' | 'none';
+  };
 }

@@ -21,7 +21,6 @@ export const ProfileDataDisplaySearch = ({
     custom_name,
     rating: { rating },
   },
-  header,
 }: ProfileDataDisplaySearchProp) => {
   Logger.debug('ProfileDataDisplaySearch', 'user_id', user_id);
   console.log(login);

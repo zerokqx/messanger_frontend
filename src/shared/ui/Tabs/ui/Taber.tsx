@@ -37,7 +37,6 @@ export const createTaber = <T extends Windows>({
   initial,
 }: TaberProps<T>): TaberTemplateReturn<T> => {
   const useStore = createTabStore<T[number]>(initial);
-
   const AnimatedPanel = motion.create(Tabs.Panel);
   const Panel: TaberTemplate<T>['Panel'] = ({ children, value, ...props }) => {
     return (
@@ -90,7 +89,7 @@ export const createTaber = <T extends Windows>({
   const Taber: TaberTemplate<T> = ({ children }) => {
     const currentTab = useStore.useCurrentTab();
     return (
-      <Tabs keepMounted value={currentTab}>
+      <Tabs keepMounted={false} value={currentTab}>
         {children}
       </Tabs>
     );

@@ -6,7 +6,11 @@ import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { useEffect } from 'react';
 import { useContactCountQuery, useContactsQuery } from '../api';
 import { pagesMap } from '../lib/pagesMap';
-import { selectedUserActions } from '@/shared/model/stores/selected-user';
+import {
+  selectedUserActions,
+  useSelectedUser,
+} from '@/shared/model/stores/selected-user';
+import { useLogger } from '@mantine/hooks';
 import Logger from '@/shared/lib/logger/logger';
 
 export const List = () => {
@@ -20,17 +24,23 @@ export const List = () => {
   const contacts = pagesMap(pages);
   const { data: count } = useContactCountQuery();
 
+  const selectedUpdate = useSelectedUser((s) => s.update);
   const layout = useLayoutStore((s) => s.update);
-  const { data, setId, isSuccess } = useGetUserById();
+  const { data, setId, isSuccess, isFetching, dataUpdatedAt } =
+    useGetUserById();
   useEffect(() => {
-    if (isSuccess) {
-      selectedUserActions.doSelect(data);
-      layout((s) => (s.asside = true));
+    if (dataUpdatedAt && data) {
+      Logger.debug('List', 'effect select user', data);
+      selectedUpdate((s) => {
+        s.user = { user_id: data.user_id, profile: data };
+      });
     }
-  }, [data, isSuccess, layout]);
+  }, [data, dataUpdatedAt]);
+
+  useLogger('List', [pages]);
   useEffect(() => {
-    Logger.info('List', 'New page', pages);
-  }, [pages]);
+    if (isFetching) layout((s) => (s.asside = true));
+  }, [isFetching, layout]);
 
   return (
     <VirtualList<typeof contacts>

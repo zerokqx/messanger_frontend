@@ -3,7 +3,7 @@ import { AppShellTaber } from '../../lib/tab';
 import { If, Then } from 'react-if';
 import { Box } from '@mantine/core';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
-import { selectedUserActions } from '@/shared/model/stores/selected-user';
+import { useSelectedUser } from '@/shared/model/stores/selected-user';
 import { useSearchStore } from '@/features/search';
 import type { components } from '@/shared/types/v1';
 import Logger from '@/shared/lib/logger/logger';
@@ -12,6 +12,7 @@ export const SearchTab = () => {
   const update = useLayoutStore((s) => s.update);
   const users = useSearchStore((s) => s.data);
 
+  const updateSelectedUser = useSelectedUser((s) => s.update);
   Logger.info('Search.tab.tsx', 'users', users);
   return (
     <AppShellTaber.Panel value="search">
@@ -27,8 +28,10 @@ export const SearchTab = () => {
                   style={{ cursor: 'pointer' }}
                   key={user.user_id}
                   onClick={() => {
-                    update((s) => (s.asside = true));
-                    selectedUserActions.doSelect(user);
+                    update((s) => {
+                      s.asside = true;
+                      updateSelectedUser((s) => (s.user = user));
+                    });
                   }}
                 >
                   <Search.Item
