@@ -1,9 +1,11 @@
 {
   "change_profile": "Изменить профиль",
-  "chats": "Чаты",
+  "contacts": "Контакты",
   "dark_theme": "Тёмная тема",
-  "interface_edit": "Интерфейс", "profile": "Профиль",
+  "interface_edit": "Интерфейс",
+  "profile": "Профиль",
   "profile_settings": "Настройки профиля",
+  "sessions": "Сессии",
   "settings": "Настройки",
   "toggle_border": "Обводка элементов",
   "toggle_border_description": "Отключает или включает обводку на некоторых элементах.",

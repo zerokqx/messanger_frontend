@@ -1,10 +1,16 @@
 interface Resources {
+  "apiErrors": {
+    "contact_update": "Couldn't update contact"
+  },
   "buttonLabels": {
     "create": "Create",
     "enter": "Enter",
     "register": "Register",
     "save": "Save",
     "submit": "Send"
+  },
+  "days": {
+    "today": "Today"
   },
   "fieldLabels": {
     "bio_label": "Biography",
@@ -20,6 +26,10 @@ interface Resources {
     "hours_one": "{{count}} hour",
     "hours_other": "{{count}} hours",
     "hours_zero": ""
+  },
+  "session": {
+    "created_at": "Created at",
+    "last_activation": "Last actiovation"
   },
   "settingsLabels": {
     "allow_message_forwarding": "Allow message forwarding",
@@ -43,11 +53,12 @@ interface Resources {
   },
   "sideBar": {
     "change_profile": "Change your profile",
-    "chats": "Chats",
+    "contacts": "Contacts",
     "dark_theme": "Dark theme",
     "interface_edit": "Inerface",
     "profile": "Profile",
     "profile_settings": "Profile settings",
+    "sessions": "Sessions",
     "settings": "Settings",
     "toggle_border": "Outline of the elements",
     "toggle_border_description": "Disables or enables the stroke on some elements.",
@@ -56,15 +67,17 @@ interface Resources {
   "texts": {
     "enter_to_account_for_communicate_friend": "Log in to your account to continue chatting with your friends",
     "glad_see_you": "We are glad to see you",
-    "please_check_address": ""
+    "please_check_address": "Please check the address and repeat"
   },
   "titles": {
     "enter": "Login",
+    "error": "Error",
     "invalid_login": "Invalid login",
     "invalid_message_login": "Invalid login. Please retry",
-    "not_found_page": "",
+    "not_found_page": "Page not found",
     "register": "Register",
-    "return_to_yobble": "Welcome back to Yobble"
+    "return_to_yobble": "Welcome back to Yobble",
+    "success": ""
   }
 }
 

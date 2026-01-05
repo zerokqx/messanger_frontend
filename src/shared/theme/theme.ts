@@ -10,6 +10,7 @@ import {
   Loader,
   MenuDropdown,
   MenuItem,
+  Modal,
   PasswordInput,
   Select,
   Text,
@@ -17,6 +18,7 @@ import {
   TextInput,
   ThemeIcon,
   Title,
+  Tooltip,
   type MantineColorsTuple,
 } from '@mantine/core';
 import { hover } from '../styles/HoverOpacity.css';
@@ -246,6 +248,18 @@ export const theme = createTheme({
         className: hover,
       },
     }),
+    Modal: Modal.extend({
+      styles: (theme) => ({
+        header: {
+          background: theme.black,
+        },
+        content: {
+          overflowX: 'hidden',
+          border: `1px solid ${theme.colors.dark[9]}`,
+          background: theme.black,
+        },
+      }),
+    }),
     Select: Select.extend({
       defaultProps: {
         styles(theme) {
@@ -258,6 +272,12 @@ export const theme = createTheme({
             },
           };
         },
+      },
+    }),
+    Tooltip: Tooltip.extend({
+      defaultProps: {
+        color: 'black',
+        bd: '2px solid dark.7',
       },
     }),
   },

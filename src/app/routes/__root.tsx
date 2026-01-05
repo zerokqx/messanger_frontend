@@ -4,14 +4,11 @@ import z from 'zod';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import { useUserStore } from '@/entities/user';
-import { fetchMe } from '@/entities/user/model/me.query';
 
 const Com = () => {
   return (
     <>
       <Outlet />
-
       <TanStackDevtools
         plugins={[
           {

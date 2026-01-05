@@ -4,8 +4,6 @@ import { AppShell, useMantineTheme } from '@mantine/core';
 import { Outlet } from '@tanstack/react-router';
 import { Suspense, lazy } from 'react';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
-import { AssideProfile } from '@/widgets/Aside';
-import { useUserQuery } from '@/entities/user/model/me.query';
 
 const LazySideBarWidget = lazy(() =>
   import('@/widgets/SideBar').then((m) => ({ default: m.SideBarWidget }))
@@ -13,6 +11,10 @@ const LazySideBarWidget = lazy(() =>
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/ChatAside').then((m) => ({ default: m.AppShellNavbar }))
+);
+
+const LazyAside = lazy(() =>
+  import('@/widgets/Aside').then((m) => ({ default: m.AssideProfile }))
 );
 
 export const Route = createFileRoute('/_authorized')({
@@ -42,7 +44,9 @@ function RouteComponent() {
       p="md"
       h={'100dvh'}
     >
-      <AssideProfile />
+      <Suspense>
+        <LazyAside />
+      </Suspense>
       <AppShell.Main bg="black">
         <Outlet />
 
@@ -50,7 +54,9 @@ function RouteComponent() {
           <LazySideBarWidget />
         </Suspense>
       </AppShell.Main>
-      <LazyAppShellNavbar />
+      <Suspense>
+        <LazyAppShellNavbar />
+      </Suspense>
     </AppShell>
   );
 }
