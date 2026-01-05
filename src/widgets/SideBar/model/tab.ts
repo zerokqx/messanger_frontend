@@ -1,4 +1,3 @@
-import { useSideBarStore } from '@/shared/ui/SideBar/store/useMenuStore';
 import { createTaber } from '@/shared/ui/Tabs';
 
 export const [SideBarTaber, useTabSidebar, SideBarButtons, sideBarReset] =
@@ -10,6 +9,7 @@ export const [SideBarTaber, useTabSidebar, SideBarButtons, sideBarReset] =
       'settings',
       'profile_settings',
       'interface_edit',
+      'sessions',
       'contacts',
     ],
     initial: 'main',

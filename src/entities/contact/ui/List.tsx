@@ -6,10 +6,7 @@ import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { useEffect } from 'react';
 import { useContactCountQuery, useContactsQuery } from '../api';
 import { pagesMap } from '../lib/pagesMap';
-import {
-  selectedUserActions,
-  useSelectedUser,
-} from '@/shared/model/stores/selected-user';
+import { useSelectedUser } from '@/shared/model/stores/selected-user';
 import { useLogger } from '@mantine/hooks';
 import Logger from '@/shared/lib/logger/logger';
 
@@ -26,8 +23,7 @@ export const List = () => {
 
   const selectedUpdate = useSelectedUser((s) => s.update);
   const layout = useLayoutStore((s) => s.update);
-  const { data, setId, isSuccess, isFetching, dataUpdatedAt } =
-    useGetUserById();
+  const { data, setId, isFetching, dataUpdatedAt } = useGetUserById();
   useEffect(() => {
     if (dataUpdatedAt && data) {
       Logger.debug('List', 'effect select user', data);
@@ -54,10 +50,10 @@ export const List = () => {
       fallback={(size) => (
         <Group h={size} align="center" justify="space-between" w={'100%'}>
           <Group align="flex-start">
-            <Skeleton circle h={40} w={40} animate />
-            <Skeleton animate h={10} w={100} />
+            <Skeleton circle h={40} w={40} />
+            <Skeleton h={10} w={100} />
           </Group>
-          <Skeleton animate h={30} w={30} bdrs={'xl'} />
+          <Skeleton h={30} w={30} bdrs={'xl'} />
         </Group>
       )}
       hasNextPage={hasNextPage}

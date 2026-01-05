@@ -1,8 +1,10 @@
 {
   "enter": "Login",
+  "error": "Error",
   "invalid_login": "Invalid login",
   "invalid_message_login": "Invalid login. Please retry",
   "not_found_page": "Page not found",
   "register": "Register",
-  "return_to_yobble": "Welcome back to Yobble"
+  "return_to_yobble": "Welcome back to Yobble",
+  "success": ""
 }

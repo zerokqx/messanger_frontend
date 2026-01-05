@@ -1,12 +1,10 @@
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 import { AppShellNavbar, Center, Group } from '@mantine/core';
 import { AppShellTaber, useTabAppShell } from '../lib/tab';
 import { NavbarHeader } from './NavbarHeader';
 import { Loader } from 'lucide-react';
-import { useQueryClient } from '@tanstack/react-query';
-const SearchTabLazy = lazy(() =>
-  import('./tabs/Search.tab').then((m) => ({ default: m.SearchTab }))
-);
+import { map } from 'lodash';
+import { asideTabsConfig } from '../config/asideTabs.config';
 
 export const AppShellNavbarWidget = () => {
   const set = useTabAppShell.useSetCurrentTab();
@@ -21,20 +19,24 @@ export const AppShellNavbarWidget = () => {
       />
 
       <Group p={'xs'} grow>
-        <Suspense
-          fallback={
-            <Center>
-              <Loader />
-            </Center>
-          }
-        >
-          <AppShellTaber>
-            <SearchTabLazy />
+        <AppShellTaber>
+          {map(asideTabsConfig, (component) => (
+            <Suspense fallback={component.fallback}>
+              <component.render />
+            </Suspense>
+          ))}
+          <Suspense
+            fallback={
+              <Center>
+                <Loader />
+              </Center>
+            }
+          >
             <AppShellTaber.Panel value="chats">
               <p>chats</p>
             </AppShellTaber.Panel>
-          </AppShellTaber>
-        </Suspense>
+          </Suspense>
+        </AppShellTaber>
       </Group>
     </AppShellNavbar>
   );

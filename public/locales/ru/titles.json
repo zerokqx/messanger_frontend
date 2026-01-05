@@ -1,8 +1,10 @@
 {
   "enter": "Вход",
+  "error": "Ошибка",
   "invalid_login": "Ошибка входа",
   "invalid_message_login": "Ошибка входа. Пожалуйста повторите",
   "not_found_page": "Страница не найдена",
   "register": "Регистрация",
-  "return_to_yobble": "С возращением в Yobble"
+  "return_to_yobble": "С возращением в Yobble",
+  "success": "Успешно"
 }
