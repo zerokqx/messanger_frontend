@@ -29,7 +29,8 @@ interface Resources {
   },
   "session": {
     "created_at": "Created at",
-    "last_activation": "Last actiovation"
+    "last_activation": "Last actiovation",
+    "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
   "settingsLabels": {
     "allow_message_forwarding": "Allow message forwarding",

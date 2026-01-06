@@ -2,14 +2,23 @@ import type { Fn } from '@/shared/types/utils/functions';
 import type { components } from '@/shared/types/v1';
 import type { GridProps, TextProps } from '@mantine/core';
 import type { ReactNode } from 'react';
+import type { DividerProps as DividerPropsMantine } from '@mantine/core';
 
 export type SessionData = components['schemas']['UserSessionItem'];
 
+type DividerProps =
+  | {
+      withDivider?: false;
+      dividerProps?: never;
+    }
+  | {
+      withDivider: true;
+      dividerProps?: DividerPropsMantine;
+    };
 export interface SessionProps {
   session: SessionData;
-  onRevoke: Fn<[string], void>;
-  children: ReactNode;
   gridProps?: GridProps;
+  children: ReactNode;
 }
 
 export interface SessionCardProps {
@@ -21,34 +30,37 @@ export interface SessionHeaderProps {
   children: ReactNode;
 }
 
-export interface SessionOnlyTrusted {
+export interface SessionTrusted {
   children: ReactNode;
+  trusted?: boolean;
 }
 
-export interface SessionBodyProps {
+export type SessionBodyProps = DividerProps & {
   children: ReactNode;
-}
+};
 
-export interface SessionFooterProps {
+export type SessionFooterProps = DividerProps & {
   children: ReactNode;
-}
-export interface SessionIpProps {
-  textProp: TextProps;
-}
+};
 
 export interface SessionUserAgentProps {
-  textProps: TextProps;
+  textProps?: TextProps;
+}
+
+export interface SessionIpProps {
+  textProps?: TextProps;
 }
 
 export interface SessionComponent {
   (props: SessionProps): ReactNode;
   Header: (props: SessionHeaderProps) => ReactNode;
-  Ip: () => ReactNode;
-  OnlyTrusted: (props: SessionOnlyTrusted) => ReactNode;
+  Ip: (props: SessionIpProps) => ReactNode;
+  Trusted: (props: SessionTrusted) => ReactNode;
   CreatedAt: () => ReactNode;
   LastRefresh: () => ReactNode;
   Body: (props: SessionBodyProps) => ReactNode;
   Footer: (props: SessionFooterProps) => ReactNode;
   CurrentBadge: () => ReactNode;
   UserAgent: (props: SessionUserAgentProps) => ReactNode;
+  ThisDevice: () => ReactNode;
 }
