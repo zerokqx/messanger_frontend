@@ -47,6 +47,14 @@ export class Logger {
       console.error(`${now()} [ERROR] (${location}) - ${message}:`, ...args);
     }
   }
+
+  static createErrorMessage(
+    location: string,
+    message: string,
+    ...args: LogArgs
+  ): string {
+    return `${now()} [ERROR] (${location}) - ${message}: ${args}`;
+  }
   static speed() {
     if (import.meta.env.PROD && CURRENT_LOG_LEVEL <= LOG_LEVEL.DEBUG) return;
     return performance.now();
