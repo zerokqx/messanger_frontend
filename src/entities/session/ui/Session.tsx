@@ -11,8 +11,7 @@ import { Footer } from './session-components/footer';
 import { CurrentBadge } from './session-components/current-session-badge';
 import { UserAgent } from './session-components/user-agent';
 import { ThisDevice } from './session-components/this-device';
-import { MotionGrid } from '@/shared/ui/motion';
-import { motion, scale } from 'motion/react';
+import { motion } from 'motion/react';
 
 /**
  * @description Базовый компонент сессии. Связывает компоненты через контекст.
