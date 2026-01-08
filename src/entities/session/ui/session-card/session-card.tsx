@@ -16,7 +16,13 @@ export const SessionCard = ({ session }: SessionNotCurrentProps) => {
         <Session.LastRefresh />
       </Session.Body>
       <Session.Footer>
-        <Button>Завершить сессию</Button>
+        <Button
+          onClick={() => {
+            actions.onRevoke(session.id);
+          }}
+        >
+          Завершить сессию
+        </Button>
       </Session.Footer>
     </Session>
   );
