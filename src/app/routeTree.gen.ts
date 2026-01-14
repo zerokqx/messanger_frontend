@@ -14,6 +14,7 @@ import { Route as AuthorizedRouteRouteImport } from './routes/_authorized/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as AuthorizedYRouteImport } from './routes/_authorized/y'
+import { Route as AuthorizedSessionsRouteImport } from './routes/_authorized/sessions'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -39,15 +40,22 @@ const AuthorizedYRoute = AuthorizedYRouteImport.update({
   path: '/y',
   getParentRoute: () => AuthorizedRouteRoute,
 } as any)
+const AuthorizedSessionsRoute = AuthorizedSessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => AuthorizedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/sessions': typeof AuthorizedSessionsRoute
   '/y': typeof AuthorizedYRoute
   '/auth/': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sessions': typeof AuthorizedSessionsRoute
   '/y': typeof AuthorizedYRoute
   '/auth': typeof AuthIndexRoute
 }
@@ -56,15 +64,23 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authorized': typeof AuthorizedRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
+  '/_authorized/sessions': typeof AuthorizedSessionsRoute
   '/_authorized/y': typeof AuthorizedYRoute
   '/auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/y' | '/auth/'
+  fullPaths: '/' | '/auth' | '/sessions' | '/y' | '/auth/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/y' | '/auth'
-  id: '__root__' | '/' | '/_authorized' | '/auth' | '/_authorized/y' | '/auth/'
+  to: '/' | '/sessions' | '/y' | '/auth'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authorized'
+    | '/auth'
+    | '/_authorized/sessions'
+    | '/_authorized/y'
+    | '/auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -110,14 +126,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedYRouteImport
       parentRoute: typeof AuthorizedRouteRoute
     }
+    '/_authorized/sessions': {
+      id: '/_authorized/sessions'
+      path: '/sessions'
+      fullPath: '/sessions'
+      preLoaderRoute: typeof AuthorizedSessionsRouteImport
+      parentRoute: typeof AuthorizedRouteRoute
+    }
   }
 }
 
 interface AuthorizedRouteRouteChildren {
+  AuthorizedSessionsRoute: typeof AuthorizedSessionsRoute
   AuthorizedYRoute: typeof AuthorizedYRoute
 }
 
 const AuthorizedRouteRouteChildren: AuthorizedRouteRouteChildren = {
+  AuthorizedSessionsRoute: AuthorizedSessionsRoute,
   AuthorizedYRoute: AuthorizedYRoute,
 }
 

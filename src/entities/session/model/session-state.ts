@@ -1,5 +1,5 @@
 import { FIVE_DAYS_MS } from '../config/session-state.config';
-import type { TrustedSession } from './sesstion-state.types';
+import type { TrustedSession } from './session-state.types';
 
 /**
  * @description Функция для определения прошло ли 5 дней с создания сессии от текущего дня.

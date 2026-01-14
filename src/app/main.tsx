@@ -7,6 +7,7 @@ import { MantineProvider } from '@mantine/core';
 import '@mantine/carousel/styles.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import { ModalsProvider } from '@mantine/modals';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createRouter } from '@tanstack/react-router';
 import { domAnimation, LazyMotion } from 'motion/react';
@@ -44,7 +45,9 @@ if (rootElement && !rootElement.innerHTML) {
         <QueryClientProvider client={queryClient}>
           <SettingsProvider>
             <I18nextProvider i18n={i18n}>
-              <InnerApp />
+              <ModalsProvider>
+                <InnerApp />
+              </ModalsProvider>
               <NotificationStyled />
             </I18nextProvider>
           </SettingsProvider>

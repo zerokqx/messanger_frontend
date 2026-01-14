@@ -1,13 +1,18 @@
-import { selectedUserActions } from '@/shared/model/stores/selected-user';
-import { ActionIcon, Box, Button, Menu, useMantineTheme } from '@mantine/core';
-import { useLogger } from '@mantine/hooks';
+import { useSelectedSearchUser } from '@/features/selected-user';
+import type { components } from '@/shared/types/v1';
+import { ActionIcon, Menu, ThemeIcon, useMantineTheme } from '@mantine/core';
 import { Edit, Ellipsis, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 export const HeaderMenu = () => {
   const t = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const user = useSelectedSearchUser((s) => s.data.user);
+  const profile = user?.profile as
+    | components['schemas']['ProfileByUserIdData']
+    | undefined;
 
+  if (!profile) return null;
   return (
     <Menu
       position="bottom"
@@ -17,7 +22,7 @@ export const HeaderMenu = () => {
       closeOnClickOutside={true}
       opened={opened}
       withinPortal={false}
-      width={200}
+      width={300}
       zIndex={1005}
     >
       <Menu.Target>
@@ -31,13 +36,21 @@ export const HeaderMenu = () => {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item leftSection={<Trash color={t.colors.red[8]} size={16} />}>
-          Удалить
-        </Menu.Item>
+        {profile.relationship.is_target_in_contacts_of_current_user && (
+          <>
+            <Menu.Item
+              leftSection={<Trash color={t.colors.red[8]} size={16} />}
+            >
+              Удалить
+            </Menu.Item>
 
-        <Menu.Item leftSection={<Edit color={t.colors.blue[8]} size={16} />}>
-          Изменить
-        </Menu.Item>
+            <Menu.Item
+              leftSection={<Edit color={t.colors.blue[8]} size={16} />}
+            >
+              Изменить
+            </Menu.Item>
+          </>
+        )}
       </Menu.Dropdown>
     </Menu>
   );

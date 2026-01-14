@@ -4,9 +4,10 @@ import { useRouter } from '@tanstack/react-router';
 
 export const useLogout = () => {
   const router = useRouter();
-  return () => {
+  return async () => {
     tokenAction.doReset();
     userAction.doReset();
-    void router.invalidate();
+    await router.navigate({ to: '/auth' });
+    await router.invalidate();
   };
 };

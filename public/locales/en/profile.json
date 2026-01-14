@@ -1,0 +1,9 @@
+{
+  "bio": "Biography",
+  "created_at": "Created at",
+  "login": "Login",
+  "put_profile_error": "Profile change failed",
+  "put_success": "The changes have been applied",
+  "rating": "Rating",
+  "verified": "Verified"
+}

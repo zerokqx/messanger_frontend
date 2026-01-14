@@ -1,5 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { useSessionContext } from '../../model/session-context-use';
+import { useSessionContext } from '../../model/session.context';
 import { trustedSession } from '../../model/session-state';
 import type { SessionComponent } from '../Session.types';
 

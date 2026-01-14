@@ -1,4 +1,4 @@
-import { Button, Stack, Tabs } from '@mantine/core';
+import { Box, Button, Container, Stack, Tabs } from '@mantine/core';
 import { motion } from 'motion/react';
 import { If } from '../../If';
 import { createTabStore } from '../model';
@@ -37,23 +37,28 @@ export const createTaber = <T extends Windows>({
   initial,
 }: TaberProps<T>): TaberTemplateReturn<T> => {
   const useStore = createTabStore<T[number]>(initial);
-  const AnimatedPanel = motion.create(Tabs.Panel);
   const Panel: TaberTemplate<T>['Panel'] = ({ children, value, ...props }) => {
     return (
-      <AnimatedPanel
-        key={value}
+      <Tabs.Panel
         h={'100%'}
-        initial={{
-          x: '-5%',
-        }}
-        whileInView={{
-          x: '0%',
-        }}
+        component={motion.div}
+        key={value}
         value={value}
         {...props}
       >
-        <Stack>{children}</Stack>
-      </AnimatedPanel>
+        <Box
+          initial={{
+            x: '-5%',
+          }}
+          whileInView={{
+            x: '0%',
+          }}
+          component={motion.div}
+          h={'100%'}
+        >
+          <Stack h={'100%'}>{children}</Stack>
+        </Box>
+      </Tabs.Panel>
     );
   };
   const GoToButton: TaberButtons<T>['GoTo'] = ({ children, resetTo }) => {
@@ -89,7 +94,7 @@ export const createTaber = <T extends Windows>({
   const Taber: TaberTemplate<T> = ({ children }) => {
     const currentTab = useStore.useCurrentTab();
     return (
-      <Tabs keepMounted={false} value={currentTab}>
+      <Tabs keepMounted={false} h={'100%'} value={currentTab}>
         {children}
       </Tabs>
     );
@@ -98,5 +103,5 @@ export const createTaber = <T extends Windows>({
   Taber.OnlyOnTab = OnlyOnTab;
   Taber.Panel = Panel;
 
-  return [Taber, useStore, Buttons, () => windows[0]];
+  return [Taber, useStore, Buttons, () => windows[0], () => windows];
 };

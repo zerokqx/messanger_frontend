@@ -1,9 +1,9 @@
 import { useLogout } from '@/entities/user/model';
-import { CustomMantineButton } from '@/shared/ui/Button';
 import { SideBar } from '@/shared/ui/SideBar';
 import { LayoutTemplate, List, LogOut, UserCog } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { SideBarTaber, useTabSidebar } from '../../model/tab';
+import { Button } from '@mantine/core';
 
 export const Settings = () => {
   const set = useTabSidebar.useSetCurrentTab();
@@ -16,33 +16,37 @@ export const Settings = () => {
         onClick={() => {
           set('profile_settings');
         }}
-        text={t('profile_settings')}
+        icon={<UserCog />}
       >
-        <UserCog />
+        {t('profile_settings')}
       </SideBar.Item>
 
       <SideBar.Item
         onClick={() => {
           set('interface_edit');
         }}
-        text={t('interface_edit')}
+        icon={<LayoutTemplate />}
       >
-        <LayoutTemplate />
+        {t('interface_edit')}
       </SideBar.Item>
 
       <SideBar.Item
         onClick={() => {
           set('sessions');
         }}
-        text={t('sessions')}
+        icon={<List />}
       >
-        <List />
+        {t('sessions')}
       </SideBar.Item>
 
-      <CustomMantineButton onClick={logout}>
+      <Button
+        onClick={() => {
+          void logout();
+        }}
+      >
         <LogOut />
         Выйти
-      </CustomMantineButton>
+      </Button>
     </SideBarTaber.Panel>
   );
 };

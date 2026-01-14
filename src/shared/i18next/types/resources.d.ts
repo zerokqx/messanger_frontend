@@ -6,6 +6,7 @@ interface Resources {
     "create": "Create",
     "enter": "Enter",
     "register": "Register",
+    "retray": "Retray",
     "save": "Save",
     "submit": "Send"
   },
@@ -27,9 +28,19 @@ interface Resources {
     "hours_other": "{{count}} hours",
     "hours_zero": ""
   },
+  "profile": {
+    "created_at": "Created at",
+    "login": "Login",
+    "put_profile_error": "Profile change failed",
+    "put_success": "The changes have been applied",
+    "verified": "Verified"
+  },
   "session": {
+    "close_all_sessions": "Close all sessions",
+    "close_session": "Close session",
     "created_at": "Created at",
     "last_activation": "Last actiovation",
+    "rating": "Rating",
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
   "settingsLabels": {
@@ -78,7 +89,7 @@ interface Resources {
     "not_found_page": "Page not found",
     "register": "Register",
     "return_to_yobble": "Welcome back to Yobble",
-    "success": ""
+    "success": "Success"
   }
 }
 

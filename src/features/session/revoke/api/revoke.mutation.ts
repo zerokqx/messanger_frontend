@@ -1,60 +1,59 @@
 import { $api } from '@/shared/api/repository/$api';
+import Logger from '@/shared/lib/logger/logger';
 import type { components } from '@/shared/types/v1';
-import { filter } from 'lodash';
 
 export const useRevokeSession = () => {
   return $api.jwtAuth.query.useMutation(
     'post',
     '/sessions/revoke/{session_id}',
     {
-      async onMutate(variables, ctx) {
-        const sessionsListOption = $api.jwtAuth.query.queryOptions(
+      async onMutate(variables, context) {
+        const sessionsListOptions = $api.jwtAuth.query.queryOptions(
           'get',
-          '/sessions/list'
+          '/sessions/list',
+          {}
         );
 
-        // Отменяем текущие запросы, чтобы избежать race condition
-        await ctx.client.cancelQueries(sessionsListOption);
+        await context.client.cancelQueries(sessionsListOptions);
 
-        // Сохраняем предыдущее значение для возможного отката
-        const previous = ctx.client.getQueryData<
+        const previous = context.client.getQueryData<
           components['schemas']['SessionsListResponse']
-        >(sessionsListOption.queryKey);
+        >(sessionsListOptions.queryKey);
 
-        // Оптимистическое обновление — удаляем сессию из списка
-        ctx.client.setQueryData(
-          sessionsListOption.queryKey,
-          (old?: components['schemas']['SessionsListResponse']) => {
-            if (!old?.data.sessions) return old;
-
-            return {
-              ...old,
-              data: {
-                ...old.data,
-                sessions: filter(
-                  old.data.sessions,
-                  (session) => session.id !== variables.params.path.session_id
-                ),
-              },
-            };
-          }
+        Logger.debug(
+          'useRevokeSession',
+          'previous sessions',
+          previous?.data.sessions
         );
+
+        if (previous?.data.sessions) {
+          context.client.setQueryData(sessionsListOptions.queryKey, {
+            ...previous,
+            data: {
+              ...previous.data,
+              sessions: previous.data.sessions.filter(
+                (s) => s.id !== variables.params.path.session_id
+              ),
+            },
+          } as components['schemas']['SessionsListResponse']);
+        }
 
         return { previous };
       },
 
-      onError(err, newTodo, onMutateResult, context) {
-        if (onMutateResult.previous) {
-          ctx.client.setQueryData(
-            $api.jwtAuth.query.queryOptions('get', '/sessions/list').queryKey,
-            onMutateResult.previous
+      onError(error, variables, onMutateResult, context) {
+        if (context?.previous) {
+          context.client.setQueryData(
+            $api.jwtAuth.query.queryOptions('get', '/sessions/list', {})
+              .queryKey,
+            context.previous
           );
         }
       },
 
-      async onSettled(data, error, variables, onMutateResult, context) {
-        await context.client.invalidateQueries(
-          $api.jwtAuth.query.queryOptions('get', '/sessions/list')
+      onSettled(data, error, variables, onMutateResult, context) {
+        void context.client.invalidateQueries(
+          $api.jwtAuth.query.queryOptions('get', '/sessions/list', {})
         );
       },
     }

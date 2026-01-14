@@ -2444,6 +2444,11 @@ export interface components {
              * @enum {string}
              */
             status: "ringing" | "active" | "ended" | "declined" | "missed";
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
         };
         /** CreateCallRequest */
         CreateCallRequest: {
@@ -2454,12 +2459,12 @@ export interface components {
              */
             to_user_id: string;
             /**
-             * Type
+             * Call Type
              * @description Тип звонка
              * @default audio
              * @enum {string}
              */
-            type: "audio" | "video";
+            call_type: "audio" | "video";
         };
         /** CreateCallResponse */
         CreateCallResponse: {
@@ -2475,10 +2480,10 @@ export interface components {
              */
             call_id: string;
             /**
-             * Type
+             * Call Type
              * @enum {string}
              */
-            type: "audio" | "video";
+            call_type: "audio" | "video";
             /**
              * Status
              * @enum {string}
@@ -6146,6 +6151,24 @@ export interface operations {
                     "application/json": components["schemas"]["CreateCallResponse"];
                 };
             };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "general",
+                     *           "message": "Bad request syntax or invalid parameters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
             /** @description Unauthorized */
             401: {
                 headers: {
@@ -6158,6 +6181,24 @@ export interface operations {
                      *         {
                      *           "field": "login",
                      *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
                      *     } */

@@ -1,10 +1,9 @@
 import { useLogout } from '@/entities/user/model';
 import { useAuth } from '@/shared/model/authProviderContext';
 import { useModalGlobal } from '@/shared/model/useModalStore';
-import { CustomMantineButton } from '@/shared/ui/Button';
 import { Checkbox } from '@/shared/ui/Checkbox/ui';
 import { Modal } from '@/shared/ui/Modal';
-import { UnstyledButton } from '@mantine/core';
+import { Button, UnstyledButton } from '@mantine/core';
 import { LayoutTemplate, LogOut, UserCog } from 'lucide-react';
 import { AccordionSetting } from './AccordionSettings';
 import { useSettings } from '../model';
@@ -43,10 +42,14 @@ export const SettingsModal = () => {
           Сменить пароль
         </UnstyledButton>
       </AccordionSetting>
-      <CustomMantineButton onClick={logout}>
+      <Button
+        onClick={() => {
+          void logout();
+        }}
+      >
         <LogOut />
         Выйти
-      </CustomMantineButton>
+      </Button>
     </Modal>
   );
 };

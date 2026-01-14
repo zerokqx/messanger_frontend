@@ -3,7 +3,7 @@ import { useForm } from '@tanstack/react-form';
 
 import { getHotkeyHandler } from '@mantine/hooks';
 import type { FormEvent } from 'react';
-import { CustomMantineButton } from '../../Button';
+import { CustomMantineButton } from '../../buttons';
 import type { FormProps } from '../types';
 
 export const Form = <O extends object>({

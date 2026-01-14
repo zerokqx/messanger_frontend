@@ -8,6 +8,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUserStore } from '../model';
+import { useLoaderData } from '@tanstack/react-router';
+import type { components } from '@/shared/types/v1';
+import { createPermissions } from '../lib/createPermissions';
+import Logger from '@/shared/lib/logger/logger';
+import { normilizePermissions } from '../lib/normilizePermissions';
 export const DisplayPermissionSettings = memo(() => {
   const { t } = useTranslation([
     'settingsLabels',
@@ -19,23 +24,26 @@ export const DisplayPermissionSettings = memo(() => {
   const daysPlurar = usePlurarDates((s) => s.days);
   const queryClient = useQueryClient();
   const { mutate } = useProfilePut();
-  const permissions = useUserStore((s) => s.data.profile_permissions);
-  const modPerm = catchAndChange(permissions, 'number', (_, v) => String(v));
+  const permissions = useLoaderData({
+    from: '/_authorized/y',
+    select: (s) => s.user,
+  });
+  Logger.debug(
+    'DisplayPermissionSettings',
+    'permission',
+    permissions.profile_permissions
+  );
   const setLoad = useLoaderStore.useSetLoading();
   const removeLoader = useLoaderStore.useRemoveLoading();
+  console.log(createPermissions(permissions.profile_permissions));
   const form = useAppForm({
-    defaultValues: modPerm,
+    defaultValues: createPermissions(permissions.profile_permissions),
     onSubmit: ({ value }) => {
       setLoad();
-      const unModPerm = catchAndChange<string, number, typeof value>(
-        value,
-        'string',
-        (_, v) => Number(v)
-      );
       mutate(
         {
           body: {
-            profile_permissions: unModPerm,
+            profile_permissions: normilizePermissions(value),
           },
         },
         {
@@ -182,9 +190,11 @@ export const DisplayPermissionSettings = memo(() => {
             <form.AppField name="max_message_auto_delete_seconds">
               {(field) => (
                 <field.Select
-                  defaultValue={'0'}
                   label={t('settingsLabels:max_message_auto_delete_seconds')}
-                  data={selectData.hours}
+                  data={[
+                    { value: 'null', label: 'Не удалять' },
+                    ...selectData.hours,
+                  ]}
                 />
               )}
             </form.AppField>
@@ -193,8 +203,10 @@ export const DisplayPermissionSettings = memo(() => {
               {(field) => (
                 <field.Select
                   label={t('settingsLabels:auto_delete_after_days')}
-                  data={selectData.days}
-                  value={'0'}
+                  data={[
+                    { value: 'null', label: 'Не удалять' },
+                    ...selectData.days,
+                  ]}
                 />
               )}
             </form.AppField>

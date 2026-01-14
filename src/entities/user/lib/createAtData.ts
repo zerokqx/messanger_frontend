@@ -11,9 +11,4 @@ export const createdAt = () => {
 };
 
 export const createdAtUserSearch = (data: string) => {
-  return new Date(data)
-    .toLocaleString('ru-RU', {
-      timeZone: 'UTC',
-    })
-    .split(',')[0];
 };

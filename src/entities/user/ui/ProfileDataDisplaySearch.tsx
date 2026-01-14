@@ -1,5 +1,3 @@
-import { current } from 'immer';
-import { useUserStore } from '../model';
 import type { ProfileDataDisplaySearchProp } from '../types/profileDataDisplaySearch.type';
 import { Avatar, Center, Divider, Rating, Stack } from '@mantine/core';
 import { DisplayItem } from './Item';
@@ -23,7 +21,6 @@ export const ProfileDataDisplaySearch = ({
   },
 }: ProfileDataDisplaySearchProp) => {
   Logger.debug('ProfileDataDisplaySearch', 'user_id', user_id);
-  console.log(login);
   const format = formatLogin(login, custom_name);
   return (
     <Stack>
