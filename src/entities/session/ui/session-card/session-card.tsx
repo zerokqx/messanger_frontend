@@ -2,9 +2,11 @@ import { Button } from '@mantine/core';
 import { useSesionActionsContext } from '../../model';
 import { Session } from '../Session';
 import type { SessionNotCurrentProps } from '../SessionInstance.types';
+import { useTranslation } from 'react-i18next';
 
 export const SessionCard = ({ session }: SessionNotCurrentProps) => {
   const actions = useSesionActionsContext();
+  const [t] = useTranslation('session');
   return (
     <Session session={session}>
       <Session.Header>
@@ -21,7 +23,7 @@ export const SessionCard = ({ session }: SessionNotCurrentProps) => {
             actions.onRevoke(session.id);
           }}
         >
-          Завершить сессию
+          {t('close_session')}
         </Button>
       </Session.Footer>
     </Session>

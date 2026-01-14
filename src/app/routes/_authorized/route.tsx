@@ -24,6 +24,7 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
+
   return (
     <AppShell
       navbar={{
@@ -37,7 +38,7 @@ function RouteComponent() {
         },
       }}
       aside={{
-        width: 350,
+        width: 500,
         collapsed: { desktop: !asside, mobile: !asside },
         breakpoint: 'sm',
       }}
@@ -49,7 +50,6 @@ function RouteComponent() {
       </Suspense>
       <AppShell.Main bg="black">
         <Outlet />
-
         <Suspense fallback={null}>
           <LazySideBarWidget />
         </Suspense>

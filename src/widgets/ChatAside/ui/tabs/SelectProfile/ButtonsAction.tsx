@@ -1,7 +1,6 @@
 import { useContactAdd } from '@/features/contactAdd';
-import { selectedUserActions } from '@/shared/model/stores/selected-user';
-import { Stack, Group, Button, TextInput } from '@mantine/core';
-import { Trash } from 'lucide-react';
+import { useSelectedSearchUser } from '@/features/selected-user';
+import { Stack, Button } from '@mantine/core';
 import type { ComponentProps } from 'react';
 
 export const SelectedProfileButtonAction = ({
@@ -9,8 +8,8 @@ export const SelectedProfileButtonAction = ({
 }: {
   renameProps?: ComponentProps<'button'>;
 }) => {
-  const uuid = selectedUserActions.doGetUser()?.user_id;
-  const add = useContactAdd();
+  const user = useSelectedSearchUser((s) => s.data.user);
+  const add = useContactAdd(user?.profile.login);
 
   return (
     <Stack bdrs={'xl'}>
@@ -19,7 +18,7 @@ export const SelectedProfileButtonAction = ({
         onClick={() => {
           void add.mutateAsync({
             body: {
-              user_id: uuid,
+              user_id: user?.user_id,
             },
           });
         }}
@@ -28,17 +27,6 @@ export const SelectedProfileButtonAction = ({
       >
         Добавить в контакты
       </Button>
-
-      <Group grow>
-        <Button variant="light" bdrs={'xl'} color="gray" {...renameProps}>
-          Переименовать
-        </Button>
-
-        <Button variant="light" bdrs={'xl'} color={'red'}>
-          <Trash size={16} />
-          Удалить
-        </Button>
-      </Group>
     </Stack>
   );
 };

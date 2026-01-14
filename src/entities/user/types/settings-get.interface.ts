@@ -4,4 +4,4 @@ export interface UseSettingsReturnType {
   label: string;
   key: string;
 }
-export type UseSettingsGet = () => UseSettingsReturnType[];
+export type UseSettingsGet = () => UseSettingsReturnType[] | null;

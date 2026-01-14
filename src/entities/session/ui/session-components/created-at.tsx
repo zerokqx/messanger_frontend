@@ -1,5 +1,5 @@
 import { Group, Text, ThemeIcon } from '@mantine/core';
-import { useSessionContext } from '../../model/session-context-use';
+import { useSessionContext } from '../../model/session.context';
 import type { SessionComponent } from '../Session.types';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';

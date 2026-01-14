@@ -24,6 +24,6 @@ export const Route = createFileRoute('/_authorized/y')({
   loader: async () => {
     const user = await fetchMe();
     userAction.doInit(user.data);
-    return { user };
+    return { user: user.data };
   },
 });

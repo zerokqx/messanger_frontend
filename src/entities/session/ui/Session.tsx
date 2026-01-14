@@ -1,5 +1,4 @@
 import type { SessionComponent } from './Session.types';
-import { SessionContext } from '../model/session-context';
 import { Header } from './session-components/header';
 import { Ip } from './session-components/ip';
 import { Trusted } from './session-components/trusted';
@@ -12,6 +11,7 @@ import { CurrentBadge } from './session-components/current-session-badge';
 import { UserAgent } from './session-components/user-agent';
 import { ThisDevice } from './session-components/this-device';
 import { motion } from 'motion/react';
+import { SessionContext } from '../model/session.context';
 
 /**
  * @description Базовый компонент сессии. Связывает компоненты через контекст.

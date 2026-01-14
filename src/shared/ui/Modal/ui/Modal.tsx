@@ -1,5 +1,5 @@
 import { useModalGlobal } from '@/shared/model/useModalStore';
-import { Flex, Modal as MantineModal } from '@mantine/core';
+import { Flex, Modal as MantineModal, Stack } from '@mantine/core';
 import type { ModalComponentProps } from '../types';
 export const Modal = ({
   children,
@@ -27,9 +27,7 @@ export const Modal = ({
       centered
       {...props}
     >
-      <Flex direction={'column'} gap={'md'}>
-        {children}
-      </Flex>
+      <Stack>{children}</Stack>
     </MantineModal>
   );
 };

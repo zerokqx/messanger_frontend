@@ -1,22 +1,20 @@
-import { useProfilePut } from '@/features/profilePut';
-import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { useAppForm } from '@/shared/ui/Form/ui/FormV2/FormV2';
 import { SideBarTaber, useTabSidebar } from '../../model/tab';
-import { useUserStore } from '@/entities/user';
+import { useMe } from '@/entities/user/model/me.query';
+import { useEditProfile } from '@/features/edit-profile';
+import { Loader, Space } from '@mantine/core';
 
 export const ProfileEdit = () => {
   const { t } = useTranslation(['sideBar', 'fieldLabels', 'buttonLabels']);
-  const { bio, update } = useUserStore((s) => ({
-    bio: s.data.bio,
-    update: s.update,
-  }));
-  const { mutate } = useProfilePut();
+  const { data } = useMe();
+  const { mutate, isError } = useEditProfile();
   const goBack = useTabSidebar.useGoBack();
   const form = useAppForm({
     defaultValues: {
-      bio,
+      bio: data?.bio,
     },
+
     onSubmit(props) {
       mutate(
         {
@@ -25,13 +23,9 @@ export const ProfileEdit = () => {
           },
         },
         {
-          onSuccess(_, { body: { bio } }) {
-            if (bio != null) update((s) => (s.bio = bio));
-            notifications.show({
-              message: 'Профиль изменен',
-            });
-
+          onSuccess() {
             goBack();
+            form.reset();
           },
         }
       );
@@ -49,7 +43,24 @@ export const ProfileEdit = () => {
                 <field.TextArea rows={4} label={t('fieldLabels:bio_label')} />
               )}
             />
-            <form.DirtyButton type="submit" children={t('buttonLabels:save')} />
+            <form.Subscribe
+              selector={(state) => [state.isSubmitted]}
+              children={([isSubmited]) => (
+                <form.DirtyButton
+                  color={isError ? 'red' : 'blue'}
+                  disabled={isSubmited}
+                  type="submit"
+                >
+                  {isSubmited && (
+                    <>
+                      <Loader size={16} />
+                      <Space w={'1rem'} />
+                    </>
+                  )}
+                  {isError ? t('buttonLabels:retray') : t('buttonLabels:save')}
+                </form.DirtyButton>
+              )}
+            />
           </form.Vertical>
         </form.Form>
       </form.AppForm>

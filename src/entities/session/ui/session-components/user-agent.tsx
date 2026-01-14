@@ -1,5 +1,5 @@
 import { UAParser } from 'ua-parser-js';
-import { useSessionContext } from '../../model/session-context-use';
+import { useSessionContext } from '../../model/session.context';
 import { Text } from '@mantine/core';
 import type { SessionComponent } from '../Session.types';
 import { useMemo } from 'react';

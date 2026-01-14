@@ -1,17 +1,25 @@
-import { Stack } from '@mantine/core';
+import { Loader, Stack } from '@mantine/core';
 import type { SessionListProps } from './SessionList.types';
 import { map } from 'lodash';
-import { SessionCard, SessionCurrentCard } from './session-card';
-
+import { SessionCurrentCard } from './session-card';
+import { lazy, Suspense } from 'react';
+const SessionCard = lazy(() =>
+  import('./session-card').then((m) => ({
+    default: m.SessionCard,
+  }))
+);
 export const SessionList = ({ sessions }: SessionListProps) => {
   return (
     <Stack>
-      {map(sessions, (session) => {
-        if (session.is_current) {
-          return <SessionCurrentCard session={session} />;
-        }
-        return <SessionCard session={session} />;
-      })}
+      {map(sessions, (session) =>
+        session.is_current ? (
+          <SessionCurrentCard session={session} />
+        ) : (
+          <Suspense fallback={<Loader />}>
+            <SessionCard session={session} />
+          </Suspense>
+        )
+      )}
     </Stack>
   );
 };

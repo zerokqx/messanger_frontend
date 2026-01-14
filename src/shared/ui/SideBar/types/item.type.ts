@@ -1,9 +1,8 @@
 import type { GridProps } from '@mantine/core';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 export interface SideItemProps {
   children?: ReactNode;
-  text: string;
-  inDev?: boolean;
-  onClick?: GridProps['onClick'];
+  onClick?: ComponentProps<'button'>['onClick'];
+  icon: ReactNode;
 }

@@ -1,10 +1,9 @@
-import { i18n } from '@/shared/i18next/clients';
 import { notifications } from '@mantine/notifications';
 
-export const errorNotify = (message: string) => {
+export const errorNotify = (message: string, title?: string) => {
   notifications.show({
     message,
     color: 'red',
-    title: i18n.t('titles:error'),
+    title: title ?? 'Error',
   });
 };

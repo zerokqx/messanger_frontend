@@ -7,9 +7,9 @@ import type {
 import { useUserStore } from '../model';
 
 export const useGetSettings: UseSettingsGet = () => {
-  const allPermissions = useUserStore((s) => s.data.profile_permissions);
+  const allPermissions = useUserStore((s) => s.data.user?.profile_permissions);
   const keys = useMemo(
-    () => Object.keys(allPermissions) as (keyof typeof allPermissions)[],
+    () => Object.keys(allPermissions ?? {}) as (keyof typeof allPermissions)[],
     [allPermissions]
   );
 
