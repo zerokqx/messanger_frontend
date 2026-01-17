@@ -1,5 +1,5 @@
 import { VirtualList } from '@/shared/ui/VirtualList/ui/VirtualList';
-import { Skeleton, Group, Alert, Loader, Center } from '@mantine/core';
+import { Alert } from '@mantine/core';
 import { ContactItem } from './ContactItem';
 import { useGetUserById } from '@/features/getUserById';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
