@@ -13,7 +13,6 @@ import {
 } from '@/features/session/revoke';
 import { confirmModalForRevokeAllSessions } from '@/features/session/revoke-all/ui/modal.confirm';
 import { useTranslation } from 'react-i18next';
-import { mdl } from '@/features/session/revoke/ui/modal.confirm';
 
 export const Sessions = () => {
   const { data: sessions } = useGetSessionsSuspenseQuery();
@@ -46,7 +45,6 @@ export const Sessions = () => {
 
         <SessionList sessions={sessionsFiltred} />
       </SessionActionContext>
-      <Button onClick={() => mdl()}>n</Button>
     </SideBarTaber.Panel>
   );
 };

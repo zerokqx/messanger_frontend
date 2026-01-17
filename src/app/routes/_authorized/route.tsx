@@ -14,7 +14,7 @@ const LazyAppShellNavbar = lazy(() =>
 );
 
 const LazyAside = lazy(() =>
-  import('@/widgets/Aside').then((m) => ({ default: m.AssideProfile }))
+  import('@/widgets/aside').then((m) => ({ default: m.AssideProfile }))
 );
 
 export const Route = createFileRoute('/_authorized')({

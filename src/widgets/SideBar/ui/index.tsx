@@ -12,13 +12,7 @@ export const SideBarWidget = () => {
       <Header />
       <SideBarTaber>
         {map(sidebarTabsConfig, (component, i) => (
-          <Suspense
-            fallback={
-              <Center>
-                <Loader type="oval" />
-              </Center>
-            }
-          >
+          <Suspense fallback={null}>
             <Box key={i}>
               <component.render />
             </Box>
