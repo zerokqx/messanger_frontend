@@ -4,21 +4,26 @@ import { AsideHaeader } from './Header';
 import { userAction } from '@/entities/user/model/userStore';
 import Logger from '@/shared/lib/logger/logger';
 import { useSelectedSearchUser } from '@/features/selected-user';
-import { ProfileFromSearchUser } from '@/entities/user/ui/ProfileFromSearchUser';
-import { useAsideRender, useLayoutStore } from '@/shared/lib/hooks/useLayout';
-import { isValidElement } from 'react';
+import { ASIDE_BUS_EVENTS, useAsideBus } from '@/features/aside';
+import { lazy } from 'react';
 
-export const AssideProfile = () => {
+const ProfileFromSearchUser = lazy(() =>
+  import('@/entities/user/ui/ProfileFromSearchUser').then((m) => ({
+    default: m.ProfileFromSearchUser,
+  }))
+);
+export const Aside = () => {
   const profile = useSelectedSearchUser((s) => s.data.user?.profile);
   const isMe = userAction.doIsThatMe(profile?.user_id ?? '');
-  const render = useAsideRender();
+  const { data, type } = useAsideBus((s) => s.data);
 
-  console.log(render);
   Logger.info('AsideProfile', 'profile user', profile);
   return (
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
       <AsideHaeader />
-      {isValidElement(render) && render}
+      {type === ASIDE_BUS_EVENTS.USER_SEARCH && (
+        <ProfileFromSearchUser profile={data} />
+      )}
       <SelectedProfileButtonAction />
       {profile && (
         <>
