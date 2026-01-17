@@ -1,6 +1,6 @@
 import { VirtualList } from '@/shared/ui/VirtualList/ui/VirtualList';
-import { Skeleton, Group, Alert } from '@mantine/core';
-import { ContactElement } from './ContactItem';
+import { Skeleton, Group, Alert, Loader, Center } from '@mantine/core';
+import { ContactItem } from './ContactItem';
 import { useGetUserById } from '@/features/getUserById';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { useEffect } from 'react';
@@ -11,6 +11,7 @@ import Logger from '@/shared/lib/logger/logger';
 import { Ban, CircleSlash } from 'lucide-react';
 import { useSelectedSearchUser } from '@/features/selected-user';
 import { toPlainProfile } from '@/entities/user';
+import { SkeletonContactItem } from './SkeletonContactItem';
 
 export const List = () => {
   const {
@@ -18,7 +19,7 @@ export const List = () => {
     hasNextPage,
     fetchNextPage,
     isError,
-    error,
+    isLoading,
     isFetchingNextPage,
   } = useContactsQuery(10);
 
@@ -27,7 +28,12 @@ export const List = () => {
 
   const selectedUpdate = useSelectedSearchUser((s) => s.update);
   const layout = useLayoutStore((s) => s.update);
-  const { data, setId, isFetching, dataUpdatedAt } = useGetUserById();
+  const {
+    data,
+    setId,
+    isFetching: isFetchingUserById,
+    dataUpdatedAt,
+  } = useGetUserById();
 
   useEffect(() => {
     if (dataUpdatedAt && data) {
@@ -36,13 +42,22 @@ export const List = () => {
         s.user = toPlainProfile(data);
       });
     }
-  }, [data, dataUpdatedAt]);
+  }, [data, dataUpdatedAt, selectedUpdate]);
 
   useLogger('List', [pages]);
   useEffect(() => {
-    if (isFetching) layout((s) => (s.asside = true));
-  }, [isFetching, layout]);
+    if (isFetchingUserById) layout((s) => (s.asside = true));
+  }, [isFetchingUserById, layout]);
 
+  if (isLoading) {
+    return (
+      <>
+        <SkeletonContactItem size={60} />
+        <SkeletonContactItem size={60} />
+        <SkeletonContactItem size={60} />
+      </>
+    );
+  }
   if (isError) {
     return (
       <Alert icon={<Ban />} color="red">
@@ -51,27 +66,26 @@ export const List = () => {
       </Alert>
     );
   }
-  return count ? (
+  if (pages && pages.pages.length === 0) {
+    return (
+      <Alert color="blue" icon={<CircleSlash />}>
+        У вас еще нет контактов. Добавьте их через поиск.
+      </Alert>
+    );
+  }
+  return (
     <VirtualList<typeof contacts>
-      count={count}
+      count={count ?? 10}
       data={contacts}
       overscan={10}
-      esimateSize={() => 50}
+      esimateSize={() => 92}
       isFetchingNextPage={isFetchingNextPage}
       dataSelect={(c, i) => c[i]}
       fetchFunction={fetchNextPage}
-      fallback={(size) => (
-        <Group h={size} align="center" justify="space-between" w={'100%'}>
-          <Group align="flex-start">
-            <Skeleton circle h={40} w={40} />
-            <Skeleton h={10} w={100} />
-          </Group>
-          <Skeleton h={30} w={30} bdrs={'xl'} />
-        </Group>
-      )}
+      fallback={(size) => <SkeletonContactItem size={size} />}
       hasNextPage={hasNextPage}
       render={(c) => (
-        <ContactElement
+        <ContactItem
           user={c}
           onClick={() => {
             setId(c.user_id);
@@ -79,9 +93,5 @@ export const List = () => {
         />
       )}
     />
-  ) : (
-    <Alert color="blue" icon={<CircleSlash />}>
-      У вас еще нет контактов. Добавьте их через поиск
-    </Alert>
   );
 };

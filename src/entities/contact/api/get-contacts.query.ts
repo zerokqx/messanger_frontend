@@ -22,6 +22,7 @@ export const useContactsQuery = (limit: number) => {
       },
     },
     {
+      
       staleTime: 1000 * 60 * 10,
       gcTime: 1000 * 60 * 60 * 24,
       placeholderData: keepPreviousData,

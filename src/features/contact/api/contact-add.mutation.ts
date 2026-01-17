@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 export const useContactAdd = (contactName: string) => {
   const queryClient = useQueryClient();
   const mutate = $api.jwtUser.query.useMutation('post', '/contact/add', {
-    onSuccess(c) {
+    onSuccess() {
       successNotify(`${contactName} добавлен в ваши контакты`);
       void queryClient.invalidateQueries({
         queryKey: ['get', '/contacts/list'],

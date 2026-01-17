@@ -23,6 +23,16 @@ import {
 } from '@mantine/core';
 import { hover } from '../styles/HoverOpacity.css';
 
+declare module '@mantine/core' {
+  export interface MantineThemeOther {
+    borders: {
+      darkXs: string;
+      darkSm: string;
+      darkMd: string;
+    };
+  }
+}
+
 const colors: Record<string, MantineColorsTuple> = {
   blue: [
     '#e5f3ff',
@@ -49,11 +59,19 @@ const colors: Record<string, MantineColorsTuple> = {
     '#000000',
   ],
 };
+
 export const theme = createTheme({
   colors,
 
   primaryColor: 'blue',
   primaryShade: { light: 6, dark: 8 },
+  other: {
+    borders: {
+      darkXs: '1px solid dark.9',
+      darkSm: '2px solid dark.9',
+      darkMd: '3px solid dark.9',
+    },
+  },
 
   cursorType: 'pointer',
   white: '#FFFFFF',

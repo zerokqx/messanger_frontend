@@ -1,5 +1,6 @@
 import { createStore } from '@colorfy-software/zfy';
-import type { LayoutStoreType } from './store.type';
+import type { AsideOptions, LayoutStoreType } from './store.type';
+import { createStoreAction } from '../../zustand/createStoreAction/createStoreAction';
 
 export const useLayoutStore = createStore<LayoutStoreType>(
   'layout',
@@ -9,8 +10,39 @@ export const useLayoutStore = createStore<LayoutStoreType>(
     footer: false,
     header: false,
     asideOptions: {
-      mode: 'none',
+      render: null,
     },
   },
   { log: true }
 );
+
+export const layoutAction = createStoreAction(
+  [
+    (options: AsideOptions) => {
+      console.log('🟢 Opening aside with:', options.render);
+
+      useLayoutStore.setState((s) => ({
+        data: {
+          ...s.data,
+          asside: true,
+          asideOptions: options,
+        },
+      }));
+    },
+
+    (clear = false) => {
+      useLayoutStore.setState((s) => ({
+        data: {
+          ...s.data,
+          asside: false,
+          ...(clear && { asideOptions: { render: null } }),
+        },
+      }));
+    },
+  ],
+  ['openAside', 'closeAside']
+);
+
+export const useAsideRender = () => {
+  return useLayoutStore((s) => s.data.asideOptions.render);
+};

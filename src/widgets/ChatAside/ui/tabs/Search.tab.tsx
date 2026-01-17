@@ -2,11 +2,18 @@ import { Search } from '@/shared/ui/Search';
 import { AppShellTaber } from '../../lib/tab';
 import { If, Then } from 'react-if';
 import { Box } from '@mantine/core';
-import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
+import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { useSearchStore } from '@/features/search';
 import type { components } from '@/shared/types/v1';
 import Logger from '@/shared/lib/logger/logger';
 import { useSelectedSearchUser } from '@/features/selected-user';
+import { lazy, Suspense } from 'react';
+
+const ProfileFromSearchUser = lazy(() =>
+  import('@/entities/user/ui/ProfileFromSearchUser').then((m) => ({
+    default: m.ProfileFromSearchUser,
+  }))
+);
 
 export const SearchTab = () => {
   const update = useLayoutStore((s) => s.update);
@@ -27,9 +34,16 @@ export const SearchTab = () => {
                   style={{ cursor: 'pointer' }}
                   key={user.user_id}
                   onClick={() => {
-                    update((s) => {
-                      s.asside = true;
-                      updateSelectedUser((s) => (s.user = user));
+                    layoutAction.doOpenAside({
+                      render: (
+                        <Suspense fallback={null}>
+                          <ProfileFromSearchUser
+                            profile={
+                              user.profile as components['schemas']['ProfileData']
+                            }
+                          />
+                        </Suspense>
+                      ),
                     });
                   }}
                 >

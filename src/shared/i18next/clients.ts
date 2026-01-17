@@ -10,7 +10,7 @@ await i18next
     lng: 'ru',
 
     defaultNS: 'buttonLabels',
-    debug: true,
+    debug: import.meta.env.MODE === 'development',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
