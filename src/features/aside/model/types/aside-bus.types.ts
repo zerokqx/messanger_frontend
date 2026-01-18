@@ -12,7 +12,7 @@ export type AsideBusEevents = $$EventsKeys[keyof $$EventsKeys];
 export type AsideBusCommand =
   | {
       type: $$EventsKeys['USER_CONTACT'];
-      data: components['schemas']['ProfileData'];
+      data: components['schemas']['ProfileByUserIdData'];
     }
   | {
       type: $$EventsKeys['USER_SEARCH'];

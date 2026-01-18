@@ -16,7 +16,8 @@ export const CurrentUserProfile = ({
       <UserProfile.Rating />
       <UserProfile.CreatedAt />
       <UserProfile.Bio />
-      <UserProfile.Verification/>
+      <UserProfile.Verification />
     </UserProfile>
   );
 };
+

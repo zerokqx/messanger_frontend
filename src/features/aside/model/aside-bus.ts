@@ -2,10 +2,14 @@ import { createStore } from '@colorfy-software/zfy';
 import type { AsideBusCommand } from './types/aside-bus.types';
 import { createStoreAction } from '@/shared/lib/zustand/createStoreAction/createStoreAction';
 
-export const useAsideBus = createStore<AsideBusCommand>('aside-bus', {
-  type: 'undefined',
-  data: undefined,
-});
+export const useAsideBus = createStore<AsideBusCommand>(
+  'aside-bus',
+  {
+    type: 'undefined',
+    data: undefined,
+  },
+  { log: true }
+);
 
 export const asideBusActions = createStoreAction(
   [
