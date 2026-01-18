@@ -1,9 +1,9 @@
+import { ContactsList } from '@/widgets/contact-list';
 import { SideBarTaber } from '../../model/tab';
-import { List } from '@/entities/contact/ui/List';
 export const ContactsTab = () => {
   return (
     <SideBarTaber.Panel value="contacts">
-      <List />
+      <ContactsList />
     </SideBarTaber.Panel>
   );
 };

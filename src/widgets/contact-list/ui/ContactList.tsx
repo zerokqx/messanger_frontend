@@ -1,19 +1,24 @@
 import { VirtualList } from '@/shared/ui/VirtualList/ui/VirtualList';
 import { Alert } from '@mantine/core';
-import { ContactItem } from './ContactItem';
 import { useGetUserById } from '@/features/getUserById';
 import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
 import { useEffect } from 'react';
-import { useContactCountQuery, useContactsQuery } from '../api';
-import { pagesMap } from '../lib/pagesMap';
 import { useLogger } from '@mantine/hooks';
 import Logger from '@/shared/lib/logger/logger';
 import { Ban, CircleSlash } from 'lucide-react';
 import { useSelectedSearchUser } from '@/features/selected-user';
 import { toPlainProfile } from '@/entities/user';
-import { SkeletonContactItem } from './SkeletonContactItem';
+import {
+  ContactItem,
+  pagesMap,
+  SkeletonContactItem,
+  useContactCountQuery,
+  useContactsQuery,
+} from '@/entities/contact';
+import { asideBusActions } from '@/features/aside/model/aside-bus';
+import { ASIDE_BUS_EVENTS } from '@/features/aside';
 
-export const List = () => {
+export const ContactsList = () => {
   const {
     data: pages,
     hasNextPage,
@@ -22,11 +27,8 @@ export const List = () => {
     isLoading,
     isFetchingNextPage,
   } = useContactsQuery(10);
-
   const contacts = pagesMap(pages);
   const { data: count } = useContactCountQuery();
-
-  const selectedUpdate = useSelectedSearchUser((s) => s.update);
   const layout = useLayoutStore((s) => s.update);
   const {
     data,
@@ -38,11 +40,12 @@ export const List = () => {
   useEffect(() => {
     if (dataUpdatedAt && data) {
       Logger.debug('List', 'effect select user', data);
-      selectedUpdate((s) => {
-        s.user = toPlainProfile(data);
+      asideBusActions.doNewCommand({
+        type: ASIDE_BUS_EVENTS.USER_CONTACT,
+        data: data,
       });
     }
-  }, [data, dataUpdatedAt, selectedUpdate]);
+  }, [data, dataUpdatedAt]);
 
   useLogger('List', [pages]);
   useEffect(() => {
