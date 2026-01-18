@@ -1,58 +1,17 @@
 import { VirtualList } from '@/shared/ui/VirtualList/ui/VirtualList';
 import { Alert } from '@mantine/core';
 import { useGetUserById } from '@/features/getUserById';
-import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
-import { useEffect } from 'react';
-import { useLogger } from '@mantine/hooks';
-import Logger from '@/shared/lib/logger/logger';
 import { Ban, CircleSlash } from 'lucide-react';
-import { useSelectedSearchUser } from '@/features/selected-user';
-import { toPlainProfile } from '@/entities/user';
-import {
-  ContactItem,
-  pagesMap,
-  SkeletonContactItem,
-  useContactCountQuery,
-  useContactsQuery,
-} from '@/entities/contact';
-import { asideBusActions } from '@/features/aside/model/aside-bus';
-import { ASIDE_BUS_EVENTS } from '@/features/aside';
+import { ContactItem, SkeletonContactItem } from '@/entities/contact';
+import { useContactListState } from '../model/useContactListState';
+import { useGetUserByIdEffects } from '../model/useGetUserByIdEffects';
 
 export const ContactsList = () => {
-  const {
-    data: pages,
-    hasNextPage,
-    fetchNextPage,
-    isError,
-    isLoading,
-    isFetchingNextPage,
-  } = useContactsQuery(10);
-  const contacts = pagesMap(pages);
-  const { data: count } = useContactCountQuery();
-  const layout = useLayoutStore((s) => s.update);
-  const {
-    data,
-    setId,
-    isFetching: isFetchingUserById,
-    dataUpdatedAt,
-  } = useGetUserById();
+  const { contacts, count, contactsMap } = useContactListState();
+  const getUserById = useGetUserById();
+  useGetUserByIdEffects(getUserById);
 
-  useEffect(() => {
-    if (dataUpdatedAt && data) {
-      Logger.debug('List', 'effect select user', data);
-      asideBusActions.doNewCommand({
-        type: ASIDE_BUS_EVENTS.USER_CONTACT,
-        data: data,
-      });
-    }
-  }, [data, dataUpdatedAt]);
-
-  useLogger('List', [pages]);
-  useEffect(() => {
-    if (isFetchingUserById) layout((s) => (s.asside = true));
-  }, [isFetchingUserById, layout]);
-
-  if (isLoading) {
+  if (contacts.isLoading) {
     return (
       <>
         <SkeletonContactItem size={60} />
@@ -61,7 +20,7 @@ export const ContactsList = () => {
       </>
     );
   }
-  if (isError) {
+  if (contacts.isError) {
     return (
       <Alert icon={<Ban />} color="red">
         Произошла непридвиденая ошибка загрузки контактов. Перзагрузите
@@ -69,7 +28,7 @@ export const ContactsList = () => {
       </Alert>
     );
   }
-  if (pages && pages.pages.length === 0) {
+  if (contacts.data && contacts.data.pages.length === 0) {
     return (
       <Alert color="blue" icon={<CircleSlash />}>
         У вас еще нет контактов. Добавьте их через поиск.
@@ -77,21 +36,22 @@ export const ContactsList = () => {
     );
   }
   return (
-    <VirtualList<typeof contacts>
-      count={count ?? 10}
-      data={contacts}
+    <VirtualList<typeof contactsMap>
+      count={count.data ?? 10}
+      data={contactsMap}
       overscan={10}
       esimateSize={() => 92}
-      isFetchingNextPage={isFetchingNextPage}
+      isFetchingNextPage={contacts.isFetchingNextPage}
       dataSelect={(c, i) => c[i]}
-      fetchFunction={fetchNextPage}
+      fetchFunction={contacts.fetchNextPage}
       fallback={(size) => <SkeletonContactItem size={size} />}
-      hasNextPage={hasNextPage}
+      hasNextPage={contacts.hasNextPage}
       render={(c) => (
         <ContactItem
           user={c}
           onClick={() => {
-            setId(c.user_id);
+            getUserById.abortPrevious();
+            getUserById.setId(c.user_id);
           }}
         />
       )}

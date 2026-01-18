@@ -1,32 +1,41 @@
 import { SelectedProfileButtonAction } from '@/widgets/ChatAside/ui/tabs/SelectProfile/ButtonsAction';
-import { AppShellAside, Space } from '@mantine/core';
+import { AppShellAside } from '@mantine/core';
 import { AsideHaeader } from './Header';
-import { userAction } from '@/entities/user/model/userStore';
 import { ASIDE_BUS_EVENTS, useAsideBus } from '@/features/aside';
 import { lazy } from 'react';
+import type { AsideBusCommand } from '@/features/aside/model/types/aside-bus.types';
 
 const ProfileFromSearchUser = lazy(() =>
-  import('@/entities/user/ui/ProfileSearchUser').then((m) => ({
+  import('@/entities/user').then((m) => ({
     default: m.ProfileSearchUser,
   }))
 );
 
-export const Aside = () => {
-  const { data, type } = useAsideBus((s) => s.data);
-  const isMe = userAction.doIsThatMe(data?.user_id ?? '');
+const SkeletonProfile = lazy(() =>
+  import('@/entities/user').then((m) => ({
+    default: m.SkeletonProfile,
+  }))
+);
 
-  console.log(data);
+const getAsideContent = ({ data, type }: AsideBusCommand) => {
+  switch (type) {
+    case ASIDE_BUS_EVENTS.USER_SEARCH:
+    case ASIDE_BUS_EVENTS.USER_CONTACT:
+      return <ProfileFromSearchUser profile={data} />;
+    case ASIDE_BUS_EVENTS.USER_CONTACT_SKELETON:
+    case ASIDE_BUS_EVENTS.USER_SEARCH_SKELETON:
+      return <SkeletonProfile />;
+    default:
+      return null;
+  }
+};
+
+export const Aside = () => {
+  const command = useAsideBus((s) => s.data);
   return (
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
       <AsideHaeader />
-      {type === ASIDE_BUS_EVENTS.USER_SEARCH && (
-        <ProfileFromSearchUser profile={data} />
-      )}
-
-      {type === ASIDE_BUS_EVENTS.USER_CONTACT && (
-        <ProfileFromSearchUser profile={data} />
-      )}
-
+      {getAsideContent(command)}
       <SelectedProfileButtonAction />
     </AppShellAside>
   );

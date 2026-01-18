@@ -7,7 +7,6 @@ export const SkeletonProfile = () => {
         <Skeleton circle height={90} />
       </Center>
       <Group>
-        <Skeleton circle h={30} w={30} />
         <Stack>
           <Skeleton h={10} w={100} />
 
@@ -16,7 +15,6 @@ export const SkeletonProfile = () => {
       </Group>
 
       <Group>
-        <Skeleton circle h={30} w={30} />
         <Stack>
           <Group gap={'xs'}>
             <Skeleton h={10} w={30} />
@@ -31,14 +29,12 @@ export const SkeletonProfile = () => {
       </Group>
 
       <Group>
-        <Skeleton circle h={30} w={30} />
         <Skeleton h={10} w={100} />
 
         <Skeleton h={10} w={70} />
       </Group>
 
       <Group>
-        <Skeleton circle h={30} w={30} />
         <Stack>
           <Skeleton h={10} w={150} />
 
