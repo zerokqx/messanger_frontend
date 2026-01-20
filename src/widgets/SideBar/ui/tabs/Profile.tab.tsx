@@ -1,8 +1,8 @@
-import { CurrentUserProfile } from '@/entities/user';
 import { ActionIcon, Button, Center, Group, Space } from '@mantine/core';
 import { SquarePen } from 'lucide-react';
 import { SideBarTaber, useTabSidebar } from '../../model/tab';
 import { useMe } from '@/entities/user/model/me.query';
+import { ProfileForCurrentUser } from '@/entities/user';
 
 export const Profile = () => {
   const set = useTabSidebar.useSetCurrentTab();
@@ -13,7 +13,7 @@ export const Profile = () => {
     <SideBarTaber.Panel value="profile">
       {user && (
         <>
-          <CurrentUserProfile profile={user} />
+          <ProfileForCurrentUser profile={user} />
           <Space h={'1rem'} />
           <Group w={'100%'} justify="end">
             <ActionIcon

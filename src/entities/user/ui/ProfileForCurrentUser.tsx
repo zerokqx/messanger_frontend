@@ -1,7 +1,8 @@
 import { Center } from '@mantine/core';
-import { createUserProfile } from '../create-user-profile';
+import { createUserProfile } from './create-user-profile';
+import type { components } from '@/shared/types/v1';
 
-export const ProfileSearchUser = createUserProfile(
+export const [ProfileForCurrentUser] = createUserProfile<components['schemas']['ProfileData']>(
   (UserProfile) =>
     ({ profile }) => (
       <UserProfile profile={profile}>

@@ -26,8 +26,9 @@ export const SearchTab = () => {
                   onClick={() => {
                     asideBusActions.doNewCommand({
                       type: ASIDE_BUS_EVENTS.USER_SEARCH,
-                      data: user.profile as components['schemas']['ProfileData'],
+                      data: profile,
                     });
+
                     layoutAction.doSetAside(true);
                   }}
                 >
