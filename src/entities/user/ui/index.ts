@@ -1,4 +1,4 @@
 export { SkeletonProfile } from './SkeletonProfile.tsx';
-export { CurrentUserProfile } from './UserProfile.tsx';
-export { ProfileSearchUser } from './profile-user-search/ProfileSearchUser.tsx';
+export { ProfileForCurrentUser } from './ProfileForCurrentUser.tsx';
+export { ProfileForGetUserById } from './ProfileForGetUserById.tsx';
 export { DisplayPermissionSettings } from './DisplayPermissionSettings.tsx';

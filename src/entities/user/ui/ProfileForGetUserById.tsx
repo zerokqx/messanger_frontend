@@ -2,8 +2,7 @@ import { Center } from '@mantine/core';
 import { createUserProfile } from './create-user-profile';
 import type { components } from '@/shared/types/v1';
 
-export const [CurrentUserProfile] = createUserProfile<
-  components['schemas']['ProfileData']
+export const [ProfileForGetUserById] = createUserProfile< components['schemas']['ProfileByUserIdData']
 >((UserProfile) => ({ profile }) => (
   <UserProfile profile={profile}>
     <Center>

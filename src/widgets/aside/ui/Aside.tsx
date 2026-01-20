@@ -1,31 +1,29 @@
-import { SelectedProfileButtonAction } from '@/widgets/ChatAside/ui/tabs/SelectProfile/ButtonsAction';
 import { AppShellAside } from '@mantine/core';
 import { AsideHaeader } from './Header';
 import { ASIDE_BUS_EVENTS, useAsideBus } from '@/features/aside';
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import type { AsideBusCommand } from '@/features/aside/model/types/aside-bus.types';
+import { SkeletonProfile } from '@/entities/user';
 
-const ProfileFromSearchUser = lazy(() =>
+const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
-    default: m.ProfileSearchUser,
-  }))
-);
-
-const SkeletonProfile = lazy(() =>
-  import('@/entities/user').then((m) => ({
-    default: m.SkeletonProfile,
+    default: m.ProfileForGetUserById,
   }))
 );
 
 const getAsideContent = ({ data, type }: AsideBusCommand) => {
   switch (type) {
     case ASIDE_BUS_EVENTS.USER_SEARCH:
+      return (
+        <Suspense fallback={<SkeletonProfile />}>
+          <ProfileForGetUserById profile={data} />
+        </Suspense>
+      );
     case ASIDE_BUS_EVENTS.USER_CONTACT:
       return (
-        <>
-          <ProfileFromSearchUser profile={data} />
-          <SelectedProfileButtonAction user={data} />
-        </>
+        <Suspense fallback={<SkeletonProfile />}>
+          <ProfileForGetUserById profile={data} />
+        </Suspense>
       );
     case ASIDE_BUS_EVENTS.USER_CONTACT_SKELETON:
     case ASIDE_BUS_EVENTS.USER_SEARCH_SKELETON:

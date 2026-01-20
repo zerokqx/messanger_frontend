@@ -2,7 +2,8 @@ export * from './lib';
 export * from './model';
 export * from './types';
 export {
-  CurrentUserProfile,
+  ProfileForCurrentUser,
+  ProfileForGetUserById,
   SkeletonProfile,
   DisplayPermissionSettings,
 } from './ui';
