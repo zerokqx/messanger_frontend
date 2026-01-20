@@ -21,7 +21,12 @@ const getAsideContent = ({ data, type }: AsideBusCommand) => {
   switch (type) {
     case ASIDE_BUS_EVENTS.USER_SEARCH:
     case ASIDE_BUS_EVENTS.USER_CONTACT:
-      return <ProfileFromSearchUser profile={data} />;
+      return (
+        <>
+          <ProfileFromSearchUser profile={data} />
+          <SelectedProfileButtonAction user={data} />
+        </>
+      );
     case ASIDE_BUS_EVENTS.USER_CONTACT_SKELETON:
     case ASIDE_BUS_EVENTS.USER_SEARCH_SKELETON:
       return <SkeletonProfile />;
@@ -36,7 +41,6 @@ export const Aside = () => {
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
       <AsideHaeader />
       {getAsideContent(command)}
-      <SelectedProfileButtonAction />
     </AppShellAside>
   );
 };

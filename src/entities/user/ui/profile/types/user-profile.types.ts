@@ -1,14 +1,13 @@
-import type { IProfileContext } from '@/entities/user/model/types/profile-context.types';
 import type { AvatarProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 
-export interface IUserProfileProps {
-  profile: IProfileContext;
-  children?: ReactNode;
+export interface IUserProfileProps<T> {
+  children: ReactNode;
+  profile: T;
 }
 export type IUserProfileAvatarProps = Omit<AvatarProps, 'src' | 'name'>;
-export interface IUserProfile {
-  (props: IUserProfileProps): ReactNode;
+export interface IUserProfile<C extends Record<string, unknown>> {
+  (props: IUserProfileProps<C>): ReactNode;
   Login: () => ReactNode;
   Avatar: (props: IUserProfileAvatarProps) => ReactNode;
   Rating: () => ReactNode;

@@ -6,20 +6,15 @@ import { useQueryClient } from '@tanstack/react-query';
  */
 export const useInvalidateContacts = () => {
   const client = useQueryClient();
+
   return async () => {
-    await client.invalidateQueries({
-      predicate: (query) => {
-        console.log(query);
-        return false;
-      },
-    });
-    // await Promise.all([
-    //   client.invalidateQueries(
-    //     $api.jwtUser.query.queryOptions('get', '/contact/count')
-    //   ),
-    //   client.invalidateQueries(
-    //     $api.jwtUser.query.queryOptions('get', '/contact/list')
-    //   ),
-    // ]);
+    await Promise.all([
+      client.invalidateQueries(
+        $api.jwtUser.query.queryOptions('get', '/contact/count')
+      ),
+      client.invalidateQueries(
+        $api.jwtUser.query.queryOptions('get', '/contact/list')
+      ),
+    ]);
   };
 };

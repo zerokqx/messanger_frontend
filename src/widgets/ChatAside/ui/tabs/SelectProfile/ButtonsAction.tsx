@@ -1,26 +1,33 @@
 import { useContactAdd } from '@/features/contact';
-import { useSelectedSearchUser } from '@/features/selected-user';
+import { successNotify } from '@/shared/lib/notifications/success';
+import type { components } from '@/shared/types/v1';
 import { Stack, Button } from '@mantine/core';
 import type { ComponentProps } from 'react';
 
 export const SelectedProfileButtonAction = ({
-  renameProps,
+  user,
 }: {
-  renameProps?: ComponentProps<'button'>;
+  user: components['schemas']['ProfileData'];
 }) => {
-  const user = useSelectedSearchUser((s) => s.data.user);
-  const add = useContactAdd(user?.profile.login ?? '');
+  const add = useContactAdd();
 
   return (
     <Stack bdrs={'xl'}>
       <Button
         bdrs={'xl'}
         onClick={() => {
-          void add.mutateAsync({
-            body: {
-              user_id: user?.user_id,
+          void add.mutateAsync(
+            {
+              body: {
+                user_id: user.user_id,
+              },
             },
-          });
+            {
+              onSuccess() {
+                successNotify(`${user.login} добавлен в ваши контакты`);
+              },
+            }
+          );
         }}
         variant="gradient"
         fullWidth
