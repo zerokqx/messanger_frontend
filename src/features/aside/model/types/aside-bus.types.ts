@@ -20,7 +20,7 @@ export type AsideBusCommand =
     }
   | {
       type: $$EventsKeys['USER_SEARCH'];
-      data: components['schemas']['ProfileData'];
+      data: components['schemas']['ProfileByUserIdData'];
     }
   | {
       type: $$EventsKeys['UNDEFINED'];

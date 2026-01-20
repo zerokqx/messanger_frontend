@@ -27,49 +27,26 @@ export const ContactItem = ({
       bdrs={'xl'}
       bd={theme.other.borders.darkXs}
       p={'md'}
-      {...{ onClick }}
       w={'100%'}
       component={motion.div}
       whileHover={{}}
     >
-      <Grid>
-        <Grid.Col span={'content'}>
-          <Avatar name={name.name} />
-        </Grid.Col>
-        <Grid.Col span={'content'}>
-          <Stack justify="center" h={'100%'}>
-            <Text title={name.format} truncate="end" w={'20ch'}>
-              {name.params[1] ?? name.params[0]}
-            </Text>
-          </Stack>
-        </Grid.Col>
-        <Grid.Col span={'auto'}>
-          <Group justify="end">
-            <ActionIcon
-              bdrs={'xl'}
-              onClick={() => {
-                onRemove?.(user.user_id);
-                // void mutateAsync(
-                //   {
-                //     body: {
-                //       user_id: user.user_id,
-                //     },
-                //   },
-                //   {
-                //     onSuccess: () => {
-                //       successNotify(`Контакт ${name.format} удален`);
-                //     },
-                //   }
-                // );
-              }}
-              variant="light"
-              color="red"
-            >
-              <Trash size={16} />
-            </ActionIcon>
-          </Group>
-        </Grid.Col>
-      </Grid>
+      <Group wrap="nowrap">
+        <Avatar name={name.name} />
+        <Text>{name.params[1] ?? name.params[0]}</Text>
+        <Group justify="end" w="100%">
+          <ActionIcon
+            bdrs={'xl'}
+            onClick={() => {
+              onRemove?.(user.user_id);
+            }}
+            variant="light"
+            color="red"
+          >
+            <Trash size={16} />
+          </ActionIcon>
+        </Group>
+      </Group>
     </Box>
   );
 };

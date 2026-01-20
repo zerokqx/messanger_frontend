@@ -5,10 +5,15 @@ import { Ban, CircleSlash } from 'lucide-react';
 import { ContactItem, SkeletonContactItem } from '@/entities/contact';
 import { useContactListState } from '../model/useContactListState';
 import { useGetUserByIdEffects } from '../model/useGetUserByIdEffects';
+import { layoutAction } from '@/shared/lib/hooks/useLayout';
+import { useContactRemove } from '@/features/contact';
+import { pendingNotify } from '@/shared/lib/notifications/pending';
+import { successNotify } from '@/shared/lib/notifications/success';
 
 export const ContactsList = () => {
   const { contacts, count, contactsMap } = useContactListState();
   const getUserById = useGetUserById();
+  const { mutate: removeContact } = useContactRemove();
   useGetUserByIdEffects(getUserById);
 
   if (contacts.isLoading) {
@@ -28,7 +33,7 @@ export const ContactsList = () => {
       </Alert>
     );
   }
-  if (contacts.data && contacts.data.pages.length === 0) {
+  if (!count.data) {
     return (
       <Alert color="blue" icon={<CircleSlash />}>
         У вас еще нет контактов. Добавьте их через поиск.
@@ -37,7 +42,7 @@ export const ContactsList = () => {
   }
   return (
     <VirtualList<typeof contactsMap>
-      count={count.data ?? 10}
+      count={count.data}
       data={contactsMap}
       overscan={10}
       esimateSize={() => 92}
@@ -49,8 +54,24 @@ export const ContactsList = () => {
       render={(c) => (
         <ContactItem
           user={c}
+          onRemove={(user_id) => {
+            pendingNotify('Удаление...');
+            removeContact(
+              {
+                body: { user_id },
+              },
+              {
+                onSuccess() {
+                  successNotify(
+                    `Контакт ${c.login ?? c.custom_name ?? c.full_name ?? ''} удалён`
+                  );
+                },
+              }
+            );
+          }}
           onClick={() => {
-            getUserById.abortPrevious();
+            void getUserById.abortPrevious();
+            layoutAction.doSetAside(true);
             getUserById.setId(c.user_id);
           }}
         />

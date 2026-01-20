@@ -1,5 +1,5 @@
 import { IconButton } from '@/shared/ui/buttons';
-import { useProfileContext } from '../../model/profile-context';
+import { useProfileContext } from '../../model/current-user-profile-context';
 import type { IUserProfile } from './types/user-profile.types';
 import { useTranslation } from 'react-i18next';
 import { BadgeCheck } from 'lucide-react';

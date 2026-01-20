@@ -1,4 +1,3 @@
-import { ProfileContext } from '../../model/profile-context';
 import type { IUserProfile } from './types/user-profile.types';
 import { Avatar } from './avatar';
 import { Login } from './login';
@@ -7,14 +6,24 @@ import { CreatedAt } from './created-at';
 import { Stack } from '@mantine/core';
 import { Bio } from './bio';
 import { Verification } from './verification';
+import type { Context } from 'react';
 
-export const UserProfile: IUserProfile = ({ profile, children }) => {
+export const UserProfile = <T, C extends Context<T>>({
+  profile,
+  context,
+
+  children,
+}: {
+  children: ReactNode;
+  profile: T;
+  context: C;
+}) => {
   return (
-    <ProfileContext value={profile}>
+    <Curr value={profile}>
       <Stack gap={'xs'} align="stretch">
         {children}
       </Stack>
-    </ProfileContext>
+    </Curr>
   );
 };
 
