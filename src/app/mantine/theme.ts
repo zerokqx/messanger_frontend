@@ -7,33 +7,34 @@ import {
   Checkbox,
   createTheme,
   Drawer,
-  Loader,
   MenuDropdown,
   MenuItem,
   Modal,
   PasswordInput,
   Select,
-  Text,
   Textarea,
   TextInput,
   ThemeIcon,
   Title,
-  Tooltip,
   type MantineColorsTuple,
 } from '@mantine/core';
-import { hover } from '../styles/HoverOpacity.css';
 
-declare module '@mantine/core' {
-  export interface MantineThemeOther {
-    borders: {
-      darkXs: string;
-      darkSm: string;
-      darkMd: string;
-    };
-  }
-}
+
+const dark: MantineColorsTuple = [
+  '#F5F5F5',
+  '#8a8a8a',
+  '#737373',
+  '#5c5c5c',
+  '#454545',
+  '#1c1c1c',
+  '#121212',
+  '#0d0d0d',
+  '#141414',
+  '#0b0b0b',
+];
 
 const colors: Record<string, MantineColorsTuple> = {
+  dark,
   blue: [
     '#e5f3ff',
     '#cde2ff',
@@ -46,25 +47,13 @@ const colors: Record<string, MantineColorsTuple> = {
     '#004ecd',
     '#0043b5',
   ],
-  black: [
-    '#ffffff',
-    '#e7e7e7',
-    '#cdcdcd',
-    '#b2b2b2',
-    '#9a9a9a',
-    '#8b8b8b',
-    '#848484',
-    '#717171',
-    '#656565',
-    '#000000',
-  ],
 };
 
 export const theme = createTheme({
   colors,
 
   primaryColor: 'blue',
-  primaryShade: { light: 6, dark: 8 },
+  primaryShade: { light: 6, dark: 9 },
   other: {
     borders: {
       darkXs: '1px solid dark.9',
@@ -149,9 +138,7 @@ export const theme = createTheme({
 
         styles(theme) {
           return {
-            input: {
-              background: theme.colors.dark[9],
-            },
+            input: {},
           };
         },
       },
@@ -164,9 +151,7 @@ export const theme = createTheme({
 
         styles(theme) {
           return {
-            input: {
-              background: theme.colors.dark[9],
-            },
+            input: {},
           };
         },
       },
@@ -175,23 +160,6 @@ export const theme = createTheme({
       defaultProps: {
         radius: 'md',
         variant: 'filled',
-        styles(theme) {
-          return {
-            input: {
-              background: theme.colors.dark[9],
-            },
-          };
-        },
-      },
-    }),
-    Text: Text.extend({
-      defaultProps: {
-        c: 'white',
-      },
-    }),
-    Loader: Loader.extend({
-      defaultProps: {
-        c: 'white',
       },
     }),
     Button: Button.extend({
@@ -207,26 +175,16 @@ export const theme = createTheme({
 
     AppShell: AppShell.extend({
       defaultProps: {
-        p: 'xs',
         navbar: {
           width: '20rem',
           breakpoint: 'xs',
           collapsed: { mobile: false },
         },
-
-        bg: 'black',
       },
     }),
     Checkbox: Checkbox.extend({
       defaultProps: {
         size: 'md',
-        styles(theme, props, ctx) {
-          return {
-            input: {
-              background: theme.black,
-            },
-          };
-        },
       },
     }),
     ThemeIcon: ThemeIcon.extend({
@@ -234,47 +192,19 @@ export const theme = createTheme({
         variant: 'transparent',
       },
     }),
-    Avatar: Avatar.extend({
-      defaultProps: {
-        bg: 'blue',
-        color: 'white',
-      },
-    }),
-    Title: Title.extend({
-      defaultProps: {
-        c: 'blue',
-      },
-    }),
+    Avatar: Avatar.extend({}),
+    Title: Title.extend({}),
 
-    AppShellNavbar: AppShellNavbar.extend({
-      defaultProps: {
-        bg: 'black',
-      },
-    }),
-    AppShellAside: AppShellAside.extend({
-      defaultProps: {
-        bg: 'black',
-      },
-    }),
+    AppShellNavbar: AppShellNavbar.extend({}),
+    AppShellAside: AppShellAside.extend({}),
     MenuDropdown: MenuDropdown.extend({
-      defaultProps: {
-        bg: 'black',
-      },
-    }),
-    MenuItem: MenuItem.extend({
-      defaultProps: {
-        className: hover,
-      },
+      defaultProps: {},
     }),
     Modal: Modal.extend({
       styles: (theme) => ({
-        header: {
-          background: theme.black,
-        },
+        header: {},
         content: {
           overflowX: 'hidden',
-          border: `1px solid ${theme.colors.dark[9]}`,
-          background: theme.black,
         },
       }),
     }),
@@ -282,20 +212,10 @@ export const theme = createTheme({
       defaultProps: {
         styles(theme) {
           return {
-            input: {
-              background: theme.black,
-            },
-            dropdown: {
-              background: theme.black,
-            },
+            input: {},
+            dropdown: {},
           };
         },
-      },
-    }),
-    Tooltip: Tooltip.extend({
-      defaultProps: {
-        color: 'black',
-        bd: '2px solid dark.7',
       },
     }),
   },

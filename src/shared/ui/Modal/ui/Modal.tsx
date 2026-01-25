@@ -16,9 +16,6 @@ export const Modal = ({
         transition: 'slide-right',
       }}
       zIndex={zIndex}
-      overlayProps={{
-        backgroundOpacity: 0.97,
-      }}
       fullScreen={full}
       opened={opened}
       xOffset={10}

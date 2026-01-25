@@ -29,9 +29,8 @@ export const Session: SessionComponent = ({ session, children, gridProps }) => {
         />
       )}
       bdrs={'xl'}
-      bg={'black'}
       p={'xs'}
-      bd={'1px solid dark.9'}
+      bd={'1px solid gray'}
       {...gridProps}
     >
       <SessionContext value={session}>{children}</SessionContext>

@@ -5,7 +5,7 @@ import type { SessionComponent } from '../Session.types';
 export const Ip: SessionComponent['Ip'] = ({ textProps }) => {
   const session = useSessionContext();
   return (
-    <Text c={'dark'} {...textProps}>
+    <Text  {...textProps}>
       Ip: {session.ip_address}
     </Text>
   );

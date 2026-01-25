@@ -8,7 +8,6 @@ export const IconButton = ({
 }: IIconButtonProps) => {
   return (
     <Button
-      color="#fff"
       justify="start"
       bdrs={'sm'}
       pt={'xs'}

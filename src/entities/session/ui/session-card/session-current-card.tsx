@@ -5,10 +5,7 @@ import { useToggle } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import type { SessionCurrentProps } from '../SessionInstance.types';
 import { useSesionActionsContext } from '../../model';
-export const SessionCurrentCard = ({
-  session,
-  onRevokeAll,
-}: SessionCurrentProps) => {
+export const SessionCurrentCard = ({ session }: SessionCurrentProps) => {
   const [t] = useTranslation('session');
   const [tooltipStatus, tooltipToggle] = useToggle();
   const actions = useSesionActionsContext();
@@ -51,9 +48,8 @@ export const SessionCurrentCard = ({
         <Session.Trusted trusted={false}>
           <Button
             onClick={() => {
-              actions.onRevokeAll(session.id);
+              actions.onRevokeAll();
             }}
-            variant="light"
           >
             {t('close_all_sessions')}
           </Button>
