@@ -20,7 +20,7 @@ function RouteComponent() {
   return (
     <>
       <AppShell disabled p={'0'}>
-        <AppShellMain bg={'black'}>
+        <AppShellMain>
           <Center h={'100vh'}>
             <Stack>
               <Outlet />

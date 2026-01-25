@@ -1,4 +1,3 @@
-import { useBorder } from '@/widgets/Settings';
 import { Drawer, useMantineTheme } from '@mantine/core';
 import { useSideBarStore } from '../store/useMenuStore';
 import type { SideBarCompouned } from '../types/sideBar.type';
@@ -7,7 +6,6 @@ import { SideItem } from './Item';
 
 export const SideBar: SideBarCompouned = ({ children }) => {
   const t = useMantineTheme();
-  const bd = useBorder('0.1rem');
   const isOpen = useSideBarStore.useIsOpen();
   const close = useSideBarStore.useClose();
   return (
@@ -29,9 +27,7 @@ export const SideBar: SideBarCompouned = ({ children }) => {
             overflowY: 'auto',
           },
           content: {
-            background: t.black,
             userSelect: 'none',
-            borderRight: bd,
           },
         }}
         opened={isOpen}

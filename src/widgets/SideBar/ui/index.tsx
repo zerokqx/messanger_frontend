@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { SideBar } from '@/shared/ui/SideBar';
 import { Header } from './Header';
 import { SideBarTaber } from '../model/tab';
@@ -12,11 +11,9 @@ export const SideBarWidget = () => {
       <Header />
       <SideBarTaber>
         {map(sidebarTabsConfig, (component, i) => (
-          <Suspense fallback={null}>
-            <Box key={i}>
-              <component.render />
-            </Box>
-          </Suspense>
+          <Box key={i}>
+            <component.render />
+          </Box>
         ))}
       </SideBarTaber>
     </SideBar>

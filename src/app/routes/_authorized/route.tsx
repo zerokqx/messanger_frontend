@@ -48,7 +48,7 @@ function RouteComponent() {
       <Suspense>
         <LazyAside />
       </Suspense>
-      <AppShell.Main bg="black">
+      <AppShell.Main>
         <Outlet />
         <Suspense fallback={null}>
           <LazySideBarWidget />

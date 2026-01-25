@@ -1,6 +1,5 @@
 import { Box, Button, Container, Stack, Tabs } from '@mantine/core';
 import { motion } from 'motion/react';
-import { If } from '../../If';
 import { createTabStore } from '../model';
 import type {
   TaberProps,
@@ -84,11 +83,7 @@ export const createTaber = <T extends Windows>({
 
   const OnlyOnTab: TaberTemplate<T>['OnlyOnTab'] = ({ on, children }) => {
     const currentTab = useStore.useCurrentTab();
-    return (
-      <If operandFirst={on} operandSecond={currentTab}>
-        {children}
-      </If>
-    );
+    return on === currentTab && children;
   };
 
   const Taber: TaberTemplate<T> = ({ children }) => {

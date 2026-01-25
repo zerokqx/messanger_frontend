@@ -35,7 +35,7 @@ export function AuhtPage() {
 
       <Stack style={{ zIndex: 2 }} align={'center'}>
         <Blockquote h={{ base: '100vh', xs: 'auto' }}>
-          <Title fw={{ base: 300, sm: 500 }} c={'blue'}>
+          <Title fw={{ base: 300, sm: 500 }}>
             {t('titles:return_to_yobble')}
           </Title>
           <Text>{t('texts:glad_see_you')}</Text>

@@ -9,7 +9,7 @@ export const Footer: SessionComponent['Footer'] = ({
   return (
     <Grid.Col span={12} order={3}>
       <Stack>
-        {withDivider && <Divider color="dark" {...dividerProps} />}
+        {withDivider && <Divider  {...dividerProps} />}
         {children}
       </Stack>
     </Grid.Col>

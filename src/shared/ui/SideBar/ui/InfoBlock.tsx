@@ -1,6 +1,5 @@
 import { Flex, Divider, useMantineTheme } from '@mantine/core';
 import type { InfoBlockProp } from '../types/infoBlock.type';
-import { useBorder } from '@/widgets/Settings';
 
 export const InfoBlock = ({
   inline,
@@ -10,7 +9,6 @@ export const InfoBlock = ({
   children,
 }: InfoBlockProp) => {
   const Icon = icon;
-  const bd = useBorder('0.1rem');
   const t = useMantineTheme();
   return (
     <Flex
@@ -29,7 +27,6 @@ export const InfoBlock = ({
           bdrs: 'xl',
           p: 'md',
         })}
-        bd={bd}
         align={'center'}
         gap={'md'}
         direction={'row'}

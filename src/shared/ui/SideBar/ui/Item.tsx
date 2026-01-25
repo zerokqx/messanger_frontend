@@ -1,8 +1,5 @@
-import { Badge, Grid, Text, ThemeIcon } from '@mantine/core';
-import { If, Then } from 'react-if';
+import { Text, ThemeIcon } from '@mantine/core';
 import type { SideItemProps } from '../types/item.type';
-import { useId } from 'react';
-import { useMediaQuery } from '@mantine/hooks';
 import { IconButton } from '../../buttons';
 
 export const SideItem = ({

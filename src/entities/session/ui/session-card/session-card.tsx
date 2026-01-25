@@ -19,6 +19,7 @@ export const SessionCard = ({ session }: SessionNotCurrentProps) => {
       </Session.Body>
       <Session.Footer>
         <Button
+          variant='light'
           onClick={() => {
             actions.onRevoke(session.id);
           }}
