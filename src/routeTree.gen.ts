@@ -8,14 +8,15 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as AuthorizedRouteRouteImport } from './routes/_authorized/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as AuthorizedSessionsRouteImport } from './routes/_authorized/sessions'
-import { Route as AuthorizedYIndexRouteImport } from './routes/_authorized/y/index'
-import { Route as AuthorizedYUuidRouteImport } from './routes/_authorized/y/$uuid'
+import { Route as rootRouteImport } from './app/routes/__root'
+import { Route as AuthRouteRouteImport } from './app/routes/auth/route'
+import { Route as AuthorizedRouteRouteImport } from './app/routes/_authorized/route'
+import { Route as IndexRouteImport } from './app/routes/index'
+import { Route as AuthIndexRouteImport } from './app/routes/auth/index'
+import { Route as AuthorizedSessionsRouteImport } from './app/routes/_authorized/sessions'
+import { Route as AuthorizedYIndexRouteImport } from './app/routes/_authorized/y/index'
+import { Route as AuthorizedYDdwRouteImport } from './app/routes/_authorized/y/ddw'
+import { Route as AuthorizedYUuidRouteImport } from './app/routes/_authorized/y/$uuid'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -46,6 +47,11 @@ const AuthorizedYIndexRoute = AuthorizedYIndexRouteImport.update({
   path: '/y/',
   getParentRoute: () => AuthorizedRouteRoute,
 } as any)
+const AuthorizedYDdwRoute = AuthorizedYDdwRouteImport.update({
+  id: '/y/ddw',
+  path: '/y/ddw',
+  getParentRoute: () => AuthorizedRouteRoute,
+} as any)
 const AuthorizedYUuidRoute = AuthorizedYUuidRouteImport.update({
   id: '/y/$uuid',
   path: '/y/$uuid',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/sessions': typeof AuthorizedSessionsRoute
   '/auth/': typeof AuthIndexRoute
   '/y/$uuid': typeof AuthorizedYUuidRoute
+  '/y/ddw': typeof AuthorizedYDdwRoute
   '/y': typeof AuthorizedYIndexRoute
 }
 export interface FileRoutesByTo {
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/sessions': typeof AuthorizedSessionsRoute
   '/auth': typeof AuthIndexRoute
   '/y/$uuid': typeof AuthorizedYUuidRoute
+  '/y/ddw': typeof AuthorizedYDdwRoute
   '/y': typeof AuthorizedYIndexRoute
 }
 export interface FileRoutesById {
@@ -75,13 +83,21 @@ export interface FileRoutesById {
   '/_authorized/sessions': typeof AuthorizedSessionsRoute
   '/auth/': typeof AuthIndexRoute
   '/_authorized/y/$uuid': typeof AuthorizedYUuidRoute
+  '/_authorized/y/ddw': typeof AuthorizedYDdwRoute
   '/_authorized/y/': typeof AuthorizedYIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/sessions' | '/auth/' | '/y/$uuid' | '/y'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/sessions'
+    | '/auth/'
+    | '/y/$uuid'
+    | '/y/ddw'
+    | '/y'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sessions' | '/auth' | '/y/$uuid' | '/y'
+  to: '/' | '/sessions' | '/auth' | '/y/$uuid' | '/y/ddw' | '/y'
   id:
     | '__root__'
     | '/'
@@ -90,6 +106,7 @@ export interface FileRouteTypes {
     | '/_authorized/sessions'
     | '/auth/'
     | '/_authorized/y/$uuid'
+    | '/_authorized/y/ddw'
     | '/_authorized/y/'
   fileRoutesById: FileRoutesById
 }
@@ -143,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedYIndexRouteImport
       parentRoute: typeof AuthorizedRouteRoute
     }
+    '/_authorized/y/ddw': {
+      id: '/_authorized/y/ddw'
+      path: '/y/ddw'
+      fullPath: '/y/ddw'
+      preLoaderRoute: typeof AuthorizedYDdwRouteImport
+      parentRoute: typeof AuthorizedRouteRoute
+    }
     '/_authorized/y/$uuid': {
       id: '/_authorized/y/$uuid'
       path: '/y/$uuid'
@@ -156,12 +180,14 @@ declare module '@tanstack/react-router' {
 interface AuthorizedRouteRouteChildren {
   AuthorizedSessionsRoute: typeof AuthorizedSessionsRoute
   AuthorizedYUuidRoute: typeof AuthorizedYUuidRoute
+  AuthorizedYDdwRoute: typeof AuthorizedYDdwRoute
   AuthorizedYIndexRoute: typeof AuthorizedYIndexRoute
 }
 
 const AuthorizedRouteRouteChildren: AuthorizedRouteRouteChildren = {
   AuthorizedSessionsRoute: AuthorizedSessionsRoute,
   AuthorizedYUuidRoute: AuthorizedYUuidRoute,
+  AuthorizedYDdwRoute: AuthorizedYDdwRoute,
   AuthorizedYIndexRoute: AuthorizedYIndexRoute,
 }
 

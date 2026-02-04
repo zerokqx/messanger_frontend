@@ -8,7 +8,6 @@ import {
   createTheme,
   Drawer,
   MenuDropdown,
-  MenuItem,
   Modal,
   PasswordInput,
   Select,
@@ -18,7 +17,6 @@ import {
   Title,
   type MantineColorsTuple,
 } from '@mantine/core';
-
 
 const dark: MantineColorsTuple = [
   '#F5F5F5',

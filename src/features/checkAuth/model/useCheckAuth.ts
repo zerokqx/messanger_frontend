@@ -11,6 +11,7 @@ function useCheckAuth(): boolean {
   const validate = useCallback((t: string) => z.jwt().safeParse(t).success, []);
   const access = useTokenStore((s) => s.data.access);
   const [isAuth, setIsAuth] = useState<boolean>(false);
+
   useLogger('useCheckAuth validation', { status: validate(access) });
   useEffect(() => {
     const status = validate(access);

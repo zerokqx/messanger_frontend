@@ -4,8 +4,9 @@ import z from 'zod';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
+import { Center, Loader } from '@mantine/core';
 
-const Com = () => {
+const RootComponent = () => {
   return (
     <>
       <Outlet />
@@ -31,6 +32,11 @@ export const Route = createRootRoute({
   validateSearch: z.object({
     redirect: z.string().optional(),
   }),
-  component: Com,
+  component: RootComponent,
+  pendingComponent: () => (
+    <Center>
+      <Loader />
+    </Center>
+  ),
   notFoundComponent: () => <NotFoundError />,
 });

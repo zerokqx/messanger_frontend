@@ -1,5 +1,4 @@
 import { $api } from '@/shared/api/repository/$api';
-import { successNotify } from '@/shared/lib/notifications/success';
 import { useQueryClient } from '@tanstack/react-query';
 
 export const useContactAdd = () => {
@@ -11,7 +10,11 @@ export const useContactAdd = () => {
           queryKey: ['get', '/contacts/list'],
         }),
         queryClient.invalidateQueries({
-          queryKey: ['contact', '/contacts/count'],
+          queryKey: ['get', '/contacts/count'],
+        }),
+
+        queryClient.invalidateQueries({
+          queryKey: ['get', '/user/search'],
         }),
       ]);
     },

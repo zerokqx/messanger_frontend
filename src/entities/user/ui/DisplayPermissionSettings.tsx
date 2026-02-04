@@ -35,7 +35,6 @@ export const DisplayPermissionSettings = memo(() => {
   );
   const setLoad = useLoaderStore.useSetLoading();
   const removeLoader = useLoaderStore.useRemoveLoading();
-  console.log(createPermissions(permissions.profile_permissions));
   const form = useAppForm({
     defaultValues: createPermissions(permissions.profile_permissions),
     onSubmit: ({ value }) => {

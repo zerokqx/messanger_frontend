@@ -5,9 +5,7 @@ import { SideBarTaber } from '../../model/tab';
 export const ProfileSettingsTab = () => {
   return (
     <SideBarTaber.Panel value="profile_settings">
-      <Flex direction={'column'} gap={'md'}>
-        <DisplayPermissionSettings />
-      </Flex>
+      <DisplayPermissionSettings />
     </SideBarTaber.Panel>
   );
 };
