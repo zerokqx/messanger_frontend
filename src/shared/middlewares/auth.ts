@@ -4,7 +4,6 @@ import { createBaseUrl } from '../api/base-url';
 import { authHeaderSet } from '../api';
 import type { components } from '../types/v1';
 
-// тип ответа подстрой под свой бэк
 type RefreshResponse = components['schemas']['TokenRefreshResponse'];
 
 const refreshByFetch = async (access: string) => {

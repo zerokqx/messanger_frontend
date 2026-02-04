@@ -15,8 +15,8 @@ export const ContactItem = ({
       bdrs={'xl'}
       bd={'1px solid gray'}
       p={'md'}
-      onClick={() => {
-        onClick();
+      onClick={(e) => {
+        onClick?.(e);
       }}
       w={'100%'}
       component={motion.div}

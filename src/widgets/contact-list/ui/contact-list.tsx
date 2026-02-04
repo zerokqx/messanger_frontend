@@ -9,8 +9,10 @@ import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { useContactRemove } from '@/features/contact';
 import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
+import { useNavigate } from '@tanstack/react-router';
 
 export const ContactsList = () => {
+  const navigate = useNavigate();
   const { contacts, count, contactsMap } = useContactListState();
   const getUserById = useGetUserById();
   const { mutate: removeContact } = useContactRemove();
@@ -70,9 +72,8 @@ export const ContactsList = () => {
             );
           }}
           onClick={() => {
-            void getUserById.abortPrevious();
+            void navigate({ to: `/y/${c.user_id}` });
             layoutAction.doSetAside(true);
-            getUserById.setId(c.user_id);
           }}
         />
       )}

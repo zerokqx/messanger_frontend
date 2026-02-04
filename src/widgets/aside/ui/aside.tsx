@@ -1,9 +1,9 @@
 import { AppShellAside, Button } from '@mantine/core';
 import { AsideHaeader } from './header';
 import { ASIDE_BUS_EVENTS, useAsideBus } from '@/widgets/aside/model';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import type { AsideBusCommand } from '@/widgets/aside/model';
-import { SkeletonProfile } from '@/entities/user';
+import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
 
 const ProfileForGetUserById = lazy(() =>
@@ -33,11 +33,21 @@ const getAsideContent = ({ data, type }: AsideBusCommand) => {
 
 export const Aside = () => {
   const uuid = useGetUuidFromRouter();
+  const { setId, data, isFetching } = useGetUserById();
+  useEffect(() => {
+    if (uuid) {
+      setId(() => uuid);
+    }
+  }, [setId, uuid]);
   const command = useAsideBus((s) => s.data);
   return (
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
       <AsideHaeader />
-      {getAsideContent(command)}
+      {data ? (
+        <ProfileForGetUserById profile={data} />
+      ) : (
+        isFetching && <SkeletonProfile />
+      )}
     </AppShellAside>
   );
 };
