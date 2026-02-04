@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { AppShell, useMantineTheme } from '@mantine/core';
 
 import { Outlet } from '@tanstack/react-router';
@@ -24,7 +24,6 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
-
   return (
     <AppShell
       navbar={{
@@ -43,7 +42,6 @@ function RouteComponent() {
         breakpoint: 'sm',
       }}
       p="md"
-      h={'100dvh'}
     >
       <Suspense>
         <LazyAside />

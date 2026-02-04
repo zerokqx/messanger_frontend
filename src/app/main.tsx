@@ -1,6 +1,7 @@
 import { queryClient } from '@/shared/api';
 import type { AuthContextTypes } from '@/shared/model/authProviderContext/context.type';
 import '@/shared/styles/root.css';
+import "./lucide.css"
 import '@mantine/carousel/styles.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';

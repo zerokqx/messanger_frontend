@@ -1,15 +1,4 @@
-import {
-  ActionIcon,
-  Avatar,
-  Box,
-  darken,
-  Grid,
-  Group,
-  lighten,
-  Stack,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { ActionIcon, Avatar, Box, Group, Text } from '@mantine/core';
 import { Trash } from 'lucide-react';
 import { formatLogin } from '@/shared/lib/formaters';
 import type { IContactElementProp } from './types/contactItem.interface';
@@ -21,15 +10,16 @@ export const ContactItem = ({
   onRemove,
 }: IContactElementProp) => {
   const name = formatLogin(user.login, user.custom_name);
-  const theme = useMantineTheme();
   return (
     <Box
       bdrs={'xl'}
-      bd={theme.other.borders.darkXs}
+      bd={'1px solid gray'}
       p={'md'}
+      onClick={() => {
+        onClick();
+      }}
       w={'100%'}
       component={motion.div}
-      whileHover={{}}
     >
       <Group wrap="nowrap">
         <Avatar name={name.name} />
