@@ -1,6 +1,6 @@
-import { ratingColor } from '@/entities/user/lib/ratingColor';
+import { ratingColor } from '@/entities/user/lib/rating-color';
 import type { IProfileContext } from '@/entities/user/model/types/profile-context.types';
-import { useNotifyClipboard } from '@/shared/lib/hooks/useNotifyClipboard';
+import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 import { IconButton } from '@/shared/ui/buttons';
 import { LabelBox, Label } from '@/shared/ui/lables';
 import { Group } from '@mantine/core';

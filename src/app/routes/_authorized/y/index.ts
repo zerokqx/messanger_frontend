@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { fetchMe } from '@/entities/user/model/me.query';
-import { useCheckAuth } from '@/features/checkAuth/model';
+import { useCheckAuth } from '@/features/check-auth/model';
 import { redirect } from '@tanstack/react-router';
 import z from 'zod';
-import { userAction } from '@/entities/user/model/userStore';
+import { userAction } from '@/entities/user/model/user-store';
 
 export const Route = createFileRoute('/_authorized/y/')({
   validateSearch: z.object({

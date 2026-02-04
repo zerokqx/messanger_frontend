@@ -1,1 +1,1 @@
-export { registerSchema } from './registerSchema.ts';
+export { registerSchema } from './register-schema.ts';

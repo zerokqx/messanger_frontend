@@ -1,2 +1,2 @@
-export { useAppSettings } from '../../../../../widgets/Settings/model/useAppSettings.ts';
-export { SettingsProviderContext as SettingsPovider } from '../../../../../widgets/Settings/model/context.ts';
+export { useAppSettings } from '../../../../../widgets/settings/model/use-app-settings.ts';
+export { SettingsProviderContext as SettingsPovider } from '../../../../../widgets/settings/model/context.ts';

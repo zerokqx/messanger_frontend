@@ -1,4 +1,4 @@
-export { useIsAuth } from './useIsAuth.ts';
+export { useIsAuth } from './use-is-auth.ts';
 export {
   useGetSessionsSuspenseQuery,
   useGetSessionByIdFromCache,

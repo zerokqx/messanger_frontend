@@ -1,6 +1,6 @@
 import type { Middleware } from 'openapi-fetch';
 import { useTokenStore, tokenAction } from '../token';
-import { createBaseUrl } from '../api/baseUrl';
+import { createBaseUrl } from '../api/base-url';
 import { authHeaderSet } from '../api';
 import type { components } from '../types/v1';
 

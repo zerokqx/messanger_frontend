@@ -1,1 +1,1 @@
-export { authHeaderSet } from './authHeaderSet.ts';
+export { authHeaderSet } from './auth-header-set.ts';

@@ -1,2 +1,2 @@
-export { ContactItem } from './ContactItem.tsx';
-export { SkeletonContactItem } from './SkeletonContactItem.tsx';
+export { ContactItem } from './contact-item.tsx';
+export { SkeletonContactItem } from './skeleton-contact-item.tsx';

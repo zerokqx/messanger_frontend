@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core';
 import { useSesionActionsContext } from '../../model';
-import { Session } from '../Session';
-import type { SessionNotCurrentProps } from '../SessionInstance.types';
+import { Session } from '../session';
+import type { SessionNotCurrentProps } from '../session-instance.types';
 import { useTranslation } from 'react-i18next';
 
 export const SessionCard = ({ session }: SessionNotCurrentProps) => {

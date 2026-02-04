@@ -1,6 +1,6 @@
 import { Badge } from '@mantine/core';
 import { useSessionContext } from '../../model/session.context';
-import type { SessionComponent } from '../Session.types';
+import type { SessionComponent } from '../session.types';
 
 export const CurrentBadge: SessionComponent['CurrentBadge'] = () => {
   const session = useSessionContext();

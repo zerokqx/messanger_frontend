@@ -1,2 +1,2 @@
-export { sortSessionsByIsCurrent } from './sortSessionsByIsCurrent.ts';
-export { type SortSessionsByIsCurrent } from './sortSessionsByIsCurrent.type.ts';
+export { sortSessionsByIsCurrent } from './sort-sessions-by-is-current.ts';
+export { type SortSessionsByIsCurrent } from './sort-sessions-by-is-current.type.ts';

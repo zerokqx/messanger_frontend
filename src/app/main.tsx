@@ -1,5 +1,5 @@
 import { queryClient } from '@/shared/api';
-import type { AuthContextTypes } from '@/shared/model/authProviderContext/context.type';
+import type { AuthContextTypes } from '@/shared/model/auth-provider-context/context.type';
 import '@/shared/styles/root.css';
 import "./lucide.css"
 import '@mantine/carousel/styles.css';
@@ -9,9 +9,9 @@ import { ModalsProvider } from '@mantine/modals';
 import { createRouter } from '@tanstack/react-router';
 import { domAnimation, LazyMotion } from 'motion/react';
 import ReactDOM from 'react-dom/client';
-import { routeTree } from './routeTree.gen';
-import { InnerApp } from './ui/InnerApp';
-import { NotificationStyled } from './ui/Notifications';
+import { routeTree } from './route-tree.gen';
+import { InnerApp } from './ui/inner-app';
+import { NotificationStyled } from './ui/notifications';
 import { I18nextProvider } from 'react-i18next';
 import { i18n } from '@/shared/i18next/clients';
 import { QueryClientProvider } from '@tanstack/react-query';

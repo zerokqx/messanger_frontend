@@ -1,7 +1,7 @@
 import { UAParser } from 'ua-parser-js';
 import { useSessionContext } from '../../model/session.context';
 import { Text } from '@mantine/core';
-import type { SessionComponent } from '../Session.types';
+import type { SessionComponent } from '../session.types';
 import { useMemo } from 'react';
 
 export const UserAgent: SessionComponent['UserAgent'] = () => {

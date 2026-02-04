@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import { Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { useNotifyClipboard } from '@/shared/lib/hooks/useNotifyClipboard';
+import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 
 export const CreatedAt: IUserProfile['CreatedAt'] = () => {
   const copy = useNotifyClipboard();

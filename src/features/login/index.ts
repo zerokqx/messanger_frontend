@@ -1,3 +1,3 @@
 export * from './api';
-export { LoginForm } from './ui/LoginForm.tsx';
-export { LoginModal } from './ui/LoginModal.tsx';
+export { LoginForm } from './ui/login-form.tsx';
+export { LoginModal } from './ui/login-modal.tsx';

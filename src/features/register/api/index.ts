@@ -1,1 +1,1 @@
-export { useRegister } from './useRegister.ts';
+export { useRegister } from './use-register.ts';

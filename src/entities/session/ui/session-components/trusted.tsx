@@ -1,6 +1,6 @@
 import { useSessionContext } from '../../model/session.context';
 import { trustedSession } from '../../model/session-state';
-import type { SessionComponent } from '../Session.types';
+import type { SessionComponent } from '../session.types';
 
 export const Trusted: SessionComponent['Trusted'] = ({ children, trusted }) => {
   const session = useSessionContext();

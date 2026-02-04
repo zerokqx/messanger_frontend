@@ -1,3 +1,3 @@
 export * from './api';
 export * from './models';
-export { RegisterModal } from './ui/RegisterModal.tsx';
+export { RegisterModal } from './ui/register-modal.tsx';
