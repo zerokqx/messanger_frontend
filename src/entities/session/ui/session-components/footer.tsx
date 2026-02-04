@@ -1,5 +1,5 @@
 import { Divider, Grid, Stack } from '@mantine/core';
-import type { SessionComponent } from '../Session.types';
+import type { SessionComponent } from '../session.types';
 
 export const Footer: SessionComponent['Footer'] = ({
   withDivider,

@@ -1,1 +1,1 @@
-export { SearchInputWrapper } from './SearchInputWrapper.tsx';
+export { SearchInputWrapper } from './search-input-wrapper.tsx';

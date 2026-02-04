@@ -4,7 +4,7 @@ import type { IUserProfile } from './types/user-profile.types';
 import { IconButton } from '@/shared/ui/buttons';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import { useTranslation } from 'react-i18next';
-import { useNotifyClipboard } from '@/shared/lib/hooks/useNotifyClipboard';
+import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 
 export const Login: IUserProfile['Login'] = () => {
   const copy = useNotifyClipboard();

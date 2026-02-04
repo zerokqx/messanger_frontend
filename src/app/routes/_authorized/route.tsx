@@ -3,14 +3,14 @@ import { AppShell, useMantineTheme } from '@mantine/core';
 
 import { Outlet } from '@tanstack/react-router';
 import { Suspense, lazy } from 'react';
-import { useLayoutStore } from '@/shared/lib/hooks/useLayout';
+import { useLayoutStore } from '@/shared/lib/hooks/use-layout';
 
 const LazySideBarWidget = lazy(() =>
-  import('@/widgets/SideBar').then((m) => ({ default: m.SideBarWidget }))
+  import('@/widgets/side-bar').then((m) => ({ default: m.SideBarWidget }))
 );
 
 const LazyAppShellNavbar = lazy(() =>
-  import('@/widgets/ChatAside').then((m) => ({ default: m.AppShellNavbar }))
+  import('@/widgets/chat-aside').then((m) => ({ default: m.AppShellNavbar }))
 );
 
 const LazyAside = lazy(() =>

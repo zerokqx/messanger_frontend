@@ -1,1 +1,1 @@
-export { useRefreshRequest } from './useRefreshRequest.ts';
+export { useRefreshRequest } from './use-refresh-request.ts';

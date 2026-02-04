@@ -1,4 +1,4 @@
-export { Session } from './Session.tsx';
-export { SessionList, type SessionListProps } from './SessionList.tsx';
-export { type SessionData, type SessionProps } from './Session.types.ts';
+export { Session } from './session.tsx';
+export { SessionList, type SessionListProps } from './session-list.tsx';
+export { type SessionData, type SessionProps } from './session.types.ts';
 export * from './session-card/';

@@ -10,7 +10,7 @@ import {
 import type { IUserProfile } from '../profile/types/user-profile.types.ts';
 import { Avatar as MantineAvatar } from '@mantine/core';
 import { get } from 'lodash';
-import { useNotifyClipboard } from '@/shared/lib/hooks/useNotifyClipboard';
+import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 import { IconButton } from '@/shared/ui/buttons';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import { useTranslation } from 'react-i18next';

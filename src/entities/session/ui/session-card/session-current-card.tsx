@@ -1,9 +1,9 @@
-import { Session } from '../Session';
+import { Session } from '../session';
 import { ActionIcon, Button, Group, Text, Tooltip } from '@mantine/core';
 import { CircleQuestionMark } from 'lucide-react';
 import { useToggle } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
-import type { SessionCurrentProps } from '../SessionInstance.types';
+import type { SessionCurrentProps } from '../session-instance.types';
 import { useSesionActionsContext } from '../../model';
 export const SessionCurrentCard = ({ session }: SessionCurrentProps) => {
   const [t] = useTranslation('session');

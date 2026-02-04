@@ -1,1 +1,1 @@
-export { RevokeAllModal } from './RevokeAllModal.tsx';
+export { RevokeAllModal } from './revoke-all-modal.tsx';

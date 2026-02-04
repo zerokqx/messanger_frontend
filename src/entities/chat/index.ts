@@ -1,1 +1,1 @@
-export { UsersList } from './ui/Chat.tsx';
+export { UsersList } from './ui/chat.tsx';

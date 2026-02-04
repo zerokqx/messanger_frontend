@@ -1,6 +1,6 @@
 import { authMiddleware } from '@/shared/middlewares/auth';
-import type { I$ApiRepositoryQuery } from '../types/fetchersRepository.interface';
-import { coupleOfFetchers } from './coupleOfFetchers';
+import type { I$ApiRepositoryQuery } from '../types/fetchers-repository.interface';
+import { coupleOfFetchers } from './couple-of-fetchers';
 
 export const $api = {
   ...coupleOfFetchers('user', {

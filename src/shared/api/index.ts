@@ -1,4 +1,4 @@
 export * from './clients/';
 export * from './storages/';
-export * from './queryClinets.ts';
+export * from './query-clinets.ts';
 export * from './lib/';

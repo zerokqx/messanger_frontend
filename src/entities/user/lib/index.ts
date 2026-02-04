@@ -1,2 +1,2 @@
-export { useGetSettings } from './useGetSettings.ts';
-export { toPlainProfile } from './toPlainProfile.ts';
+export { useGetSettings } from './use-get-settings.ts';
+export { toPlainProfile } from './to-plain-profile.ts';

@@ -1,1 +1,1 @@
-export { useSearch } from './useSearch.ts';
+export { useSearch } from './use-search.ts';
