@@ -9,10 +9,11 @@ import { $api } from '@/shared/api/repository/$api';
 export const useLogin = () => {
   const router = useRouter();
   const search = useSearch({ from: '/auth' });
+  const redirectTo = search.redirect ?? '/y';
   return $api.queryAuth.useMutation('post', '/login/password', {
     onSuccess: async ({ data: { access_token } }) => {
       tokenAction.doSetToken(access_token);
-      await router.navigate({ to: search.redirect });
+      await router.navigate({ to: redirectTo });
       await router.invalidate();
     },
   });
