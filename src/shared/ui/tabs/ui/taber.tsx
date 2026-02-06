@@ -8,6 +8,7 @@ import type {
   Windows,
 } from '../types';
 import type { TaberButtons } from '../types/taber-button.type';
+import { memo } from 'react';
 
 /**
  *
@@ -96,7 +97,7 @@ export const createTaber = <T extends Windows>({
   };
 
   Taber.OnlyOnTab = OnlyOnTab;
-  Taber.Panel = Panel;
+  Taber.Panel = memo(Panel);
 
   return [Taber, useStore, Buttons, () => windows[0], () => windows];
 };

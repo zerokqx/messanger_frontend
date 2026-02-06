@@ -15,7 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as AuthorizedSessionsRouteImport } from './routes/_authorized/sessions'
 import { Route as AuthorizedYIndexRouteImport } from './routes/_authorized/y/index'
-import { Route as AuthorizedYUuidRouteImport } from './routes/_authorized/y/$uuid'
+import { Route as AuthorizedYUUuidRouteImport } from './routes/_authorized/y/u/$uuid'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
@@ -46,9 +46,9 @@ const AuthorizedYIndexRoute = AuthorizedYIndexRouteImport.update({
   path: '/y/',
   getParentRoute: () => AuthorizedRouteRoute,
 } as any)
-const AuthorizedYUuidRoute = AuthorizedYUuidRouteImport.update({
-  id: '/y/$uuid',
-  path: '/y/$uuid',
+const AuthorizedYUUuidRoute = AuthorizedYUUuidRouteImport.update({
+  id: '/y/u/$uuid',
+  path: '/y/u/$uuid',
   getParentRoute: () => AuthorizedRouteRoute,
 } as any)
 
@@ -57,15 +57,15 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
   '/sessions': typeof AuthorizedSessionsRoute
   '/auth/': typeof AuthIndexRoute
-  '/y/$uuid': typeof AuthorizedYUuidRoute
   '/y': typeof AuthorizedYIndexRoute
+  '/y/u/$uuid': typeof AuthorizedYUUuidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sessions': typeof AuthorizedSessionsRoute
   '/auth': typeof AuthIndexRoute
-  '/y/$uuid': typeof AuthorizedYUuidRoute
   '/y': typeof AuthorizedYIndexRoute
+  '/y/u/$uuid': typeof AuthorizedYUUuidRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -74,14 +74,14 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteRouteWithChildren
   '/_authorized/sessions': typeof AuthorizedSessionsRoute
   '/auth/': typeof AuthIndexRoute
-  '/_authorized/y/$uuid': typeof AuthorizedYUuidRoute
   '/_authorized/y/': typeof AuthorizedYIndexRoute
+  '/_authorized/y/u/$uuid': typeof AuthorizedYUUuidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/sessions' | '/auth/' | '/y/$uuid' | '/y'
+  fullPaths: '/' | '/auth' | '/sessions' | '/auth/' | '/y' | '/y/u/$uuid'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sessions' | '/auth' | '/y/$uuid' | '/y'
+  to: '/' | '/sessions' | '/auth' | '/y' | '/y/u/$uuid'
   id:
     | '__root__'
     | '/'
@@ -89,8 +89,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authorized/sessions'
     | '/auth/'
-    | '/_authorized/y/$uuid'
     | '/_authorized/y/'
+    | '/_authorized/y/u/$uuid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -143,11 +143,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedYIndexRouteImport
       parentRoute: typeof AuthorizedRouteRoute
     }
-    '/_authorized/y/$uuid': {
-      id: '/_authorized/y/$uuid'
-      path: '/y/$uuid'
-      fullPath: '/y/$uuid'
-      preLoaderRoute: typeof AuthorizedYUuidRouteImport
+    '/_authorized/y/u/$uuid': {
+      id: '/_authorized/y/u/$uuid'
+      path: '/y/u/$uuid'
+      fullPath: '/y/u/$uuid'
+      preLoaderRoute: typeof AuthorizedYUUuidRouteImport
       parentRoute: typeof AuthorizedRouteRoute
     }
   }
@@ -155,14 +155,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthorizedRouteRouteChildren {
   AuthorizedSessionsRoute: typeof AuthorizedSessionsRoute
-  AuthorizedYUuidRoute: typeof AuthorizedYUuidRoute
   AuthorizedYIndexRoute: typeof AuthorizedYIndexRoute
+  AuthorizedYUUuidRoute: typeof AuthorizedYUUuidRoute
 }
 
 const AuthorizedRouteRouteChildren: AuthorizedRouteRouteChildren = {
   AuthorizedSessionsRoute: AuthorizedSessionsRoute,
-  AuthorizedYUuidRoute: AuthorizedYUuidRoute,
   AuthorizedYIndexRoute: AuthorizedYIndexRoute,
+  AuthorizedYUUuidRoute: AuthorizedYUUuidRoute,
 }
 
 const AuthorizedRouteRouteWithChildren = AuthorizedRouteRoute._addFileChildren(

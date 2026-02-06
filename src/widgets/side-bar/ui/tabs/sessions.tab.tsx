@@ -1,10 +1,10 @@
-import { Alert, Button } from '@mantine/core';
+import { Alert, Button, Center, Loader } from '@mantine/core';
 import { SideBarTaber } from '../../model/tab';
 import { SessionActionContext, SessionList } from '@/entities/session';
 import { SearchX } from 'lucide-react';
 import { sortSessionsByIsCurrent } from '@/entities/session/lib/sort-sessions-by-is-current';
 import { useGetSessionsSuspenseQuery } from '@/entities/session/model/get-sessions.query';
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import type { SessionActionContextType } from '@/entities/session/model/session-action/context.types';
 import { useSessionRevokeAll } from '@/features/session/revoke-all';
 import {
@@ -15,7 +15,7 @@ import { confirmModalForRevokeAllSessions } from '@/features/session/revoke-all/
 import { useTranslation } from 'react-i18next';
 
 export const Sessions = () => {
-  const { data: sessions } = useGetSessionsSuspenseQuery();
+  const { data: sessions, isLoading } = useGetSessionsSuspenseQuery();
   const sessionsFiltred = sessions ? sortSessionsByIsCurrent(sessions) : [];
   const { mutateAsync: revokeSessionMutation } = useRevokeSession();
   const { mutateAsync: revokeSessionsAllMutation } = useSessionRevokeAll();
@@ -38,13 +38,19 @@ export const Sessions = () => {
   );
   return (
     <SideBarTaber.Panel value="sessions">
-      <SessionActionContext value={actions}>
-        {sessionsFiltred.length === 0 && (
-          <Alert icon={<SearchX />}>{t('sessions_not_found')}</Alert>
-        )}
+      {isLoading ? (
+        <Center mih={400}>
+          <Loader />
+        </Center>
+      ) : (
+        <SessionActionContext value={actions}>
+          {sessionsFiltred.length === 0 && (
+            <Alert icon={<SearchX />}>{t('sessions_not_found')}</Alert>
+          )}
 
-        <SessionList sessions={sessionsFiltred} />
-      </SessionActionContext>
+          <SessionList sessions={sessionsFiltred} />
+        </SessionActionContext>
+      )}
     </SideBarTaber.Panel>
   );
 };

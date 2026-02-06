@@ -1,8 +1,9 @@
-import { AppShellAside } from '@mantine/core';
+import { AppShellAside, Box, CloseButton, Group } from '@mantine/core';
 import { AsideHaeader } from './header';
 import { lazy, Suspense, useEffect } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
+import { useLayoutStore } from '@/shared/lib/hooks/use-layout';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -10,8 +11,13 @@ const ProfileForGetUserById = lazy(() =>
   }))
 );
 
-export const Aside = () => {
+interface CustomAsideProps {
+  onClose: () => void;
+}
+export const Aside = ({ onClose }: CustomAsideProps) => {
   const uuid = useGetUuidFromRouter();
+
+  const update = useLayoutStore((s) => s.update);
   const { setId, data, isFetching, abortPrevious } = useGetUserById();
 
   useEffect(() => {
@@ -24,7 +30,11 @@ export const Aside = () => {
 
   return (
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
-      <AsideHaeader />
+      <Group justify="space-between">
+        <Box>
+          <CloseButton onClick={onClose} />
+        </Box>
+      </Group>
       <Suspense fallback={fallback}>
         {data ? (
           <ProfileForGetUserById profile={data} />

@@ -4,10 +4,11 @@ import { If, Then } from 'react-if';
 import { Box } from '@mantine/core';
 import { useSearchStore } from '@/features/search';
 import type { components } from '@/shared/types/v1';
-import { asideBusActions, ASIDE_BUS_EVENTS } from '@/widgets/aside/model';
 import { layoutAction } from '@/shared/lib/hooks/use-layout';
+import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 
 export const SearchTab = () => {
+  const selectUser = useSetUuidForRouter();
   const users = useSearchStore((s) => s.data);
   return (
     <AppShellTaber.Panel value="search">
@@ -23,11 +24,7 @@ export const SearchTab = () => {
                   style={{ cursor: 'pointer' }}
                   key={user.user_id}
                   onClick={() => {
-                    asideBusActions.doNewCommand({
-                      type: ASIDE_BUS_EVENTS.USER_SEARCH,
-                      data: profile,
-                    });
-
+                    void selectUser(user.user_id);
                     layoutAction.doSetAside(true);
                   }}
                 >
