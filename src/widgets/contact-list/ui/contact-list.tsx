@@ -9,14 +9,12 @@ import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { useContactRemove } from '@/features/contact';
 import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
-import { useNavigate } from '@tanstack/react-router';
+import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 
 export const ContactsList = () => {
-  const navigate = useNavigate();
+  const selectUser = useSetUuidForRouter();
   const { contacts, count, contactsMap } = useContactListState();
-  const getUserById = useGetUserById();
   const { mutate: removeContact } = useContactRemove();
-  useGetUserByIdEffects(getUserById);
 
   if (contacts.isLoading) {
     return (
@@ -72,7 +70,7 @@ export const ContactsList = () => {
             );
           }}
           onClick={() => {
-            void navigate({ to: `/y/${c.user_id}` });
+            void selectUser(c.user_id);
             layoutAction.doSetAside(true);
           }}
         />

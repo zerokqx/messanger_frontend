@@ -4,6 +4,7 @@ import { SideBarTaber } from '../model/tab';
 import { Box, Center, Loader } from '@mantine/core';
 import { map } from 'lodash';
 import { sidebarTabsConfig } from '../config/sidebar.config';
+import { Suspense } from 'react';
 
 export const SideBarWidget = () => {
   return (
@@ -12,7 +13,15 @@ export const SideBarWidget = () => {
       <SideBarTaber>
         {map(sidebarTabsConfig, (component, i) => (
           <Box key={i}>
-            <component.render />
+            <Suspense
+              fallback={
+                <Center py="md">
+                  <Loader />
+                </Center>
+              }
+            >
+              <component.render />
+            </Suspense>
           </Box>
         ))}
       </SideBarTaber>
