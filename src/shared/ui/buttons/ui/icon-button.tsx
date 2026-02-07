@@ -12,6 +12,7 @@ export const IconButton = ({
       color={colorScheme === 'dark' ? 'white' : 'black'}
       justify="start"
       bdrs={'sm'}
+      p={'0'}
       pt={'xs'}
       pb={'xs'}
       leftSection={leftSection}

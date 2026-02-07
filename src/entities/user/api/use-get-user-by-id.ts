@@ -11,6 +11,22 @@ const useAbortGetUserById = (id: string) => {
 export const useGetUserById = () => {
   const [id, setId] = useState('');
   const previous = usePrevious(id);
+  const client = useQueryClient();
+  const invalidateUser = () => {
+    client.invalidateQueries({
+      queryKey: [
+        'get',
+        '/{user_id}',
+        {
+          params: {
+            path: {
+              user_id: id,
+            },
+          },
+        },
+      ],
+    });
+  };
   const abortPrevious = useAbortGetUserById(previous ?? '');
 
   const query = $api.jwtProfile.query.useQuery(
@@ -26,5 +42,5 @@ export const useGetUserById = () => {
     },
     { enabled: !!id, select: (data) => data.data }
   );
-  return { ...query, setId, id, abortPrevious };
+  return { ...query, setId, id, abortPrevious, invalidateUser };
 };

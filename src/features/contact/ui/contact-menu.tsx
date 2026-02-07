@@ -18,6 +18,7 @@ const userIdGuard = (callback: Fn, userId: string | undefined | null) => {
     callback(userId);
   }
 };
+
 export const ContactMenu = ({ userId, onUpdate }: ContactMenu) => {
   const { mutate: contactAdd, isPending } = useContactAdd();
   const [t] = useTranslation('contact-menu');

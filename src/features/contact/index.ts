@@ -1,2 +1,2 @@
 export { useContactAdd, useContactRemove, useContactUpdate } from './api/';
-export { ContactMenu, UpdateContactForm } from './ui/';
+export { ContactMenu, UpdateContactForm, ContactControllPanel } from './ui/';
