@@ -2,19 +2,25 @@ import { $api } from '@/shared/api/repository/$api';
 import { useQueryClient } from '@tanstack/react-query';
 
 export const useContactAdd = () => {
-  const queryClient = useQueryClient();
   const mutate = $api.jwtUser.query.useMutation('post', '/contact/add', {
-    async onSuccess() {
+    async onMutate(variables, context) {
       await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: ['get', '/contacts/list'],
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ['get', '/contacts/count'],
-        }),
+        context.client.cancelQueries(
+          $api.jwtUser.query.queryOptions('get', '/contact/list')
+        ),
 
-        queryClient.invalidateQueries({
-          queryKey: ['get', '/user/search'],
+        context.client.cancelQueries(
+          $api.jwtUser.query.queryOptions('get', '/contact/count')
+        ),
+      ]);
+    },
+    async onSettled(data, error, variables, onMutateResult, context) {
+      await Promise.all([
+        context.client.invalidateQueries({
+          queryKey: ['get', '/contact/list'],
+        }),
+        context.client.invalidateQueries({
+          queryKey: ['get', '/contact/count'],
         }),
       ]);
     },
