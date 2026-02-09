@@ -15,6 +15,7 @@ import {
   TextInput,
   ThemeIcon,
   Title,
+  virtualColor,
   type MantineColorsTuple,
 } from '@mantine/core';
 
@@ -48,8 +49,9 @@ const colors: Record<string, MantineColorsTuple> = {
 };
 
 export const theme = createTheme({
-  colors,
-
+  colors: {
+    ...colors,
+  },
   primaryColor: 'blue',
   primaryShade: { light: 6, dark: 9 },
   other: {

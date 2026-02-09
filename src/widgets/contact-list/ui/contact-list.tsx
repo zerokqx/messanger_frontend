@@ -15,7 +15,6 @@ export const ContactsList = () => {
   const selectUser = useSetUuidForRouter();
   const { contacts, count, contactsMap } = useContactListState();
   const { mutate: removeContact } = useContactRemove();
-
   if (contacts.isLoading) {
     return (
       <>

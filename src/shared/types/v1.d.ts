@@ -674,8 +674,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** [/docs/proxy/chat_private_service/v1] Create Private Chat By Uuid */
-        post: operations["create_private_chat_by_uuid_create_post"];
+        /**
+         * [/docs/proxy/call_service/v1] Create Call
+         * @description Публичный метод — создать исходящий звонок.
+         */
+        post: operations["create_call_create_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -905,66 +908,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * [/docs/proxy/call_service/v1] Create Call
-         * @description Публичный метод — создать исходящий звонок.
-         */
-        post: operations["create_call__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/{call_id}/accept": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * [/docs/proxy/call_service/v1] Accept Call
-         * @description Принять входящий звонок.
-         */
-        post: operations["accept_call__call_id__accept_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/{call_id}/decline": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * [/docs/proxy/call_service/v1] Decline Call
-         * @description Отклонить входящий звонок.
-         */
-        post: operations["decline_call__call_id__decline_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/{call_id}/end": {
         parameters: {
             query?: never;
@@ -979,6 +922,46 @@ export interface paths {
          * @description Завершить активный звонок.
          */
         post: operations["end_call__call_id__end_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/{call_id}/end": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * [/docs/proxy/call_service/v1] Internal End Call
+         * @description Завершить активный звонок.
+         */
+        post: operations["internal_end_call_internal__call_id__end_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/{call_id}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * [/docs/proxy/call_service/v1] Internal Accept Call
+         * @description Принять входящий звонок.
+         */
+        post: operations["internal_accept_call_internal__call_id__accept_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2462,15 +2445,23 @@ export interface components {
              * Call Type
              * @description Тип звонка
              * @default audio
-             * @enum {string}
+             * @constant
              */
-            call_type: "audio" | "video";
+            call_type: "audio";
         };
         /** CreateCallResponse */
         CreateCallResponse: {
             /** Status */
             status: string;
             data: components["schemas"]["CreateCallData"];
+        };
+        /** InternalAcceptCallRequest */
+        InternalAcceptCallRequest: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
         };
         /** InternalCallStateData */
         InternalCallStateData: {
@@ -2480,29 +2471,29 @@ export interface components {
              */
             call_id: string;
             /**
-             * Call Type
-             * @enum {string}
-             */
-            call_type: "audio" | "video";
-            /**
              * Status
              * @enum {string}
              */
             status: "ringing" | "active" | "ended" | "declined" | "missed";
             /**
-             * Initiator
+             * Initiator User Id
              * Format: uuid
              */
-            initiator: string;
-            /** Participants */
-            participants: string[];
+            initiator_user_id: string;
+            /** Receiver User Ids */
+            receiver_user_ids: string[];
             /**
-             * Created At
+             * Call Type
+             * @constant
+             */
+            call_type: "audio";
+            /**
+             * Started At
              * Format: date-time
              */
-            created_at: string;
-            /** Accepted At */
-            accepted_at: string | null;
+            started_at: string;
+            /** Answered At */
+            answered_at: string | null;
             /** Ended At */
             ended_at: string | null;
         };
@@ -2511,6 +2502,19 @@ export interface components {
             /** Status */
             status: string;
             data: components["schemas"]["InternalCallStateData"];
+        };
+        /** InternalEndCallRequest */
+        InternalEndCallRequest: {
+            /**
+             * Current User
+             * Format: uuid
+             */
+            current_user: string;
+            /**
+             * Set Missed
+             * @default false
+             */
+            set_missed: boolean;
         };
     };
     responses: never;
@@ -5217,18 +5221,18 @@ export interface operations {
             };
         };
     };
-    create_private_chat_by_uuid_create_post: {
+    create_call_create_post: {
         parameters: {
-            query: {
-                target_user_id: string;
-            };
-            header?: {
-                "is-bot"?: string | null;
-            };
+            query?: never;
+            header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateCallRequest"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -5236,7 +5240,25 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PrivateChatCreateResponse"];
+                    "application/json": components["schemas"]["CreateCallResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "general",
+                     *           "message": "Bad request syntax or invalid parameters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
                 };
             };
             /** @description Unauthorized */
@@ -5269,24 +5291,6 @@ export interface operations {
                      *         {
                      *           "field": "permission",
                      *           "message": "You don't have access to this resource"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "resource",
-                     *           "message": "Requested resource not found"
                      *         }
                      *       ]
                      *     } */
@@ -6129,103 +6133,7 @@ export interface operations {
             };
         };
     };
-    create_call__post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateCallRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CreateCallResponse"];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "general",
-                     *           "message": "Bad request syntax or invalid parameters"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "login",
-                     *           "message": "Invalid login or password"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "permission",
-                     *           "message": "You don't have access to this resource"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "login",
-                     *           "message": "Login must not contain whitespace characters"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-        };
-    };
-    accept_call__call_id__accept_post: {
+    end_call__call_id__end_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -6235,6 +6143,76 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CallActionResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    internal_end_call_internal__call_id__end_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                call_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InternalEndCallRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CallActionResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    internal_accept_call_internal__call_id__accept_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                call_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InternalAcceptCallRequest"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -6297,68 +6275,6 @@ export interface operations {
                      *       ]
                      *     } */
                     "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    decline_call__call_id__decline_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                call_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CallActionResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    end_call__call_id__end_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                call_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CallActionResponse"];
                 };
             };
             /** @description Validation Error */

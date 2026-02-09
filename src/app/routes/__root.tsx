@@ -5,11 +5,14 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { Center, Loader } from '@mantine/core';
+import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
 
 const RootComponent = () => {
   return (
     <>
-      <Outlet />
+      <NuqsAdapter>
+        <Outlet />
+      </NuqsAdapter>
       <TanStackDevtools
         plugins={[
           {
