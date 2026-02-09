@@ -6,14 +6,14 @@
 - `shared` — инфраструктура без знания домена: API-клиенты, мидлвары, сторы (token/layout/modal), хуки, базовые UI-примитивы. Не тянет код из верхних слоев.
 - `entities` — доменные сущности (user, session, chat, contact): типы, сторы, запросы, мелкие UI. Можно брать `shared`, но не `features`.
 - `features` — пользовательские сценарии/экшены (login, register, logout, refresh, search, edit-profile и т.п.). Комбинируют `entities` + `shared`.
-- `widgets` — крупные блоки страницы (aside, chat-aside, side-bar, contact-list, модалки и т.д.). Собирают `features`/`entities`/`shared`.
+- `widgets` — крупные блоки страницы (aside, navbar, side-bar, contact-list, модалки и т.д.). Собирают `features`/`entities`/`shared`.
 - `pages` — маршрутные экраны (`pages/auth`, `pages/404`). Не содержат бизнес-логики, только композиция `widgets`/`features`.
 - `app` — роутер (`src/app/routes`), провайдеры, тема, глобальные devtools. Зависимости только вниз.
 
 ## Роутинг
 - Файл-базед маршруты в `src/app/routes`. Root (`__root.tsx`) подключает devtools и pending loader. `/` редиректит на `/y`.
 - `/auth` — если уже авторизован (`useIsAuth.check()`), делает редирект на `/`. Внутри `AuthPage` лениво подключает модалки логина/регистрации.
-- `/_authorized` — оборачивает страницы в Mantine `AppShell`, лениво подтягивает `side-bar`, `chat-aside`, `aside` и читает состояние лэйаута из `shared/lib/hooks/use-layout`.
+- `/_authorized` — оборачивает страницы в Mantine `AppShell`, лениво подтягивает `side-bar`, `navbar`, `aside` и читает состояние лэйаута из `shared/lib/hooks/use-layout`.
 - `/_authorized/y` — гард через `useCheckAuth.check()` (JWT в сторе). `loader` грузит текущего пользователя (`fetchMe` из `entities/user`) и инициализирует стор пользователя (`userAction.doInit`). `/_authorized/y/$uuid` валидирует `uuid` через zod.
 - 404 — `pages/404`. Не найденные маршруты обрабатываются через `notFoundComponent` в root.
 

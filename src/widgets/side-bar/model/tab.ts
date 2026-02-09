@@ -9,6 +9,7 @@ export const [
 ] = createTaber({
   windows: [
     'main',
+    'search',
     'profile',
     'profile_edit',
     'settings',

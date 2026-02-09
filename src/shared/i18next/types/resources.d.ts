@@ -20,6 +20,17 @@ interface Resources {
     "password_repeat_label": "Repeat password",
     "userName_label": "User name"
   },
+  "navbar": {
+    "contacts": "Contacts",
+    "interface_edit": "Interface",
+    "main": "Home",
+    "profile": "Profile",
+    "profile_edit": "Edit profile",
+    "profile_settings": "Privacy",
+    "search": "Search",
+    "sessions": "Sessions",
+    "settings": "Settings"
+  },
   "plurarData": {
     "days_one": "{{count}} day",
     "days_other": "{{count}} days",
@@ -29,10 +40,12 @@ interface Resources {
     "hours_zero": ""
   },
   "profile": {
+    "bio": "Biography",
     "created_at": "Created at",
     "login": "Login",
     "put_profile_error": "Profile change failed",
     "put_success": "The changes have been applied",
+    "rating": "Rating",
     "verified": "Verified"
   },
   "session": {
@@ -40,7 +53,11 @@ interface Resources {
     "close_session": "Close session",
     "created_at": "Created at",
     "last_activation": "Last actiovation",
-    "rating": "Rating",
+    "revoke_all_cancel": "Cancel",
+    "revoke_all_confirm": "Confirm",
+    "revoke_text_all": "Are you sure you want to end all sessions except the current one?",
+    "revoke_text_one": "Are you sure you want to end the selected session?",
+    "revoke_title_one": "Session termination",
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
   "settingsLabels": {
@@ -64,17 +81,12 @@ interface Resources {
     "title": "Privacy settings"
   },
   "sideBar": {
-    "change_profile": "Change your profile",
-    "contacts": "Contacts",
     "dark_theme": "Dark theme",
     "interface_edit": "Inerface",
-    "profile": "Profile",
     "profile_settings": "Profile settings",
     "sessions": "Sessions",
-    "settings": "Settings",
     "toggle_border": "Outline of the elements",
-    "toggle_border_description": "Disables or enables the stroke on some elements.",
-    "video": "Video"
+    "toggle_border_description": "Disables or enables the stroke on some elements."
   },
   "texts": {
     "enter_to_account_for_communicate_friend": "Log in to your account to continue chatting with your friends",

@@ -4,52 +4,54 @@ import { lazy } from 'react';
 export const sidebarTabsConfig: TabsConfig[] = [
   {
     render: lazy(() =>
-      import('../ui/tabs/contacts.tab').then((m) => ({
+      import('@/widgets/tab-contacts').then((m) => ({
         default: m.ContactsTab,
       }))
     ),
   },
   {
     render: lazy(() =>
-      import('../ui/tabs/main.tab').then((m) => ({ default: m.MainPage }))
+      import('@/widgets/tab-main').then((m) => ({ default: m.MainTab }))
     ),
   },
   {
     render: lazy(() =>
-      import('../ui/tabs/profile.tab').then((m) => ({ default: m.Profile }))
+      import('@/widgets/tab-profile').then((m) => ({ default: m.ProfileTab }))
     ),
   },
   {
     render: lazy(() =>
-      import('../ui/tabs/profile.tab.edit').then((m) => ({
-        default: m.ProfileEdit,
+      import('@/widgets/tab-profile-edit').then((m) => ({
+        default: m.ProfileEditTab,
       }))
     ),
   },
   {
     render: lazy(() =>
-      import('../ui/tabs/settings.tab').then((m) => ({ default: m.Settings }))
+      import('@/widgets/tab-settings').then((m) => ({
+        default: m.SettingsTab,
+      }))
     ),
   },
   {
     render: lazy(() =>
-      import('../ui/tabs/permissions.tab.edit').then((m) => ({
+      import('@/widgets/tab-profile-settings').then((m) => ({
         default: m.ProfileSettingsTab,
       }))
     ),
   },
   {
     render: lazy(() =>
-      import('../ui/tabs/interface.tab.edit').then((m) => ({
-        default: m.InterfaceEdit,
+      import('@/widgets/tab-interface-edit').then((m) => ({
+        default: m.InterfaceEditTab,
       }))
     ),
   },
 
   {
     render: lazy(() =>
-      import('../ui/tabs/sessions.tab').then((m) => ({
-        default: m.Sessions,
+      import('@/widgets/tab-sessions').then((m) => ({
+        default: m.SessionsTab,
       }))
     ),
   },
