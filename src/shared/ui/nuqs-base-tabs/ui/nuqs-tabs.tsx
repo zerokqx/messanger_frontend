@@ -30,6 +30,8 @@ interface NuqsTabsProps<
   initialTab: keyof W;
 }
 
+//=====================================================================//
+
 export function NuqsTabs<
   W extends Record<string, NuqsTabsTab<I18N>>,
   I18N extends keyof Resources,
