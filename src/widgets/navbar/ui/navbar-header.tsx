@@ -8,36 +8,66 @@ import {
   useMantineColorScheme,
   type TextInputProps,
 } from '@mantine/core';
-import { Settings, UserRound, Users, Home, ArrowLeft } from 'lucide-react';
+import {
+  Settings,
+  UserRound,
+  Users,
+  Home,
+  ArrowLeft,
+  User,
+  ShieldPlus,
+  Palette,
+} from 'lucide-react';
 import { MatchRoute, useMatch, useRouter } from '@tanstack/react-router';
 import { useNuqsTab } from '@/shared/ui/nuqs-base-tabs';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, MotionConfig } from 'motion/react';
+import { QuickLinks, type QuickLink } from './quick-links';
+const panelVariants = {
+  initial: (direction = 1) => ({ x: -400 }),
+  animate: { x: 0 },
+  exit: (direction = 1) => ({ x: 400 }),
+};
+const panelTransition = {
+  type: 'spring',
+  stiffness: 420,
+  damping: 38,
+  mass: 0.9,
+};
+const mainQuickLinksHidden = ['profile', 'search', 'settings'];
 
+const quickTabs = [
+  { value: 'main', label: 'Main', icon: <Home /> },
+  { value: 'contacts', label: 'Contacts', icon: <Users /> },
+  { value: 'profile', label: 'Profile', icon: <UserRound /> },
+  { value: 'settings', label: 'Settings', icon: <Settings /> },
+];
+
+const quickTabsSettings: QuickLink[] = [
+  { value: 'main', label: 'Main', icon: <ArrowLeft /> },
+  { value: 'interface', label: 'Interface', icon: <Palette /> },
+  { value: 'sessions', label: 'Sessions', icon: <ShieldPlus /> },
+];
 export const NavbarHeader = ({
   input,
 }: {
   input?: Partial<TextInputProps>;
 }) => {
-  const [tabNuqsSettings] = useNuqsTab('tsettings');
+  const [tabNuqsSettings, setNuqsTabSettings] = useNuqsTab('tsettings');
   const [tabNuqs, setTab] = useNuqsTab('tnavbar');
   const route = useRouter();
+  const isSettings = tabNuqs === 'settings';
+  const isSettingsInner = isSettings && tabNuqsSettings !== 'main';
+  const showMainPanel =
+    !isSettings || tabNuqsSettings === 'main' || tabNuqs !== 'settings';
+  const showSettingsPanel = isSettingsInner;
   const { colorScheme } = useMantineColorScheme();
-
-  const quickTabs = [
-    { value: 'main', label: 'Main', icon: Home },
-    { value: 'contacts', label: 'Contacts', icon: Users },
-    { value: 'profile', label: 'Profile', icon: UserRound },
-    { value: 'settings', label: 'Settings', icon: Settings },
-  ];
 
   return (
     <motion.div exit={{ y: -100 }} animate={{ y: [-100, 0] }}>
-      <Stack>
+      <Stack gap={'0'}>
         <Group p="xs" wrap="nowrap">
           <AnimatePresence initial={false}>
-            {(tabNuqs === 'search' ||
-              tabNuqs === 'profile' ||
-              tabNuqsSettings !== 'main') && (
+            {tabNuqs === 'search' && (
               <motion.div
                 key="button-back"
                 initial={{ scale: 0, opacity: 0 }}
@@ -48,7 +78,7 @@ export const NavbarHeader = ({
                 <ActionIcon
                   bdrs="xl"
                   variant="light"
-                  onClick={() => route.history.back()}
+                  onClick={() => setTab('main')}
                   aria-label="Назад"
                 >
                   <ArrowLeft />
@@ -64,49 +94,21 @@ export const NavbarHeader = ({
             {...input}
           />
         </Group>
+        {showMainPanel && (
+          <QuickLinks
+            activeValue={tabNuqs}
+            onClickLink={(v) => void setTab(v)}
+            links={quickTabs}
+          />
+        )}
 
-        <AnimatePresence mode="popLayout">
-          {tabNuqs !== 'search' && tabNuqs !== 'profile' && (
-            <motion.div
-              key="tabs-panel"
-              initial={{
-                y: 0,
-              }}
-              animate={{ y: [-400, 0], opacity: 1 }}
-              exit={{ y: -400, opacity: 0 }}
-            >
-              <Group
-                bg={colorScheme === 'dark' ? 'dark' : 'gray.1'}
-                p={'xs'}
-                justify="space-evenly"
-              >
-                {quickTabs.map((t) => {
-                  const Icon = t.icon;
-                  const active = tabNuqs === t.value;
-
-                  return (
-                    <Tooltip
-                      key={t.value}
-                      label={t.label}
-                      openDelay={800}
-                      withArrow
-                    >
-                      <ActionIcon
-                        variant={active ? 'filled' : 'light'}
-                        color={active ? 'blue' : 'gray'}
-                        radius="xl"
-                        size="lg"
-                        onClick={() => setTab(t.value, { history: 'push' })}
-                      >
-                        <Icon size={18} />
-                      </ActionIcon>
-                    </Tooltip>
-                  );
-                })}
-              </Group>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {showSettingsPanel && (
+          <QuickLinks
+            activeValue={tabNuqsSettings}
+            onClickLink={(v) => setNuqsTabSettings(v)}
+            links={quickTabsSettings}
+          />
+        )}
       </Stack>
     </motion.div>
   );

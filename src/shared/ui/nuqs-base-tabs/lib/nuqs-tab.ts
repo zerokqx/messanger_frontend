@@ -7,7 +7,7 @@ export function useNuqsTab<T extends string>(
   defaultValue: T = '' as T
 ) {
   return useQueryState<T>(key, {
-    history: 'push',
+    history: 'replace',
     defaultValue,
   });
 }

@@ -9,7 +9,7 @@ import {
   NuqsTabsNavigate,
   type NuqsTabsTab,
 } from '@/shared/ui/nuqs-base-tabs';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import { SkeletonProfile } from '@/entities/user';
 import { InterfaceEditTab } from '@/widgets/tab-interface-edit';
 
@@ -80,23 +80,6 @@ const tabs: Record<string, NuqsTabsTab<'navbar'>> = {
             initialTab="main"
             i18nGroup="settings"
             queryName="tsettings"
-            children={({ currentTab, tabs }) => (
-              <AnimatePresence mode="popLayout">
-                <Box
-                  component={motion.div}
-                  p={'xs'}
-                  animate={{
-                    zIndex: 200,
-                    x: [-500, 0],
-                    opacity: [0, 1],
-                  }}
-                  key={currentTab}
-                  exit={{ x: 500, opacity: 0 }}
-                >
-                  {tabs[currentTab]?.component}
-                </Box>
-              </AnimatePresence>
-            )}
             tabs={{
               main: {
                 i18n: 'main',
@@ -160,31 +143,39 @@ function RouteComponent() {
         <Outlet />
       </AppShell.Main>
       <Suspense>
-        <LazyAppShellNavbar>
-          <NuqsTabs
-            i18nGroup="navbar"
-            queryName="tnavbar"
-            children={({ currentTab, tabs }) => (
-              <AnimatePresence mode="popLayout">
-                <Box
-                  component={motion.div}
-                  p={'xs'}
-                  animate={{
-                    zIndex: 200,
-                    x: [-500, 0],
-                    opacity: [0, 1],
-                  }}
-                  key={currentTab}
-                  exit={{ x: 500, opacity: 0 }}
-                >
-                  {tabs[currentTab]?.component}
-                </Box>
-              </AnimatePresence>
-            )}
-            initialTab="main"
-            tabs={tabs}
-          />
-        </LazyAppShellNavbar>
+        <MotionConfig
+          transition={{
+            type: 'spring',
+            stiffness: 50,
+            mass: 0.5,
+          }}
+        >
+          <LazyAppShellNavbar>
+            <NuqsTabs
+              i18nGroup="navbar"
+              queryName="tnavbar"
+              children={({ currentTab, tabs }) => (
+                <AnimatePresence mode="popLayout">
+                  <Box
+                    initial={false}
+                    component={motion.div}
+                    p={'xs'}
+                    animate={{
+                      zIndex: 200,
+                      x: [-500, 0],
+                    }}
+                    key={currentTab}
+                    exit={{ x: 500 }}
+                  >
+                    {tabs[currentTab]?.component}
+                  </Box>
+                </AnimatePresence>
+              )}
+              initialTab="main"
+              tabs={tabs}
+            />
+          </LazyAppShellNavbar>
+        </MotionConfig>
       </Suspense>
     </AppShell>
   );

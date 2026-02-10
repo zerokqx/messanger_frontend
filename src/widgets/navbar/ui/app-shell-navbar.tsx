@@ -25,27 +25,19 @@ export const AppShellNavbarWidget = ({
         overflow: 'clip',
       }}
     >
-      <MotionConfig
-        transition={{
-          type: 'spring',
-          stiffness: 50,
-          mass: 0.5,
-        }}
-      >
-        <NuqsTabsNavigate
-          queryKey="tnavbar"
-          children={(set) => (
-            <NavbarHeader
-              input={{
-                onFocus: () => {
-                  void set('search');
-                },
-              }}
-            />
-          )}
-        />
-        {children}
-      </MotionConfig>
+      <NuqsTabsNavigate
+        queryKey="tnavbar"
+        children={(set) => (
+          <NavbarHeader
+            input={{
+              onFocus: () => {
+                void set('search');
+              },
+            }}
+          />
+        )}
+      />
+      {children}
     </AppShellNavbar>
   );
 };
