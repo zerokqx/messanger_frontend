@@ -18,6 +18,7 @@ export const NavbarHeader = ({
 }: {
   input?: Partial<TextInputProps>;
 }) => {
+  const [tabNuqsSettings] = useNuqsTab('tsettings');
   const [tabNuqs, setTab] = useNuqsTab('tnavbar');
   const route = useRouter();
   const { colorScheme } = useMantineColorScheme();
@@ -34,7 +35,9 @@ export const NavbarHeader = ({
       <Stack>
         <Group p="xs" wrap="nowrap">
           <AnimatePresence initial={false}>
-            {(tabNuqs === 'search' || tabNuqs === 'profile') && (
+            {(tabNuqs === 'search' ||
+              tabNuqs === 'profile' ||
+              tabNuqsSettings !== 'main') && (
               <motion.div
                 key="button-back"
                 initial={{ scale: 0, opacity: 0 }}

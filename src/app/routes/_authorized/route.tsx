@@ -1,12 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { AppShell, Box, Text, useMantineTheme } from '@mantine/core';
+import { AppShell, Box, Button, Text, useMantineTheme } from '@mantine/core';
 
 import { Outlet } from '@tanstack/react-router';
 import { Suspense, lazy, useMemo } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { NuqsTabs, type NuqsTabsTab } from '@/shared/ui/nuqs-base-tabs';
+import {
+  NuqsTabs,
+  NuqsTabsNavigate,
+  type NuqsTabsTab,
+} from '@/shared/ui/nuqs-base-tabs';
 import { AnimatePresence, motion } from 'motion/react';
 import { SkeletonProfile } from '@/entities/user';
+import { InterfaceEditTab } from '@/widgets/tab-interface-edit';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -40,46 +45,90 @@ export const Route = createFileRoute('/_authorized')({
   component: RouteComponent,
 });
 
+const tabs: Record<string, NuqsTabsTab<'navbar'>> = {
+  search: {
+    i18n: 'search',
+    component: (
+      <Suspense>
+        <LazySearchTab />
+      </Suspense>
+    ),
+  },
+  main: { i18n: 'main', component: <Text>Hello world</Text> },
+  contacts: {
+    i18n: 'contacts',
+    component: (
+      <Suspense>
+        <LazyContactsList />
+      </Suspense>
+    ),
+  },
+  profile: {
+    i18n: 'profile',
+    component: (
+      <Suspense fallback={<SkeletonProfile />}>
+        <LazyProfileTab />
+      </Suspense>
+    ),
+  },
+  settings: {
+    i18n: 'settings',
+    component: (
+      <Suspense>
+        <LazySettingsTab>
+          <NuqsTabs
+            initialTab="main"
+            i18nGroup="settings"
+            queryName="tsettings"
+            children={({ currentTab, tabs }) => (
+              <AnimatePresence mode="popLayout">
+                <Box
+                  component={motion.div}
+                  p={'xs'}
+                  animate={{
+                    zIndex: 200,
+                    x: [-500, 0],
+                    opacity: [0, 1],
+                  }}
+                  key={currentTab}
+                  exit={{ x: 500, opacity: 0 }}
+                >
+                  {tabs[currentTab]?.component}
+                </Box>
+              </AnimatePresence>
+            )}
+            tabs={{
+              main: {
+                i18n: 'main',
+                component: (
+                  <NuqsTabsNavigate
+                    queryKey="tsettings"
+                    children={(set) => (
+                      <Button
+                        onClick={() => {
+                          set('interface');
+                        }}
+                        variant="light"
+                      >
+                        Интерфейс
+                      </Button>
+                    )}
+                  />
+                ),
+              },
+              interface: {
+                i18n: 'interface',
+                component: <InterfaceEditTab />,
+              },
+            }}
+          />
+        </LazySettingsTab>
+      </Suspense>
+    ),
+  },
+};
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
-  const tabs = useMemo(
-    () => ({
-      search: {
-        i18n: 'search',
-        component: (
-          <Suspense>
-            <LazySearchTab />
-          </Suspense>
-        ),
-      },
-      main: { i18n: 'main', component: <Text>Hello world</Text> },
-      contacts: {
-        i18n: 'contacts',
-        component: (
-          <Suspense>
-            <LazyContactsList />
-          </Suspense>
-        ),
-      },
-      profile: {
-        i18n: 'profile',
-        component: (
-          <Suspense fallback={<SkeletonProfile />}>
-            <LazyProfileTab />
-          </Suspense>
-        ),
-      },
-      settings: {
-        i18n: 'settings',
-        component: (
-          <Suspense>
-            <LazySettingsTab />
-          </Suspense>
-        ),
-      },
-    }),
-    []
-  );
   const t = useMantineTheme();
   return (
     <AppShell
@@ -133,7 +182,7 @@ function RouteComponent() {
               </AnimatePresence>
             )}
             initialTab="main"
-            tabs={tabs as Record<string, NuqsTabsTab<'navbar'>>}
+            tabs={tabs}
           />
         </LazyAppShellNavbar>
       </Suspense>

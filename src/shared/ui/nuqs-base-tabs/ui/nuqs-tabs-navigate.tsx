@@ -1,4 +1,4 @@
-import { Children, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { useNuqsTab } from '../lib';
 import type { NuqsTabKey } from '../lib/nuqs-tab';
 import type { Options } from 'nuqs';
