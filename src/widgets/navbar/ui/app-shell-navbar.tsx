@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { AppShellNavbar, Center, Loader, Text } from '@mantine/core';
 import { NavbarHeader } from './navbar-header';
 import { TabsNavigate } from '@/shared/ui/query-tabs';
-import { MotionConfig } from 'motion/react';
+import { motion, MotionConfig } from 'motion/react';
 
 interface AppShellNavbarWidgetProps {
   children?: ReactNode;
