@@ -1,5 +1,5 @@
 import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
-import { Blockquote, Text } from '@mantine/core';
+import { Blockquote, Skeleton, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 export const LazyBio = ({ bio }: { bio: string }) => {
@@ -11,7 +11,7 @@ export const LazyBio = ({ bio }: { bio: string }) => {
   return (
     <Blockquote
       onMouseUp={() => {
-        copy(bio,t('bio'));
+        copy(bio, t('bio'));
       }}
       bdrs={'sm'}
     >
@@ -31,4 +31,7 @@ export const LazyBio = ({ bio }: { bio: string }) => {
       }
     </Blockquote>
   );
+};
+export const BioSkeleton = () => {
+  return <Skeleton animate w={'100%'} h={100} />;
 };

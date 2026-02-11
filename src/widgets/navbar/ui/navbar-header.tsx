@@ -1,73 +1,29 @@
 import { SearchInputWrapper } from '@/features/search';
-import {
-  ActionIcon,
-  Group,
-  SegmentedControl,
-  Stack,
-  Tooltip,
-  useMantineColorScheme,
-  type TextInputProps,
-} from '@mantine/core';
-import {
-  Settings,
-  UserRound,
-  Users,
-  Home,
-  ArrowLeft,
-  User,
-  ShieldPlus,
-  Palette,
-} from 'lucide-react';
-import { MatchRoute, useMatch, useRouter } from '@tanstack/react-router';
-import { useNuqsTab } from '@/shared/ui/nuqs-base-tabs';
-import { AnimatePresence, motion, MotionConfig } from 'motion/react';
-import { QuickLinks, type QuickLink } from './quick-links';
-const panelVariants = {
-  initial: (direction = 1) => ({ x: -400 }),
-  animate: { x: 0 },
-  exit: (direction = 1) => ({ x: 400 }),
-};
-const panelTransition = {
-  type: 'spring',
-  stiffness: 420,
-  damping: 38,
-  mass: 0.9,
-};
-const mainQuickLinksHidden = ['profile', 'search', 'settings'];
+import { ActionIcon, Group, Stack, type TextInputProps } from '@mantine/core';
+import { ArrowLeft } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { QuickLinks } from './quick-links';
+import { tabs } from '@/shared/ui/query-tabs';
+import { quickTabs, quickTabsSettings } from '../config/tabs';
+import { QuickLinksBar } from './quick-links-bar';
 
-const quickTabs = [
-  { value: 'main', label: 'Main', icon: <Home /> },
-  { value: 'contacts', label: 'Contacts', icon: <Users /> },
-  { value: 'profile', label: 'Profile', icon: <UserRound /> },
-  { value: 'settings', label: 'Settings', icon: <Settings /> },
-];
-
-const quickTabsSettings: QuickLink[] = [
-  { value: 'main', label: 'Main', icon: <ArrowLeft /> },
-  { value: 'interface', label: 'Interface', icon: <Palette /> },
-  { value: 'sessions', label: 'Sessions', icon: <ShieldPlus /> },
-];
 export const NavbarHeader = ({
   input,
 }: {
   input?: Partial<TextInputProps>;
 }) => {
-  const [tabNuqsSettings, setNuqsTabSettings] = useNuqsTab('tsettings');
-  const [tabNuqs, setTab] = useNuqsTab('tnavbar');
-  const route = useRouter();
-  const isSettings = tabNuqs === 'settings';
-  const isSettingsInner = isSettings && tabNuqsSettings !== 'main';
-  const showMainPanel =
-    !isSettings || tabNuqsSettings === 'main' || tabNuqs !== 'settings';
-  const showSettingsPanel = isSettingsInner;
-  const { colorScheme } = useMantineColorScheme();
+  const currentSettings = tabs.useTabs('tsettings');
+  const currentNavbar = tabs.useTabs('tnavbar');
+  const showSettingsPanel =
+    currentNavbar === 'settings' && currentSettings !== 'main';
+  const showMainPanel = !showSettingsPanel && currentNavbar !== 'profile';
 
   return (
     <motion.div exit={{ y: -100 }} animate={{ y: [-100, 0] }}>
       <Stack gap={'0'}>
         <Group p="xs" wrap="nowrap">
-          <AnimatePresence initial={false}>
-            {tabNuqs === 'search' && (
+          <AnimatePresence mode="popLayout" initial={false}>
+            {(currentNavbar === 'search' || currentNavbar === 'profile') && (
               <motion.div
                 key="button-back"
                 initial={{ scale: 0, opacity: 0 }}
@@ -78,7 +34,7 @@ export const NavbarHeader = ({
                 <ActionIcon
                   bdrs="xl"
                   variant="light"
-                  onClick={() => setTab('main')}
+                  onClick={() => tabs.tabsHistoryAction.doBack('tnavbar')}
                   aria-label="Назад"
                 >
                   <ArrowLeft />
@@ -86,29 +42,23 @@ export const NavbarHeader = ({
               </motion.div>
             )}
           </AnimatePresence>
-
-          <SearchInputWrapper
-            styles={{ input: { borderRadius: '100px' } }}
-            bdrs={'xl'}
-            flex={1}
-            {...input}
-          />
+          <motion.div layout style={{ flex: 1 }}>
+            <SearchInputWrapper
+              styles={{ input: { borderRadius: '100px' } }}
+              bdrs={'xl'}
+              flex={1}
+              {...input}
+            />
+          </motion.div>
         </Group>
-        {showMainPanel && (
-          <QuickLinks
-            activeValue={tabNuqs}
-            onClickLink={(v) => void setTab(v)}
-            links={quickTabs}
-          />
-        )}
-
-        {showSettingsPanel && (
-          <QuickLinks
-            activeValue={tabNuqsSettings}
-            onClickLink={(v) => setNuqsTabSettings(v)}
-            links={quickTabsSettings}
-          />
-        )}
+        <QuickLinksBar
+          {...{
+            showMainPanel,
+            showSettingsPanel,
+            currentNavbar,
+            currentSettings,
+          }}
+        />
       </Stack>
     </motion.div>
   );
