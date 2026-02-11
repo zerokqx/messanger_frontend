@@ -11,6 +11,7 @@ import { InterfaceEditTab } from '@/widgets/tab-interface-edit';
 import type { TabsObject } from '@/shared/ui/query-tabs';
 import { Palette, ShieldPlus } from 'lucide-react';
 import { SessionsTab } from '@/widgets/tab-sessions';
+import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -121,6 +122,7 @@ const navbarTabs: TabsObject<'tnavbar', 'navbar'> = {
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
+  const animationStyle = useSettingsStore((s) => s.data.animations);
   return (
     <AppShell
       navbar={{
@@ -153,9 +155,8 @@ function RouteComponent() {
       </AppShell.Main>
       <MotionConfig
         transition={{
-          type: 'spring',
-          stiffness: 50,
-          mass: 0.5,
+          type: animationStyle,
+          mass: 0.4,
         }}
       >
         <tabs.TabsInit queryKey={'tnavbar'} initialTab="main">
@@ -166,15 +167,12 @@ function RouteComponent() {
                 wrapper={(component, current) => (
                   <AnimatePresence mode="popLayout">
                     <Box
-                      initial={false}
                       component={motion.div}
                       p={'xs'}
-                      animate={{
-                        zIndex: 200,
-                        x: [-500, 0],
-                      }}
                       key={current}
-                      exit={{ x: 500 }}
+                      initial={{ x: '-100%', opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: '100%', opacity: 0 }}
                     >
                       <Suspense>{component}</Suspense>
                     </Box>

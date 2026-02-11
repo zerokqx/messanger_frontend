@@ -3,7 +3,7 @@ import type { IProfileContext } from '@/entities/user/model/types/profile-contex
 import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 import { IconButton } from '@/shared/ui/buttons';
 import { LabelBox, Label } from '@/shared/ui/lables';
-import { Group } from '@mantine/core';
+import { Group, Skeleton } from '@mantine/core';
 import { Rating as MantineRating } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
@@ -28,4 +28,8 @@ export const LazyRating = ({
       </LabelBox>
     </IconButton>
   );
+};
+
+export const RatingSkeleton = () => {
+  return <Skeleton h={50} w={50} />;
 };
