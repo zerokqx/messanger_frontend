@@ -4,5 +4,10 @@
   "profile_settings": "Настройки профиля",
   "sessions": "Сессии",
   "toggle_border": "Обводка элементов",
-  "toggle_border_description": "Отключает или включает обводку на некоторых элементах."
+  "toggle_border_description": "Отключает или включает обводку на некоторых элементах.",
+  "contacts": "Контакты",
+  "profile": "Профиль",
+  "settings": "Настройки",
+  "keyframes": "Кейфреймы",
+  "spring": "Пружина"
 }
