@@ -8,5 +8,6 @@
   "revoke_text_all": "Are you sure you want to end all sessions except the current one?",
   "revoke_text_one": "Are you sure you want to end the selected session?",
   "revoke_title_one": "Session termination",
-  "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
+  "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions.",
+  "sessions_not_found": "No active sessions"
 }

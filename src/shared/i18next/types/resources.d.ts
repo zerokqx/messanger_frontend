@@ -2,6 +2,14 @@ interface Resources {
   "apiErrors": {
     "contact_update": "Couldn't update contact"
   },
+  "contact": {
+    "add": "Add",
+    "in-contact": "In contacts"
+  },
+  "contact-menu": {
+    "contact": "Contact",
+    "contact-add": "Add to contacts"
+  },
   "buttonLabels": {
     "create": "Create",
     "enter": "Enter",
@@ -58,6 +66,7 @@ interface Resources {
     "revoke_text_all": "Are you sure you want to end all sessions except the current one?",
     "revoke_text_one": "Are you sure you want to end the selected session?",
     "revoke_title_one": "Session termination",
+    "sessions_not_found": "No active sessions",
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
   "settingsLabels": {
@@ -83,10 +92,18 @@ interface Resources {
   "sideBar": {
     "dark_theme": "Dark theme",
     "interface_edit": "Inerface",
+    "keyframes": "Keyframes",
     "profile_settings": "Profile settings",
+    "profile": "Profile",
     "sessions": "Sessions",
+    "settings": "Settings",
+    "spring": "Spring",
     "toggle_border": "Outline of the elements",
-    "toggle_border_description": "Disables or enables the stroke on some elements."
+    "toggle_border_description": "Disables or enables the stroke on some elements.",
+    "contacts": "Contacts"
+  },
+  "settings-tab": {
+    "logout": "Log out"
   },
   "texts": {
     "enter_to_account_for_communicate_friend": "Log in to your account to continue chatting with your friends",
