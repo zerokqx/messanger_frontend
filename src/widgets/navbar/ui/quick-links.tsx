@@ -1,31 +1,31 @@
-import {
-  ActionIcon,
-  Group,
-  Tooltip,
-  useMantineColorScheme,
-} from '@mantine/core';
-import { ArrowLeft } from 'lucide-react';
-import { AnimatePresence, motion, type MotionProps } from 'motion/react';
-import type { ReactNode } from 'react';
+import type {
+  TabsDeclaration,
+  TabsDeclarationKeys,
+} from '@/shared/ui/query-tabs';
+import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
+import { type ReactNode } from 'react';
 
 export interface QuickLink {
   label: string;
   icon: ReactNode;
   value: string;
 }
-interface QuickLinksProps {
-  onClickLink?: (v: string) => void;
-  motionDivProps?: MotionProps;
-  links: QuickLink[];
+interface QuickLinksProps<QuickLinksGeneric extends QuickLink[]> {
+  onClickLink?: (v: QuickLinksGeneric[number]['value']) => void;
+  links: QuickLinksGeneric;
   activeValue?: string;
 }
 
-export const QuickLinks = ({
+export type QuickLinksData<QueryKey extends TabsDeclarationKeys> = {
+  label: string;
+  value: TabsDeclaration[QueryKey];
+  icon: ReactNode;
+};
+export const QuickLinks = <QuickLinksGeneric extends QuickLink[]>({
   activeValue,
-  motionDivProps,
   onClickLink,
   links,
-}: QuickLinksProps) => {
+}: QuickLinksProps<QuickLinksGeneric>) => {
   const { colorScheme } = useMantineColorScheme();
   return (
     <Group
@@ -39,7 +39,6 @@ export const QuickLinks = ({
           <ActionIcon
             key={t.value}
             variant={active ? 'filled' : 'light'}
-            color={active ? 'blue' : 'gray'}
             radius="xl"
             size="lg"
             onClick={() => {

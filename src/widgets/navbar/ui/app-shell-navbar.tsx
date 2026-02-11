@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { AppShellNavbar, Center, Loader, Text } from '@mantine/core';
 import { NavbarHeader } from './navbar-header';
-import { NuqsTabsNavigate } from '@/shared/ui/nuqs-base-tabs';
+import { TabsNavigate } from '@/shared/ui/query-tabs';
 import { MotionConfig } from 'motion/react';
 
 interface AppShellNavbarWidgetProps {
@@ -20,18 +20,14 @@ export const AppShellNavbarWidget = ({
   );
 
   return (
-    <AppShellNavbar
-      style={{
-        overflow: 'clip',
-      }}
-    >
-      <NuqsTabsNavigate
+    <AppShellNavbar style={{ overflow: 'auto' }}>
+      <TabsNavigate
         queryKey="tnavbar"
-        children={(set) => (
+        children={({ push }) => (
           <NavbarHeader
             input={{
               onFocus: () => {
-                void set('search');
+                push('search');
               },
             }}
           />

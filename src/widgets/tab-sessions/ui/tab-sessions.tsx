@@ -4,9 +4,7 @@ import type { SessionActionContextType } from '@/entities/session/model/session-
 import { useGetSessionsSuspenseQuery } from '@/entities/session/model/get-sessions.query';
 import { SideBarTaber } from '@/widgets/side-bar/model/tab';
 import { useSessionRevokeAll } from '@/features/session/revoke-all';
-import {
-  confirmModalForRevokeAllSessions,
-} from '@/features/session/revoke-all/ui/modal.confirm';
+import { confirmModalForRevokeAllSessions } from '@/features/session/revoke-all/ui/modal.confirm';
 import {
   confirmModalForRevokeSession,
   useRevokeSession,
@@ -38,21 +36,17 @@ export const SessionsTab = () => {
     }),
     [revokeSessionMutation, revokeSessionsAllMutation]
   );
-  return (
-    <SideBarTaber.Panel value="sessions">
-      {isLoading ? (
-        <Center mih={400}>
-          <Loader />
-        </Center>
-      ) : (
-        <SessionActionContext value={actions}>
-          {sessionsFiltred.length === 0 && (
-            <Alert icon={<SearchX />}>{t('sessions_not_found')}</Alert>
-          )}
-
-          <SessionList sessions={sessionsFiltred} />
-        </SessionActionContext>
+  return isLoading ? (
+    <Center mih={400}>
+      <Loader />
+    </Center>
+  ) : (
+    <SessionActionContext value={actions}>
+      {sessionsFiltred.length === 0 && (
+        <Alert icon={<SearchX />}>{t('sessions_not_found')}</Alert>
       )}
-    </SideBarTaber.Panel>
+
+      <SessionList sessions={sessionsFiltred} />
+    </SessionActionContext>
   );
 };

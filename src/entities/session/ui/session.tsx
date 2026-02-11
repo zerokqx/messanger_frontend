@@ -24,7 +24,7 @@ export const Session: SessionComponent = ({ session, children, gridProps }) => {
       renderRoot={(props) => (
         <motion.div
           {...props}
-          initial={{ scale: 0.5, opacity: 0.5 }}
+          initial={{ scale: 0.9, opacity: 0.3 }}
           whileInView={{ scale: 1, opacity: 1 }}
         />
       )}

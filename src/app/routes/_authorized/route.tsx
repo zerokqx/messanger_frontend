@@ -2,16 +2,15 @@ import { createFileRoute } from '@tanstack/react-router';
 import { AppShell, Box, Button, Text, useMantineTheme } from '@mantine/core';
 
 import { Outlet } from '@tanstack/react-router';
-import { Suspense, lazy, useMemo } from 'react';
+import { Suspense, lazy } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import {
-  NuqsTabs,
-  NuqsTabsNavigate,
-  type NuqsTabsTab,
-} from '@/shared/ui/nuqs-base-tabs';
+import { tabs } from '@/shared/ui/query-tabs';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import { SkeletonProfile } from '@/entities/user';
 import { InterfaceEditTab } from '@/widgets/tab-interface-edit';
+import type { TabsObject } from '@/shared/ui/query-tabs';
+import { Palette, ShieldPlus } from 'lucide-react';
+import { SessionsTab } from '@/widgets/tab-sessions';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -45,63 +44,72 @@ export const Route = createFileRoute('/_authorized')({
   component: RouteComponent,
 });
 
-const tabs: Record<string, NuqsTabsTab<'navbar'>> = {
-  search: {
-    i18n: 'search',
-    component: (
-      <Suspense>
-        <LazySearchTab />
-      </Suspense>
-    ),
-  },
-  main: { i18n: 'main', component: <Text>Hello world</Text> },
+const navbarTabs: TabsObject<'tnavbar', 'navbar'> = {
+  main: { i18n: 'main', render: <Text>Hello world</Text> },
+
   contacts: {
     i18n: 'contacts',
-    component: (
+    render: (
       <Suspense>
         <LazyContactsList />
       </Suspense>
     ),
   },
-  profile: {
-    i18n: 'profile',
-    component: (
-      <Suspense fallback={<SkeletonProfile />}>
-        <LazyProfileTab />
+  search: {
+    i18n: 'search',
+    render: (
+      <Suspense>
+        <LazySearchTab />
       </Suspense>
     ),
   },
+  profile: {
+    i18n: 'profile',
+    render: <LazyProfileTab />,
+  },
   settings: {
     i18n: 'settings',
-    component: (
+    render: (
       <Suspense>
         <LazySettingsTab>
-          <NuqsTabs
-            initialTab="main"
+          <tabs.Tabs
             i18nGroup="settings"
             queryName="tsettings"
             tabs={{
+              sessions: {
+                i18n: 'dw',
+                render: <SessionsTab />,
+              },
               main: {
                 i18n: 'main',
-                component: (
-                  <NuqsTabsNavigate
-                    queryKey="tsettings"
-                    children={(set) => (
-                      <Button
-                        onClick={() => {
-                          set('interface');
-                        }}
-                        variant="light"
-                      >
-                        Интерфейс
-                      </Button>
-                    )}
-                  />
+                render: (api) => (
+                  <>
+                    <Button
+                      leftSection={<Palette />}
+                      justify="left"
+                      bdrs={0}
+                      variant="subtle"
+                      onClick={() => api.doPush('tsettings', 'interface')}
+                    >
+                      Интерфейс
+                    </Button>
+
+                    <Button
+                      leftSection={<ShieldPlus />}
+                      justify="left"
+                      bdrs={0}
+                      variant="subtle"
+                      onClick={() => api.doPush('tsettings', 'sessions')}
+                    >
+                      Сессии
+                    </Button>
+                  </>
                 ),
               },
+
               interface: {
                 i18n: 'interface',
-                component: <InterfaceEditTab />,
+                render: <InterfaceEditTab />,
               },
             }}
           />
@@ -117,6 +125,7 @@ function RouteComponent() {
     <AppShell
       navbar={{
         width: 400,
+
         breakpoint: 'sm',
       }}
       styles={{
@@ -142,41 +151,42 @@ function RouteComponent() {
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
-      <Suspense>
-        <MotionConfig
-          transition={{
-            type: 'spring',
-            stiffness: 50,
-            mass: 0.5,
-          }}
-        >
-          <LazyAppShellNavbar>
-            <NuqsTabs
-              i18nGroup="navbar"
-              queryName="tnavbar"
-              children={({ currentTab, tabs }) => (
-                <AnimatePresence mode="popLayout">
-                  <Box
-                    initial={false}
-                    component={motion.div}
-                    p={'xs'}
-                    animate={{
-                      zIndex: 200,
-                      x: [-500, 0],
-                    }}
-                    key={currentTab}
-                    exit={{ x: 500 }}
-                  >
-                    {tabs[currentTab]?.component}
-                  </Box>
-                </AnimatePresence>
-              )}
-              initialTab="main"
-              tabs={tabs}
-            />
-          </LazyAppShellNavbar>
-        </MotionConfig>
-      </Suspense>
+      <MotionConfig
+        transition={{
+          type: 'spring',
+          stiffness: 50,
+          mass: 0.5,
+        }}
+      >
+        <tabs.TabsInit queryKey={'tnavbar'} initialTab="main">
+          <tabs.TabsInit queryKey="tsettings" initialTab="main">
+            <LazyAppShellNavbar>
+              <tabs.Tabs
+                i18nGroup="navbar"
+                wrapper={(component, current) => (
+                  <AnimatePresence mode="popLayout">
+                    <Box
+                      initial={false}
+                      component={motion.div}
+                      p={'xs'}
+                      animate={{
+                        zIndex: 200,
+                        x: [-500, 0],
+                      }}
+                      key={current}
+                      exit={{ x: 500 }}
+                    >
+                      <Suspense>{component}</Suspense>
+                    </Box>
+                  </AnimatePresence>
+                )}
+                queryName="tnavbar"
+                tabs={navbarTabs}
+              />
+            </LazyAppShellNavbar>
+          </tabs.TabsInit>
+        </tabs.TabsInit>
+      </MotionConfig>
     </AppShell>
   );
 }
