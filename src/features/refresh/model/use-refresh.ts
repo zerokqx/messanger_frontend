@@ -28,6 +28,6 @@ export const useRefresh = () => {
         }
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isPending, isExpired, isAuth, mutate, setToken, reEvaluateToken]);
 };

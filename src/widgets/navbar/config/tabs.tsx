@@ -2,7 +2,6 @@ import {
   Settings,
   UserRound,
   Users,
-  Home,
   ArrowLeft,
   ShieldPlus,
   Palette,

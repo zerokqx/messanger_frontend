@@ -2,9 +2,9 @@ import { createStoreAction } from '@/shared/lib/zustand/create-store-action/crea
 import { createStore } from '@colorfy-software/zfy';
 import type { TabsDeclaration, TabsDeclarationKeys } from './tabs-types';
 
-type TabsHistoryClient<K extends TabsDeclarationKeys> = {
+interface TabsHistoryClient<K extends TabsDeclarationKeys> {
   history: [TabsDeclaration[K], ...TabsDeclaration[K][]];
-};
+}
 
 export type TabsHistoryState = Partial<{
   [K in TabsDeclarationKeys]: TabsHistoryClient<K>;
@@ -26,7 +26,7 @@ function getClientOrThrow<K extends TabsDeclarationKeys>(
       `[tabsHistory] Client not initialized for key "${String(queryKey)}". Call initClient first.`
     );
   }
-  return client as TabsHistoryClient<K>;
+  return client;
 }
 
 export const tabsHistoryAction = createStoreAction(

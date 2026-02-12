@@ -4,8 +4,7 @@ import {
 } from '@/features/settings-interface/model/settings-store';
 import type Resources from '@/shared/i18next/types/resources';
 import { ThemeToggle } from '@/shared/ui/theme-toggle';
-import { SideBarTaber } from '@/widgets/side-bar/model/tab';
-import { Select, Stack, Switch, type ComboboxItem } from '@mantine/core';
+import { Select, Stack, type ComboboxItem } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 const animations: (ComboboxItem & {

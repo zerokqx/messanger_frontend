@@ -1,5 +1,5 @@
 import { createBaseUrl } from '../base-url';
-import { createFetcher, createFetcherWithCreateClient } from '../fetcher';
+import { createFetcher } from '../fetcher';
 
 export const userClient = createFetcher({
   clientOptions: {

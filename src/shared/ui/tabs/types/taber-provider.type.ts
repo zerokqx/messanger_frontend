@@ -1,7 +1,5 @@
 import type { UseStateHistoryHandlers } from '@mantine/hooks';
 import type { ReactNode } from 'react';
-
-import type { ArrayValues } from 'type-fest';
 interface TabDataType<V extends string> {
   index: number | undefined;
   name: V | undefined;

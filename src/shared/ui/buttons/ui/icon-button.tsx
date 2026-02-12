@@ -1,4 +1,4 @@
-import { alpha, Button, ThemeIcon, useMantineColorScheme } from '@mantine/core';
+import { Button, useMantineColorScheme } from '@mantine/core';
 import type { IIconButtonProps } from './types/icon-button.types';
 
 export const IconButton = ({ leftSection, ...props }: IIconButtonProps) => {

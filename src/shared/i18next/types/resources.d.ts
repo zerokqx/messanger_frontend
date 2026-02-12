@@ -2,14 +2,6 @@ interface Resources {
   "apiErrors": {
     "contact_update": "Couldn't update contact"
   },
-  "contact": {
-    "add": "Add",
-    "in-contact": "In contacts"
-  },
-  "contact-menu": {
-    "contact": "Contact",
-    "contact-add": "Add to contacts"
-  },
   "buttonLabels": {
     "create": "Create",
     "enter": "Enter",
@@ -17,6 +9,14 @@ interface Resources {
     "retray": "Retray",
     "save": "Save",
     "submit": "Send"
+  },
+  "contact": {
+    "add": "Add",
+    "in-contact": "In contacts"
+  },
+  "contact-menu": {
+    "contact": "Contact",
+    "contact-add": "Add to contacts"
   },
   "days": {
     "today": "Today"
@@ -69,6 +69,9 @@ interface Resources {
     "sessions_not_found": "No active sessions",
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
+  "settings-tab": {
+    "logout": "Log out"
+  },
   "settingsLabels": {
     "allow_message_forwarding": "Allow message forwarding",
     "allow_messages_from_non_contacts": "Accept messages from strangers",
@@ -90,20 +93,17 @@ interface Resources {
     "title": "Privacy settings"
   },
   "sideBar": {
+    "contacts": "Contacts",
     "dark_theme": "Dark theme",
     "interface_edit": "Inerface",
-    "keyframes": "Keyframes",
-    "profile_settings": "Profile settings",
+    "keyframes": "Linear",
     "profile": "Profile",
+    "profile_settings": "Profile settings",
     "sessions": "Sessions",
     "settings": "Settings",
     "spring": "Spring",
     "toggle_border": "Outline of the elements",
-    "toggle_border_description": "Disables or enables the stroke on some elements.",
-    "contacts": "Contacts"
-  },
-  "settings-tab": {
-    "logout": "Log out"
+    "toggle_border_description": "Disables or enables the stroke on some elements."
   },
   "texts": {
     "enter_to_account_for_communicate_friend": "Log in to your account to continue chatting with your friends",

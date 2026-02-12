@@ -1,7 +1,5 @@
-import { camelCase, capitalize, fromPairs, zip } from 'lodash';
+import { fromPairs, zip } from 'lodash';
 import type { Fn } from '@/shared/types/utils/functions';
-import type { CreateStoreType } from '@colorfy-software/zfy';
-import type { IsAny } from 'type-fest';
 
 type AnyFn = (...args: any[]) => any; // чтобы не потерять конкретные сигнатуры функций
 type TupleKeys<T extends readonly unknown[]> = Extract<keyof T, `${number}`>;

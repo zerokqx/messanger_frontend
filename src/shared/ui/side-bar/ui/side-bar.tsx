@@ -1,11 +1,10 @@
-import { Drawer, useMantineTheme } from '@mantine/core';
+import { Drawer } from '@mantine/core';
 import { useSideBarStore } from '../store/use-menu-store';
 import type { SideBarCompouned } from '../types/side-bar.type';
 import { InfoBlock } from './info-block';
 import { SideItem } from './item';
 
 export const SideBar: SideBarCompouned = ({ children }) => {
-  const t = useMantineTheme();
   const isOpen = useSideBarStore.useIsOpen();
   const close = useSideBarStore.useClose();
   return (

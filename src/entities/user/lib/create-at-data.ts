@@ -10,5 +10,5 @@ export const createdAt = () => {
   return data;
 };
 
-export const createdAtUserSearch = (data: string) => {
+export const createdAtUserSearch = (_data: string) => {
 };

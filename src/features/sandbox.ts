@@ -13,7 +13,7 @@ type Schema<Item extends object> = Record<Lowercase<string>, Paths<Item>>;
 
 const createMap = <Arr extends object[], SchemaGeneric = Schema<Arr[number]>>(
   schema: SchemaGeneric,
-  validations: keyof SchemaGeneric
+  _validations: keyof SchemaGeneric
 ) => {
   console.log(schema);
   console.log(d);

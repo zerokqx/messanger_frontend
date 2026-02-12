@@ -11,9 +11,9 @@ export function useTabs<QueryKey extends TabsDeclarationKeys>(
     return client
       ? (client.history[
           client.history.length - 1
-        ] as TabsDeclaration[QueryKey])
+        ]!)
       : undefined;
   });
 
-  return current as TabsDeclaration[QueryKey];
+  return current!;
 }
