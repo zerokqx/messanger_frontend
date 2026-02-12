@@ -1,5 +1,11 @@
 import { SearchInputWrapper } from '@/features/search';
-import { ActionIcon, Group, Skeleton, Stack, type TextInputProps } from '@mantine/core';
+import {
+  ActionIcon,
+  Group,
+  Skeleton,
+  Stack,
+  type TextInputProps,
+} from '@mantine/core';
 import { ArrowLeft } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { tabs } from '@/shared/ui/query-tabs';
