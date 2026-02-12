@@ -1,4 +1,3 @@
-import { useAuth } from '@/shared/model/auth-provider-context';
 import { RouterProvider } from '@tanstack/react-router';
 import { router } from '../main';
 import { queryClient } from '@/shared/api';

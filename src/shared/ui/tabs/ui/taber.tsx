@@ -1,4 +1,4 @@
-import { Box, Button, Container, Stack, Tabs } from '@mantine/core';
+import { Box, Button, Stack, Tabs } from '@mantine/core';
 import { motion } from 'motion/react';
 import { createTabStore } from '../model';
 import type {

@@ -1,5 +1,3 @@
-import { ar } from 'zod/v4/locales';
-
 // logger.ts
 export const LOG_LEVEL = {
   DEBUG: 0,

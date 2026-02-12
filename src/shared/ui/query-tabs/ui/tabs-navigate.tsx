@@ -24,7 +24,7 @@ export const TabsNavigate = <QueryKey extends TabsDeclarationKeys>({
   const actions = {
     back: () => tabsHistoryAction.doBack(queryKey),
     push: (to: TabsDeclaration[QueryKey]) =>
-      tabsHistoryAction.doPush(queryKey, to),
+      { tabsHistoryAction.doPush(queryKey, to); },
   };
 
   return <Box>{children(actions, current)}</Box>;

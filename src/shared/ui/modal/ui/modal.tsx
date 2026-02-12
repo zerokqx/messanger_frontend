@@ -1,5 +1,5 @@
 import { useModalGlobal } from '@/shared/model/use-modal-store';
-import { Flex, Modal as MantineModal, Stack } from '@mantine/core';
+import { Modal as MantineModal, Stack } from '@mantine/core';
 import type { ModalComponentProps } from '../types';
 export const Modal = ({
   children,

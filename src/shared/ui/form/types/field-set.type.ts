@@ -1,9 +1,7 @@
 import type { AnyFieldApi } from '@tanstack/react-form';
-import type React from 'react';
 import type {
   ChangeEvent,
   ComponentProps,
-  ElementType,
   ReactNode,
 } from 'react';
 

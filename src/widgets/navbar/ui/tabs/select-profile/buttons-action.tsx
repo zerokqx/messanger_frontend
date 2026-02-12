@@ -2,7 +2,6 @@ import { useContactAdd } from '@/features/contact';
 import { successNotify } from '@/shared/lib/notifications/success';
 import type { components } from '@/shared/types/v1';
 import { Stack, Button } from '@mantine/core';
-import type { ComponentProps } from 'react';
 
 export const SelectedProfileButtonAction = ({
   user,

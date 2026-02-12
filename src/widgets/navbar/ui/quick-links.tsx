@@ -16,11 +16,11 @@ interface QuickLinksProps<QuickLinksGeneric extends QuickLink[]> {
   activeValue?: string;
 }
 
-export type QuickLinksData<QueryKey extends TabsDeclarationKeys> = {
+export interface QuickLinksData<QueryKey extends TabsDeclarationKeys> {
   label: string;
   value: TabsDeclaration[QueryKey];
   icon: ReactNode;
-};
+}
 export const QuickLinks = <QuickLinksGeneric extends QuickLink[]>({
   activeValue,
   onClickLink,

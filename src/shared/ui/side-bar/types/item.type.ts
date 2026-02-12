@@ -1,4 +1,3 @@
-import type { GridProps } from '@mantine/core';
 import type { ComponentProps, ReactNode } from 'react';
 
 export interface SideItemProps {

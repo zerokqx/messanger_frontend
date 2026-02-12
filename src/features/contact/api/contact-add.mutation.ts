@@ -1,5 +1,4 @@
 import { $api } from '@/shared/api/repository/$api';
-import { useQueryClient } from '@tanstack/react-query';
 
 export const useContactAdd = () => {
   const mutate = $api.jwtUser.query.useMutation('post', '/contact/add', {

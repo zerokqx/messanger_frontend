@@ -1,5 +1,4 @@
 import { Search } from '@/shared/ui/search';
-import { AppShellTaber } from '../../lib/tab';
 import { If, Then } from 'react-if';
 import { Box } from '@mantine/core';
 import { useSearchStore } from '@/features/search';

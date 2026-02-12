@@ -1,17 +1,26 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { AppShell, Box, Button, Text, useMantineTheme } from '@mantine/core';
+import {
+  AppShell,
+  Box,
+  Button,
+  Center,
+  Loader,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 
 import { Outlet } from '@tanstack/react-router';
 import { Suspense, lazy } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { tabs } from '@/shared/ui/query-tabs';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
-import { SkeletonProfile } from '@/entities/user';
 import { InterfaceEditTab } from '@/widgets/tab-interface-edit';
 import type { TabsObject } from '@/shared/ui/query-tabs';
 import { Palette, ShieldPlus } from 'lucide-react';
 import { SessionsTab } from '@/widgets/tab-sessions';
 import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
+import { ProfileEditTab } from '@/widgets/tab-profile-edit';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -64,56 +73,81 @@ const navbarTabs: TabsObject<'tnavbar', 'navbar'> = {
       </Suspense>
     ),
   },
+  'profile-edit': {
+    i18n: 'profile_edit',
+
+    render: <ProfileEditTab />,
+  },
   profile: {
     i18n: 'profile',
-    render: <LazyProfileTab />,
+    render: (api) => (
+      <Stack h={'100%'}>
+        <LazyProfileTab />
+        <Button
+          onClick={() => {
+            api.doPush('tnavbar', 'profile-edit');
+          }}
+          variant="light"
+        >
+          Изменить
+        </Button>
+      </Stack>
+    ),
   },
   settings: {
     i18n: 'settings',
     render: (
-      <Suspense>
+      <Suspense
+        fallback={
+          <Center>
+            <Loader />
+          </Center>
+        }
+      >
         <LazySettingsTab>
-          <tabs.Tabs
-            i18nGroup="settings"
-            queryName="tsettings"
-            tabs={{
-              sessions: {
-                i18n: 'dw',
-                render: <SessionsTab />,
-              },
-              main: {
-                i18n: 'main',
-                render: (api) => (
-                  <>
-                    <Button
-                      leftSection={<Palette />}
-                      justify="left"
-                      bdrs={0}
-                      variant="subtle"
-                      onClick={() => api.doPush('tsettings', 'interface')}
-                    >
-                      Интерфейс
-                    </Button>
+          <tabs.TabsInit queryKey="tsettings" initialTab="main">
+            <tabs.Tabs
+              i18nGroup="settings"
+              queryName="tsettings"
+              tabs={{
+                sessions: {
+                  i18n: 'dw',
+                  render: <SessionsTab />,
+                },
+                main: {
+                  i18n: 'main',
+                  render: (api) => (
+                    <>
+                      <Button
+                        leftSection={<Palette />}
+                        justify="left"
+                        bdrs={0}
+                        variant="subtle"
+                        onClick={() => { api.doPush('tsettings', 'interface'); }}
+                      >
+                        Интерфейс
+                      </Button>
 
-                    <Button
-                      leftSection={<ShieldPlus />}
-                      justify="left"
-                      bdrs={0}
-                      variant="subtle"
-                      onClick={() => api.doPush('tsettings', 'sessions')}
-                    >
-                      Сессии
-                    </Button>
-                  </>
-                ),
-              },
+                      <Button
+                        leftSection={<ShieldPlus />}
+                        justify="left"
+                        bdrs={0}
+                        variant="subtle"
+                        onClick={() => { api.doPush('tsettings', 'sessions'); }}
+                      >
+                        Сессии
+                      </Button>
+                    </>
+                  ),
+                },
 
-              interface: {
-                i18n: 'interface',
-                render: <InterfaceEditTab />,
-              },
-            }}
-          />
+                interface: {
+                  i18n: 'interface',
+                  render: <InterfaceEditTab />,
+                },
+              }}
+            />
+          </tabs.TabsInit>
         </LazySettingsTab>
       </Suspense>
     ),
@@ -160,29 +194,27 @@ function RouteComponent() {
         }}
       >
         <tabs.TabsInit queryKey={'tnavbar'} initialTab="main">
-          <tabs.TabsInit queryKey="tsettings" initialTab="main">
-            <LazyAppShellNavbar>
-              <tabs.Tabs
-                i18nGroup="navbar"
-                wrapper={(component, current) => (
-                  <AnimatePresence mode="popLayout">
-                    <Box
-                      component={motion.div}
-                      p={'xs'}
-                      key={current}
-                      initial={{ x: '-100%', opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      exit={{ x: '100%', opacity: 0 }}
-                    >
-                      <Suspense>{component}</Suspense>
-                    </Box>
-                  </AnimatePresence>
-                )}
-                queryName="tnavbar"
-                tabs={navbarTabs}
-              />
-            </LazyAppShellNavbar>
-          </tabs.TabsInit>
+          <LazyAppShellNavbar>
+            <tabs.Tabs
+              i18nGroup="navbar"
+              wrapper={(component, current) => (
+                <AnimatePresence mode="popLayout">
+                  <Box
+                    component={motion.div}
+                    p={'xs'}
+                    key={current}
+                    initial={{ x: '-100%', opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: '100%', opacity: 0 }}
+                  >
+                    <Suspense>{component}</Suspense>
+                  </Box>
+                </AnimatePresence>
+              )}
+              queryName="tnavbar"
+              tabs={navbarTabs}
+            />
+          </LazyAppShellNavbar>
         </tabs.TabsInit>
       </MotionConfig>
     </AppShell>

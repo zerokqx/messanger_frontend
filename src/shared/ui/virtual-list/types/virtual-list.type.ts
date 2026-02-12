@@ -1,7 +1,6 @@
 import type { Fn } from '@/shared/types/utils/functions';
 import type { ScrollAreaProps } from '@mantine/core';
-import type { VirtualizerOptions } from '@tanstack/react-virtual';
-import type { ReactNode, RefObject } from 'react';
+import type { ReactNode } from 'react';
 import type { Asyncify } from 'type-fest';
 
 export interface VirtualListProp<D extends unknown[] = unknown[]> {

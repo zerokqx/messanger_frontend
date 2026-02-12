@@ -1,10 +1,8 @@
 import { VirtualList } from '@/shared/ui/virtual-list/ui/virtual-list';
 import { Alert } from '@mantine/core';
-import { useGetUserById } from '@/entities/user';
 import { Ban, CircleSlash } from 'lucide-react';
 import { ContactItem, SkeletonContactItem } from '@/entities/contact';
 import { useContactListState } from '../model/use-contact-list-state';
-import { useGetUserByIdEffects } from '../model/use-get-user-by-id-effects';
 import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { useContactRemove } from '@/features/contact';
 import { pendingNotify } from '@/shared/lib/notifications/pending';

@@ -1,13 +1,14 @@
 import { SearchInputWrapper } from '@/features/search';
-import { ActionIcon, Group, Stack, type TextInputProps } from '@mantine/core';
+import { ActionIcon, Group, Skeleton, Stack, type TextInputProps } from '@mantine/core';
 import { ArrowLeft } from 'lucide-react';
-import { AnimatePresence, motion, MotionConfig } from 'motion/react';
-import { QuickLinks } from './quick-links';
+import { AnimatePresence } from 'motion/react';
 import { tabs } from '@/shared/ui/query-tabs';
-import { quickTabs, quickTabsSettings } from '../config/tabs';
-import { QuickLinksBar } from './quick-links-bar';
-import { useEffect, useRef } from 'react';
+import { lazy, Suspense, useRef } from 'react';
+import * as m from 'motion/react-m';
 
+const LazyQuickLinksBar = lazy(() =>
+  import('./quick-links-bar.tsx').then((m) => ({ default: m.QuickLinksBar }))
+);
 export const NavbarHeader = ({
   input,
 }: {
@@ -18,16 +19,20 @@ export const NavbarHeader = ({
   const currentNavbar = tabs.useTabs('tnavbar');
   const showSettingsPanel =
     currentNavbar === 'settings' && currentSettings !== 'main';
-  const showMainPanel = !showSettingsPanel && currentNavbar !== 'profile';
-  const headerWidth = headerRef.current?.clientWidth ?? 400;
+  const showMainPanel =
+    !showSettingsPanel &&
+    currentNavbar !== 'profile' &&
+    currentNavbar !== 'profile-edit';
 
   return (
-    <motion.div exit={{ y: -100 }} ref={headerRef} animate={{ y: [-100, 0] }}>
+    <m.div exit={{ y: -100 }} ref={headerRef} animate={{ y: [-100, 0] }}>
       <Stack gap={'0'}>
         <Group p="xs" wrap="nowrap">
           <AnimatePresence mode="popLayout" initial={false}>
-            {(currentNavbar === 'search' || currentNavbar === 'profile') && (
-              <motion.div
+            {(currentNavbar === 'search' ||
+              currentNavbar === 'profile' ||
+              currentNavbar === 'profile-edit') && (
+              <m.div
                 key="button-back"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -42,33 +47,35 @@ export const NavbarHeader = ({
                 >
                   <ArrowLeft />
                 </ActionIcon>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
-          <motion.div layout style={{ flex: 1 }}>
+          <m.div layout style={{ flex: 1 }}>
             <SearchInputWrapper
               styles={{ input: { borderRadius: '100px' } }}
               bdrs={'xl'}
               flex={1}
               {...input}
             />
-          </motion.div>
+          </m.div>
         </Group>
-        <QuickLinksBar
-          moitonProps={{
-            exit: {
-              x: '100%',
-              opacity: 0,
-            },
-          }}
-          {...{
-            showMainPanel,
-            showSettingsPanel,
-            currentNavbar,
-            currentSettings,
-          }}
-        />
+        <Suspense fallback={<Skeleton animate h={60} w={'100%'} />}>
+          <LazyQuickLinksBar
+            moitonProps={{
+              exit: {
+                x: '100%',
+                opacity: 0,
+              },
+            }}
+            {...{
+              showMainPanel,
+              showSettingsPanel,
+              currentNavbar,
+              currentSettings,
+            }}
+          />
+        </Suspense>
       </Stack>
-    </motion.div>
+    </m.div>
   );
 };

@@ -1,6 +1,6 @@
 import { usePrevious, useStateHistory } from '@mantine/hooks';
-import { use, useCallback, useEffect, useMemo } from 'react';
-import { useEffectOnce, useLogger } from 'react-use';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useEffectOnce } from 'react-use';
 import { usesSources } from '../lib/uses-sources';
 import type {
   TaberProviderActions,
@@ -34,7 +34,7 @@ export const TaberProvider = <
   const previousTab = usePrevious(current);
   useEffect(() => {
     if (current >= windows.length) handlers.reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [current]);
   useEffect(() => {
     handleChangeTab()?.({
@@ -48,7 +48,7 @@ export const TaberProvider = <
         name: windows[previousTab ?? 0],
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [current, previousTab]);
   useEffectOnce(() => {
     usesSources.add(source);

@@ -1,7 +1,8 @@
-import { AnimatePresence, motion, type MotionProps } from 'motion/react';
+import { AnimatePresence, type MotionProps } from 'motion/react';
 import { QuickLinks } from './quick-links';
 import { tabs } from '@/shared/ui/query-tabs';
 import { quickTabs, quickTabsSettings } from '../config/tabs';
+import * as m from 'motion/react-m';
 
 interface QuickLinksBarProps {
   showMainPanel: boolean;
@@ -20,7 +21,7 @@ export const QuickLinksBar = ({
   return (
     <AnimatePresence mode="popLayout">
       {showMainPanel && (
-        <motion.div
+        <m.div
           exit={{ x: 500, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           initial={{ x: -200, opacity: 0 }}
@@ -34,11 +35,11 @@ export const QuickLinksBar = ({
             }}
             links={quickTabs}
           />
-        </motion.div>
+        </m.div>
       )}
 
       {showSettingsPanel && (
-        <motion.div
+        <m.div
           exit={{ x: 500, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           initial={{ x: -200, opacity: 0 }}
@@ -52,7 +53,7 @@ export const QuickLinksBar = ({
             }}
             links={quickTabsSettings}
           />
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

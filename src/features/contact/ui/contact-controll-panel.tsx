@@ -1,5 +1,5 @@
 import type { components } from '@/shared/types/v1';
-import { ActionIcon, Button, Group, Loader } from '@mantine/core';
+import { ActionIcon, Button, Group } from '@mantine/core';
 import { XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useContactAdd, useContactRemove } from '../api';
@@ -33,7 +33,7 @@ export const ContactControllPanel = ({
                 },
               },
               {
-                onSuccess(data, variables, onMutateResult, context) {
+                onSuccess(_, variables) {
                   onUpdate(variables.body.user_id);
                 },
               }
@@ -54,16 +54,16 @@ export const ContactControllPanel = ({
             <ActionIcon
               onClick={() => {
                 mutateContactRemove(
-                  {
-                    body: { user_id: userId },
-                  },
-                  {
-                    onSuccess(data, variables, onMutateResult, context) {
-                      onUpdate(variables.body.user_id);
-                    },
-                  }
-                );
-              }}
+              {
+                body: { user_id: userId },
+              },
+              {
+                onSuccess(_, variables) {
+                  onUpdate(variables.body.user_id);
+                },
+              }
+            );
+          }}
               color="red"
               variant="light"
               loading={isPendingContactRemove}

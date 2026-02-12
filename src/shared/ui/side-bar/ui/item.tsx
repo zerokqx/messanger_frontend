@@ -6,7 +6,6 @@ export const SideItem = ({
   children,
   icon,
   onClick,
-  ...props
 }: SideItemProps) => {
   return (
     <IconButton onClick={onClick} leftSection={<ThemeIcon>{icon}</ThemeIcon>}>

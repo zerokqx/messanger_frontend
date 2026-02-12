@@ -1,4 +1,3 @@
-import { catchAndChange } from '../lib/permissions-modificate';
 // WARN features use
 import { useProfilePut } from '@/features/profile-put';
 import { usePlurarDates } from '@/shared/lib/hooks/use-date';

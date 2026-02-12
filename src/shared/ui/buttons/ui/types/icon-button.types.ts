@@ -1,5 +1,5 @@
 import type { ButtonProps, ThemeIconProps } from '@mantine/core';
-import React, { type ComponentProps } from 'react';
+import { type ComponentProps } from 'react';
 
 export interface IIconButtonProps
   extends Omit<ButtonProps & ComponentProps<'button'>, 'variant'> {

@@ -3,15 +3,12 @@ import {
   Box,
   CloseButton,
   Group,
-  Space,
   Stack,
 } from '@mantine/core';
-import { AsideHaeader } from './header';
 import { lazy, Suspense, useEffect } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
-import { useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { ContactControllPanel, ContactMenu } from '@/features/contact';
+import { ContactControllPanel } from '@/features/contact';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -25,8 +22,7 @@ interface CustomAsideProps {
 export const Aside = ({ onClose }: CustomAsideProps) => {
   const uuid = useGetUuidFromRouter();
 
-  const update = useLayoutStore((s) => s.update);
-  const { setId, data, isFetching, abortPrevious, refetch, invalidateUser } =
+  const { setId, data, isFetching, abortPrevious, invalidateUser } =
     useGetUserById();
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 import { use } from 'react';
 import type { TaberProviderActions } from '../types/taber-provider.type';
 import { singletoneContext } from './singletone-contexts';
-import type { ArrayIndices } from 'type-fest';
 import { indexOf } from 'lodash';
 
 export const useTab = <
@@ -32,5 +31,5 @@ export const useIndexOfWindows = <
     W
   > satisfies TaberProviderActions<V, W>;
   const windows = typedContext.meta.windows;
-  const index = indexOf(windows, value);
+  return indexOf(windows, value);
 };
