@@ -3,29 +3,31 @@ import type {
   TabsDeclarationKeys,
 } from '@/shared/ui/query-tabs';
 import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
-import { type ReactNode } from 'react';
+import { type MouseEvent, type ReactNode } from 'react';
 
-export interface QuickLink {
-  label: string;
+export interface QuickLinkItem<QueryKey extends TabsDeclarationKeys> {
+  onClick?: (
+    v: TabsDeclaration[QueryKey],
+    e: MouseEvent<HTMLButtonElement>
+  ) => void;
   icon: ReactNode;
-  value: string;
-}
-interface QuickLinksProps<QuickLinksGeneric extends QuickLink[]> {
-  onClickLink?: (v: QuickLinksGeneric[number]['value']) => void;
-  links: QuickLinksGeneric;
-  activeValue?: string;
-}
-
-export interface QuickLinksData<QueryKey extends TabsDeclarationKeys> {
-  label: string;
   value: TabsDeclaration[QueryKey];
-  icon: ReactNode;
 }
-export const QuickLinks = <QuickLinksGeneric extends QuickLink[]>({
+
+interface QuickLinksProps<QueryKey extends TabsDeclarationKeys> {
+  activeValue: string;
+  links: QuickLinkItem<QueryKey>[];
+  onClickAnyLink?: (
+    v: TabsDeclaration[QueryKey],
+    e: MouseEvent<HTMLButtonElement>
+  ) => void;
+}
+
+export const QuickLinks = <QueryKey extends TabsDeclarationKeys>({
   activeValue,
-  onClickLink,
+  onClickAnyLink,
   links,
-}: QuickLinksProps<QuickLinksGeneric>) => {
+}: QuickLinksProps<QueryKey>) => {
   const { colorScheme } = useMantineColorScheme();
   return (
     <Group
@@ -41,8 +43,9 @@ export const QuickLinks = <QuickLinksGeneric extends QuickLink[]>({
             variant={active ? 'filled' : 'light'}
             radius="xl"
             size="lg"
-            onClick={() => {
-              onClickLink?.(t.value);
+            onClick={(e) => {
+              onClickAnyLink?.(t.value, e);
+              t.onClick?.(t.value, e);
             }}
           >
             {t.icon}

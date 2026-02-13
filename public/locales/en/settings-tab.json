@@ -1,3 +1,17 @@
 {
-  "logout": "Log out"
+  "logout": "Log out",
+  "animations-label": "Animation type",
+  "primary-color-label": "Primary application color",
+  "primary-color-not-exist": "The selected color does not exist. The application color was not changed",
+  "primary-color-not-exist-title": "Invalid color",
+  "with-animation-label": "Tab animations",
+  "with-animations-description": "Smooth transitions when switching between tabs",
+  "keyframes": "Linear",
+  "spring": "Spring",
+  "blue": "Blue",
+  "indigo": "Indigo",
+  "gray": "Gray",
+  "red": "Red",
+  "green": "Green",
+  "violet": "Violet"
 }

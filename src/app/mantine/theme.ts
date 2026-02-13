@@ -51,7 +51,6 @@ export const theme = createTheme({
   colors: {
     ...colors,
   },
-  primaryColor: 'blue',
   primaryShade: { light: 6, dark: 9 },
   other: {
     borders: {

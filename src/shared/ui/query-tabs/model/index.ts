@@ -1,4 +1,4 @@
-export type { TabsDeclaration, TabsDeclarationKeys } from './tabs-types.ts';
+export type { TabsDeclaration,TabsNested, TabsDeclarationKeys } from './tabs-types.ts';
 export {
   tabsHistoryAction,
   useTabsHistory,

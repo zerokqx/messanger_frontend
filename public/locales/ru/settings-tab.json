@@ -1,3 +1,17 @@
 {
-  "logout": "Выйти"
+  "logout": "Выйти",
+  "animations-label": "Тип анимаций",
+  "primary-color-label": "Главный цвет приложения",
+  "primary-color-not-exist": "Данного цвета не существует. Цвет приложения не был изменен",
+  "primary-color-not-exist-title": "Неверный цвет",
+  "with-animation-label": "Анимации вкладок",
+  "with-animations-description": "Плавные переходы при переключении между вкладками",
+  "keyframes": "Линейная",
+  "spring": "Пружиная",
+  "blue": "Синий",
+  "indigo": "Индиго",
+  "gray": "Серый",
+  "red": "Красный",
+  "green": "Зелёный",
+  "violet": "Фиолетовый"
 }

@@ -19,15 +19,9 @@ export const QuickLinksBar = ({
   showSettingsPanel,
 }: QuickLinksBarProps) => {
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence initial={false} mode="popLayout">
       {showMainPanel && (
-        <m.div
-          exit={{ x: 500, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          initial={{ x: -200, opacity: 0 }}
-          key={'tnavbar-links'}
-          {...moitonProps}
-        >
+        <m.div key={'tnavbar-links'} {...moitonProps}>
           <QuickLinks
             activeValue={currentNavbar}
             onClickLink={(v) => {
@@ -39,13 +33,7 @@ export const QuickLinksBar = ({
       )}
 
       {showSettingsPanel && (
-        <m.div
-          exit={{ x: 500, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          initial={{ x: -200, opacity: 0 }}
-          key={'tsettings-links'}
-          {...moitonProps}
-        >
+        <m.div key={'tsettings-links'} {...moitonProps}>
           <QuickLinks
             activeValue={currentSettings}
             onClickLink={(v) => {

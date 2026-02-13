@@ -11,7 +11,7 @@ export const AppShellNavbarWidget = ({
   children,
 }: AppShellNavbarWidgetProps) => {
   return (
-    <AppShellNavbar style={{ overflow: 'auto' }}>
+    <AppShellNavbar style={{ overflow: 'auto', overflowX: 'hidden' }}>
       <TabsNavigate
         queryKey="tnavbar"
         children={({ push }) => (
