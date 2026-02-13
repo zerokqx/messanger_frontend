@@ -55,7 +55,8 @@ interface TabsProps<
   i18nGroup: I18N;
   queryName: QueryKey;
   tabs: W;
-  wrapper?: (component: ReactNode, current: keyof W) => ReactNode;
+  perTab?: (props: { current: TabsDeclaration[QueryKey] }) => ReactNode;
+  wrapper?: (props: { children?: ReactNode; current: keyof W }) => ReactNode;
   children?: TabsPropsChildren<QueryKey, W, I18N>;
 }
 
@@ -73,18 +74,26 @@ export function Tabs<
   I18N extends keyof Resources,
 >({
   queryName,
-  i18nGroup: _i18nGroup,
   tabs,
-  wrapper = (component) => component,
+  perTab,
+  wrapper = ({ children }) => children,
   children = ({ current, tabs }) => {
     const tab = tabs[current as keyof typeof tabs];
-    if (!tab) return null;
     const { render } = tab;
     return typeof render === 'function' ? render(tabsHistoryAction) : render;
   },
 }: TabsProps<QueryKey, W, I18N>) {
   const current = useTabs(queryName);
-  return wrapper(children({ current, tabs, queryName }), current);
+  const Wrapper = wrapper;
+
+  return (
+    <>
+      {perTab?.({ current })}
+      <Wrapper current={current}>
+        {children({ current, queryName, tabs })}
+      </Wrapper>
+    </>
+  );
 }
 
 export const TabsInit = <QueryKey extends TabsDeclarationKeys>({

@@ -12,20 +12,19 @@ export const AppShellNavbarWidget = ({
 }: AppShellNavbarWidgetProps) => {
   return (
     <AppShellNavbar style={{ overflow: 'auto', overflowX: 'hidden' }}>
-      <TabsNavigate
-        queryKey="tnavbar"
-        children={({ push }) => (
-          <NavbarHeader
-            input={{
-              onFocus: () => {
-                push('search');
-              },
-            }}
-          />
-        )}
-      />
+      {/* <TabsNavigate */}
+      {/*   queryKey="tnavbar" */}
+      {/*   children={({ push }) => ( */}
+      {/*     <NavbarHeader */}
+      {/*       input={{ */}
+      {/*         onFocus: () => { */}
+      {/*           push('search'); */}
+      {/*         }, */}
+      {/*       }} */}
+      {/*     /> */}
+      {/*   )} */}
+      {/* /> */}
       {children}
-
     </AppShellNavbar>
   );
 };

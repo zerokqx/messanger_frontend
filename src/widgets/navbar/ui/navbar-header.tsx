@@ -1,7 +1,10 @@
 import { SearchInputWrapper } from '@/features/search';
 import {
   ActionIcon,
+  Burger,
   Group,
+  Menu,
+  MenuTarget,
   Skeleton,
   Stack,
   type TextInputProps,
@@ -9,7 +12,7 @@ import {
 import { ArrowLeft } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { tabs } from '@/shared/ui/query-tabs';
-import { lazy, Suspense, useRef } from 'react';
+import { lazy, Profiler, Suspense, useRef } from 'react';
 import * as m from 'motion/react-m';
 import { QuickLinks } from './quick-links.tsx';
 import { quickTabs, quickTabsSettings } from '../config/tabs.tsx';
@@ -28,24 +31,35 @@ export const NavbarHeader = ({
 }) => {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const d = useTabsHistory((s) => s.data.tnavbar);
-  const currentSettings = tabs.useTabs('tsettings');
   const currentNavbar = tabs.useTabs('tnavbar');
   useLogger('Hist', [d]);
 
-  const showSettingsPanel =
-    currentNavbar === 'settings' && currentSettings !== 'main';
-  const showNavbarPanel =
-    !hiddenNavbarPanel.includes(currentNavbar) && !showSettingsPanel;
-  const mode = usePanelMode((s) => s.data.mode);
+  const showNavbarPanel = !hiddenNavbarPanel.includes(currentNavbar);
+  const showButtonBack =
+    currentNavbar === 'search' ||
+    currentNavbar === 'profile' ||
+    currentNavbar === 'profile-edit';
 
   return (
     <m.div exit={{ y: -100 }} ref={headerRef} animate={{ y: [-100, 0] }}>
       <Stack gap={'0'}>
         <Group p="xs" wrap="nowrap">
           <AnimatePresence mode="popLayout" initial={false}>
-            {(currentNavbar === 'search' ||
-              currentNavbar === 'profile' ||
-              currentNavbar === 'profile-edit') && (
+            {!showButtonBack && (
+              <m.div
+                key="button-menu"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+              >
+                <Menu>
+                  <MenuTarget>
+                    <Burger />
+                  </MenuTarget>
+                </Menu>
+              </m.div>
+            )}
+            {showButtonBack && (
               <m.div
                 key="button-back"
                 initial={{ scale: 0, opacity: 0 }}
@@ -73,48 +87,30 @@ export const NavbarHeader = ({
             />
           </m.div>
         </Group>
-        {/* <Suspense fallback={<Skeleton animate h={60} w={'100%'} />}> */}
-        {/*   <QuickLinksBar */}
-        {/*     moitonProps={{ */}
-        {/*       initial: { y: 8, opacity: 0, scale: 0.98 }, */}
-        {/*       animate: { y: 0, opacity: 1, scale: 1 }, */}
-        {/*       exit: { y: -8, opacity: 0, scale: 0.98 }, */}
-        {/*       transition: { */}
-        {/*         type: 'spring', */}
-        {/*         stiffness: 280, */}
-        {/*         damping: 22, */}
-        {/*       }, */}
-        {/*     }} */}
-        {/*     {...{ */}
-        {/*       showMainPanel, */}
-        {/*       showSettingsPanel, */}
-        {/*       currentNavbar, */}
-        {/*       currentSettings, */}
-        {/*     }} */}
-        {/*   /> */}
-        {/* </Suspense> */}
 
         <AnimatePresence initial={false} mode="popLayout">
           {showNavbarPanel && (
-            <m.div key={'tnavbar-links'}>
+            <m.div
+              key={'tnavbar-links'}
+              animate={{
+                y: 0,
+                opacity: 1,
+              }}
+              initial={{
+                y: 10,
+                opacity: 0,
+              }}
+              exit={{
+                y: -10,
+                opacity: 0,
+              }}
+            >
               <QuickLinks
                 activeValue={currentNavbar}
                 onClickAnyLink={(v) => {
                   tabs.tabsHistoryAction.doPush('tnavbar', v);
                 }}
                 links={quickTabs}
-              />
-            </m.div>
-          )}
-
-          {showSettingsPanel && (
-            <m.div key={'tsettings-links'}>
-              <QuickLinks
-                activeValue={currentSettings}
-                onClickAnyLink={(v) => {
-                  tabs.tabsHistoryAction.doPush('tsettings', v);
-                }}
-                links={quickTabsSettings}
               />
             </m.div>
           )}
