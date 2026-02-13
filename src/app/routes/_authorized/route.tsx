@@ -60,7 +60,13 @@ const navbarTabs: TabsObject<'tnavbar', 'navbar'> = {
   contacts: {
     i18n: 'contacts',
     render: (
-      <Suspense>
+      <Suspense
+        fallback={
+          <Center>
+            <Loader />
+          </Center>
+        }
+      >
         <LazyContactsList />
       </Suspense>
     ),
@@ -123,7 +129,9 @@ const navbarTabs: TabsObject<'tnavbar', 'navbar'> = {
                         justify="left"
                         bdrs={0}
                         variant="subtle"
-                        onClick={() => { api.doPush('tsettings', 'interface'); }}
+                        onClick={() => {
+                          api.doPush('tsettings', 'interface');
+                        }}
                       >
                         Интерфейс
                       </Button>
@@ -133,7 +141,9 @@ const navbarTabs: TabsObject<'tnavbar', 'navbar'> = {
                         justify="left"
                         bdrs={0}
                         variant="subtle"
-                        onClick={() => { api.doPush('tsettings', 'sessions'); }}
+                        onClick={() => {
+                          api.doPush('tsettings', 'sessions');
+                        }}
                       >
                         Сессии
                       </Button>
@@ -157,6 +167,7 @@ function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const animationStyle = useSettingsStore((s) => s.data.animations);
+  const withAnimations = useSettingsStore((s) => s.data.withAnimations);
   return (
     <AppShell
       navbar={{
@@ -203,11 +214,23 @@ function RouteComponent() {
                     component={motion.div}
                     p={'xs'}
                     key={current}
-                    initial={{ x: '-100%', opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: '100%', opacity: 0 }}
+                    initial={
+                      withAnimations ? { x: '-100%', opacity: 0 } : false
+                    }
+                    animate={withAnimations ? { x: 0, opacity: 1 } : undefined}
+                    exit={
+                      withAnimations ? { x: '100%', opacity: 0 } : undefined
+                    }
                   >
-                    <Suspense>{component}</Suspense>
+                    <Suspense
+                      fallback={
+                        <Center>
+                          <Loader />
+                        </Center>
+                      }
+                    >
+                      {component}
+                    </Suspense>
                   </Box>
                 </AnimatePresence>
               )}

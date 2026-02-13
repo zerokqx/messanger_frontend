@@ -8,7 +8,6 @@ type RefreshResponse = components['schemas']['TokenRefreshResponse'];
 
 const refreshByFetch = async (access: string) => {
   const url = `${createBaseUrl('auth')}/token/refresh`;
-
   const res = await fetch(url, {
     method: 'POST',
     credentials: 'include',
@@ -31,8 +30,7 @@ let refreshPromise: Promise<string> | null = null;
 
 export const authMiddleware: Middleware = {
   onRequest({ request }) {
-    const d = authHeaderSet(request);
-    return d;
+    return authHeaderSet(request);
   },
 
   async onResponse({ response, request }) {

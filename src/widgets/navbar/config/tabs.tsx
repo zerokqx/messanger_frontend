@@ -7,16 +7,24 @@ import {
   Palette,
   MessageCircle,
 } from 'lucide-react';
-import type { QuickLinksData } from '../ui/quick-links';
-export const quickTabs: QuickLinksData<'tnavbar'>[] = [
-  { value: 'main', label: 'Main', icon: <MessageCircle /> },
-  { value: 'contacts', label: 'Contacts', icon: <Users /> },
-  { value: 'profile', label: 'Profile', icon: <UserRound /> },
-  { value: 'settings', label: 'Settings', icon: <Settings /> },
+import type { QuickLinkItem } from '../ui/quick-links';
+import { panelModeActions } from '../model/panle-mode-store';
+
+export const quickTabs: QuickLinkItem<'tnavbar'>[] = [
+  { value: 'main', icon: <MessageCircle /> },
+  { value: 'contacts', icon: <Users /> },
+  { value: 'profile', icon: <UserRound /> },
+  {
+    value: 'settings',
+    icon: <Settings />,
+  },
 ];
 
-export const quickTabsSettings: QuickLinksData<'tsettings'>[] = [
-  { value: 'main', label: 'Main', icon: <ArrowLeft /> },
-  { value: 'interface', label: 'Interface', icon: <Palette /> },
-  { value: 'sessions', label: 'Sessions', icon: <ShieldPlus /> },
+export const quickTabsSettings: QuickLinkItem<'tsettings'>[] = [
+  {
+    value: 'main',
+    icon: <ArrowLeft />,
+  },
+  { value: 'interface', icon: <Palette /> },
+  { value: 'sessions', icon: <ShieldPlus /> },
 ];
