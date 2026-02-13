@@ -8,6 +8,6 @@ declare module '@/shared/ui/query-tabs' {
       | 'search'
       | 'profile'
       | 'profile-edit';
-    tsettings: 'interface' | 'main' | 'sessions';
+    tsettings: 'interface' | 'sessions';
   }
 }
