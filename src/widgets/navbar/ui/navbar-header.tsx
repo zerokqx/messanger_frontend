@@ -11,10 +11,11 @@ import { AnimatePresence } from 'motion/react';
 import { tabs } from '@/shared/ui/query-tabs';
 import { lazy, Suspense, useRef } from 'react';
 import * as m from 'motion/react-m';
-import { QuickLinksBar } from './quick-links-bar.tsx';
 import { QuickLinks } from './quick-links.tsx';
 import { quickTabs, quickTabsSettings } from '../config/tabs.tsx';
 import { usePanelMode } from '../model/panle-mode-store.ts';
+import { useTabsHistory } from '@/shared/ui/query-tabs/model/tabs-history.ts';
+import { useLogger } from '@mantine/hooks';
 
 const hiddenNavbarPanel = tabs.typedArray('tnavbar', ['profile', 'search']);
 const LazyQuickLinksBar = lazy(() =>
@@ -26,12 +27,16 @@ export const NavbarHeader = ({
   input?: Partial<TextInputProps>;
 }) => {
   const headerRef = useRef<HTMLDivElement | null>(null);
+  const d = useTabsHistory((s) => s.data.tnavbar);
   const currentSettings = tabs.useTabs('tsettings');
   const currentNavbar = tabs.useTabs('tnavbar');
+  useLogger('Hist', [d]);
 
+  const showSettingsPanel =
+    currentNavbar === 'settings' && currentSettings !== 'main';
+  const showNavbarPanel =
+    !hiddenNavbarPanel.includes(currentNavbar) && !showSettingsPanel;
   const mode = usePanelMode((s) => s.data.mode);
-  const showMainPanel =
-    !hiddenNavbarPanel.includes(currentNavbar) && currentSettings === 'main';
 
   return (
     <m.div exit={{ y: -100 }} ref={headerRef} animate={{ y: [-100, 0] }}>
@@ -89,25 +94,31 @@ export const NavbarHeader = ({
         {/*   /> */}
         {/* </Suspense> */}
 
-        {mode === 'tnavbar' && (
-          <QuickLinks
-            activeValue={currentNavbar}
-            onClickAnyLink={(v) => {
-              tabs.tabsHistoryAction.doPush('tnavbar', v);
-            }}
-            links={quickTabs}
-          />
-        )}
+        <AnimatePresence initial={false} mode="popLayout">
+          {showNavbarPanel && (
+            <m.div key={'tnavbar-links'}>
+              <QuickLinks
+                activeValue={currentNavbar}
+                onClickAnyLink={(v) => {
+                  tabs.tabsHistoryAction.doPush('tnavbar', v);
+                }}
+                links={quickTabs}
+              />
+            </m.div>
+          )}
 
-        {mode === 'tsettings' && (
-          <QuickLinks
-            activeValue={currentNavbar}
-            onClickAnyLink={(v) => {
-              tabs.tabsHistoryAction.doPush('tsettings', v);
-            }}
-            links={quickTabsSettings}
-          />
-        )}
+          {showSettingsPanel && (
+            <m.div key={'tsettings-links'}>
+              <QuickLinks
+                activeValue={currentSettings}
+                onClickAnyLink={(v) => {
+                  tabs.tabsHistoryAction.doPush('tsettings', v);
+                }}
+                links={quickTabsSettings}
+              />
+            </m.div>
+          )}
+        </AnimatePresence>
       </Stack>
     </m.div>
   );
