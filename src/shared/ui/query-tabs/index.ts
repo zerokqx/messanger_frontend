@@ -1,6 +1,7 @@
 import { typedArray } from './lib/create-typed-array';
 import { useTabs } from './lib/tabs';
 import { tabsHistoryAction, useTabsHistory } from './model/tabs-history';
+import { ClosePanel } from './ui/close-panel';
 import { Panel } from './ui/panel';
 import { Tabs, TabsInit } from './ui/tabs';
 import { TabsNavigate } from './ui/tabs-navigate';
@@ -28,4 +29,5 @@ export const tabs = {
   TabsInit,
   Panel,
   typedArray,
+  ClosePanel,
 };

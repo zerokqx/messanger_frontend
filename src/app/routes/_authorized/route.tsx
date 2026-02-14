@@ -15,7 +15,9 @@ import { tabs } from '@/shared/ui/query-tabs';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
 import { NavbarHeader } from '@/widgets/navbar/ui/navbar-header';
-import { Home, User } from 'lucide-react';
+import { User, Users } from 'lucide-react';
+import { ContactsTab } from '@/widgets/tab-contacts';
+import { ProfileTab } from '@/widgets/tab-profile';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -81,15 +83,24 @@ function RouteComponent() {
                     component={motion.div}
                     key={current}
                     initial={
-                      withAnimations ? { y: 10, opacity: 0, zIndex: 2 } : false
+                      withAnimations
+                        ? { x: '100%', opacity: 0, zIndex: 2 }
+                        : false
                     }
-                    animate={withAnimations ? { y: 0, opacity: 1 } : undefined}
+                    animate={
+                      withAnimations ? { x: '0', opacity: 1 } : undefined
+                    }
                     exit={
                       withAnimations
-                        ? { y: 20, opacity: 0, zIndex: 1 }
+                        ? { x: '100%', opacity: 0, zIndex: 1 }
                         : undefined
                     }
                   >
+                    {current !== 'main' && (
+                      <>
+                        <tabs.ClosePanel key={'close'} />
+                      </>
+                    )}
                     <Suspense
                       fallback={
                         <Center>
@@ -104,25 +115,33 @@ function RouteComponent() {
               )}
               tabs={{
                 contacts: {
-                  render: () => <p>contacts</p>,
+                  render: () => <ContactsTab />,
+                },
+                profile: {
+                  render: () => <ProfileTab />,
                 },
                 main: {
                   render: (api) => {
                     return (
                       <>
                         <tabs.Panel
+                          withStyleAtActive={false}
                           component={ActionIcon}
                           onClickAnyItem={(v) => {
                             console.log(api);
                             api.push(v);
                           }}
                           data={[
-                            { value: 'main', icon: <Home /> },
+                            { value: 'contacts', icon: <Users /> },
 
-                            { value: 'contacts', icon: <User /> },
+                            {
+                              value: 'profile',
+                              icon: <User />,
+                            },
                           ]}
                         />
-                        <p>dawdada</p>
+
+                        <p>dawd</p>
                       </>
                     );
                   },

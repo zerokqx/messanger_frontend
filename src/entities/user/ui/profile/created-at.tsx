@@ -1,11 +1,11 @@
 import { IconButton } from '@/shared/ui/buttons';
-import { useProfileContext } from '../../model/profile-context';
 import type { IUserProfile } from './types/user-profile.types';
 import { useMemo } from 'react';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import { Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
+import { useProfileContext } from '../../model/current-user-profile-context';
 
 export const CreatedAt: IUserProfile['CreatedAt'] = () => {
   const copy = useNotifyClipboard();

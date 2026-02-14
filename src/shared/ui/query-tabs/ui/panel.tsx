@@ -1,12 +1,7 @@
 import { Group, useMantineColorScheme } from '@mantine/core';
 import { useTabs } from '../lib';
 import { useSharedQueryName } from '../model';
-import type {
-  ComponentProps,
-  ComponentType,
-  MouseEvent,
-  ReactNode,
-} from 'react';
+import type { ComponentProps, MouseEvent, ReactNode } from 'react';
 import { useApiTabs } from '../model/api-context';
 
 interface PanelComponentProps {
@@ -20,6 +15,8 @@ interface PanelProps {
   component: (props: PanelComponentProps) => ReactNode;
   onClickAnyItem?: (v: string, e: MouseEvent<HTMLButtonElement>) => void;
   active?: (v: string) => boolean;
+  withStyleAtActive?: boolean;
+
   data: {
     icon?: ReactNode;
     value: string;
@@ -28,7 +25,14 @@ interface PanelProps {
   }[];
 }
 
+export const PanelContainer = Group.withProps({
+  m: 'sm',
+  bdrs: '1000px',
+  p: 'xs',
+  justify: 'space-evenly',
+});
 export const Panel = ({
+  withStyleAtActive = true,
   component,
   data,
   active,
@@ -41,17 +45,19 @@ export const Panel = ({
   const isActive = active ?? ((value: string) => current === value);
 
   return (
-    <Group
-      bg={colorScheme === 'dark' ? 'dark' : 'gray.1'}
-      p={'xs'}
-      justify="space-evenly"
-    >
+    <PanelContainer bg={colorScheme === 'dark' ? 'dark' : 'gray.1'}>
       {data.map(({ value, icon, onClick }) => {
         const Component = component;
         return (
           <Component
             key={value}
-            variant={isActive(value) ? 'filled' : 'light'}
+            variant={
+              isActive(value)
+                ? withStyleAtActive
+                  ? 'filled'
+                  : 'light'
+                : 'light'
+            }
             radius="xl"
             size="lg"
             onClick={(e) => {
@@ -64,6 +70,6 @@ export const Panel = ({
           </Component>
         );
       })}
-    </Group>
+    </PanelContainer>
   );
 };
