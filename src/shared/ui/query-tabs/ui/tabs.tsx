@@ -1,13 +1,11 @@
-import { useMemo, type ReactNode } from 'react';
+import { useEffect, useMemo, type ReactNode } from 'react';
 import { useTabs } from '../lib/tabs';
 import { tabsHistoryAction } from '../model/tabs-history';
-import type { TabsHistoryAction } from '../model';
 import {
   SharedQueryNameProvider,
   useSharedQueryName,
 } from '../model/querykey-context';
 import { ApiTabsProvider, useApiTabs } from '../model/api-context';
-import { useEffectOnce } from 'react-use';
 
 type TabComponent = (api: ApiTabsProvider) => ReactNode;
 
@@ -58,9 +56,12 @@ export const TabsInit = ({
   children,
   initialTab,
 }: TabsInitProps) => {
-  useEffectOnce(() => {
-    tabsHistoryAction.doInitClient(queryName, initialTab);
-  });
+  useEffect(
+    () => {
+      tabsHistoryAction.doInitClient(queryName, initialTab);
+    },
+    [queryName, initialTab]
+  );
 
   const value = useMemo<ApiTabsProvider>(
     () => ({
