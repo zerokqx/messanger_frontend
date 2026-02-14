@@ -2,13 +2,11 @@ import { createStoreAction } from '@/shared/lib/zustand/create-store-action/crea
 import { createStore } from '@colorfy-software/zfy';
 import type { TabsDeclaration, TabsDeclarationKeys } from './tabs-types';
 
-interface TabsHistoryClient<K extends TabsDeclarationKeys> {
-  history: [TabsDeclaration[K], ...TabsDeclaration[K][]];
+interface TabsHistoryClient {
+  history: [string, ...string[]];
 }
 
-export type TabsHistoryState = Partial<{
-  [K in TabsDeclarationKeys]: TabsHistoryClient<K>;
-}>;
+export type TabsHistoryState = Partial<Record<string, TabsHistoryClient>>;
 
 export const useTabsHistory = createStore<TabsHistoryState>(
   'tabs-history',
@@ -16,14 +14,14 @@ export const useTabsHistory = createStore<TabsHistoryState>(
   { log: true }
 );
 
-function getClientOrThrow<K extends TabsDeclarationKeys>(
+function getClientOrThrow(
   state: { data: TabsHistoryState },
-  queryKey: K
-): TabsHistoryClient<K> {
-  const client = state.data[queryKey];
+  queryName: string
+): TabsHistoryClient {
+  const client = state.data[queryName];
   if (!client) {
     throw new Error(
-      `[tabsHistory] Client not initialized for key "${String(queryKey)}". Call initClient first.`
+      `[tabsHistory] Client not initialized for key "${queryName}". Call initClient first.`
     );
   }
   return client;
@@ -31,22 +29,19 @@ function getClientOrThrow<K extends TabsDeclarationKeys>(
 
 export const tabsHistoryAction = createStoreAction(
   [
-    <QueryKey extends TabsDeclarationKeys>(
-      queryKey: QueryKey,
-      initial: TabsDeclaration[QueryKey]
-    ) => {
+    (queryName: string, initial: string) => {
       useTabsHistory.setState((s) => {
-        if (s.data[queryKey]) return;
+        if (s.data[queryName]) return;
 
-        s.data[queryKey] = { history: [initial] };
+        s.data[queryName] = { history: [initial] };
       });
     },
 
-    (queryKey: TabsDeclarationKeys) => {
+    (queryName: string) => {
       let nextCurrent: string | undefined;
 
       useTabsHistory.setState((s) => {
-        const client = getClientOrThrow(s, queryKey);
+        const client = getClientOrThrow(s, queryName);
 
         if (client.history.length === 1) return;
 
@@ -58,10 +53,7 @@ export const tabsHistoryAction = createStoreAction(
       return nextCurrent;
     },
 
-    <QueryKey extends TabsDeclarationKeys>(
-      queryKey: QueryKey,
-      to: TabsDeclaration[QueryKey]
-    ) => {
+    (queryKey: string, to: string) => {
       useTabsHistory.setState((s) => {
         const client = getClientOrThrow(s, queryKey);
         if (client.history.length > import.meta.env.VITE_TABS_MAX) {

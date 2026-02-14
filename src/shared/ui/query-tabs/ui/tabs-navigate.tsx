@@ -1,30 +1,27 @@
 import { type ReactNode } from 'react';
 import { useTabs } from '../lib';
 import { tabsHistoryAction } from '../model/tabs-history';
-import type { TabsDeclaration, TabsDeclarationKeys } from '../model';
 import { Box } from '@mantine/core';
 
-type TabsNavigateChildren<QueryKey extends TabsDeclarationKeys> = (
+type TabsNavigateChildren = (
   actions: {
-    back: () => TabsDeclaration[QueryKey] | undefined;
-    push: (to: TabsDeclaration[QueryKey]) => void;
+    back: () => void;
+    push: (to: string) => void;
   },
-  current: TabsDeclaration[QueryKey]
+  current: string
 ) => ReactNode;
 
-interface TabsNavigateProps<QueryKey extends TabsDeclarationKeys> {
-  queryKey: QueryKey;
-  children: TabsNavigateChildren<QueryKey>;
+interface TabsNavigateProps {
+  queryName: string;
+  children: TabsNavigateChildren;
 }
-export const TabsNavigate = <QueryKey extends TabsDeclarationKeys>({
-  children,
-  queryKey,
-}: TabsNavigateProps<QueryKey>) => {
-  const current = useTabs(queryKey);
+export const TabsNavigate = ({ children, queryName }: TabsNavigateProps) => {
+  const current = useTabs(queryName);
   const actions = {
-    back: () => tabsHistoryAction.doBack(queryKey),
-    push: (to: TabsDeclaration[QueryKey]) =>
-      { tabsHistoryAction.doPush(queryKey, to); },
+    back: () => tabsHistoryAction.doBack(queryName),
+    push: (to: string) => {
+      tabsHistoryAction.doPush(queryName, to);
+    },
   };
 
   return <Box>{children(actions, current)}</Box>;

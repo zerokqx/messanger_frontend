@@ -1,19 +1,14 @@
-import type { TabsDeclaration, TabsDeclarationKeys } from '../model';
 import { useTabsHistory } from '../model/tabs-history';
 
 export type TabsKey = `t${string}`;
 
-export function useTabs<QueryKey extends TabsDeclarationKeys>(
-  queryKey: QueryKey
-): TabsDeclaration[QueryKey] {
+export function useTabs(queryName: string): string {
   const current = useTabsHistory((s) => {
-    const client = s.data[queryKey];
-    return client
-      ? (client.history[
-          client.history.length - 1
-        ]!)
-      : undefined;
+    if (queryName in s.data) {
+      const client = s.data[queryName];
+      return client ? client.history[client.history.length - 1] : undefined;
+    }
   });
-
-  return current!;
+  if (!current) throw new Error('History client not find');
+  return current;
 }

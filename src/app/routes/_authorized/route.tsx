@@ -1,6 +1,14 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import { AppShell, Box, Center, Loader, useMantineTheme } from '@mantine/core';
-import { Suspense, lazy } from 'react';
+import {
+  AppShell,
+  Box,
+  Button,
+  Center,
+  Loader,
+  Stack,
+  useMantineTheme,
+} from '@mantine/core';
+import { Children, Suspense, lazy } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { tabs } from '@/shared/ui/query-tabs';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
@@ -19,7 +27,6 @@ export const Route = createFileRoute('/_authorized')({
   component: RouteComponent,
 });
 
-const deepTabOne = {};
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
@@ -63,47 +70,44 @@ function RouteComponent() {
           mass: 0.4,
         }}
       >
-        <tabs.TabsInit queryKey="tnavbar" initialTab="main">
-          <tabs.TabsInit queryKey="tsettings" initialTab="main">
-            <LazyAppShellNavbar>
-              <tabs.Tabs
-                perTab={({ current }) =>
-                  current !== 'settings' && <NavbarHeader />
-                }
-                i18nGroup="navbar"
-                wrapper={({ children, current }) => (
-                  <AnimatePresence mode="popLayout">
-                    <Box
-                      component={motion.div}
-                      p="xs"
-                      key={current}
-                      initial={
-                        withAnimations ? { x: '-100%', opacity: 0 } : false
-                      }
-                      animate={
-                        withAnimations ? { x: 0, opacity: 1 } : undefined
-                      }
-                      exit={
-                        withAnimations ? { x: '100%', opacity: 0 } : undefined
+        <tabs.TabsInit queryName="tnavbar.main" initialTab="main">
+          <LazyAppShellNavbar>
+            <tabs.Tabs
+              children={({ resolve, current }) => (
+                <AnimatePresence mode="popLayout">
+                  <Box
+                    component={motion.div}
+                    key={current}
+                    initial={
+                      withAnimations ? { y: 10, opacity: 0, zIndex: 2 } : false
+                    }
+                    animate={withAnimations ? { y: 0, opacity: 1 } : undefined}
+                    exit={
+                      withAnimations
+                        ? { y: 20, opacity: 0, zIndex: 1 }
+                        : undefined
+                    }
+                  >
+                    <Suspense
+                      fallback={
+                        <Center>
+                          <Loader />
+                        </Center>
                       }
                     >
-                      <Suspense
-                        fallback={
-                          <Center>
-                            <Loader />
-                          </Center>
-                        }
-                      >
-                        {children}
-                      </Suspense>
-                    </Box>
-                  </AnimatePresence>
-                )}
-                queryName="tnavbar"
-                tabs={{}}
-              />
-            </LazyAppShellNavbar>
-          </tabs.TabsInit>
+                      {resolve()}
+                    </Suspense>
+                  </Box>
+                </AnimatePresence>
+              )}
+              queryName="tnavbar"
+              tabs={{
+                main: {
+                  render: () => <p>dwd</p>,
+                },
+              }}
+            />
+          </LazyAppShellNavbar>
         </tabs.TabsInit>
       </MotionConfig>
     </AppShell>
