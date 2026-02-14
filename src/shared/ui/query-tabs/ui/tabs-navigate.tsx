@@ -17,6 +17,7 @@ interface TabsNavigateProps {
 }
 export const TabsNavigate = ({ children, queryName }: TabsNavigateProps) => {
   const current = useTabs(queryName);
+  if (!current) return null;
   const actions = {
     back: () => tabsHistoryAction.doBack(queryName),
     push: (to: string) => {

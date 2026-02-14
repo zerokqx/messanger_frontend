@@ -4,6 +4,7 @@ import type { TabsDeclaration, TabsDeclarationKeys } from './tabs-types';
 
 interface TabsHistoryClient {
   history: [string, ...string[]];
+  current: string;
 }
 
 export type TabsHistoryState = Partial<Record<string, TabsHistoryClient>>;
@@ -32,8 +33,7 @@ export const tabsHistoryAction = createStoreAction(
     (queryName: string, initial: string) => {
       useTabsHistory.setState((s) => {
         if (s.data[queryName]) return;
-
-        s.data[queryName] = { history: [initial] };
+        s.data[queryName] = { history: [initial], current: initial };
       });
     },
 
@@ -48,6 +48,7 @@ export const tabsHistoryAction = createStoreAction(
         client.history.pop();
 
         nextCurrent = client.history[client.history.length - 1];
+        if (nextCurrent) client.current = nextCurrent;
       });
 
       return nextCurrent;
@@ -62,14 +63,15 @@ export const tabsHistoryAction = createStoreAction(
             client.history.length - import.meta.env.VITE_TABS_MAX
           );
         }
-        console.log(client.history);
         const current = client.history[client.history.length - 1];
         if (current === to) return;
 
+        client.current = to;
         client.history.push(to);
       });
     },
   ],
+
   ['initClient', 'back', 'push']
 );
 
