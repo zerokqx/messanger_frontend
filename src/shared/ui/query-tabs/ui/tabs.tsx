@@ -56,12 +56,9 @@ export const TabsInit = ({
   children,
   initialTab,
 }: TabsInitProps) => {
-  useEffect(
-    () => {
-      tabsHistoryAction.doInitClient(queryName, initialTab);
-    },
-    [queryName, initialTab]
-  );
+  useEffect(() => {
+    tabsHistoryAction.doInitClient(queryName, initialTab);
+  }, [queryName, initialTab]);
 
   const value = useMemo<ApiTabsProvider>(
     () => ({
