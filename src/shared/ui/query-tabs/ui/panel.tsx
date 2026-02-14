@@ -1,4 +1,4 @@
-import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
+import { Group, useMantineColorScheme } from '@mantine/core';
 import { useTabs } from '../lib';
 import { useSharedQueryName } from '../model';
 import type {
@@ -36,7 +36,9 @@ export const Panel = ({
 }: PanelProps) => {
   const { colorScheme } = useMantineColorScheme();
   const [queryName] = useSharedQueryName();
-  const api = useApiTabs();
+  const [api] = useApiTabs();
+  const current = useTabs(queryName);
+  const isActive = active ?? ((value: string) => current === value);
 
   return (
     <Group
@@ -49,10 +51,11 @@ export const Panel = ({
         return (
           <Component
             key={value}
-            variant={active?.(value) ? 'filled' : 'light'}
+            variant={isActive(value) ? 'filled' : 'light'}
             radius="xl"
             size="lg"
             onClick={(e) => {
+              if (value !== current) api.push(value);
               onClickAnyItem?.(value, e);
               onClick?.(e);
             }}

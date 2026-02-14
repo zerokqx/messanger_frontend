@@ -1,6 +1,5 @@
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
 import { createStore } from '@colorfy-software/zfy';
-import type { TabsDeclaration, TabsDeclarationKeys } from './tabs-types';
 
 interface TabsHistoryClient {
   history: [string, ...string[]];
@@ -32,7 +31,11 @@ export const tabsHistoryAction = createStoreAction(
   [
     (queryName: string, initial: string) => {
       useTabsHistory.setState((s) => {
-        if (s.data[queryName]) return;
+        const client = s.data[queryName];
+        if (client) {
+          if (client.history[0] === initial) return;
+        }
+
         s.data[queryName] = { history: [initial], current: initial };
       });
     },
