@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import {
+  ActionIcon,
   AppShell,
   Box,
   Button,
@@ -14,6 +15,7 @@ import { tabs } from '@/shared/ui/query-tabs';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
 import { NavbarHeader } from '@/widgets/navbar/ui/navbar-header';
+import { Home, User } from 'lucide-react';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -73,7 +75,7 @@ function RouteComponent() {
         <tabs.TabsInit queryName="tnavbar.main" initialTab="main">
           <LazyAppShellNavbar>
             <tabs.Tabs
-              children={({ resolve, current }) => (
+              children={({ children, current }) => (
                 <AnimatePresence mode="popLayout">
                   <Box
                     component={motion.div}
@@ -95,15 +97,35 @@ function RouteComponent() {
                         </Center>
                       }
                     >
-                      {resolve()}
+                      {children}
                     </Suspense>
                   </Box>
                 </AnimatePresence>
               )}
-              queryName="tnavbar"
               tabs={{
+                contacts: {
+                  render: () => <p>contacts</p>,
+                },
                 main: {
-                  render: () => <p>dwd</p>,
+                  render: (api) => {
+                    return (
+                      <>
+                        <tabs.Panel
+                          component={ActionIcon}
+                          onClickAnyItem={(v) => {
+                            console.log(api);
+                            api.push(v);
+                          }}
+                          data={[
+                            { value: 'main', icon: <Home /> },
+
+                            { value: 'contacts', icon: <User /> },
+                          ]}
+                        />
+                        <p>dawdada</p>
+                      </>
+                    );
+                  },
                 },
               }}
             />

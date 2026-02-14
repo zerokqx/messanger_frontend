@@ -1,18 +1,15 @@
-import React, { useCallback, useMemo, type ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { useTabs } from '../lib/tabs';
 import { tabsHistoryAction } from '../model/tabs-history';
-import type {
-  TabsDeclaration,
-  TabsDeclarationKeys,
-  TabsHistoryAction,
-} from '../model';
+import type { TabsHistoryAction } from '../model';
 import {
   SharedQueryNameProvider,
   useSharedQueryName,
 } from '../model/querykey-context';
-import { useDefault } from 'react-use';
+import { ApiTabsProvider, useApiTabs } from '../model/api-context';
+import { useEffectOnce } from 'react-use';
 
-type TabComponent = (api: TabsHistoryAction) => ReactNode;
+type TabComponent = (api: ApiTabsProvider) => ReactNode;
 
 export interface Tab {
   label?: string;
@@ -22,7 +19,7 @@ export interface Tab {
 export type TabsObject = Record<string, Tab>;
 
 type TabsPropsChildren = (props: {
-  resolve: () => ReactNode;
+  children: ReactNode;
   current: string;
   queryName: string;
   tabs: TabsObject;
@@ -42,39 +39,18 @@ interface TabsInitProps {
 
 //=====================================================================//
 
-const resolveChildren = (
-  children: TabsObject,
-  current: string,
-  api: TabsHistoryAction,
-  fallback?: ReactNode
-) => {
-  return () => {
-    const tab = children[current];
-    if (tab) return tab.render(api);
-    return fallback;
-  };
-};
 export function Tabs({ tabs, tabFallback, children }: TabsProps) {
   const [queryName] = useSharedQueryName();
-
-  console.log(queryName);
   const current = useTabs(queryName);
-  const _children: TabsPropsChildren =
-    children ??
-    (({ tabs: _tabs, current: _current }) => {
-      const tab = _tabs[_current];
-      return tab ? tab.render(tabsHistoryAction) : tabFallback;
-    });
+  const _fallback = tabFallback ?? null;
+  const [api] = useApiTabs();
+  if (!current) return _fallback;
 
   const tab = tabs[current];
-  if (!tab) return tabFallback;
-  const content = _children({
-    current,
-    queryName,
-    tabs,
-    resolve: resolveChildren(tabs, current, tabsHistoryAction, tabFallback),
-  });
-  return content;
+  const content = tab ? tab.render(api) : _fallback;
+
+  if (!children) return <>{content}</>;
+  return <>{children({ current, queryName, children: content, tabs })}</>;
 }
 
 export const TabsInit = ({
@@ -82,13 +58,25 @@ export const TabsInit = ({
   children,
   initialTab,
 }: TabsInitProps) => {
-  useMemo(() => {
+  useEffectOnce(() => {
     tabsHistoryAction.doInitClient(queryName, initialTab);
-  }, [queryName, initialTab]);
+  });
 
+  const value = useMemo<ApiTabsProvider>(
+    () => ({
+      push: (v) => {
+        tabsHistoryAction.doPush(queryName, v);
+      },
+      back: () => tabsHistoryAction.doBack(queryName),
+    }),
+    [queryName]
+  );
+  //TODO Заменить на один провайдер
   return (
-    <SharedQueryNameProvider initialValue={queryName}>
-      {children}
-    </SharedQueryNameProvider>
+    <ApiTabsProvider initialValue={value}>
+      <SharedQueryNameProvider initialValue={queryName}>
+        {children}
+      </SharedQueryNameProvider>
+    </ApiTabsProvider>
   );
 };
