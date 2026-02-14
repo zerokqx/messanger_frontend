@@ -18,6 +18,7 @@ import { NavbarHeader } from '@/widgets/navbar/ui/navbar-header';
 import { User, Users } from 'lucide-react';
 import { ContactsTab } from '@/widgets/tab-contacts';
 import { ProfileTab } from '@/widgets/tab-profile';
+import { TabManager } from '@/shared/ui/query-tabs/ui/tab-manager';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -74,82 +75,105 @@ function RouteComponent() {
           mass: 0.4,
         }}
       >
-        <tabs.TabsInit queryName="tnavbar.main" initialTab="main">
-          <LazyAppShellNavbar>
-            <tabs.Tabs
-              children={({ children, current }) => (
-                <AnimatePresence mode="popLayout">
-                  <Box
-                    component={motion.div}
-                    key={current}
-                    initial={
-                      withAnimations
-                        ? { x: '100%', opacity: 0, zIndex: 2 }
-                        : false
-                    }
-                    animate={
-                      withAnimations ? { x: '0', opacity: 1 } : undefined
-                    }
-                    exit={
-                      withAnimations
-                        ? { x: '100%', opacity: 0, zIndex: 1 }
-                        : undefined
-                    }
-                  >
-                    {current !== 'main' && (
-                      <>
-                        <tabs.ClosePanel key={'close'} />
-                      </>
-                    )}
-                    <Suspense
-                      fallback={
-                        <Center>
-                          <Loader />
-                        </Center>
-                      }
-                    >
-                      {children}
-                    </Suspense>
-                  </Box>
-                </AnimatePresence>
-              )}
-              tabs={{
-                contacts: {
-                  render: () => <ContactsTab />,
-                },
-                profile: {
-                  render: () => <ProfileTab />,
-                },
-                main: {
-                  render: (api) => {
+        <LazyAppShellNavbar>
+          <TabManager>
+            <AnimatePresence mode="popLayout">
+              <TabManager.Tab key={'dwd'} value="main">
+                <TabManager.UseApi
+                  children={({ dispatch }) => {
                     return (
-                      <>
-                        <tabs.Panel
-                          withStyleAtActive={false}
-                          component={ActionIcon}
-                          onClickAnyItem={(v) => {
-                            console.log(api);
-                            api.push(v);
-                          }}
-                          data={[
-                            { value: 'contacts', icon: <Users /> },
-
-                            {
-                              value: 'profile',
-                              icon: <User />,
-                            },
-                          ]}
-                        />
-
-                        <p>dawd</p>
-                      </>
+                      <Button
+                        onClick={() => {
+                          dispatch({ type: 'PUSH', value: 'tab-2' });
+                        }}
+                      >
+                        dwd
+                      </Button>
                     );
-                  },
-                },
-              }}
-            />
-          </LazyAppShellNavbar>
-        </tabs.TabsInit>
+                  }}
+                />
+                <p>Tab 1</p>
+              </TabManager.Tab>
+              <TabManager.Tab key="w" value="tab-2">
+                <p>Tab 2</p>
+              </TabManager.Tab>
+              <TabManager.Tab key="dwdqw" value="tab-3">
+                <p>Tab 3</p>
+              </TabManager.Tab>
+            </AnimatePresence>
+          </TabManager>
+
+          {/* <tabs.Tabs */}
+          {/*   children={({ children, current }) => ( */}
+          {/*     <AnimatePresence mode="popLayout"> */}
+          {/*       <Box */}
+          {/*         component={motion.div} */}
+          {/*         key={current} */}
+          {/*         initial={ */}
+          {/*           withAnimations */}
+          {/*             ? { x: '100%', opacity: 0, zIndex: 2 } */}
+          {/*             : false */}
+          {/*         } */}
+          {/*         animate={withAnimations ? { x: '0', opacity: 1 } : undefined} */}
+          {/*         exit={ */}
+          {/*           withAnimations */}
+          {/*             ? { x: '100%', opacity: 0, zIndex: 1 } */}
+          {/*             : undefined */}
+          {/*         } */}
+          {/*       > */}
+          {/*         {current !== 'main' && ( */}
+          {/*           <> */}
+          {/*             <tabs.ClosePanel key={'close'} /> */}
+          {/*           </> */}
+          {/*         )} */}
+          {/*         <Suspense */}
+          {/*           fallback={ */}
+          {/*             <Center> */}
+          {/*               <Loader /> */}
+          {/*             </Center> */}
+          {/*           } */}
+          {/*         > */}
+          {/*           {children} */}
+          {/*         </Suspense> */}
+          {/*       </Box> */}
+          {/*     </AnimatePresence> */}
+          {/*   )} */}
+          {/*   tabs={{ */}
+          {/*     contacts: { */}
+          {/*       render: () => <ContactsTab />, */}
+          {/*     }, */}
+          {/*     profile: { */}
+          {/*       render: () => <ProfileTab />, */}
+          {/*     }, */}
+          {/*     main: { */}
+          {/*       render: (api) => { */}
+          {/*         return ( */}
+          {/*           <> */}
+          {/*             <tabs.Panel */}
+          {/*               withStyleAtActive={false} */}
+          {/*               component={ActionIcon} */}
+          {/*               onClickAnyItem={(v) => { */}
+          {/*                 console.log(api); */}
+          {/*                 api.push(v); */}
+          {/*               }} */}
+          {/*               data={[ */}
+          {/*                 { value: 'contacts', icon: <Users /> }, */}
+          {/**/}
+          {/*                 { */}
+          {/*                   value: 'profile', */}
+          {/*                   icon: <User />, */}
+          {/*                 }, */}
+          {/*               ]} */}
+          {/*             /> */}
+          {/**/}
+          {/*             <p>dawd</p> */}
+          {/*           </> */}
+          {/*         ); */}
+          {/*       }, */}
+          {/*     }, */}
+          {/*   }} */}
+          {/* /> */}
+        </LazyAppShellNavbar>
       </MotionConfig>
     </AppShell>
   );
