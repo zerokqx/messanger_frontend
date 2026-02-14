@@ -1,6 +1,4 @@
-import type Resources from '@/shared/i18next/types/resources';
-import { type ReactNode } from 'react';
-import { useEffectOnce } from 'react-use';
+import React, { useCallback, useMemo, type ReactNode } from 'react';
 import { useTabs } from '../lib/tabs';
 import { tabsHistoryAction } from '../model/tabs-history';
 import type {
@@ -8,101 +6,89 @@ import type {
   TabsDeclarationKeys,
   TabsHistoryAction,
 } from '../model';
+import {
+  SharedQueryNameProvider,
+  useSharedQueryName,
+} from '../model/querykey-context';
+import { useDefault } from 'react-use';
 
-type TabsTabComponent = (api: TabsHistoryAction) => ReactNode;
+type TabComponent = (api: TabsHistoryAction) => ReactNode;
 
-type TabDef =
-  | {
-      render: TabsTabComponent;
-    }
-  | {
-      render: ReactNode;
-    };
-
-export type TabsTab<I18N extends keyof Resources> = (
-  | {
-      label: string;
-    }
-  | {
-      i18n: keyof Resources[I18N];
-    }
-) &
-  TabDef;
-export type TabsObject<
-  QueryKey extends TabsDeclarationKeys,
-  I18N extends keyof Resources,
-> = Record<TabsDeclaration[QueryKey], TabsTab<I18N>>;
-
-type TabsPropsChildren<
-  QueryKey extends TabsDeclarationKeys,
-  W extends TabsObject<QueryKey, I18N>,
-  I18N extends keyof Resources,
-> = ({
-  current,
-  queryName,
-  tabs,
-}: {
-  current: TabsDeclaration[QueryKey];
-  queryName: QueryKey;
-  tabs: W;
-}) => ReactNode;
-
-interface TabsProps<
-  QueryKey extends TabsDeclarationKeys,
-  W extends TabsObject<QueryKey, I18N>,
-  I18N extends keyof Resources,
-> {
-  i18nGroup: I18N;
-  queryName: QueryKey;
-  tabs: W;
-  perTab?: (props: { current: TabsDeclaration[QueryKey] }) => ReactNode;
-  wrapper?: (props: { children?: ReactNode; current: keyof W }) => ReactNode;
-  children?: TabsPropsChildren<QueryKey, W, I18N>;
+export interface Tab {
+  label?: string;
+  render: TabComponent;
 }
 
-interface TabsInitProps<QueryKey extends TabsDeclarationKeys> {
+export type TabsObject = Record<string, Tab>;
+
+type TabsPropsChildren = (props: {
+  resolve: () => ReactNode;
+  current: string;
+  queryName: string;
+  tabs: TabsObject;
+}) => ReactNode;
+
+interface TabsProps {
+  tabs: TabsObject;
+  children?: TabsPropsChildren;
+  tabFallback?: ReactNode;
+}
+
+interface TabsInitProps {
   children?: ReactNode;
-  queryKey: QueryKey;
-  initialTab: TabsDeclaration[QueryKey];
+  queryName: string;
+  initialTab: string;
 }
 
 //=====================================================================//
 
-export function Tabs<
-  QueryKey extends TabsDeclarationKeys,
-  W extends TabsObject<QueryKey, I18N>,
-  I18N extends keyof Resources,
->({
-  queryName,
-  tabs,
-  perTab,
-  wrapper = ({ children }) => children,
-  children = ({ current, tabs }) => {
-    const tab = tabs[current as keyof typeof tabs];
-    const { render } = tab;
-    return typeof render === 'function' ? render(tabsHistoryAction) : render;
-  },
-}: TabsProps<QueryKey, W, I18N>) {
-  const current = useTabs(queryName);
-  const Wrapper = wrapper;
+const resolveChildren = (
+  children: TabsObject,
+  current: string,
+  api: TabsHistoryAction,
+  fallback?: ReactNode
+) => {
+  return () => {
+    const tab = children[current];
+    if (tab) return tab.render(api);
+    return fallback;
+  };
+};
+export function Tabs({ tabs, tabFallback, children }: TabsProps) {
+  const [queryName] = useSharedQueryName();
 
-  return (
-    <>
-      {perTab?.({ current })}
-      <Wrapper current={current}>
-        {children({ current, queryName, tabs })}
-      </Wrapper>
-    </>
-  );
+  console.log(queryName);
+  const current = useTabs(queryName);
+  const _children: TabsPropsChildren =
+    children ??
+    (({ tabs: _tabs, current: _current }) => {
+      const tab = _tabs[_current];
+      return tab ? tab.render(tabsHistoryAction) : tabFallback;
+    });
+
+  const tab = tabs[current];
+  if (!tab) return tabFallback;
+  const content = _children({
+    current,
+    queryName,
+    tabs,
+    resolve: resolveChildren(tabs, current, tabsHistoryAction, tabFallback),
+  });
+  return content;
 }
 
-export const TabsInit = <QueryKey extends TabsDeclarationKeys>({
-  queryKey,
+export const TabsInit = ({
+  queryName,
   children,
   initialTab,
-}: TabsInitProps<QueryKey>) => {
-  useEffectOnce(() => {
-    tabsHistoryAction.doInitClient(queryKey, initialTab);
-  });
-  return children;
+}: TabsInitProps) => {
+  useMemo(() => {
+    tabsHistoryAction.doInitClient(queryName, initialTab);
+  }, [queryName, initialTab]);
+
+  return (
+    <SharedQueryNameProvider initialValue={queryName}>
+      {children}
+    </SharedQueryNameProvider>
+  );
 };

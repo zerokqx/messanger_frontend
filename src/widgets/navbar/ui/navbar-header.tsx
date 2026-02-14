@@ -21,9 +21,6 @@ import { useTabsHistory } from '@/shared/ui/query-tabs/model/tabs-history.ts';
 import { useLogger } from '@mantine/hooks';
 
 const hiddenNavbarPanel = tabs.typedArray('tnavbar', ['profile', 'search']);
-const LazyQuickLinksBar = lazy(() =>
-  import('./quick-links-bar.tsx').then((m) => ({ default: m.QuickLinksBar }))
-);
 export const NavbarHeader = ({
   input,
 }: {
@@ -78,7 +75,7 @@ export const NavbarHeader = ({
               </m.div>
             )}
           </AnimatePresence>
-          <m.div layout style={{ flex: 1 }}>
+          <m.div key="search" style={{ flex: 1 }}>
             <SearchInputWrapper
               styles={{ input: { borderRadius: '100px' } }}
               bdrs={'xl'}
@@ -97,11 +94,12 @@ export const NavbarHeader = ({
                 opacity: 1,
               }}
               initial={{
-                y: 10,
+                y: -5,
+                zIndex: 1000,
                 opacity: 0,
               }}
               exit={{
-                y: -10,
+                y: -5,
                 opacity: 0,
               }}
             >

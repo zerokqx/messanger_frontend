@@ -1,13 +1,12 @@
 import '@/shared/ui/query-tabs';
 declare module '@/shared/ui/query-tabs' {
   interface TabsDeclaration {
+    'tnavbar.main': 'main' | 'contacts' | 'search';
     tnavbar:
       | 'main'
-      | 'contacts'
       | 'settings'
-      | 'search'
       | 'profile'
-      | 'profile-edit';
-    tsettings: 'interface' | 'sessions';
+      | 'profile.edit'
+      | 'settings.interface';
   }
 }
