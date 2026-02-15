@@ -24,6 +24,11 @@ export const animationVariants: Record<TabAnimationVariant, Variants> = {
     closed: { y: '100%', opacity: 0 },
     initial: { y: '-100%', opacity: 0 },
   },
+  none: {
+    open: {},
+    closed: {},
+    initial: {},
+  },
   blur: {
     open: {
       willChange: 'filter',

@@ -17,7 +17,10 @@ export const Tabs: TabsComponent = ({
         current: initialTab ?? 'main',
       }}
     >
-      <TabsAnimationVariantProvider initialValue={animationVariant}>
+      <TabsAnimationVariantProvider
+        key={animationVariant ?? 'default'}
+        initialValue={animationVariant}
+      >
         {children}
       </TabsAnimationVariantProvider>
     </TabManagerProvider>

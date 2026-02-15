@@ -21,7 +21,6 @@ import { ArrowLeft, Home, User, Users } from 'lucide-react';
 import { SearchInputWrapper } from '@/features/search';
 import { SearchTab } from '@/widgets/navbar/ui/tabs/search.tab';
 import * as m from 'motion/react-m';
-import { current } from 'immer';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -40,6 +39,7 @@ function RouteComponent() {
   const t = useMantineTheme();
   const animationStyle = useSettingsStore((s) => s.data.animations);
   const withAnimations = useSettingsStore((s) => s.data.withAnimations);
+  const animationsEnabled = withAnimations;
 
   return (
     <AppShell
@@ -71,99 +71,177 @@ function RouteComponent() {
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
-      <MotionConfig
-        transition={{
-          type: animationStyle,
-          mass: 0.4,
-        }}
-      >
+      {animationsEnabled ? (
+        <MotionConfig
+          transition={{
+            type: animationStyle,
+            mass: 0.4,
+          }}
+        >
+          <Suspense>
+            <LazyAppShellNavbar>
+              <Tabs animationVariant="blur">
+                <Stack p={'xs'} gap={'sm'}>
+                  <Tabs.UseApi
+                    children={({ state, actions }) => (
+                      <Stack>
+                        <Group>
+                          <AnimatePresence mode="popLayout">
+                            {state.current === 'search' && (
+                              <m.div
+                                key={'back'}
+                                exit={{ scale: 0 }}
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                              >
+                                <ActionIcon
+                                  onClick={() => {
+                                    actions.back();
+                                  }}
+                                  bdrs={'xl'}
+                                  variant="light"
+                                >
+                                  <ArrowLeft />
+                                </ActionIcon>
+                              </m.div>
+                            )}
+                            <m.div
+                              key={'input'}
+                              layout
+                              style={{
+                                flex: 1,
+                              }}
+                            >
+                              <SearchInputWrapper
+                                radius={'xl'}
+                                onFocus={() => {
+                                  actions.push('search');
+                                }}
+                              />
+                            </m.div>
+                          </AnimatePresence>
+                        </Group>
+                        <AnimatePresence mode="popLayout">
+                          {state.current !== 'search' && (
+                            <m.div
+                              key={'panel'}
+                              exit={{ y: -10, opacity: 0 }}
+                              initial={{ y: -10, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                            >
+                              <Panel
+                                component={ActionIcon}
+                                data={[
+                                  {
+                                    value: 'main',
+                                    icon: <Home />,
+                                  },
+
+                                  {
+                                    value: 'profile',
+                                    icon: <User />,
+                                  },
+                                  {
+                                    value: 'contacts',
+                                    icon: <Users />,
+                                  },
+                                ]}
+                              />
+                            </m.div>
+                          )}
+                        </AnimatePresence>
+                      </Stack>
+                    )}
+                  />
+                </Stack>
+                <Box p={'xs'}>
+                  <Tabs.Tab value="search">
+                    <SearchTab />
+                  </Tabs.Tab>
+                  <Tabs.Tab value="main">
+                    <Text>Chats</Text>
+                  </Tabs.Tab>
+                  <Tabs.Tab value="contacts">
+                    <ContactsTab />
+                  </Tabs.Tab>
+                  <Tabs.Tab value="profile">
+                    <Suspense>
+                      <ProfileTab />
+                    </Suspense>
+                  </Tabs.Tab>
+                </Box>
+              </Tabs>
+            </LazyAppShellNavbar>
+          </Suspense>
+        </MotionConfig>
+      ) : (
         <Suspense>
           <LazyAppShellNavbar>
-            <Tabs animationVariant="blur">
+            <Tabs animationVariant="none">
               <Stack p={'xs'} gap={'sm'}>
                 <Tabs.UseApi
                   children={({ state, actions }) => (
                     <Stack>
                       <Group>
-                        <AnimatePresence mode="popLayout">
-                          {state.current === 'search' && (
-                            <m.div
-                              key={'back'}
-                              exit={{ scale: 0 }}
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                            >
-                              <ActionIcon
-                                onClick={() => {
-                                  actions.back();
-                                }}
-                                bdrs={'xl'}
-                                variant="light"
-                              >
-                                <ArrowLeft />
-                              </ActionIcon>
-                            </m.div>
-                          )}
-                          <m.div
-                            key={'input'}
-                            layout
-                            style={{
-                              flex: 1,
+                        {state.current === 'search' && (
+                          <ActionIcon
+                            onClick={() => {
+                              actions.back();
                             }}
+                            bdrs={'xl'}
+                            variant="light"
                           >
-                            <SearchInputWrapper
-                              radius={'xl'}
-                              onFocus={() => {
-                                actions.push('search');
-                              }}
-                            />
-                          </m.div>
-                        </AnimatePresence>
-                      </Group>
-                      <AnimatePresence mode="popLayout">
-                        {state.current !== 'search' && (
-                          <m.div
-                            key={'panel'}
-                            exit={{ y: -10, opacity: 0 }}
-                            initial={{ y: -10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                          >
-                            <Panel
-                              component={ActionIcon}
-                              data={[
-                                {
-                                  value: 'main',
-                                  icon: <Home />,
-                                },
-
-                                {
-                                  value: 'profile',
-                                  icon: <User />,
-                                },
-                                {
-                                  value: 'contacts',
-                                  icon: <Users />,
-                                },
-                              ]}
-                            />
-                          </m.div>
+                            <ArrowLeft />
+                          </ActionIcon>
                         )}
-                      </AnimatePresence>
+                        <Box
+                          style={{
+                            flex: 1,
+                          }}
+                        >
+                          <SearchInputWrapper
+                            radius={'xl'}
+                            onFocus={() => {
+                              actions.push('search');
+                            }}
+                          />
+                        </Box>
+                      </Group>
+                      {state.current !== 'search' && (
+                        <Panel
+                          component={ActionIcon}
+                          data={[
+                            {
+                              value: 'main',
+                              icon: <Home />,
+                            },
+
+                            {
+                              value: 'profile',
+                              icon: <User />,
+                            },
+                            {
+                              value: 'contacts',
+                              icon: <Users />,
+                            },
+                          ]}
+                        />
+                      )}
                     </Stack>
                   )}
                 />
               </Stack>
               <Box p={'xs'}>
-                <Tabs.Tab value="search">
+                <Tabs.Tab value="search" withAnimation={false}>
                   <SearchTab />
                 </Tabs.Tab>
-                <Tabs.Tab value="main">
+                <Tabs.Tab value="main" withAnimation={false}>
                   <Text>Chats</Text>
                 </Tabs.Tab>
-                <Tabs.Tab value="contacts">
+                <Tabs.Tab value="contacts" withAnimation={false}>
                   <ContactsTab />
                 </Tabs.Tab>
-                <Tabs.Tab value="profile">
+                <Tabs.Tab value="profile" withAnimation={false}>
                   <Suspense>
                     <ProfileTab />
                   </Suspense>
@@ -172,7 +250,7 @@ function RouteComponent() {
             </Tabs>
           </LazyAppShellNavbar>
         </Suspense>
-      </MotionConfig>
+      )}
     </AppShell>
   );
 }
