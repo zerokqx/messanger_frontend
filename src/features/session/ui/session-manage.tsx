@@ -3,11 +3,11 @@ import { SessionActionContext, SessionList } from '@/entities/session';
 import type { SessionActionContextType } from '@/entities/session/model/session-action/context.types';
 import { useGetSessionsSuspenseQuery } from '@/entities/session/model/get-sessions.query';
 import {
-  confirmModalForRevokeAllSessions,
-  confirmModalForRevokeSession,
   useRevokeSession,
   useSessionRevokeAll,
-} from '@/features/session';
+} from '../model';
+import { confirmModalForRevokeAllSessions } from './revoke-all.confirm';
+import { confirmModalForRevokeSession } from './modal-revoke.confirm';
 import { Alert, Center, Loader } from '@mantine/core';
 import { SearchX } from 'lucide-react';
 import { useMemo } from 'react';
