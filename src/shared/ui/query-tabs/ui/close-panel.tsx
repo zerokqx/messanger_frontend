@@ -1,14 +1,14 @@
 import { ActionIcon, Text, useMantineColorScheme } from '@mantine/core';
-import { PanelContainer } from './panel';
-import { useApiTabs } from '../model/api-context';
 import { ArrowLeft } from 'lucide-react';
+import { useTabsApi } from '../model';
+import { PanelContainer } from './panel';
 
 interface ClosePanelProps {
   title?: string;
 }
 export const ClosePanel = ({ title }: ClosePanelProps) => {
   const { colorScheme } = useMantineColorScheme();
-  const [api] = useApiTabs();
+  const [api] = useTabsApi();
   return (
     <PanelContainer
       justify="start"

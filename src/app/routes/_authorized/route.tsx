@@ -1,24 +1,10 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import {
-  ActionIcon,
-  AppShell,
-  Box,
-  Button,
-  Center,
-  Loader,
-  Stack,
-  useMantineTheme,
-} from '@mantine/core';
-import { Children, Suspense, lazy } from 'react';
+import { AppShell, Button, useMantineTheme } from '@mantine/core';
+import { Suspense, lazy } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { tabs } from '@/shared/ui/query-tabs';
-import { AnimatePresence, motion, MotionConfig } from 'motion/react';
+import { AnimatePresence, MotionConfig } from 'motion/react';
 import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
-import { NavbarHeader } from '@/widgets/navbar/ui/navbar-header';
-import { User, Users } from 'lucide-react';
-import { ContactsTab } from '@/widgets/tab-contacts';
-import { ProfileTab } from '@/widgets/tab-profile';
-import { TabManager } from '@/shared/ui/query-tabs/ui/tab-manager';
+import { Tabs } from '@/shared/ui/query-tabs';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -76,103 +62,11 @@ function RouteComponent() {
         }}
       >
         <LazyAppShellNavbar>
-          <TabManager>
-            <AnimatePresence mode="popLayout">
-              <TabManager.Tab key={'dwd'} value="main">
-                <TabManager.UseApi
-                  children={({ dispatch }) => {
-                    return (
-                      <Button
-                        onClick={() => {
-                          dispatch({ type: 'PUSH', value: 'tab-2' });
-                        }}
-                      >
-                        dwd
-                      </Button>
-                    );
-                  }}
-                />
-                <p>Tab 1</p>
-              </TabManager.Tab>
-              <TabManager.Tab key="w" value="tab-2">
-                <p>Tab 2</p>
-              </TabManager.Tab>
-              <TabManager.Tab key="dwdqw" value="tab-3">
-                <p>Tab 3</p>
-              </TabManager.Tab>
-            </AnimatePresence>
-          </TabManager>
-
-          {/* <tabs.Tabs */}
-          {/*   children={({ children, current }) => ( */}
-          {/*     <AnimatePresence mode="popLayout"> */}
-          {/*       <Box */}
-          {/*         component={motion.div} */}
-          {/*         key={current} */}
-          {/*         initial={ */}
-          {/*           withAnimations */}
-          {/*             ? { x: '100%', opacity: 0, zIndex: 2 } */}
-          {/*             : false */}
-          {/*         } */}
-          {/*         animate={withAnimations ? { x: '0', opacity: 1 } : undefined} */}
-          {/*         exit={ */}
-          {/*           withAnimations */}
-          {/*             ? { x: '100%', opacity: 0, zIndex: 1 } */}
-          {/*             : undefined */}
-          {/*         } */}
-          {/*       > */}
-          {/*         {current !== 'main' && ( */}
-          {/*           <> */}
-          {/*             <tabs.ClosePanel key={'close'} /> */}
-          {/*           </> */}
-          {/*         )} */}
-          {/*         <Suspense */}
-          {/*           fallback={ */}
-          {/*             <Center> */}
-          {/*               <Loader /> */}
-          {/*             </Center> */}
-          {/*           } */}
-          {/*         > */}
-          {/*           {children} */}
-          {/*         </Suspense> */}
-          {/*       </Box> */}
-          {/*     </AnimatePresence> */}
-          {/*   )} */}
-          {/*   tabs={{ */}
-          {/*     contacts: { */}
-          {/*       render: () => <ContactsTab />, */}
-          {/*     }, */}
-          {/*     profile: { */}
-          {/*       render: () => <ProfileTab />, */}
-          {/*     }, */}
-          {/*     main: { */}
-          {/*       render: (api) => { */}
-          {/*         return ( */}
-          {/*           <> */}
-          {/*             <tabs.Panel */}
-          {/*               withStyleAtActive={false} */}
-          {/*               component={ActionIcon} */}
-          {/*               onClickAnyItem={(v) => { */}
-          {/*                 console.log(api); */}
-          {/*                 api.push(v); */}
-          {/*               }} */}
-          {/*               data={[ */}
-          {/*                 { value: 'contacts', icon: <Users /> }, */}
-          {/**/}
-          {/*                 { */}
-          {/*                   value: 'profile', */}
-          {/*                   icon: <User />, */}
-          {/*                 }, */}
-          {/*               ]} */}
-          {/*             /> */}
-          {/**/}
-          {/*             <p>dawd</p> */}
-          {/*           </> */}
-          {/*         ); */}
-          {/*       }, */}
-          {/*     }, */}
-          {/*   }} */}
-          {/* /> */}
+          <Tabs initialTab="tab-1">
+            <Tabs.Tab value="tab-1">Tab 1 </Tabs.Tab>
+            <Tabs.Tab value="tab-2">Tab 2 </Tabs.Tab>
+            <Tabs.Tab value="tab-3">Tab 3 </Tabs.Tab>
+          </Tabs>
         </LazyAppShellNavbar>
       </MotionConfig>
     </AppShell>

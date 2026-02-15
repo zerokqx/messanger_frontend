@@ -1,41 +1,54 @@
-import { type Dispatch } from 'react';
 import { createReducerContext } from 'react-use';
 
-export type TabReducerActions =
+export type TabsReducerAction =
   | { type: 'PUSH'; value: string }
   | { type: 'BACK' }
   | { type: 'REPLACE'; value: string }
-  | { type: 'RESET'; value: string };
-export interface TabContext {
+  | { type: 'RESET'; value: string }
+  | { type: 'BATCH'; actions: TabsReducerAction[] };
+export interface TabsContext {
   current: string;
   history: string[];
 }
 
-export type TabManagerReducer = (
-  state: TabContext,
-  action: TabReducerActions
-) => TabContext;
-const reducer: TabManagerReducer = (state, action) => {
+export type TabsReducer = (
+  state: TabsContext,
+  action: TabsReducerAction
+) => TabsContext;
+const reducer: TabsReducer = (state, action) => {
   switch (action.type) {
     case 'PUSH': {
-      if (state.current === action.value) return state;
-      const newHistory = [...state.history, action.value];
+      const { history, current } = state;
+      if (current === action.value) return state;
+      const newHistory = [...history, action.value];
       return { history: newHistory, current: action.value };
     }
     case 'BACK': {
-      if (state.history.length <= 1) return state;
-      const newHistory = state.history.slice(0, -1);
-      const newCurrent = newHistory[newHistory.length - 1] ?? state.current;
+      const { history, current } = state;
+      if (history.length <= 1) return state;
+      const newHistory = history.slice(0, -1);
+      const newCurrent = newHistory[newHistory.length - 1] ?? current;
       return { history: newHistory, current: newCurrent };
     }
     case 'REPLACE': {
-      if (state.current === action.value) return state;
-      const newHistory = [...state.history.slice(0, -1), action.value];
+      const { history, current } = state;
+      if (current === action.value) return state;
+      const newHistory = [...history.slice(0, -1), action.value];
+
+      console.log('REPLACE NEW');
       return { current: action.value, history: newHistory };
     }
 
     case 'RESET': {
+      const { history, current } = state;
+      if (current === action.value && history.length === 1) return state;
+      console.log('RESET NEW');
       return { current: action.value, history: [action.value] };
+    }
+    case 'BATCH': {
+      let __state = state;
+      action.actions.forEach((a) => (__state = reducer(__state, a)));
+      return __state === state ? state : __state;
     }
     default: {
       throw new Error(`Action not exists in reducer.`);
@@ -43,15 +56,10 @@ const reducer: TabManagerReducer = (state, action) => {
   }
 };
 
-const [useTabManagerIternal, TabManagerProvider] = createReducerContext(
+export const [useTabManagerIternal, TabManagerProvider] = createReducerContext(
   reducer,
   {
     current: 'main',
     history: ['main'],
   }
 );
-const useTabManager = (): [TabContext, Dispatch<TabReducerActions>] => {
-  const [state, dispatch] = useTabManagerIternal();
-  return [state, dispatch as Dispatch<TabReducerActions>] as const;
-};
-export { useTabManager, TabManagerProvider };

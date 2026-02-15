@@ -1,8 +1,6 @@
 import { Group, useMantineColorScheme } from '@mantine/core';
-import { useTabs } from '../lib';
-import { useSharedQueryName } from '../model';
 import type { ComponentProps, MouseEvent, ReactNode } from 'react';
-import { useApiTabs } from '../model/api-context';
+import { useTabsApi } from '../model';
 
 interface PanelComponentProps {
   variant: string;
@@ -39,9 +37,8 @@ export const Panel = ({
   onClickAnyItem,
 }: PanelProps) => {
   const { colorScheme } = useMantineColorScheme();
-  const [queryName] = useSharedQueryName();
-  const [api] = useApiTabs();
-  const current = useTabs(queryName);
+  const [api, state] = useTabsApi();
+  const current = state.current;
   const isActive = active ?? ((value: string) => current === value);
 
   return (

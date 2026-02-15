@@ -1,7 +1,6 @@
 import { type ReactNode } from 'react';
 import { AppShellNavbar } from '@mantine/core';
 import { NavbarHeader } from './navbar-header';
-import { TabsNavigate } from '@/shared/ui/query-tabs';
 
 interface AppShellNavbarWidgetProps {
   children?: ReactNode;
