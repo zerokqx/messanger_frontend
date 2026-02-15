@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { Suspense, lazy } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { AnimatePresence, MotionConfig } from 'motion/react';
+import { AnimatePresence } from 'motion/react';
 import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ContactsTab } from '@/widgets/tab-contacts';
@@ -21,6 +21,8 @@ import { ArrowLeft, Home, User, Users } from 'lucide-react';
 import { SearchInputWrapper } from '@/features/search';
 import { SearchTab } from '@/widgets/navbar/ui/tabs/search.tab';
 import * as m from 'motion/react-m';
+import { SettingsTab } from '@/widgets/tab-settings';
+import { TabsMenu } from '@/widgets/tabs-menu';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -37,7 +39,6 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
-  const animationStyle = useSettingsStore((s) => s.data.animations);
   const withAnimations = useSettingsStore((s) => s.data.withAnimations);
   const animationsEnabled = withAnimations;
 
@@ -99,20 +100,22 @@ function RouteComponent() {
                               </ActionIcon>
                             </m.div>
                           )}
-                          <m.div
-                            key={'input'}
-                            layout
-                            style={{
-                              flex: 1,
-                            }}
-                          >
-                            <SearchInputWrapper
-                              radius={'xl'}
-                              onFocus={() => {
-                                actions.push('search');
+                          {state.current !== 'settings' && (
+                            <m.div
+                              key={'input'}
+                              layout
+                              style={{
+                                flex: 1,
                               }}
-                            />
-                          </m.div>
+                            >
+                              <SearchInputWrapper
+                                radius={'xl'}
+                                onFocus={() => {
+                                  actions.push('search');
+                                }}
+                              />
+                            </m.div>
+                          )}
                         </AnimatePresence>
                       ) : (
                         <>
@@ -127,20 +130,28 @@ function RouteComponent() {
                               <ArrowLeft />
                             </ActionIcon>
                           )}
-                          <Box
-                            style={{
-                              flex: 1,
-                            }}
-                          >
-                            <SearchInputWrapper
-                              radius={'xl'}
-                              onFocus={() => {
-                                actions.push('search');
+                          {state.current !== 'settings' && (
+                            <Box
+                              style={{
+                                flex: 1,
                               }}
-                            />
-                          </Box>
+                            >
+                              <SearchInputWrapper
+                                radius={'xl'}
+                                onFocus={() => {
+                                  actions.push('search');
+                                }}
+                              />
+                            </Box>
+                          )}
                         </>
                       )}
+                      <TabsMenu
+                        data={['settings']}
+                        onClickMenuItem={(v) => {
+                          actions.push(v);
+                        }}
+                      />
                     </Group>
                     {animationsEnabled ? (
                       <AnimatePresence mode="popLayout">
@@ -207,6 +218,11 @@ function RouteComponent() {
               </Tabs.Tab>
               <Tabs.Tab value="contacts" withAnimation={animationsEnabled}>
                 <ContactsTab />
+              </Tabs.Tab>
+              <Tabs.Tab value="settings" withAnimation={animationsEnabled}>
+                <Suspense>
+                  <SettingsTab />
+                </Suspense>
               </Tabs.Tab>
               <Tabs.Tab value="profile" withAnimation={animationsEnabled}>
                 <Suspense>
