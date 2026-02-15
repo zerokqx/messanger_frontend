@@ -1,1 +1,1 @@
-export { SessionsTab } from './ui/tab-sessions';
+export { SessionsTab } from '@/features/session';

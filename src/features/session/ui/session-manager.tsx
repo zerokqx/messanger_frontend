@@ -2,12 +2,12 @@ import { sortSessionsByIsCurrent } from '@/entities/session/lib/sort-sessions-by
 import { SessionActionContext, SessionList } from '@/entities/session';
 import type { SessionActionContextType } from '@/entities/session/model/session-action/context.types';
 import { useGetSessionsSuspenseQuery } from '@/entities/session/model/get-sessions.query';
-import { useSessionRevokeAll } from '@/features/session/revoke-all';
-import { confirmModalForRevokeAllSessions } from '@/features/session/revoke-all/ui/modal.confirm';
 import {
+  confirmModalForRevokeAllSessions,
   confirmModalForRevokeSession,
   useRevokeSession,
-} from '@/features/session/revoke';
+  useSessionRevokeAll,
+} from '@/features/session';
 import { Alert, Center, Loader } from '@mantine/core';
 import { SearchX } from 'lucide-react';
 import { useMemo } from 'react';
