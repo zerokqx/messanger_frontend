@@ -39,7 +39,6 @@ declare module '@tanstack/react-router' {
 }
 const Wrapper = () => {
   const primaryColor = useSettingsStore((s) => s.data.primaryColor);
-  useLogger('Prim', [primaryColor]);
   return (
     <StrictMode>
       <MantineProvider

@@ -1,9 +1,15 @@
+import { TabsAnimationVariantProvider } from '../model';
 import { TabManagerProvider } from '../model/history-context';
+import { ConditionalDisplay } from './conditional-display';
 import { Tab } from './tab';
 import type { TabsComponent } from './tabs.type';
 import { UseApi } from './use-api';
 
-export const Tabs: TabsComponent = ({ children, initialTab }) => {
+export const Tabs: TabsComponent = ({
+  children,
+  initialTab,
+  animationVariant,
+}) => {
   return (
     <TabManagerProvider
       initialState={{
@@ -11,9 +17,12 @@ export const Tabs: TabsComponent = ({ children, initialTab }) => {
         current: initialTab ?? 'main',
       }}
     >
-      {children}
+      <TabsAnimationVariantProvider initialValue={animationVariant}>
+        {children}
+      </TabsAnimationVariantProvider>
     </TabManagerProvider>
   );
 };
 Tabs.UseApi = UseApi;
 Tabs.Tab = Tab;
+Tabs.ConditionalDisplay = ConditionalDisplay;

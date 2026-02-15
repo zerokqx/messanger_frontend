@@ -4,7 +4,6 @@ import { useLogger } from '@mantine/hooks';
 
 export const ProfileTab = () => {
   const { data: user, isLoading } = useMe();
-  useLogger('ProfileTab', [user, isLoading]);
 
   if (isLoading || !user) {
     return <SkeletonProfile />;

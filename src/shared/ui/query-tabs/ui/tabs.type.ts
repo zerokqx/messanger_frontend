@@ -4,6 +4,7 @@ import type { TabsContext, TabsReducerAction } from '../model/history-context';
 interface TabsProps {
   initialTab?: string;
   children?: ReactNode;
+  animationVariant?: TabAnimationVariant;
 }
 
 export interface Actions {
@@ -16,13 +17,27 @@ export interface Actions {
 interface TabsUseApiProps {
   children: (props: { actions: Actions; state: TabsContext }) => ReactNode;
 }
+export type TabAnimationVariant =
+  | 'fade'
+  | 'scale'
+  | 'slide-y'
+  | 'slide-x'
+  | 'blur';
 interface TabProps {
   children?: ReactNode;
   value: string;
+  withAnimation?: boolean;
+  animationVariant?: TabAnimationVariant;
 }
 
+export interface ConditionalDisplayProps {
+  displayOn: string[];
+  children?: ReactNode;
+}
 export interface TabsComponent {
   (props: TabsProps): ReactNode;
   Tab: (props: TabProps) => ReactNode;
   UseApi: (props: TabsUseApiProps) => ReactNode;
+
+  ConditionalDisplay: (props: ConditionalDisplayProps) => ReactNode;
 }
