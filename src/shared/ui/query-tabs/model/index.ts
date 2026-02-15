@@ -6,3 +6,7 @@ export type {
   TabsReducer,
   TabsReducerAction,
 } from './history-context.tsx';
+export {
+  useTabsAnimationVariant,
+  TabsAnimationVariantProvider,
+} from './animaton-variant-contexts.ts';

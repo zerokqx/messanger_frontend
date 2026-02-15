@@ -1,4 +1,4 @@
-import { Group, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
 import type { ComponentProps, MouseEvent, ReactNode } from 'react';
 import { useTabsApi } from '../model';
 
@@ -24,14 +24,13 @@ interface PanelProps {
 }
 
 export const PanelContainer = Group.withProps({
-  m: 'sm',
   bdrs: '1000px',
   p: 'xs',
   justify: 'space-evenly',
 });
 export const Panel = ({
   withStyleAtActive = true,
-  component,
+  component = ActionIcon,
   data,
   active,
   onClickAnyItem,

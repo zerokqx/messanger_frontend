@@ -21,6 +21,8 @@ const reducer: TabsReducer = (state, action) => {
       const { history, current } = state;
       if (current === action.value) return state;
       const newHistory = [...history, action.value];
+
+      performance.mark('tab-start');
       return { history: newHistory, current: action.value };
     }
     case 'BACK': {
