@@ -11,17 +11,16 @@ import {
 } from '@mantine/core';
 import { Suspense, lazy } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, MotionConfig } from 'motion/react';
 import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ContactsTab } from '@/widgets/tab-contacts';
 import { ProfileTab } from '@/widgets/tab-profile';
 import { Panel } from '@/shared/ui/query-tabs/ui';
-import { ArrowLeft, Home, Settings, User, Users } from 'lucide-react';
+import { ArrowLeft, Home, User, Users } from 'lucide-react';
 import { SearchInputWrapper } from '@/features/search';
 import { SearchTab } from '@/widgets/navbar/ui/tabs/search.tab';
 import * as m from 'motion/react-m';
-import { SettingsTab } from '@/widgets/tab-settings';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -38,7 +37,9 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
-  const animationsEnabled = useSettingsStore((s) => s.data.withAnimations);
+  const animationStyle = useSettingsStore((s) => s.data.animations);
+  const withAnimations = useSettingsStore((s) => s.data.withAnimations);
+  const animationsEnabled = withAnimations;
 
   return (
     <AppShell
@@ -77,48 +78,16 @@ function RouteComponent() {
               <Tabs.UseApi
                 children={({ state, actions }) => (
                   <Stack>
-                    <Tabs.ConditionalDisplay
-                      displayOn={['main', 'contacts', 'profile', 'search']}
-                    >
-                      <Group>
-                        {animationsEnabled ? (
-                          <AnimatePresence mode="popLayout">
-                            {state.current === 'search' && (
-                              <m.div
-                                key={'back'}
-                                exit={{ scale: 0 }}
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                              >
-                                <ActionIcon
-                                  onClick={() => {
-                                    actions.back();
-                                  }}
-                                  bdrs={'xl'}
-                                  variant="light"
-                                >
-                                  <ArrowLeft />
-                                </ActionIcon>
-                              </m.div>
-                            )}
+                    <Group>
+                      {animationsEnabled ? (
+                        <AnimatePresence mode="popLayout">
+                          {state.current === 'search' && (
                             <m.div
-                              key={'input'}
-                              layout
-                              style={{
-                                flex: 1,
-                              }}
+                              key={'back'}
+                              exit={{ scale: 0 }}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
                             >
-                              <SearchInputWrapper
-                                radius={'xl'}
-                                onFocus={() => {
-                                  actions.push('search');
-                                }}
-                              />
-                            </m.div>
-                          </AnimatePresence>
-                        ) : (
-                          <>
-                            {state.current === 'search' && (
                               <ActionIcon
                                 onClick={() => {
                                   actions.back();
@@ -128,87 +97,103 @@ function RouteComponent() {
                               >
                                 <ArrowLeft />
                               </ActionIcon>
-                            )}
-                            <Box
-                              style={{
-                                flex: 1,
-                              }}
-                            >
-                              <SearchInputWrapper
-                                radius={'xl'}
-                                onFocus={() => {
-                                  actions.push('search');
-                                }}
-                              />
-                            </Box>
-                          </>
-                        )}
-                      </Group>
-                    </Tabs.ConditionalDisplay>
-                    <Tabs.ConditionalDisplay
-                      displayOn={['main', 'contacts', 'profile', 'settings']}
-                    >
-                      {animationsEnabled ? (
-                        <AnimatePresence mode="popLayout">
-                          {state.current !== 'search' && (
-                            <m.div
-                              key={'panel'}
-                              exit={{ y: -10, opacity: 0 }}
-                              initial={{ y: -10, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                            >
-                              <Panel
-                                component={ActionIcon}
-                                data={[
-                                  {
-                                    value: 'main',
-                                    icon: <Home />,
-                                  },
-
-                                  {
-                                    value: 'profile',
-                                    icon: <User />,
-                                  },
-                                  {
-                                    value: 'contacts',
-                                    icon: <Users />,
-                                  },
-                                  {
-                                    value: 'settings',
-                                    icon: <Settings />,
-                                  },
-                                ]}
-                              />
                             </m.div>
                           )}
+                          <m.div
+                            key={'input'}
+                            layout
+                            style={{
+                              flex: 1,
+                            }}
+                          >
+                            <SearchInputWrapper
+                              radius={'xl'}
+                              onFocus={() => {
+                                actions.push('search');
+                              }}
+                            />
+                          </m.div>
                         </AnimatePresence>
                       ) : (
-                        state.current !== 'search' && (
-                          <Panel
-                            component={ActionIcon}
-                            data={[
-                              {
-                                value: 'main',
-                                icon: <Home />,
-                              },
-
-                              {
-                                value: 'profile',
-                                icon: <User />,
-                              },
-                              {
-                                value: 'contacts',
-                                icon: <Users />,
-                              },
-                              {
-                                value: 'settings',
-                                icon: <Settings />,
-                              },
-                            ]}
-                          />
-                        )
+                        <>
+                          {state.current === 'search' && (
+                            <ActionIcon
+                              onClick={() => {
+                                actions.back();
+                              }}
+                              bdrs={'xl'}
+                              variant="light"
+                            >
+                              <ArrowLeft />
+                            </ActionIcon>
+                          )}
+                          <Box
+                            style={{
+                              flex: 1,
+                            }}
+                          >
+                            <SearchInputWrapper
+                              radius={'xl'}
+                              onFocus={() => {
+                                actions.push('search');
+                              }}
+                            />
+                          </Box>
+                        </>
                       )}
-                    </Tabs.ConditionalDisplay>
+                    </Group>
+                    {animationsEnabled ? (
+                      <AnimatePresence mode="popLayout">
+                        {state.current !== 'search' && (
+                          <m.div
+                            key={'panel'}
+                            exit={{ y: -10, opacity: 0 }}
+                            initial={{ y: -10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                          >
+                            <Panel
+                              component={ActionIcon}
+                              data={[
+                                {
+                                  value: 'main',
+                                  icon: <Home />,
+                                },
+
+                                {
+                                  value: 'profile',
+                                  icon: <User />,
+                                },
+                                {
+                                  value: 'contacts',
+                                  icon: <Users />,
+                                },
+                              ]}
+                            />
+                          </m.div>
+                        )}
+                      </AnimatePresence>
+                    ) : (
+                      state.current !== 'search' && (
+                        <Panel
+                          component={ActionIcon}
+                          data={[
+                            {
+                              value: 'main',
+                              icon: <Home />,
+                            },
+
+                            {
+                              value: 'profile',
+                              icon: <User />,
+                            },
+                            {
+                              value: 'contacts',
+                              icon: <Users />,
+                            },
+                          ]}
+                        />
+                      )
+                    )}
                   </Stack>
                 )}
               />
@@ -222,11 +207,6 @@ function RouteComponent() {
               </Tabs.Tab>
               <Tabs.Tab value="contacts" withAnimation={animationsEnabled}>
                 <ContactsTab />
-              </Tabs.Tab>
-              <Tabs.Tab value="settings" withAnimation={animationsEnabled}>
-                <Suspense>
-                  <SettingsTab />
-                </Suspense>
               </Tabs.Tab>
               <Tabs.Tab value="profile" withAnimation={animationsEnabled}>
                 <Suspense>
