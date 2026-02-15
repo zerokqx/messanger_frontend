@@ -13,12 +13,11 @@ export const Tab: TabsComponent['Tab'] = ({
   const [state] = useTabs();
   const isActive = state.current === value;
   const [animationVariantFromContext] = useTabsAnimationVariant();
-  const animation =
-    animationVariants[
-      animationVariant ?? animationVariantFromContext ?? 'slide-x'
-    ];
+  const variantKey =
+    animationVariant ?? animationVariantFromContext ?? 'slide-x';
+  const animation = animationVariants[variantKey];
 
-  if (!withAnimation) {
+  if (!withAnimation || variantKey === 'none') {
     return isActive ? <>{children}</> : null;
   }
   return (

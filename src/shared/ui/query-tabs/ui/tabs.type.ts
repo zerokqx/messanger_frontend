@@ -22,7 +22,8 @@ export type TabAnimationVariant =
   | 'scale'
   | 'slide-y'
   | 'slide-x'
-  | 'blur';
+  | 'blur'
+  | 'none';
 interface TabProps {
   children?: ReactNode;
   value: string;
