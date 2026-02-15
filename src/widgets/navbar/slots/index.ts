@@ -88,7 +88,7 @@ export const sessionsTabSlot: NavbarTabSlot = {
   label: 'Sessions',
   render: lazy(() =>
     import('@/widgets/tab-sessions').then((m) => ({
-      default: m.SessionsTab,
+      default: m.SessionManage,
     }))
   ),
   fallback: null,
