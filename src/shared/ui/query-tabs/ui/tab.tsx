@@ -1,25 +1,26 @@
 import { AnimatePresence } from 'motion/react';
 import type { TabsComponent } from './tabs.type';
-import { useTabs, useTabsAnimationVariant } from '../model';
+import { useTabs } from '../model';
 import * as m from 'motion/react-m';
-import { animationVariants } from '../lib/animation-variant';
+import { useAnimationResolve } from '../lib';
+import { useEffect } from 'react';
+import { useTabRepository } from '../model/tab-repository';
 
 export const Tab: TabsComponent['Tab'] = ({
   children,
   value,
   animationVariant,
-  withAnimation = true,
 }) => {
+  const [, setTabRepository] = useTabRepository();
   const [state] = useTabs();
+  const animation = useAnimationResolve(animationVariant);
+  useEffect(() => {
+    setTabRepository((prev) => [...prev, value]);
+    return () => {
+      setTabRepository((prev) => prev.filter((tab) => tab !== value));
+    };
+  }, [setTabRepository, value]);
   const isActive = state.current === value;
-  const [animationVariantFromContext] = useTabsAnimationVariant();
-  const variantKey =
-    animationVariant ?? animationVariantFromContext ?? 'slide-x';
-  const animation = animationVariants[variantKey];
-
-  if (!withAnimation || variantKey === 'none') {
-    return isActive ? <>{children}</> : null;
-  }
   return (
     <AnimatePresence mode="popLayout">
       {isActive && (

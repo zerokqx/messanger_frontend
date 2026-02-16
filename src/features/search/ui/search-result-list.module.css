@@ -1,0 +1,7 @@
+.search-item-result:hover {
+  background: var(--mantine-color-gray-0);
+}
+
+[data-mantine-color-scheme='dark'] .search-item-result:hover {
+  background: var(--mantine-color-gray-9);
+}
