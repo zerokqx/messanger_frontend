@@ -1,5 +1,5 @@
 import { useAuth } from '@/shared/model/auth-provider-context';
-import type { IsAuthAProp } from '../types';
+import type { IsAuthAProp } from './types';
 import { If, Then } from 'react-if';
 export const IsAuth = ({ status = true, children }: IsAuthAProp) => {
   const isAuth = useAuth().isAuth;

@@ -1,7 +1,7 @@
 import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 import type { ModalRevokeProps } from './modal-revoke.types';
 import { useGetSessionByIdFromCache } from '@/entities/session';
-import { useRevokeSession } from '../api/revoke.mutation';
+import { useRevokeSession } from '../model';
 
 export const ModalRevoke = ({ opened, onClose, id }: ModalRevokeProps) => {
   const session = useGetSessionByIdFromCache(id);

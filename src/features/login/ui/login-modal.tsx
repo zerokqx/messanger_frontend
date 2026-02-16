@@ -5,7 +5,7 @@ import { Modal } from '@/shared/ui/modal';
 import { notifications } from '@mantine/notifications';
 import { useRouter } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import type { ILoginModalProps } from '../types/login-modal.interface';
+import type { ILoginModalProps } from './types';
 
 export const LoginModal = ({ whatClose }: ILoginModalProps) => {
   const { t } = useTranslation(['titles', 'buttonLabels', 'fieldLabels']);
