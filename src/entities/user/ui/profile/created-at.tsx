@@ -1,5 +1,5 @@
 import { IconButton } from '@/shared/ui/buttons';
-import type { IUserProfile } from './types/user-profile.types';
+import type { IUserProfile } from './types';
 import { useMemo } from 'react';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import { Text } from '@mantine/core';

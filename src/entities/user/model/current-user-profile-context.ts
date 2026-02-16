@@ -1,5 +1,5 @@
 import { createContext, use } from 'react';
-import type { ICurrentProfileContext } from './types/profile-context.types';
+import type { ICurrentProfileContext } from './types';
 
 export const ProfileContext = createContext<ICurrentProfileContext | null>(
   null

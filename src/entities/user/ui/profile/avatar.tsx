@@ -1,5 +1,5 @@
 import { Avatar as MantineAvatar } from '@mantine/core';
-import type { IUserProfile } from './types/user-profile.types';
+import type { IUserProfile } from './types';
 import { useProfileContext } from '../../model/current-user-profile-context';
 
 export const Avatar: IUserProfile['Avatar'] = ({ ...props }) => {

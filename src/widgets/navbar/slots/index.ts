@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import type { NavbarTabSlot } from '../types/tab-slot';
+import type { NavbarTabSlot } from '../ui/types';
 
 export const searchTabSlot: NavbarTabSlot = {
   value: 'search',
