@@ -70,7 +70,21 @@ interface Resources {
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
   "settings-tab": {
-    "logout": "Log out"
+    "animations-label": "Animation type",
+    "blue": "Blue",
+    "gray": "Gray",
+    "green": "Green",
+    "indigo": "Indigo",
+    "keyframes": "Linear",
+    "logout": "Log out",
+    "primary-color-label": "Primary application color",
+    "primary-color-not-exist": "The selected color does not exist. The application color was not changed",
+    "primary-color-not-exist-title": "Invalid color",
+    "red": "Red",
+    "spring": "Spring",
+    "violet": "Violet",
+    "with-animation-label": "Tab animations",
+    "with-animations-description": "Smooth transitions when switching between tabs"
   },
   "settingsLabels": {
     "allow_message_forwarding": "Allow message forwarding",

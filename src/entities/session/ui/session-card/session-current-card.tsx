@@ -10,7 +10,7 @@ export const SessionCurrentCard = ({ session }: SessionCurrentProps) => {
   const [tooltipStatus, tooltipToggle] = useToggle();
   const actions = useSesionActionsContext();
   return (
-    <Session gridProps={{ bd: '2px solid blue', mb: 'xl' }} session={session}>
+    <Session session={session}>
       <Session.Header>
         <Group justify="space-between">
           <Session.UserAgent />

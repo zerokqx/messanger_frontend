@@ -35,20 +35,16 @@ const reducer: TabsReducer = (state, action) => {
       if (current === action.value) return state;
       const newHistory = [...history.slice(0, -1), action.value];
 
-      console.log('REPLACE NEW');
       return { current: action.value, history: newHistory };
     }
 
     case 'RESET': {
       const { history, current } = state;
       if (current === action.value && history.length === 1) return state;
-      console.log('RESET NEW');
       return { current: action.value, history: [action.value] };
     }
     case 'BATCH': {
-      let __state = state;
-      action.actions.forEach((a) => (__state = reducer(__state, a)));
-      return __state === state ? state : __state;
+      return action.actions.reduce(reducer, state);
     }
     default: {
       throw new Error(`Action not exists in reducer.`);

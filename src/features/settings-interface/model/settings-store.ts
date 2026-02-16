@@ -1,8 +1,9 @@
 import { createStore } from '@colorfy-software/zfy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import type { supportAnimations } from '../config/support-animations';
 
 export interface SettingsStoreState {
-  animations: 'spring' | 'keyframes';
+  animations: (typeof supportAnimations)[number];
   primaryColor: string;
   withAnimations: boolean;
 }

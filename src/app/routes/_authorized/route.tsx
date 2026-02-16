@@ -1,26 +1,10 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import {
-  ActionIcon,
-  AppShell,
-  Box,
-  Button,
-  Group,
-  Stack,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
-import { Suspense, lazy } from 'react';
+import { AppShell, useMantineTheme } from '@mantine/core';
+import { Suspense, lazy, useRef } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { AnimatePresence, MotionConfig } from 'motion/react';
+import { MotionConfig } from 'motion/react';
 import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
-import { Tabs } from '@/shared/ui/query-tabs';
-import { ContactsTab } from '@/widgets/tab-contacts';
-import { ProfileTab } from '@/widgets/tab-profile';
-import { Panel } from '@/shared/ui/query-tabs/ui';
-import { ArrowLeft, Home, User, Users } from 'lucide-react';
-import { SearchInputWrapper } from '@/features/search';
-import { SearchTab } from '@/widgets/navbar/ui/tabs/search.tab';
-import * as m from 'motion/react-m';
+import type { Actions } from '@/shared/ui/query-tabs/ui/tabs.type';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -78,99 +62,7 @@ function RouteComponent() {
         }}
       >
         <Suspense>
-          <LazyAppShellNavbar>
-            <Tabs>
-              <Stack p={'xs'} gap={'sm'}>
-                <Tabs.UseApi
-                  children={({ state, actions }) => (
-                    <Stack>
-                      <Group>
-                        <AnimatePresence mode="popLayout">
-                          {state.current === 'search' && (
-                            <m.div
-                              key={'back'}
-                              exit={{ scale: 0 }}
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                            >
-                              <ActionIcon
-                                onClick={() => {
-                                  actions.back();
-                                }}
-                                bdrs={'xl'}
-                                variant="light"
-                              >
-                                <ArrowLeft />
-                              </ActionIcon>
-                            </m.div>
-                          )}
-                          <m.div
-                            key={'input'}
-                            layout
-                            style={{
-                              flex: 1,
-                            }}
-                          >
-                            <SearchInputWrapper
-                              radius={'xl'}
-                              onFocus={() => {
-                                actions.push('search');
-                              }}
-                            />
-                          </m.div>
-                        </AnimatePresence>
-                      </Group>
-                      <AnimatePresence mode="popLayout">
-                        {state.current !== 'search' && (
-                          <m.div
-                            key={'panel'}
-                            exit={{ y: -10, opacity: 0 }}
-                            initial={{ y: -10, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                          >
-                            <Panel
-                              component={ActionIcon}
-                              data={[
-                                {
-                                  value: 'main',
-                                  icon: <Home />,
-                                },
-
-                                {
-                                  value: 'profile',
-                                  icon: <User />,
-                                },
-                                {
-                                  value: 'contacts',
-                                  icon: <Users />,
-                                },
-                              ]}
-                            />
-                          </m.div>
-                        )}
-                      </AnimatePresence>
-                    </Stack>
-                  )}
-                />
-              </Stack>
-              <Box p={'xs'}>
-                <Tabs.Tab value="search">
-                  <SearchTab />
-                </Tabs.Tab>
-                <Tabs.Tab value="main">
-                  <Text>Chats</Text>
-                </Tabs.Tab>
-                <Tabs.Tab value="contacts">
-                  <ContactsTab />
-                </Tabs.Tab>
-                <Tabs.Tab value="profile">
-                  <Suspense>
-                    <ProfileTab />
-                  </Suspense>
-                </Tabs.Tab>
-              </Box>
-            </Tabs>
-          </LazyAppShellNavbar>
+          <LazyAppShellNavbar />
         </Suspense>
       </MotionConfig>
     </AppShell>

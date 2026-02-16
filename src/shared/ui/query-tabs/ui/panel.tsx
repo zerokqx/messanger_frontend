@@ -1,5 +1,10 @@
 import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
-import type { ComponentProps, MouseEvent, ReactNode } from 'react';
+import {
+  useRef,
+  type ComponentProps,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
 import { useTabsApi } from '../model';
 
 interface PanelComponentProps {
@@ -10,7 +15,7 @@ interface PanelComponentProps {
   children?: ReactNode;
 }
 interface PanelProps {
-  component: (props: PanelComponentProps) => ReactNode;
+  component?: (props: PanelComponentProps) => ReactNode;
   onClickAnyItem?: (v: string, e: MouseEvent<HTMLButtonElement>) => void;
   active?: (v: string) => boolean;
   withStyleAtActive?: boolean;
@@ -24,7 +29,7 @@ interface PanelProps {
 }
 
 export const PanelContainer = Group.withProps({
-  bdrs: '1000px',
+  bdrs: 'xl',
   p: 'xs',
   justify: 'space-evenly',
 });
@@ -57,7 +62,7 @@ export const Panel = ({
             radius="xl"
             size="lg"
             onClick={(e) => {
-              if (value !== current) api.push(value);
+              api.push(value);
               onClickAnyItem?.(value, e);
               onClick?.(e);
             }}

@@ -10,7 +10,7 @@ export const useContactCountQuery = () => {
     'get',
     '/contact/count',
     {},
-    { select: (s) => s.data.count, enabled: isAuth }
+    { select: (s) => s.data.count, enabled: isAuth, staleTime: 1000 * 64 }
   );
   return query;
 };

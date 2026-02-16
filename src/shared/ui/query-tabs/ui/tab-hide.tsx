@@ -1,0 +1,31 @@
+import { useTabs } from '../model';
+import type { TabsComponent } from './tabs.type';
+import { useAnimationResolve, whenStatus } from '../lib';
+import { AnimatePresence } from 'motion/react';
+import * as m from 'motion/react-m';
+
+export const Hide: TabsComponent['Hide'] = ({
+  when,
+  children,
+  animationVariant,
+}) => {
+  const [state] = useTabs();
+  const animation = useAnimationResolve(animationVariant);
+  const ok = whenStatus(when, state.current);
+
+  return (
+    <AnimatePresence mode="popLayout">
+      {!ok && (
+        <m.div
+          key={'animate-for-show'}
+          animate={'open'}
+          initial={'initial'}
+          exit={'closed'}
+          variants={animation}
+        >
+          {children}
+        </m.div>
+      )}
+    </AnimatePresence>
+  );
+};

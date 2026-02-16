@@ -1,6 +1,6 @@
+import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
 import { createStore } from '@colorfy-software/zfy';
 import type { TUseSearchStoreState } from './types';
-import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
 import Logger from '@/shared/lib/logger/logger';
 
 export const useSearchStore = createStore<TUseSearchStoreState>(
