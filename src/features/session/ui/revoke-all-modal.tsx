@@ -1,6 +1,6 @@
 import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 import type { RevokeAllModalProps } from './revoke-all-modal.types';
-import { useSessionRevokeAll } from '../api/revoke-all.mutation';
+import { useSessionRevokeAll } from '../model';
 
 export const RevokeAllModal = ({ opened, onClose }: RevokeAllModalProps) => {
   const { mutate: mutateAllRevoke } = useSessionRevokeAll();

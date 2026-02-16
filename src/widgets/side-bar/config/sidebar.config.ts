@@ -51,7 +51,7 @@ export const sidebarTabsConfig: TabsConfig[] = [
   {
     render: lazy(() =>
       import('@/widgets/tab-sessions').then((m) => ({
-        default: m.SessionsTab,
+        default: m.SessionManage,
       }))
     ),
   },
