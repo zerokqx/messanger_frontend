@@ -7,5 +7,8 @@
   "settings": "Настройки",
   "profile_settings": "Приватность",
   "interface_edit": "Интерфейс",
-  "sessions": "Сессии"
+  "sessions": "Сессии",
+  "settings.interface": "Интерфейс",
+  "interface": "Интерфейс",
+  "security": "Безопасность"
 }
