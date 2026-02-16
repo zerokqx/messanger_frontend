@@ -1,4 +1,4 @@
-import type { UseSearchStoreState } from '../types/use-search-store.type';
+import type { UseSearchStoreState } from './types';
 import { createStore } from '@colorfy-software/zfy';
 
 /**

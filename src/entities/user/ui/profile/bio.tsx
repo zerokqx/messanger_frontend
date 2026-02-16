@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import type { IUserProfile } from './types/user-profile.types';
+import type { IUserProfile } from './types';
 import { useProfileContext } from '../../model/current-user-profile-context.ts';
 
 const LazyBioFlake = lazy(() =>

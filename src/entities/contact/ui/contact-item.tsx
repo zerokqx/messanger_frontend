@@ -1,7 +1,7 @@
 import { ActionIcon, Avatar, Box, Group, Text } from '@mantine/core';
 import { Trash } from 'lucide-react';
 import { formatLogin } from '@/shared/lib/formaters';
-import type { IContactElementProp } from './types/contact-item.interface';
+import type { IContactElementProp } from './types';
 import { motion } from 'motion/react';
 
 export const ContactItem = ({

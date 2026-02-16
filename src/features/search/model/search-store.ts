@@ -1,5 +1,5 @@
 import { createStore } from '@colorfy-software/zfy';
-import type { TUseSearchStoreState } from '../types/use-search-store.type';
+import type { TUseSearchStoreState } from './types';
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
 import Logger from '@/shared/lib/logger/logger';
 
