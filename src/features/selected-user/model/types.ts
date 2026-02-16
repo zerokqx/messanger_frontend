@@ -1,7 +1,7 @@
 import type { components } from '@/shared/types/v1';
 import type { OverrideProperties } from 'type-fest';
 
-export interface ISelectedSearchUser {
+export interface SelectedSearchUserState {
   user: OverrideProperties<
     components['schemas']['UserSearchResult'],
     {
@@ -9,3 +9,5 @@ export interface ISelectedSearchUser {
     }
   > | null;
 }
+
+export type ISelectedSearchUser = SelectedSearchUserState;

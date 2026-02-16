@@ -1,5 +1,5 @@
 import { createStore } from '@colorfy-software/zfy';
-import type { ISelectedSearchUser } from './selected-search-user.types';
+import type { ISelectedSearchUser } from './types';
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
 
 export const useSelectedSearchUser = createStore<ISelectedSearchUser>(

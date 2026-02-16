@@ -1,14 +1,8 @@
-import type { components } from '@/shared/types/v1';
 import { ActionIcon, Button, Group } from '@mantine/core';
 import { XIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useContactAdd, useContactRemove } from '../api';
-
-interface ContactControllPanelProps {
-  userId: string;
-  user: components['schemas']['ProfileByUserIdData'];
-  onUpdate: (userId: string) => void;
-}
+import type { ContactControllPanelProps } from './types';
 export const ContactControllPanel = ({
   userId,
   onUpdate,

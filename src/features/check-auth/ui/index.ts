@@ -1,1 +1,2 @@
-export {IsAuth} from "./is-auth.tsx"
+export { IsAuth } from './is-auth';
+export type { IsAuthProps } from './types';

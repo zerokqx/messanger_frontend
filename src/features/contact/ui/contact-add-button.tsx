@@ -1,12 +1,9 @@
 import { ActionIcon } from '@mantine/core';
 import { UserPlus } from 'lucide-react';
 import { useContactAdd } from '../api';
+import type { ContactAddButtonProps } from './types';
 
-interface ContactAddButton {
-  userId: string;
-}
-
-export const ContactAddButton = ({ userId }: ContactAddButton) => {
+export const ContactAddButton = ({ userId }: ContactAddButtonProps) => {
   const { mutate: contactAdd } = useContactAdd();
 
   return (

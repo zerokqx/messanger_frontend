@@ -1,5 +1,5 @@
 import { Button, Group, Modal, Stack, Text } from '@mantine/core';
-import type { ModalRevokeProps } from './modal-revoke.types';
+import type { ModalRevokeProps } from './types';
 import { useGetSessionByIdFromCache } from '@/entities/session';
 import { useRevokeSession } from '../model';
 

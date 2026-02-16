@@ -2,4 +2,4 @@ export {
   useSelectedSearchUser,
   selectedUserAction,
 } from './selected-search-user.ts';
-export type { ISelectedSearchUser } from './selected-search-user.types.ts';
+export type { ISelectedSearchUser, SelectedSearchUserState } from './types';

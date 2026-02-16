@@ -4,11 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useContactAdd } from '../api';
 import type { ReactNode } from 'react';
 import type { Fn } from '@/shared/types/utils/functions';
-
-interface ContactMenu {
-  userId: string;
-  onUpdate: (userId: string) => void;
-}
+import type { ContactMenuProps } from './types';
 
 const loader = (bool: boolean, icon: ReactNode) =>
   bool ? <Loader size={16} /> : icon;
@@ -19,7 +15,7 @@ const userIdGuard = (callback: Fn, userId: string | undefined | null) => {
   }
 };
 
-export const ContactMenu = ({ userId, onUpdate }: ContactMenu) => {
+export const ContactMenu = ({ userId, onUpdate }: ContactMenuProps) => {
   const { mutate: contactAdd, isPending } = useContactAdd();
   const [t] = useTranslation('contact-menu');
   return (

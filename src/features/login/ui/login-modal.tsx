@@ -5,9 +5,9 @@ import { Modal } from '@/shared/ui/modal';
 import { notifications } from '@mantine/notifications';
 import { useRouter } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import type { ILoginModalProps } from '../types/login-modal.interface';
+import type { LoginModalProps } from './types';
 
-export const LoginModal = ({ whatClose }: ILoginModalProps) => {
+export const LoginModal = ({ whatClose }: LoginModalProps) => {
   const { t } = useTranslation(['titles', 'buttonLabels', 'fieldLabels']);
   const close = useModalGlobal.usePinClose()('login');
   const swapMode = useCloseOpen('login', whatClose);
