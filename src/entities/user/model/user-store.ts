@@ -1,4 +1,4 @@
-import type { TUserState } from '../types/user-store.type';
+import type { TUserState } from './types';
 import { createStore } from '@colorfy-software/zfy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';

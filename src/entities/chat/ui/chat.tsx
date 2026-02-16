@@ -1,5 +1,5 @@
 import { Stack } from '@mantine/core';
-import type { ChatConpouned } from '../types/chat-compouned';
+import type { ChatConpouned } from './types';
 import { Item } from './item';
 
 export const UsersList: ChatConpouned = ({ children }) => {

@@ -1,5 +1,5 @@
 import { Text } from '@mantine/core';
-import type { IUserProfile } from './types/user-profile.types';
+import type { IUserProfile } from './types';
 import { IconButton } from '@/shared/ui/buttons';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import { useTranslation } from 'react-i18next';

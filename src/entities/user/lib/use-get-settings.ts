@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import type {
   UseSettingsGet,
   UseSettingsReturnType,
-} from '../types/settings-get.interface';
+} from './types';
 import { useUserStore } from '../model';
 
 export const useGetSettings: UseSettingsGet = () => {

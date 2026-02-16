@@ -1,6 +1,13 @@
 import type { ReactNode } from 'react';
-import type { ChatContainerProp } from './chat-container-prop';
-import type { ChatItemProp } from './chat-item-prop';
+
+export interface ChatContainerProp {
+  children: ReactNode;
+}
+
+export interface ChatItemProp {
+  lastMessage: string;
+  userName: string;
+}
 
 export interface ChatConpouned {
   (props: ChatContainerProp): ReactNode;
