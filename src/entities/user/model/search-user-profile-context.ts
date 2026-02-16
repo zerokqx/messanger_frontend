@@ -1,5 +1,5 @@
 import { createContext, use } from 'react';
-import type { ISearchProfileContext } from './types/search-user-profile-context.types';
+import type { ISearchProfileContext } from './types';
 
 export const ProfileSearchContext = createContext<ISearchProfileContext | null>(
   null

@@ -10,31 +10,32 @@ export const ASIDE_BUS_EVENTS = {
   UNDEFINED: 'undefined',
 } as const;
 
-type $$EventsKeys = typeof ASIDE_BUS_EVENTS;
-export type AsideBusEevents = $$EventsKeys[keyof $$EventsKeys];
+type AsideBusEventKeys = typeof ASIDE_BUS_EVENTS;
+
+export type AsideBusEvents = AsideBusEventKeys[keyof AsideBusEventKeys];
 
 export type AsideBusCommand =
   | {
-      type: $$EventsKeys['USER_CONTACT'];
+      type: AsideBusEventKeys['USER_CONTACT'];
       data: components['schemas']['ProfileByUserIdData'];
     }
   | {
-      type: $$EventsKeys['USER_SEARCH'];
+      type: AsideBusEventKeys['USER_SEARCH'];
       data: components['schemas']['ProfileByUserIdData'];
     }
   | {
-      type: $$EventsKeys['UNDEFINED'];
+      type: AsideBusEventKeys['UNDEFINED'];
       data: undefined;
     }
   | {
-      type: $$EventsKeys['USER_CONTACT_SKELETON'];
+      type: AsideBusEventKeys['USER_CONTACT_SKELETON'];
       data: boolean;
     }
   | {
-      type: $$EventsKeys['USER_SEARCH_SKELETON'];
+      type: AsideBusEventKeys['USER_SEARCH_SKELETON'];
       data: boolean;
     }
   | {
-      type: $$EventsKeys['LOADER'];
+      type: AsideBusEventKeys['LOADER'];
       data: boolean;
     };

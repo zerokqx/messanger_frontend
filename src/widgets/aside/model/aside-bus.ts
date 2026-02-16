@@ -1,5 +1,5 @@
 import { createStore } from '@colorfy-software/zfy';
-import type { AsideBusCommand } from './types/aside-bus.types';
+import type { AsideBusCommand } from './types';
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
 
 export const useAsideBus = createStore<AsideBusCommand>(
