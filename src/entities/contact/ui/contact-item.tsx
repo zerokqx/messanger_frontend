@@ -2,7 +2,6 @@ import { ActionIcon, Avatar, Box, Group, Text } from '@mantine/core';
 import { Trash } from 'lucide-react';
 import { formatLogin } from '@/shared/lib/formaters';
 import type { IContactElementProp } from './types';
-import { motion } from 'motion/react';
 
 export const ContactItem = ({
   user,
@@ -19,7 +18,6 @@ export const ContactItem = ({
         onClick?.(e);
       }}
       w={'100%'}
-      component={motion.div}
     >
       <Group wrap="nowrap">
         <Avatar name={name.name} />

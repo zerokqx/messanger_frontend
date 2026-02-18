@@ -7,7 +7,7 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import { ModalsProvider } from '@mantine/modals';
 import { createRouter } from '@tanstack/react-router';
-import { domAnimation, LazyMotion } from 'motion/react';
+import { LazyMotion } from 'motion/react';
 import ReactDOM from 'react-dom/client';
 import { routeTree } from './route-tree.gen';
 import { InnerApp } from './ui/inner-app';
@@ -37,6 +37,7 @@ declare module '@tanstack/react-router' {
     };
   }
 }
+const loadFeatures = () => import('./features.js').then((res) => res.default);
 const Wrapper = () => {
   const primaryColor = useSettingsStore((s) => s.data.primaryColor);
   return (
@@ -48,7 +49,7 @@ const Wrapper = () => {
         }}
         defaultColorScheme="light"
       >
-        <LazyMotion features={domAnimation}>
+        <LazyMotion strict features={loadFeatures}>
           <QueryClientProvider client={queryClient}>
             <I18nextProvider i18n={i18n}>
               <ModalsProvider>

@@ -3,5 +3,5 @@
 }
 
 [data-mantine-color-scheme='dark'] .search-item-result:hover {
-  background: var(--mantine-color-gray-9);
+  background: var(--mantine-color-dark-9);
 }

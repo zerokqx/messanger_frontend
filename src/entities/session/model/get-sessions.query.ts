@@ -12,7 +12,7 @@ export const useGetSessionByIdFromCache = (id: string) => {
 };
 
 export const useGetSessionsSuspenseQuery = () => {
-  return $api.jwtAuth.query.useQuery(
+  return $api.jwtAuth.query.useSuspenseQuery(
     'get',
     '/sessions/list',
     {},
