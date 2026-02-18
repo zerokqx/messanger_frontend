@@ -6,6 +6,10 @@ import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useSearchStore } from '../model';
 import * as m from 'motion/react-m';
 import style from './search-result-list.module.css';
+import {
+  HorizontalUserCard,
+  Login,
+} from '@/entities/user/ui/horizontal-user-card';
 
 const container = {
   initial: {},
@@ -25,7 +29,6 @@ const item = {
 export const SearchResultList = () => {
   const selectUser = useSetUuidForRouter();
   const users = useSearchStore((s) => s.data);
-
   return (
     <m.div
       variants={container}
@@ -33,7 +36,7 @@ export const SearchResultList = () => {
       animate="open"
       key={users.length}
     >
-      <Stack>
+      <Stack gap={'0'}>
         {users.map((user) => {
           const profile =
             user.profile as components['schemas']['ProfileByUserIdData'];
@@ -53,7 +56,10 @@ export const SearchResultList = () => {
                 layoutAction.doSetAside(true);
               }}
             >
-              <Search.Item text={login} avatar={{ name: login }} />
+              <HorizontalUserCard value={profile}>
+                <HorizontalUserCard.Avatar />
+                <HorizontalUserCard.Login />
+              </HorizontalUserCard>
             </Box>
           );
         })}

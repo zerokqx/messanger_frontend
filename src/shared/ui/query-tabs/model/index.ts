@@ -10,3 +10,4 @@ export {
   useTabsAnimationVariant,
   TabsAnimationVariantProvider,
 } from './animaton-variant-contexts.ts';
+export type {ExternalController} from './types.ts';

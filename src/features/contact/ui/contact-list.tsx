@@ -8,6 +8,7 @@ import { successNotify } from '@/shared/lib/notifications/success';
 import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
+import { Suspense } from 'react';
 
 export const ContactsList = () => {
   const selectUser = useSetUuidForRouter();
@@ -39,40 +40,42 @@ export const ContactsList = () => {
     );
   }
   return (
-    <VirtualList<typeof contactsMap>
-      count={count.data}
-      data={contactsMap}
-      overscan={10}
-      esimateSize={() => 92}
-      isFetchingNextPage={contacts.isFetchingNextPage}
-      dataSelect={(c, i) => c[i]}
-      fetchFunction={contacts.fetchNextPage}
-      fallback={(size) => <SkeletonContactItem size={size} />}
-      hasNextPage={contacts.hasNextPage}
-      render={(c) => (
-        <ContactItem
-          user={c}
-          onRemove={(user_id) => {
-            pendingNotify('Удаление...');
-            removeContact(
-              {
-                body: { user_id },
-              },
-              {
-                onSuccess() {
-                  successNotify(
-                    `Контакт ${c.login ?? c.custom_name ?? c.full_name ?? ''} удалён`
-                  );
+    <Suspense fallback={<p>dawdaw</p>}>
+      <VirtualList<typeof contactsMap>
+        count={count.data}
+        data={contactsMap}
+        overscan={10}
+        esimateSize={() => 92}
+        isFetchingNextPage={contacts.isFetchingNextPage}
+        dataSelect={(c, i) => c[i]}
+        fetchFunction={contacts.fetchNextPage}
+        fallback={(size) => <SkeletonContactItem size={size} />}
+        hasNextPage={contacts.hasNextPage}
+        render={(c) => (
+          <ContactItem
+            user={c}
+            onRemove={(user_id) => {
+              pendingNotify('Удаление...');
+              removeContact(
+                {
+                  body: { user_id },
                 },
-              }
-            );
-          }}
-          onClick={() => {
-            void selectUser(c.user_id);
-            layoutAction.doSetAside(true);
-          }}
-        />
-      )}
-    />
+                {
+                  onSuccess() {
+                    successNotify(
+                      `Контакт ${c.login ?? c.custom_name ?? c.full_name ?? ''} удалён`
+                    );
+                  },
+                }
+              );
+            }}
+            onClick={() => {
+              void selectUser(c.user_id);
+              layoutAction.doSetAside(true);
+            }}
+          />
+        )}
+      />
+    </Suspense>
   );
 };
