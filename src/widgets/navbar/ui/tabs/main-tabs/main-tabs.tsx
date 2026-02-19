@@ -21,6 +21,7 @@ import {
   SearchHistoryList,
 } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
+import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const bottomApiTabs = Tabs.useBridgeRef();
@@ -59,23 +60,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </m.div>
         </Group>
         <Tabs.Hide when={['search']}>
-          <Panel
-            data={[
-              {
-                value: 'main',
-                icon: <Home />,
-              },
-              {
-                value: 'contacts',
-                icon: <Users />,
-              },
-
-              {
-                value: 'profile',
-                icon: <User />,
-              },
-            ]}
-          />
+          <Panel data={mainPanel} />
         </Tabs.Hide>
       </Stack>
       <Box p={'xs'}>

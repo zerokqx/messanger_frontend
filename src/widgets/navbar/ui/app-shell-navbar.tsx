@@ -1,7 +1,6 @@
 import { AppShellNavbar } from '@mantine/core';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { MainTabs, RootTabs } from './tabs';
-import { Suspense } from 'react';
 
 export const AppShellNavbarWidget = () => {
   const topApiTabs = Tabs.useBridgeRef();

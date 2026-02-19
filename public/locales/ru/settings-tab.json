@@ -1,11 +1,15 @@
 {
   "logout": "Выйти",
+  "animations": "Анимации",
   "animations-label": "Тип анимаций",
+  "animation-error": "Ошибка выбора анимации",
+  "animation-error-message": "Не удалось применить выбранную анимацию",
+  "theme-category": "Тема",
   "primary-color-label": "Главный цвет приложения",
   "primary-color-not-exist": "Данного цвета не существует. Цвет приложения не был изменен",
   "primary-color-not-exist-title": "Неверный цвет",
-  "with-animation-label": "Анимации вкладок",
-  "with-animations-description": "Плавные переходы при переключении между вкладками",
+  "with-animation-label": "Анимации во всём приложении",
+  "with-animations-description": "Включает или отключает анимации во всех экранах и элементах приложения",
   "keyframes": "Линейная",
   "spring": "Пружиная",
   "blue": "Синий",
@@ -13,5 +17,10 @@
   "gray": "Серый",
   "red": "Красный",
   "green": "Зелёный",
-  "violet": "Фиолетовый"
+  "violet": "Фиолетовый",
+  "animation-speed": "Скорость анимаций",
+  "animation-speed-fast": "Быстро",
+  "animation-speed-normal": "Нормально",
+  "animation-speed-smoothly": "Плавно",
+  "animation-speed-super-smoothly": "Очень плавно"
 }

@@ -1,1 +1,1 @@
-export { useBorder } from '../../../../../widgets/settings/model/use-border.ts';
+export { useSettingsStore } from './use-settings-store';

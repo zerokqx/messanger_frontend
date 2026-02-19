@@ -1,10 +1,5 @@
 import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
-import {
-  useRef,
-  type ComponentProps,
-  type MouseEvent,
-  type ReactNode,
-} from 'react';
+import { type ComponentProps, type MouseEvent, type ReactNode } from 'react';
 import { useTabsApi } from '../model';
 
 interface PanelComponentProps {
@@ -14,7 +9,7 @@ interface PanelComponentProps {
   onClick: ComponentProps<'button'>['onClick'];
   children?: ReactNode;
 }
-interface PanelProps {
+export interface PanelProps {
   component?: (props: PanelComponentProps) => ReactNode;
   onClickAnyItem?: (v: string, e: MouseEvent<HTMLButtonElement>) => void;
   active?: (v: string) => boolean;

@@ -1,9 +1,5 @@
-import { notifications } from '@mantine/notifications';
+import { notify } from './notify';
 
-export const errorNotify = (message: string, title?: string) => {
-  notifications.show({
-    message,
-    color: 'red',
-    title: title ?? 'Error',
-  });
+export const errorNotify = (message?: string, title?: string) => {
+  notify.error({ message, title });
 };

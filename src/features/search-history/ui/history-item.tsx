@@ -11,6 +11,7 @@ export const HistoryItem = ({ onClick, children }: SearchHistoryItemPorps) => {
   return (
     <Group
       mt={'xs'}
+      wrap="nowrap"
       mb={'xs'}
       onClick={() => {
         onClick?.(children ?? '');
@@ -28,7 +29,15 @@ export const HistoryItem = ({ onClick, children }: SearchHistoryItemPorps) => {
       >
         <X />
       </ActionIcon>
-      <Text>{children}</Text>
+      <Text
+        style={{
+          flex: 1,
+          minWidth: 0,
+          wordBreak: 'break-word',
+        }}
+      >
+        {children}
+      </Text>
     </Group>
   );
 };

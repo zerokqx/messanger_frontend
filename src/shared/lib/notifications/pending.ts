@@ -1,9 +1,5 @@
-import { notifications } from '@mantine/notifications';
+import { notify } from './notify';
 
-export const pendingNotify = (message: string, title?: string) => {
-  notifications.show({
-    message,
-    color: 'gray',
-    title: title ?? 'Pending',
-  });
+export const pendingNotify = (message?: string, title?: string) => {
+  notify.pending({ message, title });
 };

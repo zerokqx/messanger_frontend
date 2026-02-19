@@ -3,17 +3,16 @@ import type { TabsComponent } from './tabs.type';
 import { useTabs } from '../model';
 import * as m from 'motion/react-m';
 import { useAnimationResolve, type DirectionVariants } from '../lib';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTabRepository } from '../model/tab-repository';
-import { conforms } from 'lodash';
 
 export const Tab: TabsComponent['Tab'] = ({
   children,
   value,
   animationVariant,
 }) => {
-  const [tabRepository, setTabRepository] = useTabRepository();
-  const [direction, setDirection] = useState<DirectionVariants>('next');
+  // const [tabRepository, setTabRepository] = useTabRepository();
+  // const [direction, setDirection] = useState<DirectionVariants>('next');
   const [state] = useTabs();
   const animation = useAnimationResolve(animationVariant);
   // useEffect(() => {

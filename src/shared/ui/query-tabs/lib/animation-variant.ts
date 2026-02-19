@@ -107,6 +107,11 @@ export const animationVariants = {
     closed: { opacity: 0, filter: 'blur(4px)' },
   },
 
+  'slide-y-up': {
+    initial: { y: -PX.xl, opacity: 0 },
+    open: { y: 0, opacity: 1 },
+    closed: { y: -PX.xl, opacity: 0 },
+  },
   'slide-shrink': {
     initial: { x: -30, scale: 0.98, opacity: 0 },
     open: { x: 0, scale: 1, opacity: 1 },
