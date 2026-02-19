@@ -14,6 +14,6 @@ interface TabsComponent {
 
 }
 
-export const Tab: TabsComponent['Tab']=>()=>{}
+export const Tab: TabsComponent['Tab'] = () => {};
 
 export const Tabs: TabsComponent = () => {};

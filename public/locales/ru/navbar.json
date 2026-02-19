@@ -7,5 +7,6 @@
   "settings": "Настройки",
   "profile_settings": "Приватность",
   "interface_edit": "Интерфейс",
-  "sessions": "Сессии"
+  "settings/interface": "Интерфейс",
+  "settings/sessions": "Сессии"
 }

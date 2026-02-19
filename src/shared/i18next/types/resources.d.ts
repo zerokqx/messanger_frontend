@@ -37,7 +37,9 @@ interface Resources {
     "profile_settings": "Privacy",
     "search": "Search",
     "sessions": "Sessions",
-    "settings": "Settings"
+    "settings": "Settings",
+    "settings/interface": "Interface",
+    "settings/sessions": "Sessions"
   },
   "plurarData": {
     "days_one": "{{count}} day",
@@ -70,7 +72,15 @@ interface Resources {
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
   "settings-tab": {
+    "animation-speed": "Animation speed",
+    "animation-speed-fast": "Fast",
+    "animation-speed-normal": "Normal",
+    "animation-speed-smoothly": "Smooth",
+    "animation-speed-super-smoothly": "Very smooth",
+    "animations": "Animations",
     "animations-label": "Animation type",
+    "animation-error": "Animation selection error",
+    "animation-error-message": "Failed to apply the selected animation",
     "blue": "Blue",
     "gray": "Gray",
     "green": "Green",
@@ -82,9 +92,10 @@ interface Resources {
     "primary-color-not-exist-title": "Invalid color",
     "red": "Red",
     "spring": "Spring",
+    "theme-category": "Theme",
     "violet": "Violet",
-    "with-animation-label": "Tab animations",
-    "with-animations-description": "Smooth transitions when switching between tabs"
+    "with-animation-label": "Animations across the app",
+    "with-animations-description": "Enables or disables animations on all app screens and UI elements"
   },
   "settingsLabels": {
     "allow_message_forwarding": "Allow message forwarding",

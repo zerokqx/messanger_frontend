@@ -49,7 +49,12 @@ export const SearchHistoryList = ({ onClickItem }: SearchHistoryListProps) => {
           Очистить историю
         </Button>
       </Group>
-      <Collapse in={isOpen} keepMounted>
+      <Collapse
+        mah={'200px'}
+        style={{ overflow: 'auto' }}
+        in={isOpen}
+        keepMounted
+      >
         {!latestRequests.length && (
           <Center>
             <Text opacity={0.7}>История пуста</Text>

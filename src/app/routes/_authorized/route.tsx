@@ -1,9 +1,8 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import { AppShell, useMantineTheme } from '@mantine/core';
+import { AppShell, Loader, useMantineTheme } from '@mantine/core';
 import { Suspense, lazy, useRef } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { MotionConfig } from 'motion/react';
-import { useSettingsStore } from '@/features/settings-interface/model/settings-store';
 import type { Actions } from '@/shared/ui/query-tabs/ui/tabs.type';
 
 const LazyAppShellNavbar = lazy(() =>
@@ -21,8 +20,6 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
-  const animationStyle = useSettingsStore((s) => s.data.animations);
-  const withAnimations = useSettingsStore((s) => s.data.withAnimations);
 
   return (
     <AppShell
@@ -55,16 +52,9 @@ function RouteComponent() {
         <Outlet />
       </AppShell.Main>
 
-      <MotionConfig
-        transition={{
-          type: animationStyle,
-          mass: 0.4,
-        }}
-      >
-        <Suspense>
-          <LazyAppShellNavbar />
-        </Suspense>
-      </MotionConfig>
+      <Suspense fallback={<Loader />}>
+        <LazyAppShellNavbar />
+      </Suspense>
     </AppShell>
   );
 }
