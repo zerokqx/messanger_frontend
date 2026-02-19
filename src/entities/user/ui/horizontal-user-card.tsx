@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import style from './horizontal-user-card.module.css';
 import {
   UserProfileContext,
   useUserProfileContext,
@@ -42,11 +43,17 @@ export const Avatar = () => {
 
 export const HorizontalUserCard: HorizontalUserCardComponent = ({
   value,
+  className,
   ...props
 }) => {
   return (
     <UserProfileContext initialValue={value}>
-      <Group {...props} />
+      <Group
+        bdrs={'xl'}
+        p={'xs'}
+        className={[style.card, className].filter(Boolean).join(' ')}
+        {...props}
+      />
     </UserProfileContext>
   );
 };

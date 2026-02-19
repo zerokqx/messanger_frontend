@@ -1,4 +1,12 @@
 import { notifications } from '@mantine/notifications';
+import { createElement } from 'react';
+import {
+  AlertCircle,
+  CheckCircle2,
+  CircleAlert,
+  Clock3,
+  Info,
+} from 'lucide-react';
 
 type NotifyLevel = 'error' | 'success' | 'pending' | 'warning' | 'info';
 
@@ -23,32 +31,38 @@ const LEVEL_CONFIG: Record<
     color: string;
     fallbackTitle: string;
     fallbackMessage: string;
+    icon: ReturnType<typeof createElement>;
   }
 > = {
   error: {
     color: 'red',
     fallbackTitle: 'Error',
     fallbackMessage: 'Something went wrong',
+    icon: createElement(AlertCircle, { size: 16 }),
   },
   success: {
     color: 'green',
     fallbackTitle: 'Success',
     fallbackMessage: 'Action completed successfully',
+    icon: createElement(CheckCircle2, { size: 16 }),
   },
   pending: {
     color: 'gray',
     fallbackTitle: 'Pending',
     fallbackMessage: 'Please wait',
+    icon: createElement(Clock3, { size: 16 }),
   },
   warning: {
     color: 'yellow',
     fallbackTitle: 'Warning',
     fallbackMessage: 'Please check this action',
+    icon: createElement(CircleAlert, { size: 16 }),
   },
   info: {
     color: 'blue',
     fallbackTitle: 'Info',
     fallbackMessage: 'New information is available',
+    icon: createElement(Info, { size: 16 }),
   },
 };
 
@@ -60,6 +74,7 @@ const showByLevel = (level: NotifyLevel, payload: NotifyPayload = {}) => {
     title: payload.title ?? config.fallbackTitle,
     message: payload.message ?? config.fallbackMessage,
     color: config.color,
+    icon: config.icon,
     autoClose: payload.autoClose,
   });
 };

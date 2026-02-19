@@ -12,6 +12,8 @@ interface Resources {
   },
   "contact": {
     "add": "Add",
+    "error-contact-operation": "Contact operation error",
+    "error-contact-operation-message": "Failed to update contact. Please try again.",
     "in-contact": "In contacts"
   },
   "contact-menu": {
@@ -58,6 +60,9 @@ interface Resources {
     "rating": "Rating",
     "verified": "Verified"
   },
+  "search": {
+    "search-placeholder": "Search"
+  },
   "session": {
     "close_all_sessions": "Close all sessions",
     "close_session": "Close session",
@@ -72,6 +77,8 @@ interface Resources {
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
   "settings-tab": {
+    "animation-error": "Animation selection error",
+    "animation-error-message": "Failed to apply the selected animation",
     "animation-speed": "Animation speed",
     "animation-speed-fast": "Fast",
     "animation-speed-normal": "Normal",
@@ -79,8 +86,6 @@ interface Resources {
     "animation-speed-super-smoothly": "Very smooth",
     "animations": "Animations",
     "animations-label": "Animation type",
-    "animation-error": "Animation selection error",
-    "animation-error-message": "Failed to apply the selected animation",
     "blue": "Blue",
     "gray": "Gray",
     "green": "Green",
