@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 import { historySearchActions } from '@/features/search-history';
 import { useSearchUserQuery } from '../api/use-search';
+import { useTranslation } from 'react-i18next';
 
 interface SaerchInputProps extends TextInputProps {
   onCommit?: (v: string) => void;
 }
 export const SearchInput = ({ onCommit, ...props }: SaerchInputProps) => {
+  const [t] = useTranslation('search');
   const { isLoading } = useSearch();
   const query = useSearchUserQuery((s) => s.data);
   const [value, setValue] = useState<string>(query);
@@ -29,6 +31,7 @@ export const SearchInput = ({ onCommit, ...props }: SaerchInputProps) => {
   return (
     <TextInput
       {...props}
+      placeholder={t('search-placeholder')}
       radius={'xl'}
       leftSection={<Search />}
       defaultValue={query}

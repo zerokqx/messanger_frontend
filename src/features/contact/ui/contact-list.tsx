@@ -34,7 +34,7 @@ export const ContactsList = () => {
   }
   if (!count.data) {
     return (
-      <Alert color="blue" icon={<CircleSlash />}>
+      <Alert icon={<CircleSlash />}>
         У вас еще нет контактов. Добавьте их через поиск.
       </Alert>
     );
@@ -45,7 +45,7 @@ export const ContactsList = () => {
         count={count.data}
         data={contactsMap}
         overscan={10}
-        esimateSize={() => 92}
+        esimateSize={() => 54}
         isFetchingNextPage={contacts.isFetchingNextPage}
         dataSelect={(c, i) => c[i]}
         fetchFunction={contacts.fetchNextPage}

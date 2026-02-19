@@ -30,6 +30,7 @@ export const InterfaceEditTab = () => {
   const theme = useMantineTheme().colors;
   const state = useSettingsStore((s) => s.data, shallow);
 
+  const reset = useSettingsStore((s) => s.reset);
   useInterval(() => {
     const parseState = SettingsSchema.safeParse(state);
     if (!parseState.success) {
@@ -38,7 +39,6 @@ export const InterfaceEditTab = () => {
   }, 10000);
   const update = useSettingsStore((s) => s.update);
 
-  const reset = useSettingsStore((s) => s.reset);
   const { animations, primaryColor, withAnimations, duratationAllAnimations } =
     state;
   return (
@@ -63,7 +63,6 @@ export const InterfaceEditTab = () => {
 
             update((s) => (s.animations = parsed.data));
           }}
-          defaultValue={animations}
           data={AnimationSchema.options.map((animation) => ({
             value: animation,
             label: t(animation),
@@ -74,7 +73,7 @@ export const InterfaceEditTab = () => {
           label={(v) => v.toFixed(1)}
           disabled={!withAnimations}
           max={1}
-          defaultValue={duratationAllAnimations}
+          value={duratationAllAnimations}
           min={0.2}
           onChange={(v) => {
             update((s) => (s.duratationAllAnimations = v));
@@ -102,7 +101,6 @@ export const InterfaceEditTab = () => {
           label={t('primary-color-label')}
           allowDeselect={false}
           value={primaryColor}
-          defaultValue={primaryColor}
           onChange={(v) => {
             const parse = PrimaryColorSchema.safeParse(v);
             if (parse.success && has(theme, parse.data)) {
