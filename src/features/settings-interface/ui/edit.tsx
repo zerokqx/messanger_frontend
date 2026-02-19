@@ -1,5 +1,6 @@
 import {
   AnimationSchema,
+  PrimaryColorSchema,
   SettingsSchema,
   useSettingsStore,
 } from '@/shared/lib/hooks/settings';
@@ -103,8 +104,9 @@ export const InterfaceEditTab = () => {
           value={primaryColor}
           defaultValue={primaryColor}
           onChange={(v) => {
-            if (v && has(theme, v)) {
-              update((s) => (s.primaryColor = v));
+            const parse = PrimaryColorSchema.safeParse(v);
+            if (parse.success && has(theme, parse.data)) {
+              update((s) => (s.primaryColor = parse.data));
             } else {
               errorNotify(
                 t('primary-color-not-exist'),
