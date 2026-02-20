@@ -1,5 +1,5 @@
 import { Cog, Contact, User } from 'lucide-react';
-import type { ILinkSidebar } from '../types/links.types';
+import type { ILinkSidebar } from '../model/types';
 
 export const mainTabConfig: ILinkSidebar[] = [
   {

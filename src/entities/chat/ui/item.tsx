@@ -1,5 +1,5 @@
 import { Avatar, Group, Stack, Text } from '@mantine/core';
-import type { ChatConpouned } from '../types/chat-compouned';
+import type { ChatConpouned } from './types';
 import { hover } from '@/shared/styles/hover-opacity.css';
 
 export const Item: ChatConpouned['Item'] = ({ userName, lastMessage }) => {

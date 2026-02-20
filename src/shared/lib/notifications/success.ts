@@ -1,9 +1,5 @@
-import { notifications } from '@mantine/notifications';
+import { notify } from './notify';
 
-export const successNotify = (message: string, title?: string) => {
-  notifications.show({
-    message,
-    color: 'green',
-    title: title ?? 'Success',
-  });
+export const successNotify = (message?: string, title?: string) => {
+  notify.success({ message, title });
 };

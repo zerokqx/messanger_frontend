@@ -1,6 +1,6 @@
 import { useAppForm } from '@/shared/ui/form/ui/form-v2/form-v2';
 import { successNotify } from '@/shared/lib/notifications/success';
-import type { UpdateContactFormProps } from './types/update-contact-form.types';
+import type { UpdateContactFormProps } from './types';
 import { useContactUpdate } from '../api';
 
 export const UpdateContactForm = ({

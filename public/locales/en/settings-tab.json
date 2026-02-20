@@ -1,3 +1,26 @@
 {
-  "logout": "Log out"
+  "logout": "Log out",
+  "animations": "Animations",
+  "animations-label": "Animation type",
+  "animation-error": "Animation selection error",
+  "animation-error-message": "Failed to apply the selected animation",
+  "theme-category": "Theme",
+  "primary-color-label": "Primary application color",
+  "primary-color-not-exist": "The selected color does not exist. The application color was not changed",
+  "primary-color-not-exist-title": "Invalid color",
+  "with-animation-label": "Animations across the app",
+  "with-animations-description": "Enables or disables animations on all app screens and UI elements",
+  "keyframes": "Linear",
+  "spring": "Spring",
+  "blue": "Blue",
+  "indigo": "Indigo",
+  "gray": "Gray",
+  "red": "Red",
+  "green": "Green",
+  "violet": "Violet",
+  "animation-speed": "Animation speed",
+  "animation-speed-fast": "Fast",
+  "animation-speed-normal": "Normal",
+  "animation-speed-smoothly": "Smooth",
+  "animation-speed-super-smoothly": "Very smooth"
 }
