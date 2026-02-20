@@ -39,94 +39,92 @@ export const RootTabs = ({ children }: RootTabsProps) => {
 
   return (
     <Tabs animationVariant="slide-x">
-      <Box p={'xs'}>
-        <Stack>
-          <Tabs.Hide when={['main']} animationVariant="slide-y-up">
-            <Group
-              justify="space-between"
-              bg={colorScheme === 'dark' ? 'dark.8' : 'gray.1'}
-              p={'xs'}
-              bdrs={'xl'}
-            >
-              <Tabs.UseApi
-                children={({ actions }) => (
-                  <ActionIcon
-                    onClick={() => {
-                      actions.back();
-                    }}
-                    bdrs="xl"
-                    variant="light"
-                  >
-                    <ArrowLeft />
-                  </ActionIcon>
-                )}
-              />
-              <Suspense fallback={<Skeleton w={100} h={'1ch'} />}>
-                <RootTabsTitle />
-              </Suspense>
-              <Tabs.UseApi
-                children={({ actions }) => (
-                  <ActionIcon
-                    onClick={() => {
-                      actions.reset('main');
-                    }}
-                    bdrs="xl"
-                    variant="light"
-                  >
-                    <Home />
-                  </ActionIcon>
-                )}
-              />
-            </Group>
-          </Tabs.Hide>
-          <Tabs.Tab value="settings/sessions">
-            <Suspense fallback={<SessionListSkeleton />}>
-              <SessionsTab />
+      <Stack h="100%" p={'xs'} style={{ minHeight: 0 }}>
+        <Tabs.Hide when={['main']} animationVariant="slide-y-up">
+          <Group
+            justify="space-between"
+            bg={colorScheme === 'dark' ? 'dark.8' : 'gray.1'}
+            p={'xs'}
+            bdrs={'xl'}
+          >
+            <Tabs.UseApi
+              children={({ actions }) => (
+                <ActionIcon
+                  onClick={() => {
+                    actions.back();
+                  }}
+                  bdrs="xl"
+                  variant="light"
+                >
+                  <ArrowLeft />
+                </ActionIcon>
+              )}
+            />
+            <Suspense fallback={<Skeleton w={100} h={'1ch'} />}>
+              <RootTabsTitle />
             </Suspense>
-          </Tabs.Tab>
-          {children}
-          <Tabs.Tab value="settings/interface">
-            <Suspense fallback={<InterfaceEditSkeleton />}>
-              <InterfaceEditTab />
-            </Suspense>
-          </Tabs.Tab>
-          <Tabs.Tab value="settings">
-            <Stack>
-              <Tabs.UseApi
-                children={({ actions }) => (
-                  <MotionStagerList
-                    variants={{
-                      item: {
-                        hidden: { scaleY: 0.5 },
-                        visible: {
-                          scaleY: 1,
-                        },
+            <Tabs.UseApi
+              children={({ actions }) => (
+                <ActionIcon
+                  onClick={() => {
+                    actions.reset('main');
+                  }}
+                  bdrs="xl"
+                  variant="light"
+                >
+                  <Home />
+                </ActionIcon>
+              )}
+            />
+          </Group>
+        </Tabs.Hide>
+        <Tabs.Tab value="settings/sessions">
+          <Suspense fallback={<SessionListSkeleton />}>
+            <SessionsTab />
+          </Suspense>
+        </Tabs.Tab>
+        {children}
+        <Tabs.Tab value="settings/interface">
+          <Suspense fallback={<InterfaceEditSkeleton />}>
+            <InterfaceEditTab />
+          </Suspense>
+        </Tabs.Tab>
+        <Tabs.Tab value="settings">
+          <Stack>
+            <Tabs.UseApi
+              children={({ actions }) => (
+                <MotionStagerList
+                  variants={{
+                    item: {
+                      hidden: { scaleY: 0.5 },
+                      visible: {
+                        scaleY: 1,
                       },
-                    }}
-                  >
-                    {rootTabs.map(({ value, leftSection }) => (
-                      <MotionStagerList.StagerItem key={value}>
-                        <Button
-                          onClick={() => {
-                            actions.push(value);
-                          }}
-                          leftSection={leftSection}
-                          m={'0 auto'}
-                          fullWidth
-                          variant="light"
-                          justify="start"
-                        >
-                          {t(value)}
-                        </Button>
-                      </MotionStagerList.StagerItem>
-                    ))}
-                  </MotionStagerList>
-                )}
-              />
-            </Stack>
-          </Tabs.Tab>
-        </Stack>
-      </Box>
+                    },
+                  }}
+                >
+                  {rootTabs.map(({ value, leftSection }) => (
+                    <MotionStagerList.StagerItem key={value}>
+                      <Button
+                        onClick={() => {
+                          actions.push(value);
+                        }}
+                        leftSection={leftSection}
+                        m={'0 auto'}
+                        fullWidth
+                        variant="light"
+                        justify="start"
+                      >
+                        {t(value)}
+                      </Button>
+                    </MotionStagerList.StagerItem>
+                  ))}
+                </MotionStagerList>
+              )}
+            />
+          </Stack>
+        </Tabs.Tab>
+      </Stack>
     </Tabs>
   );
 };

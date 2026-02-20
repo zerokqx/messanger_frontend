@@ -1,4 +1,3 @@
-import { VirtualList } from '@/shared/ui/virtual-list/ui/virtual-list';
 import { Alert } from '@mantine/core';
 import { Ban, CircleSlash } from 'lucide-react';
 import { ContactItem, SkeletonContactItem } from '@/entities/contact';
@@ -8,74 +7,118 @@ import { successNotify } from '@/shared/lib/notifications/success';
 import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
-import { Suspense } from 'react';
+import { Suspense, useRef } from 'react';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useTranslation } from 'react-i18next';
 
 export const ContactsList = () => {
   const selectUser = useSetUuidForRouter();
   const { contacts, count, contactsMap } = useContactListState();
-
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
-  if (contacts.isLoading) {
-    return (
-      <>
-        <SkeletonContactItem size={60} />
-        <SkeletonContactItem size={60} />
-        <SkeletonContactItem size={60} />
-      </>
-    );
-  }
+  const virtualizer = useVirtualizer({
+    count: count.data ?? 0,
+    getScrollElement: () => viewportRef.current,
+    estimateSize: () => 54,
+    overscan: 20,
+    getItemKey: (index) =>
+      contactsMap[index]?.user_id ?? `skeleton-${index.toString()}`,
+    onChange: ({ range }) => {
+      if (
+        range &&
+        contacts.hasNextPage &&
+        !contacts.isFetchingNextPage &&
+        range.endIndex >= contactsMap.length - 1
+      ) {
+        void contacts.fetchNextPage();
+      }
+    },
+  });
+  const virtualRows = virtualizer.getVirtualItems();
   if (contacts.isError) {
     return (
       <Alert icon={<Ban />} color="red">
-        Произошла непридвиденая ошибка загрузки контактов. Перзагрузите
-        страницу.
+        {t('contacts-load-error')}
       </Alert>
     );
   }
   if (!count.data) {
     return (
-      <Alert icon={<CircleSlash />}>
-        У вас еще нет контактов. Добавьте их через поиск.
-      </Alert>
+      <Alert icon={<CircleSlash />}>{t('contacts-empty')}</Alert>
     );
   }
   return (
-    <Suspense fallback={<p>dawdaw</p>}>
-      <VirtualList<typeof contactsMap>
-        count={count.data}
-        data={contactsMap}
-        overscan={10}
-        esimateSize={() => 54}
-        isFetchingNextPage={contacts.isFetchingNextPage}
-        dataSelect={(c, i) => c[i]}
-        fetchFunction={contacts.fetchNextPage}
-        fallback={(size) => <SkeletonContactItem size={size} />}
-        hasNextPage={contacts.hasNextPage}
-        render={(c) => (
-          <ContactItem
-            user={c}
-            onRemove={(user_id) => {
-              pendingNotify('Удаление...');
-              removeContact(
-                {
-                  body: { user_id },
-                },
-                {
-                  onSuccess() {
-                    successNotify(
-                      `Контакт ${c.login ?? c.custom_name ?? c.full_name ?? ''} удалён`
-                    );
-                  },
-                }
-              );
-            }}
-            onClick={() => {
-              void selectUser(c.user_id);
-              layoutAction.doSetAside(true);
-            }}
-          />
-        )}
-      />
+    <Suspense
+      fallback={Array.from({ length: count.data }).map((_, i) => (
+        <SkeletonContactItem key={i} size={60} />
+      ))}
+    >
+      <div
+        ref={viewportRef}
+        style={{
+          height: '100%',
+          minHeight: 0,
+          overflow: 'auto',
+        }}
+      >
+        <div
+          style={{
+            height: `${virtualizer.getTotalSize().toString()}px`,
+            width: '100%',
+            position: 'relative',
+          }}
+        >
+          {virtualRows.map((virtualRow) => {
+            const contact = contactsMap[virtualRow.index];
+            const isSkeleton = virtualRow.index >= contactsMap.length;
+            return (
+              <div
+                key={virtualRow.key}
+                data-index={virtualRow.index}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: `${virtualRow.size.toString()}px`,
+                  transform: `translateY(${virtualRow.start.toString()}px)`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  boxSizing: 'border-box',
+                }}
+              >
+                {isSkeleton ? (
+                  contacts.hasNextPage ? (
+                    <SkeletonContactItem size={virtualRow.size} />
+                  ) : null
+                ) : contact ? (
+                  <ContactItem
+                    user={contact}
+                    onRemove={(user_id) => {
+                      pendingNotify(t('contact-remove-pending'));
+                      removeContact(
+                        {
+                          body: { user_id },
+                        },
+                        {
+                          onSuccess() {
+                            successNotify(t('contact-remove-success'));
+                          },
+                        }
+                      );
+                    }}
+                    onClick={() => {
+                      void selectUser(contact.user_id);
+                      layoutAction.doSetAside(true);
+                    }}
+                  />
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </Suspense>
   );
 };

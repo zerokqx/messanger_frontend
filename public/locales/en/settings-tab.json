@@ -5,6 +5,7 @@
   "animation-error": "Animation selection error",
   "animation-error-message": "Failed to apply the selected animation",
   "theme-category": "Theme",
+  "language-select": "Application language",
   "primary-color-label": "Primary application color",
   "primary-color-not-exist": "The selected color does not exist. The application color was not changed",
   "primary-color-not-exist-title": "Invalid color",

@@ -5,6 +5,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import { devtools } from '@tanstack/devtools-vite';
+import path from 'path';
 
 const APP = './src/app';
 
@@ -12,8 +13,8 @@ export default defineConfig({
   // Добавляем разрешение алиасов
   resolve: {
     alias: {
-      // Это предотвратит ошибки "Unexpected typeof" и попытки Vite собрать внутренности react-native
-      'react-native': 'react-native-web',
+      // Используй абсолютный путь через __dirname
+      '@': path.resolve(__dirname, './src'),
     },
   },
   build: {

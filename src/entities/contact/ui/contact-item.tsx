@@ -1,54 +1,79 @@
-import { ActionIcon, Avatar, Box, Group, Menu, Text } from '@mantine/core';
-import { Trash } from 'lucide-react';
-import { formatLogin } from '@/shared/lib/formaters';
+import { Group, Menu } from '@mantine/core';
 import type { IContactElementProp } from './types';
-import { HorizontalUserCard } from '@/entities/user/ui/horizontal-user-card';
+import { HorizontalUserCard } from '@/entities/user/ui/horizontal-user-card.tsx';
+import { useEffect, useRef, useState } from 'react';
 import { useToggle } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
+import { Trash } from 'lucide-react';
 
 export const ContactItem = ({
   user,
   onClick,
   onRemove,
 }: IContactElementProp) => {
-  const name = formatLogin(user.login, user.custom_name);
-  const [menuOpened, setMenuOpened] = useToggle();
-  const [t] = useTranslation();
+  const [opened, toggle] = useToggle();
+  const [t] = useTranslation('contact-menu');
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(
+    null
+  );
+  useEffect(() => {
+    const handler = () => {
+      if (document.hidden) toggle(false);
+    };
+
+    document.addEventListener('visibilitychange', handler);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handler);
+    };
+  }, [toggle]);
   return (
     <Menu
-      withArrow
+      transitionProps={{ transition: 'pop' }}
+      opened={opened}
       onClose={() => {
-        setMenuOpened(false);
+        toggle(false);
       }}
-      opened={menuOpened}
+      withArrow
     >
-      <Menu.Dropdown>
-        <Menu.Item
-          leftSection={<Trash />}
-          onClick={() => {
-            onRemove?.(user.user_id);
-          }}
-        >
-          {t('delete')}
-        </Menu.Item>
-      </Menu.Dropdown>
       <Menu.Target>
         <HorizontalUserCard
           value={user}
-          onClick={onClick}
-          w={'100%'}
+          onClick={(e) => {
+            if (!opened) onClick?.(e);
+          }}
           onContextMenu={(e) => {
             e.preventDefault();
-            setMenuOpened();
+            setPosition({
+              x: e.clientX,
+              y: e.clientY,
+            });
+
+            toggle(true);
           }}
+          w={'100%'}
           justify="space-between"
         >
-          <Group>
+          <Group ref={cardRef}>
             <HorizontalUserCard.Avatar />
             <HorizontalUserCard.Login />
           </Group>
         </HorizontalUserCard>
       </Menu.Target>
+      {opened && (
+        <Menu.Dropdown left={position?.x} top={position?.y}>
+          <Menu.Item
+            onClick={() => {
+              onRemove?.(user.user_id);
+            }}
+            leftSection={<Trash />}
+            color="red"
+          >
+            {t('contact-remove')}
+          </Menu.Item>
+        </Menu.Dropdown>
+      )}
     </Menu>
   );
 };

@@ -1,6 +1,11 @@
 {
+  "contacts": "Контакты",
   "add": "Добавить",
   "in-contact": "В контактах",
   "error-contact-operation": "Ошибка операции с контактом",
-  "error-contact-operation-message": "Не удалось обновить контакт. Попробуйте еще раз."
+  "error-contact-operation-message": "Не удалось обновить контакт. Попробуйте еще раз.",
+  "contacts-load-error": "Произошла непредвиденная ошибка загрузки контактов. Перезагрузите страницу.",
+  "contacts-empty": "У вас ещё нет контактов. Добавьте их через поиск.",
+  "contact-remove-pending": "Удаление...",
+  "contact-remove-success": "Контакт удалён"
 }

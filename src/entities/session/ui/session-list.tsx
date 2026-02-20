@@ -22,7 +22,7 @@ export const SessionList = ({ sessions }: SessionListProps) => {
   const items = rowVirtualizer.getVirtualItems();
 
   return (
-    <Stack ref={parentRef} style={{ overflow: 'auto' }}>
+    <Stack ref={parentRef} style={{ overflow: 'auto', height: '100%' }}>
       <Box h={rowVirtualizer.getTotalSize()} pos="relative">
         {map(items, (virtualItem) => {
           const session = sessions[virtualItem.index];
