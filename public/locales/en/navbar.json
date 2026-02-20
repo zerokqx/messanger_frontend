@@ -7,5 +7,7 @@
   "settings": "Settings",
   "profile_settings": "Privacy",
   "interface_edit": "Interface",
-  "sessions": "Sessions"
+  "sessions": "Sessions",
+  "settings/interface": "Interface",
+  "settings/sessions": "Sessions"
 }

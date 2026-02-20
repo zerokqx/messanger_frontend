@@ -1,99 +1,42 @@
-import type Resources from '@/shared/i18next/types/resources';
-import { type ReactNode } from 'react';
-import { useEffectOnce } from 'react-use';
-import { useTabs } from '../lib/tabs';
-import { tabsHistoryAction } from '../model/tabs-history';
-import type {
-  TabsDeclaration,
-  TabsDeclarationKeys,
-  TabsHistoryAction,
-} from '../model';
+import { useBridgeRef } from '../lib';
+import { TabsAnimationVariantProvider } from '../model';
+import { TabManagerProvider } from '../model/history-context';
+import { TabRepositoryProvider } from '../model/tab-repository';
+import { ConditionalDisplay } from './conditional-display';
+import { Tab } from './tab';
+import { Bridge } from './tab-bridge';
+import { Hide } from './tab-hide';
+import { MutallyExclusive } from './tab-mutally-exclusive';
+import { Show } from './tab-show';
+import type { TabsComponent } from './tabs.type';
+import { UseApi } from './use-api';
 
-type TabsTabComponent = (api: TabsHistoryAction) => ReactNode;
-
-type TabDef =
-  | {
-      render: TabsTabComponent;
-    }
-  | {
-      render: ReactNode;
-    };
-
-export type TabsTab<I18N extends keyof Resources> = (
-  | {
-      label: string;
-    }
-  | {
-      i18n: keyof Resources[I18N];
-    }
-) &
-  TabDef;
-export type TabsObject<
-  QueryKey extends TabsDeclarationKeys,
-  I18N extends keyof Resources,
-> = Record<TabsDeclaration[QueryKey], TabsTab<I18N>>;
-
-type TabsPropsChildren<
-  QueryKey extends TabsDeclarationKeys,
-  W extends TabsObject<QueryKey, I18N>,
-  I18N extends keyof Resources,
-> = ({
-  current,
-  queryName,
-  tabs,
-}: {
-  current: TabsDeclaration[QueryKey];
-  queryName: QueryKey;
-  tabs: W;
-}) => ReactNode;
-
-interface TabsProps<
-  QueryKey extends TabsDeclarationKeys,
-  W extends TabsObject<QueryKey, I18N>,
-  I18N extends keyof Resources,
-> {
-  i18nGroup: I18N;
-  queryName: QueryKey;
-  tabs: W;
-  wrapper?: (component: ReactNode, current: keyof W) => ReactNode;
-  children?: TabsPropsChildren<QueryKey, W, I18N>;
-}
-
-interface TabsInitProps<QueryKey extends TabsDeclarationKeys> {
-  children?: ReactNode;
-  queryKey: QueryKey;
-  initialTab: TabsDeclaration[QueryKey];
-}
-
-//=====================================================================//
-
-export function Tabs<
-  QueryKey extends TabsDeclarationKeys,
-  W extends TabsObject<QueryKey, I18N>,
-  I18N extends keyof Resources,
->({
-  queryName,
-  i18nGroup: _i18nGroup,
-  tabs,
-  wrapper = (component) => component,
-  children = ({ current, tabs }) => {
-    const tab = tabs[current as keyof typeof tabs];
-    if (!tab) return null;
-    const { render } = tab;
-    return typeof render === 'function' ? render(tabsHistoryAction) : render;
-  },
-}: TabsProps<QueryKey, W, I18N>) {
-  const current = useTabs(queryName);
-  return wrapper(children({ current, tabs, queryName }), current);
-}
-
-export const TabsInit = <QueryKey extends TabsDeclarationKeys>({
-  queryKey,
+export const Tabs: TabsComponent = ({
   children,
   initialTab,
-}: TabsInitProps<QueryKey>) => {
-  useEffectOnce(() => {
-    tabsHistoryAction.doInitClient(queryKey, initialTab);
-  });
-  return children;
+  animationVariant,
+}) => {
+  return (
+    <TabManagerProvider
+      initialState={{
+        history: [initialTab ?? 'main'],
+        current: initialTab ?? 'main',
+      }}
+    >
+      <TabsAnimationVariantProvider
+        key={animationVariant ?? 'default'}
+        initialValue={animationVariant}
+      >
+        <TabRepositoryProvider>{children}</TabRepositoryProvider>
+      </TabsAnimationVariantProvider>
+    </TabManagerProvider>
+  );
 };
+Tabs.UseApi = UseApi;
+Tabs.Tab = Tab;
+Tabs.Hide = Hide;
+Tabs.ConditionalDisplay = ConditionalDisplay;
+Tabs.Bridge = Bridge;
+Tabs.Show = Show;
+Tabs.useBridgeRef = useBridgeRef;
+Tabs.MutallyExclusive = MutallyExclusive;

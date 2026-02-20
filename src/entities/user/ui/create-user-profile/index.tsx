@@ -7,7 +7,7 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
-import type { IUserProfile } from '../profile/types/user-profile.types.ts';
+import type { IUserProfile } from '../profile/types';
 import { Avatar as MantineAvatar } from '@mantine/core';
 import { get } from 'lodash';
 import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';

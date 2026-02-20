@@ -1,7 +1,7 @@
 export * from './lib';
 export * from './api';
 export * from './model';
-export * from './types';
+export type { TUser as User } from './model/types';
 export {
   ProfileForCurrentUser,
   ProfileForGetUserById,

@@ -16,7 +16,7 @@ export const UserAgent: SessionComponent['UserAgent'] = () => {
 
   return (
     <Text
-      c={'blue'}
+      opacity={0.7}
     >{`${device} ${os} ${browser}${browserVersion && '-'}${browserVersion}`}</Text>
   );
 };

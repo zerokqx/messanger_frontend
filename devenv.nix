@@ -7,14 +7,13 @@
 }:
 
 {
-  # https://devenv.sh/basics/
   env.GREET = "Yobble";
 
-  # https://devenv.sh/packages/
   packages = with pkgs; [
     git
     eslint
     bun
+    google-chrome
   ];
 
   scripts = {

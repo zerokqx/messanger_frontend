@@ -1,30 +1,18 @@
-import { type ReactNode } from 'react';
 import { AppShellNavbar } from '@mantine/core';
-import { NavbarHeader } from './navbar-header';
-import { TabsNavigate } from '@/shared/ui/query-tabs';
+import { Tabs } from '@/shared/ui/query-tabs';
+import { MainTabs, RootTabs } from './tabs';
 
-interface AppShellNavbarWidgetProps {
-  children?: ReactNode;
-}
+export const AppShellNavbarWidget = () => {
+  const topApiTabs = Tabs.useBridgeRef();
 
-export const AppShellNavbarWidget = ({
-  children,
-}: AppShellNavbarWidgetProps) => {
   return (
-    <AppShellNavbar style={{ overflow: 'auto' }}>
-      <TabsNavigate
-        queryKey="tnavbar"
-        children={({ push }) => (
-          <NavbarHeader
-            input={{
-              onFocus: () => {
-                push('search');
-              },
-            }}
-          />
-        )}
-      />
-      {children}
+    <AppShellNavbar style={{ overflow: 'auto', overflowX: 'hidden' }}>
+      <RootTabs>
+        <Tabs.Bridge saveTo={topApiTabs} />
+        <Tabs.Tab value="main">
+          <MainTabs controller={topApiTabs} />
+        </Tabs.Tab>
+      </RootTabs>
     </AppShellNavbar>
   );
 };

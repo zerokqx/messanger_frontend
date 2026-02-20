@@ -3,7 +3,7 @@ import { useChangePassword } from '@/features/change-password';
 import { Form } from '@/shared/ui/form';
 import { Modal } from '@/shared/ui/modal';
 import { formOptions } from '@tanstack/react-form';
-import type { CustomModalProps } from '../types/modal.type';
+import type { CustomModalProps } from './types';
 import { PasswordInput } from '@mantine/core';
 
 export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {

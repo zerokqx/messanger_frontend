@@ -1,2 +1,6 @@
-export { useAppSettings } from '../../../../../widgets/settings/model/use-app-settings.ts';
-export { SettingsProviderContext as SettingsPovider } from '../../../../../widgets/settings/model/context.ts';
+export {
+  AnimationSchema,
+  PrimaryColorSchema,
+  SettingsSchema,
+} from './types.ts';
+export type { Animation, PrimaryColor, Settings } from './types.ts';

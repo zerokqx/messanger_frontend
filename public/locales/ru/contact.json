@@ -1,4 +1,6 @@
 {
   "add": "Добавить",
-  "in-contact": "В контактах"
+  "in-contact": "В контактах",
+  "error-contact-operation": "Ошибка операции с контактом",
+  "error-contact-operation-message": "Не удалось обновить контакт. Попробуйте еще раз."
 }

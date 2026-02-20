@@ -1,2 +1,2 @@
-export type { IContactProfile } from './types/contact.types.ts';
+export type { IContactProfile } from './types';
 export {pagesMap} from './pages-map.ts';

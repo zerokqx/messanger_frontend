@@ -1,4 +1,6 @@
 {
   "add": "Add",
-  "in-contact": "In contacts"
+  "in-contact": "In contacts",
+  "error-contact-operation": "Contact operation error",
+  "error-contact-operation-message": "Failed to update contact. Please try again."
 }

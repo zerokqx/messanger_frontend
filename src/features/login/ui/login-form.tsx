@@ -1,7 +1,7 @@
 import { useAppForm } from '@/shared/ui/form/ui/form-v2/form-v2';
 import { loginFormSchema } from '../model/login-schema';
 import { useLogin } from '../api';
-import type { LoginFormProp } from '../types/login-form.type';
+import type { LoginFormProp } from './types';
 import { FieldGroutpUserNamePassword } from '@/shared/ui/form/ui/form-v2/groups/user-name-password';
 import { useTranslation } from 'react-i18next';
 import { ListRestart } from 'lucide-react';

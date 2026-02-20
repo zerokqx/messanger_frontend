@@ -1,6 +1,13 @@
-export type { TabsDeclaration, TabsDeclarationKeys } from './tabs-types.ts';
+export { TabManagerProvider } from './history-context.tsx';
+export { useTabs } from './use-tabs.ts';
+export { useTabsApi } from './use-tabs-api.ts';
+export type {
+  TabsContext,
+  TabsReducer,
+  TabsReducerAction,
+} from './history-context.tsx';
 export {
-  tabsHistoryAction,
-  useTabsHistory,
-  type TabsHistoryAction,
-} from './tabs-history.ts';
+  useTabsAnimationVariant,
+  TabsAnimationVariantProvider,
+} from './animaton-variant-contexts.ts';
+export type {ExternalController} from './types.ts';

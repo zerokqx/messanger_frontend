@@ -10,9 +10,8 @@ import { Footer } from './session-components/footer';
 import { CurrentBadge } from './session-components/current-session-badge';
 import { UserAgent } from './session-components/user-agent';
 import { ThisDevice } from './session-components/this-device';
-import { motion } from 'motion/react';
 import { SessionContext } from '../model/session.context';
-
+import * as m from 'motion/react-m';
 /**
  * @description Базовый компонент сессии. Связывает компоненты через контекст.
  * @remark Не предназначен для использования снаружи. Использовать только для постороения переиспользуемых instance сессий.
@@ -22,10 +21,10 @@ export const Session: SessionComponent = ({ session, children, gridProps }) => {
   return (
     <Grid
       renderRoot={(props) => (
-        <motion.div
+        <m.div
           {...props}
-          initial={{ scale: 0.9, opacity: 0.3 }}
-          whileInView={{ scale: 1, opacity: 1 }}
+          initial={{ opacity: 0.3 }}
+          whileInView={{ opacity: 1 }}
         />
       )}
       bdrs={'xl'}
