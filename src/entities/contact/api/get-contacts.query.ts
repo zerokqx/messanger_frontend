@@ -36,9 +36,6 @@ export const useContactsQuery = (limit: number) => {
           Logger.debug('useContactsQuery', 'has_more=true', {
             preData: lastPage.data,
           });
-          Logger.debug('useContactsQuery', 'has_more=false', {
-            preData: lastPage.data,
-          });
           return lastPageParam + lastPage.data.items.length;
         }
 

@@ -49,6 +49,9 @@ export const HorizontalUserCard: HorizontalUserCardComponent = ({
   return (
     <UserProfileContext initialValue={value}>
       <Group
+        style={{
+          cursor: 'pointer',
+        }}
         bdrs={'xl'}
         p={'xs'}
         className={[style.card, className].filter(Boolean).join(' ')}

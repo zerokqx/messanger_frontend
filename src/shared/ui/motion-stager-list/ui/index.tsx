@@ -1,5 +1,5 @@
 import { Stack, type StackProps } from '@mantine/core';
-import type { MotionProps, Variants } from 'motion/react';
+import type { HTMLMotionProps, MotionProps, Variants } from 'motion/react';
 import * as m from 'motion/react-m';
 import { type ReactNode } from 'react';
 
@@ -26,7 +26,7 @@ const variantsByDefault: VariantsType = {
   container,
 };
 
-type MotionPropsWithoutVariants = Omit<MotionProps, 'variants'>;
+type MotionPropsWithoutVariants = Omit<HTMLMotionProps<'div'>, 'variants'>;
 
 interface MotionStagerListPorps {
   stackProps?: StackProps;

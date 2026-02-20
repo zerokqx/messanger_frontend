@@ -1,4 +1,3 @@
-import { ScrollArea } from '@mantine/core';
 import type { VirtualListProp } from '../types/virtual-list.type';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRef } from 'react';
@@ -16,6 +15,8 @@ export const VirtualList = <D extends any[]>({
   esimateSize,
   scrollAreaProps,
 }: VirtualListProp<D>) => {
+  const { style: scrollContainerStyle, ...scrollContainerProps } =
+    scrollAreaProps ?? {};
   const viewportRef = useRef<HTMLDivElement>(null);
   const virtualizer = useVirtualizer({
     count,
@@ -26,7 +27,7 @@ export const VirtualList = <D extends any[]>({
         range &&
         hasNextPage &&
         !isFetchingNextPage &&
-        range.endIndex >= data.length - 1 // или -3, если хотите раньше
+        range.endIndex >= data.length - 1
       ) {
         void fetchFunction();
       }
@@ -36,15 +37,21 @@ export const VirtualList = <D extends any[]>({
 
   const virtualRows = virtualizer.getVirtualItems();
   return (
-    <ScrollArea
-      offsetScrollbars="y"
-      viewportRef={viewportRef}
-      {...scrollAreaProps}
+    <div
+      ref={viewportRef}
+      style={{
+        height: '100%',
+        minHeight: 0,
+        overflow: 'auto',
+        ...scrollContainerStyle,
+      }}
+      {...scrollContainerProps}
     >
       <div
         style={{
-          height: virtualizer.getTotalSize(),
+          height: `${virtualizer.getTotalSize().toString()}px`,
           width: '100%',
+          position: 'relative',
         }}
       >
         {virtualRows.map((virtualRow) => {
@@ -59,7 +66,7 @@ export const VirtualList = <D extends any[]>({
                 top: 0,
                 left: 0,
                 width: '100%',
-                height: virtualRow.size,
+                height: `${virtualRow.size.toString()}px`,
                 transform: `translateY(${virtualRow.start.toString()}px)`,
                 display: 'flex',
                 alignItems: 'center',
@@ -74,6 +81,6 @@ export const VirtualList = <D extends any[]>({
           );
         })}
       </div>
-    </ScrollArea>
+    </div>
   );
 };

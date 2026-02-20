@@ -1,11 +1,7 @@
-[data-mantine-color-scheme='dark'] .card {
-  background: var(--mantine-color-dark-8);
-}
-
 .card:hover {
   background: var(--mantine-color-gray-0);
 }
 
 [data-mantine-color-scheme='dark'] .card:hover {
-  background: var(--mantine-color-dark-9);
+  background: var(--mantine-color-dark-8);
 }

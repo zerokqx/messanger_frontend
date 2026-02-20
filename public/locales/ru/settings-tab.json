@@ -5,6 +5,7 @@
   "animation-error": "Ошибка выбора анимации",
   "animation-error-message": "Не удалось применить выбранную анимацию",
   "theme-category": "Тема",
+  "language-select": "Язык приложения",
   "primary-color-label": "Главный цвет приложения",
   "primary-color-not-exist": "Данного цвета не существует. Цвет приложения не был изменен",
   "primary-color-not-exist-title": "Неверный цвет",

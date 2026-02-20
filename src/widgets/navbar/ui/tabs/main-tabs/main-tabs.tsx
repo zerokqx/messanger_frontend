@@ -26,70 +26,72 @@ import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const bottomApiTabs = Tabs.useBridgeRef();
   const { data: profile } = useMe();
-  const users = useSearchStore((s) => s.data.length);
 
   return (
     <Tabs animationVariant="blur-slide-x">
       <Tabs.Bridge saveTo={bottomApiTabs} />
-      <Stack>
-        <Group>
-          <Tabs.MutallyExclusive animationVariant="scale" when={['search']}>
-            <ActionIcon
-              onClick={() => bottomApiTabs.current?.back()}
-              bdrs="xl"
-              variant="light"
-            >
-              <ArrowLeft />
-            </ActionIcon>
-            <TabsMenu
-              data={['settings']}
-              onClickMenuItem={(value) => {
-                controller.current?.push(value);
-              }}
-            />
-          </Tabs.MutallyExclusive>
-          <m.div layout="size" style={{ flex: 1 }}>
-            <SearchInput
-              onCommit={(v) => {
-                historySearchActions.doPush(v);
-              }}
-              onFocus={() => {
-                bottomApiTabs.current?.push('search');
-              }}
-            />
-          </m.div>
-        </Group>
-        <Tabs.Hide when={['search']}>
-          <Panel data={mainPanel} />
-        </Tabs.Hide>
-      </Stack>
-      <Box p={'xs'}>
-        <Tabs.Tab value="search">
-          <Suspense fallback={<SearchSkeleton />}>
-            <Stack gap={'xs'}>
-              <SearchHistoryList
-                onClickItem={(v) => {
-                  useSearchUserQuery.setState({ data: v });
+      <Stack h="inherit">
+        <Stack m="xs">
+          <Group>
+            <Tabs.MutallyExclusive animationVariant="scale" when={['search']}>
+              <ActionIcon
+                onClick={() => bottomApiTabs.current?.back()}
+                bdrs="xl"
+                variant="light"
+              >
+                <ArrowLeft />
+              </ActionIcon>
+              <TabsMenu
+                data={['settings']}
+                onClickMenuItem={(value) => {
+                  controller.current?.push(value);
                 }}
               />
-              <SearchResultList />
-            </Stack>
-          </Suspense>
-        </Tabs.Tab>
-        <Tabs.Tab value="main">Chats</Tabs.Tab>
-        <Tabs.Tab value="contacts">
-          <ContactsList />
-        </Tabs.Tab>
-        <Tabs.Tab value="profile">
-          <Suspense fallback={<SkeletonProfile />}>
-            {profile ? (
-              <ProfileForCurrentUser profile={profile} />
-            ) : (
-              <SkeletonProfile />
-            )}
-          </Suspense>
-        </Tabs.Tab>
-      </Box>
+            </Tabs.MutallyExclusive>
+            <m.div layout="size" style={{ flex: 1 }}>
+              <SearchInput
+                onCommit={(v) => {
+                  historySearchActions.doPush(v);
+                }}
+                onFocus={() => {
+                  bottomApiTabs.current?.push('search');
+                }}
+              />
+            </m.div>
+          </Group>
+          <Tabs.Hide when={['search']}>
+            <Panel data={mainPanel} />
+          </Tabs.Hide>
+        </Stack>
+
+        <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+          <Tabs.Tab value="search">
+            <Suspense fallback={<SearchSkeleton />}>
+              <Stack gap={'xs'}>
+                <SearchHistoryList
+                  onClickItem={(v) => {
+                    useSearchUserQuery.setState({ data: v });
+                  }}
+                />
+                <SearchResultList />
+              </Stack>
+            </Suspense>
+          </Tabs.Tab>
+          <Tabs.Tab value="main">Chats</Tabs.Tab>
+          <Tabs.Tab value="contacts">
+            <ContactsList />
+          </Tabs.Tab>
+          <Tabs.Tab value="profile">
+            <Suspense fallback={<SkeletonProfile />}>
+              {profile ? (
+                <ProfileForCurrentUser profile={profile} />
+              ) : (
+                <SkeletonProfile />
+              )}
+            </Suspense>
+          </Tabs.Tab>
+        </Box>
+      </Stack>
     </Tabs>
   );
 };

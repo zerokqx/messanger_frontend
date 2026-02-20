@@ -1,5 +1,6 @@
-import { $api } from '@/shared/api/repository/$api';
 import { useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
+import { $api } from '@/shared/api/repository/$api';
 
 /**
  * @description Инвалидирует за один раз count и list, contact эндпоинта
@@ -7,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 export const useInvalidateContacts = () => {
   const client = useQueryClient();
 
-  return async () => {
+  return useCallback(async () => {
     await Promise.all([
       client.invalidateQueries(
         $api.jwtUser.query.queryOptions('get', '/contact/count')
@@ -16,5 +17,5 @@ export const useInvalidateContacts = () => {
         $api.jwtUser.query.queryOptions('get', '/contact/list')
       ),
     ]);
-  };
+  }, [client]);
 };

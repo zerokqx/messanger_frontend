@@ -11,14 +11,20 @@ interface Resources {
     "submit": "Send"
   },
   "contact": {
+    "contacts": "Contacts",
     "add": "Add",
     "error-contact-operation": "Contact operation error",
     "error-contact-operation-message": "Failed to update contact. Please try again.",
-    "in-contact": "In contacts"
+    "in-contact": "In contacts",
+    "contacts-load-error": "An unexpected error occurred while loading contacts. Please reload the page.",
+    "contacts-empty": "You do not have any contacts yet. Add them via search.",
+    "contact-remove-pending": "Removing...",
+    "contact-remove-success": "Contact removed"
   },
   "contact-menu": {
     "contact": "Contact",
-    "contact-add": "Add to contacts"
+    "contact-add": "Add to contacts",
+    "contact-remove": "Remove from contacts"
   },
   "days": {
     "today": "Today"
@@ -92,6 +98,7 @@ interface Resources {
     "indigo": "Indigo",
     "keyframes": "Linear",
     "logout": "Log out",
+    "language-select": "Application language",
     "primary-color-label": "Primary application color",
     "primary-color-not-exist": "The selected color does not exist. The application color was not changed",
     "primary-color-not-exist-title": "Invalid color",
