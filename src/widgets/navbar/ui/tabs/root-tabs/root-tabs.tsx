@@ -10,7 +10,7 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { Tabs } from '@/shared/ui/query-tabs';
-import { ArrowLeft, Home } from 'lucide-react';
+import { ArrowLeft, Home, LogOut } from 'lucide-react';
 import { InterfaceEditTab } from '@/features/settings-interface/ui/edit';
 import { InterfaceEditSkeleton } from '@/features/settings-interface';
 import { SessionsTab } from '@/features/session/ui/session-manager';
@@ -19,6 +19,7 @@ import { SessionListSkeleton } from '@/features/session';
 import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
 import { MotionStagerList } from '@/shared/ui/motion-stager-list/index.ts';
+import { useLogout } from '@/entities/user/index.ts';
 
 const RootTabsTitle = () => {
   const [t] = useTranslation('navbar');
@@ -35,7 +36,8 @@ const RootTabsTitle = () => {
 
 export const RootTabs = ({ children }: RootTabsProps) => {
   const { colorScheme } = useMantineColorScheme();
-  const [t] = useTranslation('navbar');
+  const [t] = useTranslation(['navbar', 'button-labels']);
+  const logout = useLogout();
 
   return (
     <Tabs animationVariant="slide-x">
@@ -119,6 +121,17 @@ export const RootTabs = ({ children }: RootTabsProps) => {
                       </Button>
                     </MotionStagerList.StagerItem>
                   ))}
+                  <Button
+                    onClick={() => {
+                      void logout();
+                    }}
+                    color="red"
+                    leftSection={<LogOut />}
+                    variant="subtle"
+                    justify="start"
+                  >
+                    Выйти
+                  </Button>
                 </MotionStagerList>
               )}
             />

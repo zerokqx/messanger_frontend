@@ -1,12 +1,7 @@
-import { ActionIcon, Box, Group, Stack } from '@mantine/core';
-import {
-  SearchInput,
-  SearchResultList,
-  useSearchStore,
-} from '@/features/search';
+import { ActionIcon, Box, Button, Group, Stack } from '@mantine/core';
+import { SearchInput, SearchResultList } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
-import { ArrowLeft, Home, User, Users } from 'lucide-react';
 import { ContactsList } from '@/features/contact';
 
 import * as m from 'motion/react-m';
@@ -22,6 +17,11 @@ import {
 } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
+import { ArrowLeft, Edit } from 'lucide-react';
+import {
+  EditProfileSkeleton,
+  ProfileEditForm,
+} from '@/features/edit-profile/index.ts';
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const bottomApiTabs = Tabs.useBridgeRef();
@@ -79,12 +79,29 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="main">Chats</Tabs.Tab>
           <Tabs.Tab value="contacts">
-            <ContactsList />
+            <Suspense>
+              <ContactsList />
+            </Suspense>
+          </Tabs.Tab>
+          <Tabs.Tab value="profile/edit">
+            <Suspense fallback={<EditProfileSkeleton />}>
+              <ProfileEditForm
+                onSuccess={() => {
+                  bottomApiTabs.current?.back();
+                }}
+              />
+            </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="profile">
             <Suspense fallback={<SkeletonProfile />}>
               {profile ? (
-                <ProfileForCurrentUser profile={profile} />
+                <ProfileForCurrentUser
+                  withEdit
+                  onEdit={() => {
+                    bottomApiTabs.current?.push('profile/edit');
+                  }}
+                  profile={profile}
+                />
               ) : (
                 <SkeletonProfile />
               )}

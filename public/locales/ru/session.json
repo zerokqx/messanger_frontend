@@ -3,8 +3,6 @@
   "close_session": "Завершить сессию",
   "created_at": "Дата создания",
   "last_activation": "Последняя активация",
-  "revoke_all_cancel": "Отмена",
-  "revoke_all_confirm": "Завершить",
   "revoke_text_all": "Вы уверены что хотите завершить все сессии кроме текущей?",
   "revoke_text_one": "Вы уверены что хотите завершить выбранную сессию?",
   "revoke_title_one": "Завершение сессии",

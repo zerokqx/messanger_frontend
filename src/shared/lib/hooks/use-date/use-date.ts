@@ -8,17 +8,17 @@ export function usePlurarDates<K extends keyof UseDataReturn>(
 export function usePlurarDates<K extends keyof UseDataReturn>(
   selector?: (data: UseDataReturn) => UseDataReturn[K]
 ): UseDataReturn | UseDataReturn[K] {
-  const { t } = useTranslation(['plurarData']);
+  const { t } = useTranslation(['plurar-data']);
 
   const daysValues = [1, 7, 14, 30, 60, 90, 180, 365];
   const hoursValues = [2, 8, 12, 24];
   const hours: UseDataReturn[K] = _.map(hoursValues, (hour) => [
     hour,
-    t('plurarData:hours', { count: hour }),
+    t('plurar-data:hours', { count: hour }),
   ]);
   const days: UseDataReturn[K] = _.map(daysValues, (day) => [
     day,
-    t('plurarData:days', { count: day }),
+    t('plurar-data:days', { count: day }),
   ]);
 
   const result: UseDataReturn = {

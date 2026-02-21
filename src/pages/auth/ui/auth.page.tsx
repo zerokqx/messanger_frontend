@@ -22,7 +22,7 @@ const RegisterModalLazy = lazy(() =>
 );
 
 export function AuhtPage() {
-  const { t } = useTranslation(['titles', 'buttonLabels', 'texts']);
+  const { t } = useTranslation(['auth', 'button-labels']);
   const openLogin = useModalGlobal.usePinOpen()('login');
   const openRegister = useModalGlobal.usePinOpen()('register');
 
@@ -36,17 +36,17 @@ export function AuhtPage() {
       <Stack style={{ zIndex: 2 }} align={'center'}>
         <Blockquote h={{ base: '100vh', xs: 'auto' }}>
           <Title fw={{ base: 300, sm: 500 }}>
-            {t('titles:return_to_yobble')}
+            {t('auth:return_to_yobble')}
           </Title>
-          <Text>{t('texts:glad_see_you')}</Text>
-          <Text>{t('texts:enter_to_account_for_communicate_friend')}</Text>
+          <Text>{t('auth:glad_see_you')}</Text>
+          <Text>{t('auth:enter_to_account_for_communicate_friend')}</Text>
           <Space h={'xl'} />
           <Group gap={'md'} justify={'space-around'}>
             <Button onClick={openLogin} bdrs={'xl'}>
-              {t('buttonLabels:enter')}
+              {t('button-labels:enter')}
             </Button>
             <Button onClick={openRegister} variant="subtle" bdrs={'xl'}>
-              {t('buttonLabels:register')}
+              {t('button-labels:register')}
             </Button>
           </Group>
         </Blockquote>

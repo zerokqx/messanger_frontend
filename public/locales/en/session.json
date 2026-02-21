@@ -3,8 +3,6 @@
   "close_session": "Close session",
   "created_at": "Created at",
   "last_activation": "Last actiovation",
-  "revoke_all_cancel": "Cancel",
-  "revoke_all_confirm": "Confirm",
   "revoke_text_all": "Are you sure you want to end all sessions except the current one?",
   "revoke_text_one": "Are you sure you want to end the selected session?",
   "revoke_title_one": "Session termination",

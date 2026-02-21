@@ -1,91 +1,14 @@
 {
   pkgs,
-  lib,
-  config,
-  inputs,
   ...
 }:
-
 {
   env.GREET = "Yobble";
-  env.LD_LIBRARY_PATH = "${
-    with pkgs;
-    lib.makeLibraryPath [
-      at-spi2-atk
-      atk
-      cairo
-      cups
-      dbus
-      expat
-      fontconfig
-      freetype
-      gdk-pixbuf
-      glib
-      gtk3
-      libGL
-      libuuid
-      libxkbcommon
-      mesa
-      nspr
-      nss
-      pango
-      pipewire
-      udev
-      xorg.libX11
-      xorg.libXcomposite
-      xorg.libXcursor
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXi
-      xorg.libXrandr
-      xorg.libXrender
-      xorg.libXtst
-      xorg.libxcb
-      xorg.xcbutilkeysyms
-      alsa-lib
-      stdenv.cc.cc.lib
-    ]
-  }";
   packages = with pkgs; [
     git
     eslint
-    stdenv.cc.cc.lib
     bun
-    google-chrome
-    at-spi2-atk
-    atk
-    cairo
-    cups
-    dbus
-    expat
-    fontconfig
-    freetype
-    gdk-pixbuf
-    glib
-    gtk3
-    libGL
-    libuuid
-    libxkbcommon
-    mesa
-    nspr
-    nss
-    pango
-    pipewire
-    udev
-    xorg.libX11
-    xorg.libXcomposite
-    xorg.libXcursor
-    xorg.libXdamage
-    xorg.libXext
-    xorg.libXfixes
-    xorg.libXi
-    xorg.libXrandr
-    xorg.libXrender
-    xorg.libXtst
-    xorg.libxcb
-    xorg.xcbutilkeysyms
-    alsa-lib
+    playwright-driver.browsers
   ];
 
   scripts = {

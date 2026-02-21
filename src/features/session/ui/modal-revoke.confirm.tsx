@@ -6,6 +6,9 @@ export const confirmModalForRevokeSession = (onConfirm: () => void) =>
   modals.openConfirmModal({
     title: t('session:revoke_title_one'),
     children: <Text size="sm">{t('session:revoke_text_one')}</Text>,
-    labels: { confirm: 'Confirm', cancel: 'Cancel' },
+    labels: {
+      confirm: t('button-labels:confirm'),
+      cancel: t('button-labels:cancel'),
+    },
     onConfirm,
   });

@@ -6,10 +6,9 @@ import { Modal } from '@/shared/ui/modal';
 import { useStore } from '@tanstack/react-form';
 import { ListRestart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { If, Then } from 'react-if';
 
 export const RegisterModal = () => {
-  const { t } = useTranslation(['buttonLabels', 'fieldLabels', 'titles']);
+  const { t } = useTranslation(['button-labels', 'field-labels', 'auth']);
   const { mutate } = useRegister();
   const swapMode = useCloseOpen('register', 'login');
   const form = useAppForm({
@@ -39,7 +38,7 @@ export const RegisterModal = () => {
       <form.AppForm>
         <form.Form>
           <form.Vertical>
-            <form.Title text={t('titles:register')} />
+            <form.Title text={t('auth:register')} />
             <FieldGroutpUserNamePassword
               form={form}
               fields={{
@@ -51,27 +50,25 @@ export const RegisterModal = () => {
               name="confirmPassword"
               children={(field) => (
                 <field.PasswordInput
-                  label={t('fieldLabels:password_repeat_label')}
+                  label={t('field-labels:password_repeat_label')}
                 />
               )}
             />
             <form.Horizontal justify="center">
-              <form.SubmitButton children={t('buttonLabels:submit')} />
+              <form.SubmitButton children={t('button-labels:submit')} />
               <form.ResetButton variant="subtle">
                 <ListRestart />
               </form.ResetButton>
             </form.Horizontal>
             <form.Vertical justify="center" w={'100%'}>
-              <If condition={!isDirty}>
-                <Then>
-                  <form.SecondAction
-                    title={t('fieldLabels:have_account')}
-                    onClick={swapMode}
-                  >
-                    {t('buttonLabels:enter')}
-                  </form.SecondAction>
-                </Then>
-              </If>
+              {!isDirty && (
+                <form.SecondAction
+                  title={t('auth:have_account')}
+                  onClick={swapMode}
+                >
+                  {t('button-labels:enter')}
+                </form.SecondAction>
+              )}
             </form.Vertical>
           </form.Vertical>
         </form.Form>

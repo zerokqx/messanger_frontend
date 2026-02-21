@@ -1,3 +1,6 @@
 {
-  "search-placeholder": "Search"
+  "search-placeholder": "Search",
+  "history": "History",
+  "clear-history": "Clear history",
+  "history-empty": "History is empty"
 }

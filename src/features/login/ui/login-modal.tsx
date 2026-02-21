@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import type { ILoginModalProps } from './types';
 
 export const LoginModal = ({ whatClose }: ILoginModalProps) => {
-  const { t } = useTranslation(['titles', 'buttonLabels', 'fieldLabels']);
+  const { t } = useTranslation(['auth', 'button-labels', 'field-labels']);
   const close = useModalGlobal.usePinClose()('login');
   const swapMode = useCloseOpen('login', whatClose);
   const router = useRouter();
@@ -19,8 +19,8 @@ export const LoginModal = ({ whatClose }: ILoginModalProps) => {
         mutateProps={{
           onError() {
             notifications.show({
-              title: t('invalid_login'),
-              message: t('invalid_message_login'),
+              title: t('auth:invalid_login'),
+              message: t('auth:invalid_message_login'),
             });
           },
           onSuccess: () => {

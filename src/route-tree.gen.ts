@@ -1,5 +1,3 @@
- 
-
 // @ts-nocheck
 
 // noinspection JSUnusedGlobalSymbols
@@ -8,86 +6,86 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './app/routes/-root'
-import { Route as AuthRouteRouteImport } from './app/routes/auth/route'
-import { Route as AuthorizedRouteRouteImport } from './app/routes/-authorized/route'
-import { Route as IndexRouteImport } from './app/routes/index'
-import { Route as AuthIndexRouteImport } from './app/routes/auth/index'
-import { Route as AuthorizedSessionsRouteImport } from './app/routes/-authorized/sessions'
-import { Route as AuthorizedYIndexRouteImport } from './app/routes/-authorized/y/index'
-import { Route as AuthorizedYDdwRouteImport } from './app/routes/-authorized/y/ddw'
-import { Route as AuthorizedYUuidRouteImport } from './app/routes/-authorized/y/$uuid'
+import { Route as rootRouteImport } from './app/routes/-root';
+import { Route as AuthRouteRouteImport } from './app/routes/_auth/route';
+import { Route as AuthorizedRouteRouteImport } from './app/routes/-authorized/route';
+import { Route as IndexRouteImport } from './app/routes/index';
+import { Route as AuthIndexRouteImport } from './app/routes/_auth/auth';
+import { Route as AuthorizedSessionsRouteImport } from './app/routes/-authorized/sessions';
+import { Route as AuthorizedYIndexRouteImport } from './app/routes/-authorized/y/index';
+import { Route as AuthorizedYDdwRouteImport } from './app/routes/-authorized/y/ddw';
+import { Route as AuthorizedYUuidRouteImport } from './app/routes/-authorized/y/$uuid';
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthorizedRouteRoute = AuthorizedRouteRouteImport.update({
   id: '/_authorized',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthIndexRoute = AuthIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const AuthorizedSessionsRoute = AuthorizedSessionsRouteImport.update({
   id: '/sessions',
   path: '/sessions',
   getParentRoute: () => AuthorizedRouteRoute,
-} as any)
+} as any);
 const AuthorizedYIndexRoute = AuthorizedYIndexRouteImport.update({
   id: '/y/',
   path: '/y/',
   getParentRoute: () => AuthorizedRouteRoute,
-} as any)
+} as any);
 const AuthorizedYDdwRoute = AuthorizedYDdwRouteImport.update({
   id: '/y/ddw',
   path: '/y/ddw',
   getParentRoute: () => AuthorizedRouteRoute,
-} as any)
+} as any);
 const AuthorizedYUuidRoute = AuthorizedYUuidRouteImport.update({
   id: '/y/$uuid',
   path: '/y/$uuid',
   getParentRoute: () => AuthorizedRouteRoute,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/sessions': typeof AuthorizedSessionsRoute
-  '/auth/': typeof AuthIndexRoute
-  '/y/$uuid': typeof AuthorizedYUuidRoute
-  '/y/ddw': typeof AuthorizedYDdwRoute
-  '/y': typeof AuthorizedYIndexRoute
+  '/': typeof IndexRoute;
+  '/auth': typeof AuthRouteRouteWithChildren;
+  '/sessions': typeof AuthorizedSessionsRoute;
+  '/auth/': typeof AuthIndexRoute;
+  '/y/$uuid': typeof AuthorizedYUuidRoute;
+  '/y/ddw': typeof AuthorizedYDdwRoute;
+  '/y': typeof AuthorizedYIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/sessions': typeof AuthorizedSessionsRoute
-  '/auth': typeof AuthIndexRoute
-  '/y/$uuid': typeof AuthorizedYUuidRoute
-  '/y/ddw': typeof AuthorizedYDdwRoute
-  '/y': typeof AuthorizedYIndexRoute
+  '/': typeof IndexRoute;
+  '/sessions': typeof AuthorizedSessionsRoute;
+  '/auth': typeof AuthIndexRoute;
+  '/y/$uuid': typeof AuthorizedYUuidRoute;
+  '/y/ddw': typeof AuthorizedYDdwRoute;
+  '/y': typeof AuthorizedYIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_authorized': typeof AuthorizedRouteRouteWithChildren
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/_authorized/sessions': typeof AuthorizedSessionsRoute
-  '/auth/': typeof AuthIndexRoute
-  '/_authorized/y/$uuid': typeof AuthorizedYUuidRoute
-  '/_authorized/y/ddw': typeof AuthorizedYDdwRoute
-  '/_authorized/y/': typeof AuthorizedYIndexRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/_authorized': typeof AuthorizedRouteRouteWithChildren;
+  '/auth': typeof AuthRouteRouteWithChildren;
+  '/_authorized/sessions': typeof AuthorizedSessionsRoute;
+  '/auth/': typeof AuthIndexRoute;
+  '/_authorized/y/$uuid': typeof AuthorizedYUuidRoute;
+  '/_authorized/y/ddw': typeof AuthorizedYDdwRoute;
+  '/_authorized/y/': typeof AuthorizedYIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
     | '/auth'
@@ -95,9 +93,9 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/y/$uuid'
     | '/y/ddw'
-    | '/y'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sessions' | '/auth' | '/y/$uuid' | '/y/ddw' | '/y'
+    | '/y';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/' | '/sessions' | '/auth' | '/y/$uuid' | '/y/ddw' | '/y';
   id:
     | '__root__'
     | '/'
@@ -107,81 +105,81 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/_authorized/y/$uuid'
     | '/_authorized/y/ddw'
-    | '/_authorized/y/'
-  fileRoutesById: FileRoutesById
+    | '/_authorized/y/';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthorizedRouteRoute: typeof AuthorizedRouteRouteWithChildren
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  IndexRoute: typeof IndexRoute;
+  AuthorizedRouteRoute: typeof AuthorizedRouteRouteWithChildren;
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/auth';
+      path: '/auth';
+      fullPath: '/auth';
+      preLoaderRoute: typeof AuthRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_authorized': {
-      id: '/_authorized'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthorizedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/_authorized';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof AuthorizedRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/auth/': {
-      id: '/auth/'
-      path: '/'
-      fullPath: '/auth/'
-      preLoaderRoute: typeof AuthIndexRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
+      id: '/auth/';
+      path: '/';
+      fullPath: '/auth/';
+      preLoaderRoute: typeof AuthIndexRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
     '/_authorized/sessions': {
-      id: '/_authorized/sessions'
-      path: '/sessions'
-      fullPath: '/sessions'
-      preLoaderRoute: typeof AuthorizedSessionsRouteImport
-      parentRoute: typeof AuthorizedRouteRoute
-    }
+      id: '/_authorized/sessions';
+      path: '/sessions';
+      fullPath: '/sessions';
+      preLoaderRoute: typeof AuthorizedSessionsRouteImport;
+      parentRoute: typeof AuthorizedRouteRoute;
+    };
     '/_authorized/y/': {
-      id: '/_authorized/y/'
-      path: '/y'
-      fullPath: '/y'
-      preLoaderRoute: typeof AuthorizedYIndexRouteImport
-      parentRoute: typeof AuthorizedRouteRoute
-    }
+      id: '/_authorized/y/';
+      path: '/y';
+      fullPath: '/y';
+      preLoaderRoute: typeof AuthorizedYIndexRouteImport;
+      parentRoute: typeof AuthorizedRouteRoute;
+    };
     '/_authorized/y/ddw': {
-      id: '/_authorized/y/ddw'
-      path: '/y/ddw'
-      fullPath: '/y/ddw'
-      preLoaderRoute: typeof AuthorizedYDdwRouteImport
-      parentRoute: typeof AuthorizedRouteRoute
-    }
+      id: '/_authorized/y/ddw';
+      path: '/y/ddw';
+      fullPath: '/y/ddw';
+      preLoaderRoute: typeof AuthorizedYDdwRouteImport;
+      parentRoute: typeof AuthorizedRouteRoute;
+    };
     '/_authorized/y/$uuid': {
-      id: '/_authorized/y/$uuid'
-      path: '/y/$uuid'
-      fullPath: '/y/$uuid'
-      preLoaderRoute: typeof AuthorizedYUuidRouteImport
-      parentRoute: typeof AuthorizedRouteRoute
-    }
+      id: '/_authorized/y/$uuid';
+      path: '/y/$uuid';
+      fullPath: '/y/$uuid';
+      preLoaderRoute: typeof AuthorizedYUuidRouteImport;
+      parentRoute: typeof AuthorizedRouteRoute;
+    };
   }
 }
 
 interface AuthorizedRouteRouteChildren {
-  AuthorizedSessionsRoute: typeof AuthorizedSessionsRoute
-  AuthorizedYUuidRoute: typeof AuthorizedYUuidRoute
-  AuthorizedYDdwRoute: typeof AuthorizedYDdwRoute
-  AuthorizedYIndexRoute: typeof AuthorizedYIndexRoute
+  AuthorizedSessionsRoute: typeof AuthorizedSessionsRoute;
+  AuthorizedYUuidRoute: typeof AuthorizedYUuidRoute;
+  AuthorizedYDdwRoute: typeof AuthorizedYDdwRoute;
+  AuthorizedYIndexRoute: typeof AuthorizedYIndexRoute;
 }
 
 const AuthorizedRouteRouteChildren: AuthorizedRouteRouteChildren = {
@@ -189,29 +187,29 @@ const AuthorizedRouteRouteChildren: AuthorizedRouteRouteChildren = {
   AuthorizedYUuidRoute: AuthorizedYUuidRoute,
   AuthorizedYDdwRoute: AuthorizedYDdwRoute,
   AuthorizedYIndexRoute: AuthorizedYIndexRoute,
-}
+};
 
 const AuthorizedRouteRouteWithChildren = AuthorizedRouteRoute._addFileChildren(
-  AuthorizedRouteRouteChildren,
-)
+  AuthorizedRouteRouteChildren
+);
 
 interface AuthRouteRouteChildren {
-  AuthIndexRoute: typeof AuthIndexRoute
+  AuthIndexRoute: typeof AuthIndexRoute;
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthIndexRoute: AuthIndexRoute,
-}
+};
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
-  AuthRouteRouteChildren,
-)
+  AuthRouteRouteChildren
+);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthorizedRouteRoute: AuthorizedRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

@@ -1,9 +1,12 @@
 import { Center } from '@mantine/core';
-import { createUserProfile } from './create-user-profile';
 import type { components } from '@/shared/types/v1';
+import { UserProfile } from './profile';
 
-export const [ProfileForGetUserById] = createUserProfile< components['schemas']['ProfileByUserIdData']
->((UserProfile) => ({ profile }) => (
+interface ProfileForGetUserByIdProps {
+  profile: components['schemas']['ProfileByUserIdData'];
+}
+
+export const ProfileForGetUserById = ({ profile }: ProfileForGetUserByIdProps) => (
   <UserProfile profile={profile}>
     <Center>
       <UserProfile.Avatar size={'xl'} />
@@ -14,4 +17,4 @@ export const [ProfileForGetUserById] = createUserProfile< components['schemas'][
     <UserProfile.Bio />
     <UserProfile.Verification />
   </UserProfile>
-));
+);

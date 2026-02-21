@@ -9,7 +9,7 @@ await i18next
   .init({
     lng: 'ru',
 
-    defaultNS: 'buttonLabels',
+    defaultNS: 'button-labels',
     debug: import.meta.env.MODE === 'development',
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',

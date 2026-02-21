@@ -10,7 +10,7 @@ export const LoginForm = ({
   mutateProps,
   onSecondActionClick,
 }: LoginFormProp) => {
-  const { t } = useTranslation(['titles', 'buttonLabels', 'fieldLabels']);
+  const { t } = useTranslation(['auth', 'button-labels', 'field-labels']);
   const { mutateAsync } = useLogin();
   const form = useAppForm({
     defaultValues: {
@@ -39,7 +39,7 @@ export const LoginForm = ({
     <form.AppForm>
       <form.Form>
         <form.Vertical>
-          <form.Title text={t('titles:enter')} />
+          <form.Title text={t('auth:enter')} />
           <FieldGroutpUserNamePassword
             form={form}
             fields={{
@@ -48,7 +48,7 @@ export const LoginForm = ({
             }}
           />
           <form.Horizontal justify="center">
-            <form.SubmitButton children={t('buttonLabels:submit')} />
+            <form.SubmitButton children={t('button-labels:submit')} />
             <form.ResetButton variant="subtle">
               <ListRestart />
             </form.ResetButton>
@@ -56,9 +56,9 @@ export const LoginForm = ({
           <form.Vertical justify="center" w={'100%'}>
             <form.SecondAction
               onClick={onSecondActionClick}
-              title={t('fieldLabels:have_account')}
+              title={t('auth:have_account')}
             >
-              {t('buttonLabels:create')}
+              {t('button-labels:create')}
             </form.SecondAction>
           </form.Vertical>
         </form.Vertical>
