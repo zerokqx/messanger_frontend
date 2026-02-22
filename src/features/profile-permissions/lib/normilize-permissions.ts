@@ -1,10 +1,16 @@
 import type { components } from '@/shared/types/v1';
 import { forEach, toNumber } from 'lodash';
+import { keyof } from 'zod';
+import { ProfilePermissions } from '../ui/profile-permissions';
 
-type ProfilePermissions =
+export type ProfilePermissions =
   components['schemas']['api__schemas__me__ProfilePermissionsResponse'];
+export type PermissionsUnkeyed = {
+  [K in keyof ProfilePermissions]: ProfilePermissions[K] | string;
+};
+
 export const normilizePermissions = (
-  permissions: Record<keyof ProfilePermissions, unknown>
+  permissions: PermissionsUnkeyed
 ): ProfilePermissions => {
   const keysForNullNormalize = [
     'max_message_auto_delete_seconds',

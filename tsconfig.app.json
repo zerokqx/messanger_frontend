@@ -11,8 +11,7 @@
     "module": "ESNext",
     "types": [
       "node",
-      "vite/client",
-      "vitest/globals"
+      "vite/client"
     ],
     "skipLibCheck": true,
     /* Bundler mode */

@@ -30,15 +30,15 @@ interface Resources {
     "submit": "Send"
   },
   "contact": {
-    "contacts": "Contacts",
     "add": "Add",
+    "contact-remove-pending": "Removing...",
+    "contact-remove-success": "Contact removed",
+    "contacts": "Contacts",
+    "contacts-empty": "You do not have any contacts yet. Add them via search.",
+    "contacts-load-error": "An unexpected error occurred while loading contacts. Please reload the page.",
     "error-contact-operation": "Contact operation error",
     "error-contact-operation-message": "Failed to update contact. Please try again.",
-    "in-contact": "In contacts",
-    "contacts-load-error": "An unexpected error occurred while loading contacts. Please reload the page.",
-    "contacts-empty": "You do not have any contacts yet. Add them via search.",
-    "contact-remove-pending": "Removing...",
-    "contact-remove-success": "Contact removed"
+    "in-contact": "In contacts"
   },
   "contact-menu": {
     "contact": "Contact",
@@ -65,7 +65,28 @@ interface Resources {
     "sessions": "Sessions",
     "settings": "Settings",
     "settings/interface": "Interface",
+    "settings/permissions": "Permissions",
     "settings/sessions": "Sessions"
+  },
+  "permisions": {
+    "allow_message_forwarding": "Allow message forwarding",
+    "allow_messages_from_non_contacts": "Accept messages from strangers",
+    "allow_server_chats": "Allow chats to be stored on the server",
+    "auto_delete_after_days": "Auto‑delete account after X days",
+    "call_permission": "Who can call you",
+    "contacts": "Contacts",
+    "everyone": "Everyone",
+    "force_auto_delete_messages_in_private": "Force auto‑delete in private chats",
+    "group_invite_permission": "Who can invite to conversations",
+    "is_searchable": "Can users find you",
+    "last_seen_visibility": "Who can see 'last seen'",
+    "max_message_auto_delete_seconds": "Maximum message auto‑delete timer",
+    "nobody": "Nobody",
+    "public_invite_permission": "Who can invite to public groups",
+    "show_bio_to_non_contacts": "Show bio to non‑contacts",
+    "show_profile_photo_to_non_contacts": "Show photo to non‑contacts",
+    "show_stories_to_non_contacts": "Show stories to non‑contacts",
+    "title": "Privacy settings"
   },
   "plurar-data": {
     "days_one": "{{count}} day",
@@ -116,8 +137,8 @@ interface Resources {
     "green": "Green",
     "indigo": "Indigo",
     "keyframes": "Linear",
-    "logout": "Log out",
     "language-select": "Application language",
+    "logout": "Log out",
     "primary-color-label": "Primary application color",
     "primary-color-not-exist": "The selected color does not exist. The application color was not changed",
     "primary-color-not-exist-title": "Invalid color",
@@ -127,26 +148,6 @@ interface Resources {
     "violet": "Violet",
     "with-animation-label": "Animations across the app",
     "with-animations-description": "Enables or disables animations on all app screens and UI elements"
-  },
-  "permisions": {
-    "allow_message_forwarding": "Allow message forwarding",
-    "allow_messages_from_non_contacts": "Accept messages from strangers",
-    "allow_server_chats": "Allow chats to be stored on the server",
-    "auto_delete_after_days": "Auto‑delete account after X days",
-    "call_permission": "Who can call you",
-    "contacts": "Contacts",
-    "everyone": "Everyone",
-    "force_auto_delete_messages_in_private": "Force auto‑delete in private chats",
-    "group_invite_permission": "Who can invite to conversations",
-    "is_searchable": "Can users find you",
-    "last_seen_visibility": "Who can see 'last seen'",
-    "max_message_auto_delete_seconds": "Maximum message auto‑delete timer",
-    "nobody": "Nobody",
-    "public_invite_permission": "Who can invite to public groups",
-    "show_bio_to_non_contacts": "Show bio to non‑contacts",
-    "show_profile_photo_to_non_contacts": "Show photo to non‑contacts",
-    "show_stories_to_non_contacts": "Show stories to non‑contacts",
-    "title": "Privacy settings"
   },
   "side-bar": {
     "dark_theme": "Dark theme"

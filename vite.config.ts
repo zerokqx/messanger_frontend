@@ -56,7 +56,7 @@ export default defineConfig({
         test: {
           name: 'browser',
 
-          include: ['src/**/*.browser.test.{ts,tsx}'],
+          include: ['src/**/*.test.{ts,tsx}'],
           setupFiles: './vitest.browser.setup.ts',
           browser: {
             enabled: true,

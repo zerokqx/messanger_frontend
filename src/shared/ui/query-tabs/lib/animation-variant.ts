@@ -21,9 +21,12 @@ export const animationVariants = {
   },
 
   scale: {
-    initial: { scale: 0.96, opacity: 0 },
+    initial: {
+      scale: 0,
+      opacity: 0,
+    },
     open: { scale: 1, opacity: 1 },
-    closed: { scale: 0.96, opacity: 0 },
+    closed: { scale: 0, opacity: 0 },
   },
 
   'small-slide-y': {
@@ -132,10 +135,3 @@ export const animationVariants = {
 } satisfies Record<string, Variants>;
 
 export type TabAnimationVariant = keyof typeof animationVariants;
-
-/** опционально, если хочешь единые transition рядом */
-export const animationTransitions = {
-  in: { duration: 0.18, ease: 'easeOut' },
-  out: { duration: 0.12, ease: 'easeIn' },
-  soft: { duration: 0.22, ease: 'easeOut' },
-} satisfies Record<string, Transition>;

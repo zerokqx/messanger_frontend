@@ -5,10 +5,10 @@
 {
   env.GREET = "Yobble";
   packages = with pkgs; [
+    firefox
     git
     eslint
     bun
-    playwright-driver.browsers
   ];
 
   scripts = {

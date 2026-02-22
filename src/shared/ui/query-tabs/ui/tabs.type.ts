@@ -43,6 +43,7 @@ interface BridgeProps {
 export interface TabsComponent {
   (props: TabsProps): ReactNode;
   Tab: (props: TabProps) => ReactNode;
+  TabKeepMounted: (props: TabProps) => ReactNode;
   UseApi: (props: TabsUseApiProps) => ReactNode;
   Hide: (props: VisibilityBaseProps) => ReactNode;
   Show: (props: VisibilityBaseProps) => ReactNode;

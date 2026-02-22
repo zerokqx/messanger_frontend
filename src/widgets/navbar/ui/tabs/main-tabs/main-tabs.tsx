@@ -28,7 +28,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
   const { data: profile } = useMe();
 
   return (
-    <Tabs animationVariant="blur-slide-x">
+    <Tabs animationVariant="stack">
       <Tabs.Bridge saveTo={bottomApiTabs} />
       <Stack h="inherit">
         <Stack m="xs">
@@ -65,7 +65,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
         </Stack>
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          <Tabs.Tab value="search">
+          <Tabs.TabKeepMounted value="search">
             <Suspense fallback={<SearchSkeleton />}>
               <Stack gap={'xs'}>
                 <SearchHistoryList
@@ -76,7 +76,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 <SearchResultList />
               </Stack>
             </Suspense>
-          </Tabs.Tab>
+          </Tabs.TabKeepMounted>
           <Tabs.Tab value="main">Chats</Tabs.Tab>
           <Tabs.Tab value="contacts">
             <Suspense>

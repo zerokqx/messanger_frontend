@@ -6,5 +6,4 @@ export {
   ProfileForCurrentUser,
   ProfileForGetUserById,
   SkeletonProfile,
-  DisplayPermissionSettings,
 } from './ui';

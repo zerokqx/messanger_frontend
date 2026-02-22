@@ -1,19 +1,17 @@
-// WARN features use
 import { useProfilePut } from '@/features/profile-put';
 import { usePlurarDates } from '@/shared/lib/hooks/use-date';
 import { useAppForm } from '@/shared/ui/form/ui/form-v2/form-v2';
 import { useQueryClient } from '@tanstack/react-query';
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createPermissions } from '../lib/create-permissions';
-import Logger from '@/shared/lib/logger/logger';
 import { normilizePermissions } from '../lib/normilize-permissions';
-import { useMe } from '../model/me.query';
 import type { components } from '@/shared/types/v1';
+import { Check, Save } from 'lucide-react';
 
 type Permissions = components['schemas']['ProfileData'];
 
-const DisplayPermissionSettingsContent = memo(
+export const ProfilePermissions = memo(
   ({ permissions }: { permissions: Permissions }) => {
     const { t } = useTranslation([
       'permisions',
@@ -23,8 +21,8 @@ const DisplayPermissionSettingsContent = memo(
     const hoursPlurar = usePlurarDates((s) => s.hours);
     const daysPlurar = usePlurarDates((s) => s.days);
     const queryClient = useQueryClient();
-    const { mutate } = useProfilePut();
 
+    const { mutate, isPending, isSuccess } = useProfilePut();
     const form = useAppForm({
       defaultValues: createPermissions(permissions.profile_permissions),
       onSubmit: ({ value }) => {
@@ -65,18 +63,23 @@ const DisplayPermissionSettingsContent = memo(
       return { everyoneContactsNobody, hours, days };
     }, [t, hoursPlurar, daysPlurar]);
 
-    Logger.debug(
-      'DisplayPermissionSettings',
-      'permission',
-      permissions.profile_permissions
-    );
-
+    const [isSuccessButton, setIsSuccessButton] = useState(false);
+    useEffect(() => {
+      if (isSuccess) {
+        setIsSuccessButton(true);
+        const timeout = setTimeout(() => {
+          setIsSuccessButton(false);
+        }, 1000);
+        return () => {
+          clearTimeout(timeout);
+        };
+      }
+    }, [isSuccess]);
+    console.log(isSuccessButton);
     return (
       <form.AppForm>
         <form.Form>
           <form.Vertical>
-            <form.Title text={t('permisions:title')} />
-
             <form.AppField name="is_searchable">
               {(field) => (
                 <field.Checkbox label={t('permisions:is_searchable')} />
@@ -125,18 +128,14 @@ const DisplayPermissionSettingsContent = memo(
 
             <form.AppField name="allow_server_chats">
               {(field) => (
-                <field.Checkbox
-                  label={t('permisions:allow_server_chats')}
-                />
+                <field.Checkbox label={t('permisions:allow_server_chats')} />
               )}
             </form.AppField>
 
             <form.AppField name="force_auto_delete_messages_in_private">
               {(field) => (
                 <field.Checkbox
-                  label={t(
-                    'permisions:force_auto_delete_messages_in_private'
-                  )}
+                  label={t('permisions:force_auto_delete_messages_in_private')}
                 />
               )}
             </form.AppField>
@@ -201,7 +200,13 @@ const DisplayPermissionSettingsContent = memo(
                 />
               )}
             </form.AppField>
-            <form.DirtyButton type="submit">
+            <form.DirtyButton
+              loading={isPending}
+              leftSection={isSuccessButton ? <Check /> : <Save />}
+              color={isSuccessButton ? 'green' : undefined}
+              variant="subtle"
+              type="submit"
+            >
               {t('button-labels:save')}
             </form.DirtyButton>
           </form.Vertical>
@@ -210,13 +215,3 @@ const DisplayPermissionSettingsContent = memo(
     );
   }
 );
-
-export const DisplayPermissionSettings = () => {
-  const { data: permissions } = useMe();
-
-  if (!permissions) {
-    return null;
-  }
-
-  return <DisplayPermissionSettingsContent permissions={permissions} />;
-};

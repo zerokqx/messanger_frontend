@@ -20,6 +20,10 @@ import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
 import { MotionStagerList } from '@/shared/ui/motion-stager-list/index.ts';
 import { useLogout } from '@/entities/user/index.ts';
+import { ProfilePermissions } from '@/features/profile-permissions/ui/profile-permissions.tsx';
+import { useMe } from '@/entities/user/model/me.query.ts';
+import { useLogger } from '@mantine/hooks';
+import { PrivacySettingsSkeleton } from '@/features/profile-permissions/ui/profile-permissions-skeleton.tsx';
 
 const RootTabsTitle = () => {
   const [t] = useTranslation('navbar');
@@ -37,6 +41,7 @@ const RootTabsTitle = () => {
 export const RootTabs = ({ children }: RootTabsProps) => {
   const { colorScheme } = useMantineColorScheme();
   const [t] = useTranslation(['navbar', 'button-labels']);
+  const { data } = useMe();
   const logout = useLogout();
 
   return (
@@ -90,6 +95,14 @@ export const RootTabs = ({ children }: RootTabsProps) => {
           <Suspense fallback={<InterfaceEditSkeleton />}>
             <InterfaceEditTab />
           </Suspense>
+        </Tabs.Tab>
+
+        <Tabs.Tab value="settings/permissions">
+          {data?.profile_permissions && (
+            <Suspense fallback={<PrivacySettingsSkeleton />}>
+              <ProfilePermissions permissions={data} />
+            </Suspense>
+          )}
         </Tabs.Tab>
         <Tabs.Tab value="settings">
           <Stack>
