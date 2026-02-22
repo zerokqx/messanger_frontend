@@ -1,6 +1,5 @@
 import type { components } from '@/shared/types/v1';
 import { forEach, toNumber } from 'lodash';
-import { keyof } from 'zod';
 import { ProfilePermissions } from '../ui/profile-permissions';
 
 export type ProfilePermissions =

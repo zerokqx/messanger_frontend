@@ -75,7 +75,6 @@ export const ProfilePermissions = memo(
         };
       }
     }, [isSuccess]);
-    console.log(isSuccessButton);
     return (
       <form.AppForm>
         <form.Form>
