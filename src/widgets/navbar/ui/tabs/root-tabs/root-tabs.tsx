@@ -1,7 +1,6 @@
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import {
   ActionIcon,
-  Box,
   Button,
   Group,
   Skeleton,
@@ -11,19 +10,47 @@ import {
 } from '@mantine/core';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft, Home, LogOut } from 'lucide-react';
-import { InterfaceEditTab } from '@/features/settings-interface/ui/edit';
 import { InterfaceEditSkeleton } from '@/features/settings-interface';
-import { SessionsTab } from '@/features/session/ui/session-manager';
 import { useTranslation } from 'react-i18next';
 import { SessionListSkeleton } from '@/features/session';
 import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
-import { MotionStagerList } from '@/shared/ui/motion-stager-list/index.ts';
 import { useLogout } from '@/entities/user/index.ts';
-import { ProfilePermissions } from '@/features/profile-permissions/ui/profile-permissions.tsx';
 import { useMe } from '@/entities/user/model/me.query.ts';
-import { useLogger } from '@mantine/hooks';
 import { PrivacySettingsSkeleton } from '@/features/profile-permissions/ui/profile-permissions-skeleton.tsx';
+import { SkeletonsCardList } from '@/shared/ui/skeletons/index.ts';
+
+const MotionStagerList = lazy(() =>
+  import('@/shared/ui/motion-stager-list').then((m) => ({
+    default: m.MotionStagerList,
+  }))
+);
+
+const StagerItem = lazy(() =>
+  import('@/shared/ui/motion-stager-list').then((m) => ({
+    default: m.StagerItem,
+  }))
+);
+
+const SessionsTab = lazy(() =>
+  import('@/features/session/ui/session-manager').then((module) => ({
+    default: module.SessionsTab,
+  }))
+);
+
+const InterfaceEditTab = lazy(() =>
+  import('@/features/settings-interface/ui/edit').then((module) => ({
+    default: module.InterfaceEditTab,
+  }))
+);
+
+const ProfilePermissions = lazy(() =>
+  import('@/features/profile-permissions/ui/profile-permissions.tsx').then(
+    (module) => ({
+      default: module.ProfilePermissions,
+    })
+  )
+);
 
 const RootTabsTitle = () => {
   const [t] = useTranslation('navbar');
@@ -108,44 +135,46 @@ export const RootTabs = ({ children }: RootTabsProps) => {
           <Stack>
             <Tabs.UseApi
               children={({ actions }) => (
-                <MotionStagerList
-                  variants={{
-                    item: {
-                      hidden: { scaleY: 0.5 },
-                      visible: {
-                        scaleY: 1,
+                <Suspense fallback={<SkeletonsCardList size={4} h={30} />}>
+                  <MotionStagerList
+                    variants={{
+                      item: {
+                        hidden: { scaleY: 0.5 },
+                        visible: {
+                          scaleY: 1,
+                        },
                       },
-                    },
-                  }}
-                >
-                  {rootTabs.map(({ value, leftSection }) => (
-                    <MotionStagerList.StagerItem key={value}>
-                      <Button
-                        onClick={() => {
-                          actions.push(value);
-                        }}
-                        leftSection={leftSection}
-                        m={'0 auto'}
-                        fullWidth
-                        variant="light"
-                        justify="start"
-                      >
-                        {t(value)}
-                      </Button>
-                    </MotionStagerList.StagerItem>
-                  ))}
-                  <Button
-                    onClick={() => {
-                      void logout();
                     }}
-                    color="red"
-                    leftSection={<LogOut />}
-                    variant="subtle"
-                    justify="start"
                   >
-                    Выйти
-                  </Button>
-                </MotionStagerList>
+                    {rootTabs.map(({ value, leftSection }) => (
+                      <StagerItem key={value}>
+                        <Button
+                          onClick={() => {
+                            actions.push(value);
+                          }}
+                          leftSection={leftSection}
+                          m={'0 auto'}
+                          fullWidth
+                          variant="light"
+                          justify="start"
+                        >
+                          {t(value)}
+                        </Button>
+                      </StagerItem>
+                    ))}
+                    <Button
+                      onClick={() => {
+                        void logout();
+                      }}
+                      color="red"
+                      leftSection={<LogOut />}
+                      variant="subtle"
+                      justify="start"
+                    >
+                      Выйти
+                    </Button>
+                  </MotionStagerList>
+                </Suspense>
               )}
             />
           </Stack>

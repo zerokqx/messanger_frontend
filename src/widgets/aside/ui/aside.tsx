@@ -1,8 +1,15 @@
-import { AppShellAside, Box, CloseButton, Group, Stack } from '@mantine/core';
-import { lazy, Suspense, useEffect } from 'react';
+import {
+  AppShellAside,
+  Box,
+  CloseButton,
+  Group,
+  Loader,
+  Stack,
+} from '@mantine/core';
+import { lazy, Suspense } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
-import { ContactControllPanel } from '@/features/contact';
+import { ContactControllPanel, ContactMenu } from '@/features/contact';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -13,19 +20,13 @@ const ProfileForGetUserById = lazy(() =>
 interface CustomAsideProps {
   onClose: () => void;
 }
+
 export const Aside = ({ onClose }: CustomAsideProps) => {
-  const uuid = useGetUuidFromRouter();
-
-  const { setId, data, isFetching, abortPrevious, invalidateUser } =
-    useGetUserById();
-
-  useEffect(() => {
-    if (!uuid) return;
-    void abortPrevious();
-    setId(uuid);
-  }, [abortPrevious, setId, uuid]);
-
-  const fallback = <SkeletonProfile />;
+  const _uuid = useGetUuidFromRouter();
+  const uuid = _uuid ?? '';
+  const { data, isFetching, invalidateUser } = useGetUserById({
+    id: uuid,
+  });
 
   return (
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
@@ -34,10 +35,12 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
           <Group justify="space-between">
             <Box>
               <CloseButton onClick={onClose} />
+              <ContactMenu userId={uuid} onUpdate={invalidateUser} />
             </Box>
+            {isFetching && <Loader size={16} />}
           </Group>
-          <Suspense fallback={fallback}>
-            {data ? (
+          <Suspense fallback={<SkeletonProfile />}>
+            {data && (
               <>
                 <Stack>
                   <ProfileForGetUserById profile={data} />
@@ -52,8 +55,6 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
                   <Group justify="start"></Group>
                 </Stack>
               </>
-            ) : (
-              isFetching && fallback
             )}
           </Suspense>
         </>

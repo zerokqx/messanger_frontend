@@ -15,7 +15,10 @@ export const UserAgent: SessionComponent['UserAgent'] = () => {
   const os = ua.os.name ?? '';
 
   return (
+    
+  
     <Text
+    
       opacity={0.7}
     >{`${device} ${os} ${browser}${browserVersion && '-'}${browserVersion}`}</Text>
   );

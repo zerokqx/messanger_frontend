@@ -1,5 +1,5 @@
 import { Stack, type StackProps } from '@mantine/core';
-import type { HTMLMotionProps, MotionProps, Variants } from 'motion/react';
+import type { HTMLMotionProps, Variants } from 'motion/react';
 import * as m from 'motion/react-m';
 import { type ReactNode } from 'react';
 

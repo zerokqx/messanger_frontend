@@ -6,7 +6,6 @@ export const useGetUuidFromRouter = (): string | undefined => {
     select: (params) => {
       if (
         typeof params === 'object' &&
-        params !== null &&
         'uuid' in params &&
         typeof (params as { uuid?: unknown }).uuid === 'string'
       ) {

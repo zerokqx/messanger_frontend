@@ -1,15 +1,13 @@
-import { ActionIcon, Box, Button, Group, Stack } from '@mantine/core';
+import { ActionIcon, Box, Group, Stack } from '@mantine/core';
 import { SearchInput, SearchResultList } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
-import { ContactsList } from '@/features/contact';
-
 import * as m from 'motion/react-m';
 import { useMe } from '@/entities/user/model/me.query';
-import { ProfileForCurrentUser, SkeletonProfile } from '@/entities/user';
+import { SkeletonProfile } from '@/entities/user';
 import { TabsMenu } from '@/widgets/tabs-menu';
 import type { MainTabsProps } from './types.ts';
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { SearchSkeleton } from '@/features/search/ui/search-result-skeleton.tsx';
 import {
   historySearchActions,
@@ -17,11 +15,30 @@ import {
 } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
-import { ArrowLeft, Edit } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import {
   EditProfileSkeleton,
-  ProfileEditForm,
 } from '@/features/edit-profile/index.ts';
+import { SkeletonContactItem } from '@/entities/contact';
+
+
+const ContactsList = lazy(() =>
+  import('@/features/contact').then((module) => ({
+    default: module.ContactsList,
+  }))
+);
+
+const ProfileEditForm = lazy(() =>
+  import('@/features/edit-profile/index.ts').then((module) => ({
+    default: module.ProfileEditForm,
+  }))
+);
+
+const ProfileForCurrentUser = lazy(() =>
+  import('@/entities/user').then((module) => ({
+    default: module.ProfileForCurrentUser,
+  }))
+);
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const bottomApiTabs = Tabs.useBridgeRef();
@@ -65,7 +82,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
         </Stack>
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          <Tabs.TabKeepMounted value="search">
+          <Tabs.Tab value="search">
             <Suspense fallback={<SearchSkeleton />}>
               <Stack gap={'xs'}>
                 <SearchHistoryList
@@ -76,10 +93,10 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 <SearchResultList />
               </Stack>
             </Suspense>
-          </Tabs.TabKeepMounted>
+          </Tabs.Tab>
           <Tabs.Tab value="main">Chats</Tabs.Tab>
           <Tabs.Tab value="contacts">
-            <Suspense>
+            <Suspense fallback={<SkeletonContactItem size={60} />}>
               <ContactsList />
             </Suspense>
           </Tabs.Tab>

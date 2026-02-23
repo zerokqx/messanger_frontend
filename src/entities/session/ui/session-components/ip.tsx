@@ -6,6 +6,7 @@ export const Ip: SessionComponent['Ip'] = ({ textProps }) => {
   const session = useSessionContext();
   return (
     <Text  {...textProps}>
+
       Ip: {session.ip_address}
     </Text>
   );

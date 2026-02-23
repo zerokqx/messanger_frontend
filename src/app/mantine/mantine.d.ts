@@ -1,10 +1,8 @@
 import '@mantine/core';
+import type { DefaultMantineColor, MantineColorsTuple } from '@mantine/core';
+type CustomColors = 'vdarkGray' | DefaultMantineColor;
 declare module '@mantine/core' {
-  export interface MantineThemeOther {
-    borders: {
-      darkXs: string;
-      darkSm: string;
-      darkMd: string;
-    };
+  export interface MantineThemeColorsOverride {
+    colors: Record<CustomColors, MantineColorsTuple>;
   }
 }

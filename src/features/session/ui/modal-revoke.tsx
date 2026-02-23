@@ -16,7 +16,6 @@ export const ModalRevoke = ({ opened, onClose, id }: ModalRevokeProps) => {
             <Group grow>
               <Button
                 onClick={() => {
-                  console.log(1);
                   mutateRevoke({
                     params: {
                       path: {
