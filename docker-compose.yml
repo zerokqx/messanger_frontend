@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  yobble-messenger-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: yobble_messenger_frontend
+    env_file:
+      - .env
+    # ports:
+    #   - "80:80"
+    networks:
+      - frp-net
+    restart: unless-stopped
+
+networks:
+  frp-net:
+    external: true

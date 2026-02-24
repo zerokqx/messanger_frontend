@@ -24,6 +24,16 @@ export default defineConfig({
     cssMinify: 'esbuild',
     cssCodeSplit: true,
   },
+  server: {
+    allowedHosts: ['dev.app.yobble.org'],
+    host: true,
+    port: 5173,
+    hmr: {
+      host: 'dev.app.yobble.org',
+      protocol: 'wss',
+      clientPort: 443,
+    },
+  },
   plugins: [
     tanstackRouter({
       target: 'react',
