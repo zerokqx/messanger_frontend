@@ -1,9 +1,5 @@
 import { useMe } from '@/entities/user/model/me.query';
 import { useAppForm } from '@/shared/ui/form/ui/form-v2/form-v2';
-import {
-  Loader,
-  Space,
-} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useEditProfile } from '../api';
 import { useOs } from '@/shared/lib/use-os';
@@ -21,15 +17,14 @@ export const ProfileEditForm = ({
   const { t } = useTranslation(['field-labels', 'button-labels']);
   const osType = useOs();
   const { data } = useMe();
-  console.log(data);
-  const { mutate, isError } = useEditProfile();
-  // const [avatar, setAvatar] = useState<File | null>(null);
+  const { mutate, isPending } = useEditProfile();
   const form = useAppForm({
     defaultValues: {
       bio: data.bio,
     },
 
-    onSubmit(props) { mutate(
+    onSubmit(props) {
+      mutate(
         {
           body: {
             bio: props.value.bio,
@@ -47,60 +42,50 @@ export const ProfileEditForm = ({
   });
 
   return (
-      <UserProfile profile={data}>
-        <form.AppForm>
-          <form.Form>
-            {/* <FileButton> */}
-            {/*   {(props) => <UserProfile.Avatar {...props} />} */}
-            {/* </FileButton> */}
-            <form.Vertical>
-              <form.AppField
-                name="bio"
-                children={(field) => (
-                  <field.TextArea
-                    onKeyDown={(e) => {
-                      if (!osType.isDesktop) return;
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        void form.handleSubmit();
-                      }
-                    }}
-                    rows={4} description={
-                      osType.isDesktop && (
-                        <>
-                          Enter - Отправить <br />
-                          Shift + Enter — Перенос строки
-                        </>
-                      )
+    <UserProfile profile={data}>
+      <form.AppForm>
+        <form.Form>
+          <form.Vertical>
+            <form.AppField
+              name="bio"
+              children={(field) => (
+                <field.TextArea
+                  onKeyDown={(e) => {
+                    if (!osType.isDesktop) return;
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      void form.handleSubmit();
                     }
-                    label={t('field-labels:bio_label')}
-                  />
-                )}
-              />
-              <form.Subscribe
-                selector={(state) => [state.isSubmitted]}
-                children={([isSubmited]) => (
-                  <form.DirtyButton
-                    variant="subtle"
-                    color={isError ? 'red' : 'blue'}
-                    disabled={isSubmited}
-                    type="submit"
-                  >
-                    {isSubmited && (
+                  }}
+                  rows={4}
+                  description={
+                    osType.isDesktop && (
                       <>
-                        <Loader size={16} />
-                        <Space w={'1rem'} />
+                        Enter - Отправить <br />
+                        Shift + Enter — Перенос строки
                       </>
-                    )}
-                    {isError
-                      ? t('button-labels:retray')
-                      : t('button-labels:save')}
-                  </form.DirtyButton>
-                )}
-              />
-            </form.Vertical>
-          </form.Form>
-        </form.AppForm>
-      </UserProfile>
+                    )
+                  }
+                  label={t('field-labels:bio_label')}
+                />
+              )}
+            />
+            <form.Subscribe
+              selector={(state) => [state.isSubmitted]}
+              children={([isSubmited]) => (
+                <form.DirtyButton
+                  variant={isPending ? 'light' : 'subtle'}
+                  loading={isSubmited}
+                  disabled={isSubmited}
+                  type="submit"
+                >
+                  {t('button-labels:save')}
+                </form.DirtyButton>
+              )}
+            />
+          </form.Vertical>
+        </form.Form>
+      </form.AppForm>
+    </UserProfile>
   );
 };

@@ -1,16 +1,14 @@
 import { registerSchema, useRegister } from '@/features/register';
-import { useCloseOpen } from '@/shared/model/use-modal-store/lib/use-close-open';
 import { useAppForm } from '@/shared/ui/form/ui/form-v2/form-v2';
 import { FieldGroutpUserNamePassword } from '@/shared/ui/form/ui/form-v2/groups/user-name-password';
-import { Modal } from '@/shared/ui/modal';
-import { useStore } from '@tanstack/react-form';
+import { Modal, type ModalProps } from '@mantine/core';
 import { ListRestart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-export const RegisterModal = () => {
+
+export const RegisterModal = ({children,...props}: ModalProps) => {
   const { t } = useTranslation(['button-labels', 'field-labels', 'auth']);
   const { mutate } = useRegister();
-  const swapMode = useCloseOpen('register', 'login');
   const form = useAppForm({
     defaultValues: { userName: '', password: '', confirmPassword: '' },
     validators: {
@@ -26,19 +24,17 @@ export const RegisterModal = () => {
           },
         },
         {
-          onSuccess: swapMode,
+          onSuccess: props.onClose,
         }
       );
     },
   });
 
-  const isDirty = useStore(form.store, (s) => s.isDirty);
   return (
-    <Modal keyModal="register">
+    <Modal {...props}>
       <form.AppForm>
         <form.Form>
           <form.Vertical>
-            <form.Title text={t('auth:register')} />
             <FieldGroutpUserNamePassword
               form={form}
               fields={{
@@ -60,19 +56,10 @@ export const RegisterModal = () => {
                 <ListRestart />
               </form.ResetButton>
             </form.Horizontal>
-            <form.Vertical justify="center" w={'100%'}>
-              {!isDirty && (
-                <form.SecondAction
-                  title={t('auth:have_account')}
-                  onClick={swapMode}
-                >
-                  {t('button-labels:enter')}
-                </form.SecondAction>
-              )}
-            </form.Vertical>
           </form.Vertical>
         </form.Form>
       </form.AppForm>
+      {children}
     </Modal>
   );
 };

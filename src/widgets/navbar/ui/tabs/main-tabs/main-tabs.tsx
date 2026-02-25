@@ -9,9 +9,7 @@ import type { MainTabsProps } from './types.ts';
 import { lazy, Suspense } from 'react';
 import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
-import {
-  mainPanel,
-} from '@/widgets/navbar/config/main-tabs.tsx';
+import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
 import { ArrowLeft } from 'lucide-react';
 import { EditProfileSkeleton } from '@/features/edit-profile/index.ts';
 import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
@@ -63,14 +61,15 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 }}
               />
             </Tabs.MutallyExclusive>
-              <SearchInput
-                onCommit={(v) => {
-                  historySearchActions.doPush(v);
-                }}
-                onFocus={() => {
-                  bottomApiTabs.current?.push('search');
-                }}
-              />
+            <SearchInput
+              flex={1}
+              onCommit={(v) => {
+                historySearchActions.doPush(v);
+              }}
+              onFocus={() => {
+                bottomApiTabs.current?.push('search');
+              }}
+            />
           </Group>
           <Tabs.Hide when={['search']}>
             <Panel data={mainPanel} />
@@ -94,16 +93,12 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
             </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="profile/edit">
-            <Suspense fallback={<EditProfileSkeleton />}>
-              <ProfileEditTab
-                onSuccess={() => {
-                  bottomApiTabs.current?.back();
-                }}
-              />
+            <Suspense fallback={<SkeletonLayout />}>
+              <ProfileEditTab />
             </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="profile">
-            <Suspense fallback={<SkeletonProfile />}>
+            <Suspense fallback={<SkeletonLayout />}>
               <ProfileTab
                 onEdit={() => {
                   bottomApiTabs.current?.push('profile/edit');

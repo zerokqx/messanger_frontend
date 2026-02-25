@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 import { routeTree } from './route-tree.gen';
 import { Wrapper } from './wrapper';
 
+
 export const router = createRouter({
   routeTree,
   defaultPreload: 'viewport',

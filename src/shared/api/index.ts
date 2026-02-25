@@ -1,4 +1,13 @@
-export * from './clients/';
-export * from './storages/';
-export * from './query-clinets.ts';
 export * from './lib/';
+export {$api} from "./repository/$api.ts"
+import { QueryClient } from "@tanstack/react-query";
+
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24,
+    },
+  },
+});
+

@@ -8,7 +8,5 @@ export const Route = createFileRoute('/_auth/auth')({
       redirect: z.string().catch('/y'),
     })
   ),
-  notFoundComponent: () => <p>NOO</p>,
-
   component: lazyRouteComponent(() => import('@/pages/auth'), 'AuhtPage'),
 });
