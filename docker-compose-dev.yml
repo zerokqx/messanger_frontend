@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  yobble-messenger-frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: yobble_messenger_frontend_dev
+    # ports:
+    #   - "5173:5173"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    env_file:
+      - .env
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "100"
+    networks:
+      - frp-net
+    command: sh -c "npm install && npm run dev"
+    restart: unless-stopped
+
+volumes:
+  node_modules:
+
+networks:
+  frp-net:
+    external: true
