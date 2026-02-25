@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@colorfy-software/zfy": "^1.0.0",
+    "@fluentui/react-context-selector": "^9.2.15",
     "@mantine/core": "^8.3.2",
     "@mantine/hooks": "^8.3.2",
     "@mantine/modals": "^8.3.13",

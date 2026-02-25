@@ -9,6 +9,16 @@ import { devtools } from '@tanstack/devtools-vite';
 const APP = './src/app';
 
 export default defineConfig({
+ server: {
+    watch: {
+      ignored: [
+        '**/.devenv/**',
+        '**/.direnv/**',
+        '**/node_modules/**',
+        '**/.git/**',
+      ],
+    },
+  },
   build: {
     copyPublicDir: true,
     sourcemap: false,
@@ -17,6 +27,10 @@ export default defineConfig({
     cssCodeSplit: true,
   },
 
+  preview:{
+    host:'0.0.0.0',
+    port:5173,
+  },
   test: {
     globals: true,
     ui: true,

@@ -1,11 +1,19 @@
-export { TabManagerProvider } from './history-context.tsx';
+export { TabManagerProvider } from './history-provider.tsx';
 export { useTabs } from './use-tabs.ts';
 export { useTabsApi } from './use-tabs-api.ts';
+export {
+  useTabsSelector,
+  useTabsDispatch,
+  useCurrentTab,
+  useTabHistory,
+  useTabActions,
+} from './tabs-selector-hooks.ts';
 export type {
-  TabsContext,
+  TabsState,
   TabsReducer,
   TabsReducerAction,
-} from './history-context.tsx';
+} from './history-provider.tsx';
+export type { TabsState as TabsContext } from './history-provider.tsx';
 export {
   useTabsAnimationVariant,
   TabsAnimationVariantProvider,

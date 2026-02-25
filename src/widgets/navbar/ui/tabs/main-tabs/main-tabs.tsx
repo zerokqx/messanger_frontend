@@ -1,49 +1,47 @@
 import { ActionIcon, Box, Group, Stack } from '@mantine/core';
-import { SearchInput, SearchResultList } from '@/features/search';
+import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
 import * as m from 'motion/react-m';
-import { useMe } from '@/entities/user/model/me.query';
 import { SkeletonProfile } from '@/entities/user';
 import { TabsMenu } from '@/widgets/tabs-menu';
 import type { MainTabsProps } from './types.ts';
 import { lazy, Suspense } from 'react';
-import { SearchSkeleton } from '@/features/search/ui/search-result-skeleton.tsx';
-import {
-  historySearchActions,
-  SearchHistoryList,
-} from '@/features/search-history/index.ts';
+import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
-import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
-import { ArrowLeft } from 'lucide-react';
 import {
-  EditProfileSkeleton,
-} from '@/features/edit-profile/index.ts';
-import { SkeletonContactItem } from '@/entities/contact';
+  mainPanel,
+} from '@/widgets/navbar/config/main-tabs.tsx';
+import { ArrowLeft } from 'lucide-react';
+import { EditProfileSkeleton } from '@/features/edit-profile/index.ts';
+import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 
-
-const ContactsList = lazy(() =>
-  import('@/features/contact').then((module) => ({
-    default: module.ContactsList,
+const SearchTab = lazy(() =>
+  import('./ui/search-tab.tsx').then((module) => ({
+    default: module.SearchTabContent,
   }))
 );
 
-const ProfileEditForm = lazy(() =>
-  import('@/features/edit-profile/index.ts').then((module) => ({
-    default: module.ProfileEditForm,
+export const ContactsTab = lazy(() =>
+  import('./ui/contacts-tab.tsx').then((module) => ({
+    default: module.ContactsTabContent,
   }))
 );
 
-const ProfileForCurrentUser = lazy(() =>
-  import('@/entities/user').then((module) => ({
-    default: module.ProfileForCurrentUser,
+const ProfileEditTab = lazy(() =>
+  import('./ui/profile-edit-tab.tsx').then((module) => ({
+    default: module.ProfileEditTabContent,
+  }))
+);
+
+const ProfileTab = lazy(() =>
+  import('./ui/profile-tab.tsx').then((module) => ({
+    default: module.ProfileTabContent,
   }))
 );
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const bottomApiTabs = Tabs.useBridgeRef();
-  const { data: profile } = useMe();
-
   return (
     <Tabs animationVariant="stack">
       <Tabs.Bridge saveTo={bottomApiTabs} />
@@ -65,7 +63,6 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 }}
               />
             </Tabs.MutallyExclusive>
-            <m.div layout="size" style={{ flex: 1 }}>
               <SearchInput
                 onCommit={(v) => {
                   historySearchActions.doPush(v);
@@ -74,7 +71,6 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                   bottomApiTabs.current?.push('search');
                 }}
               />
-            </m.div>
           </Group>
           <Tabs.Hide when={['search']}>
             <Panel data={mainPanel} />
@@ -83,26 +79,23 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
           <Tabs.Tab value="search">
-            <Suspense fallback={<SearchSkeleton />}>
-              <Stack gap={'xs'}>
-                <SearchHistoryList
-                  onClickItem={(v) => {
-                    useSearchUserQuery.setState({ data: v });
-                  }}
-                />
-                <SearchResultList />
-              </Stack>
+            <Suspense fallback={<SkeletonLayout />}>
+              <SearchTab
+                onClickHistoryItem={(value) => {
+                  useSearchUserQuery.setState({ data: value });
+                }}
+              />
             </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="main">Chats</Tabs.Tab>
           <Tabs.Tab value="contacts">
-            <Suspense fallback={<SkeletonContactItem size={60} />}>
-              <ContactsList />
+            <Suspense fallback={<SkeletonLayout />}>
+              <ContactsTab />
             </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="profile/edit">
             <Suspense fallback={<EditProfileSkeleton />}>
-              <ProfileEditForm
+              <ProfileEditTab
                 onSuccess={() => {
                   bottomApiTabs.current?.back();
                 }}
@@ -111,17 +104,11 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="profile">
             <Suspense fallback={<SkeletonProfile />}>
-              {profile ? (
-                <ProfileForCurrentUser
-                  withEdit
-                  onEdit={() => {
-                    bottomApiTabs.current?.push('profile/edit');
-                  }}
-                  profile={profile}
-                />
-              ) : (
-                <SkeletonProfile />
-              )}
+              <ProfileTab
+                onEdit={() => {
+                  bottomApiTabs.current?.push('profile/edit');
+                }}
+              />
             </Suspense>
           </Tabs.Tab>
         </Box>

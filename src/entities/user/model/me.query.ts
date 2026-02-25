@@ -40,7 +40,7 @@ export const useUserQuery = () => {
  * fetchMe(loader) => useMe(components)
  */
 export const useMe = () => {
-  return $api.jwtProfile.query.useQuery(
+  return $api.jwtProfile.query.useSuspenseQuery(
     'get',
     '/me',
     {},

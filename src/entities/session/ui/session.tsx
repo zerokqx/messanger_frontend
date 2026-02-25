@@ -4,7 +4,7 @@ import { Ip } from './session-components/ip';
 import { Trusted } from './session-components/trusted';
 import { CreatedAt } from './session-components/created-at';
 import { LastRefresh } from './session-components/last-refresh';
-import { Grid } from '@mantine/core';
+import { Grid, useMantineColorScheme } from '@mantine/core';
 import { Body } from './session-components/body';
 import { Footer } from './session-components/footer';
 import { CurrentBadge } from './session-components/current-session-badge';
@@ -18,7 +18,9 @@ import * as m from 'motion/react-m';
  * @see useSessionContext
  */
 export const Session: SessionComponent = ({ session, children, gridProps }) => {
+  const {colorScheme} = useMantineColorScheme()
   return (
+
     <Grid
       renderRoot={(props) => (
         <m.div
@@ -28,6 +30,7 @@ export const Session: SessionComponent = ({ session, children, gridProps }) => {
         />
       )}
       bdrs={'xl'}
+      bg={colorScheme ==='dark' ? 'dark':'gray.1'}
       p={'xs'}
       bd={'1px solid gray'}
       {...gridProps}

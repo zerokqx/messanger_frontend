@@ -1,1 +1,1 @@
-export {SkeletonsCardList} from "./card-list"
+export {SkeletonsCardList,SkeletonLayout} from "./card-list"

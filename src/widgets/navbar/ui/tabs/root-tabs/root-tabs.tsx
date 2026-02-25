@@ -18,7 +18,7 @@ import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
 import { useLogout } from '@/entities/user/index.ts';
 import { useMe } from '@/entities/user/model/me.query.ts';
 import { PrivacySettingsSkeleton } from '@/features/profile-permissions/ui/profile-permissions-skeleton.tsx';
-import { SkeletonsCardList } from '@/shared/ui/skeletons/index.ts';
+import { SkeletonLayout, SkeletonsCardList } from '@/shared/ui/skeletons/index.ts';
 
 const MotionStagerList = lazy(() =>
   import('@/shared/ui/motion-stager-list').then((m) => ({
@@ -125,17 +125,15 @@ export const RootTabs = ({ children }: RootTabsProps) => {
         </Tabs.Tab>
 
         <Tabs.Tab value="settings/permissions">
-          {data?.profile_permissions && (
-            <Suspense fallback={<PrivacySettingsSkeleton />}>
+            <Suspense fallback={<SkeletonLayout/>}>
               <ProfilePermissions permissions={data} />
             </Suspense>
-          )}
         </Tabs.Tab>
         <Tabs.Tab value="settings">
           <Stack>
             <Tabs.UseApi
               children={({ actions }) => (
-                <Suspense fallback={<SkeletonsCardList size={4} h={30} />}>
+                <Suspense fallback={<SkeletonsCardList size={4} h={40} />}>
                   <MotionStagerList
                     variants={{
                       item: {

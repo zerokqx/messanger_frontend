@@ -1,20 +1,13 @@
 import { useMe } from '@/entities/user/model/me.query';
 import { useAppForm } from '@/shared/ui/form/ui/form-v2/form-v2';
 import {
-  FileButton,
-  Group,
-  Kbd,
   Loader,
   Space,
-  Stack,
-  Text,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useEditProfile } from '../api';
 import { useOs } from '@/shared/lib/use-os';
 import { UserProfile } from '@/entities/user/ui';
-import { User } from 'lucide-react';
-import { useState } from 'react';
 
 interface ProfileEditFormProps {
   onSuccess?: () => void;
@@ -33,11 +26,10 @@ export const ProfileEditForm = ({
   // const [avatar, setAvatar] = useState<File | null>(null);
   const form = useAppForm({
     defaultValues: {
-      bio: data?.bio,
+      bio: data.bio,
     },
 
-    onSubmit(props) {
-      mutate(
+    onSubmit(props) { mutate(
         {
           body: {
             bio: props.value.bio,
@@ -55,7 +47,6 @@ export const ProfileEditForm = ({
   });
 
   return (
-    data && (
       <UserProfile profile={data}>
         <form.AppForm>
           <form.Form>
@@ -74,8 +65,7 @@ export const ProfileEditForm = ({
                         void form.handleSubmit();
                       }
                     }}
-                    rows={4}
-                    description={
+                    rows={4} description={
                       osType.isDesktop && (
                         <>
                           Enter - Отправить <br />
@@ -112,6 +102,5 @@ export const ProfileEditForm = ({
           </form.Form>
         </form.AppForm>
       </UserProfile>
-    )
   );
 };

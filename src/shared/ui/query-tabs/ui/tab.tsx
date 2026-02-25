@@ -1,17 +1,17 @@
 import { AnimatePresence } from 'motion/react';
 import type { TabsComponent } from './tabs.type';
-import { useTabs } from '../model';
 import * as m from 'motion/react-m';
 import { useAnimationResolve } from '../lib';
+import { useCurrentTab } from '../model';
 
 export const Tab: TabsComponent['Tab'] = ({
   children,
   value,
   animationVariant,
 }) => {
-  const [state] = useTabs();
+  const state = useCurrentTab();
   const animation = useAnimationResolve(animationVariant);
-  const isActive = state.current === value;
+  const isActive = state === value;
 
   return (
     <AnimatePresence mode="popLayout">
@@ -38,9 +38,9 @@ export const TabsKeepMounted: TabsComponent['TabKeepMounted'] = ({
   animationVariant,
   children,
 }) => {
-  const [state] = useTabs();
+  const state = useCurrentTab();
   const animation = useAnimationResolve(animationVariant);
-  const isActive = state.current === value;
+  const isActive = state === value;
   return (
     <m.div
       key={value}

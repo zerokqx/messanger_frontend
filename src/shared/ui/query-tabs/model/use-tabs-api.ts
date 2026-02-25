@@ -1,30 +1,11 @@
 import { useMemo } from 'react';
 import type { Actions } from '../ui/tabs.type';
-import { useTabs } from './use-tabs';
-import type { TabsContext } from './history-context';
+import type { TabsState } from './history-provider';
+import { useTabActions, useTabsSelector } from './tabs-selector-hooks';
 
-export const useTabsApi = (): [Actions, TabsContext] => {
-  const [state, dispatch] = useTabs();
-  const actions = useMemo<Actions>(
-    () => ({
-      push: (v) => {
-        dispatch({ type: 'PUSH', value: v });
-      },
-      back: () => {
-        dispatch({ type: 'BACK' });
-      },
-      replace: (v) => {
-        dispatch({ type: 'REPLACE', value: v });
-      },
-      reset: (v) => {
-        dispatch({ type: 'RESET', value: v });
-      },
-      batch: (actions) => {
-        dispatch({ type: 'BATCH', actions });
-      },
-    }),
-    [dispatch]
-  );
+export const useTabsApi = (): [Actions, TabsState] => {
+  const state = useTabsSelector((ctx) => ctx.state);
+  const actions = useTabActions();
 
-  return [actions, state];
+  return useMemo(() => [actions, state] as const, [actions, state]);
 };

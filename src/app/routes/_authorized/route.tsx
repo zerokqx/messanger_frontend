@@ -1,9 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { AppShell, Loader, useMantineTheme } from '@mantine/core';
-import { Suspense, lazy, useRef } from 'react';
+import { Suspense, lazy } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { MotionConfig } from 'motion/react';
-import type { Actions } from '@/shared/ui/query-tabs/ui/tabs.type';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))

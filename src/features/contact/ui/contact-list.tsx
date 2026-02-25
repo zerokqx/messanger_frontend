@@ -9,6 +9,7 @@ import { successNotify } from '@/shared/lib/notifications/success';
 import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
+
 const ContactsContent = lazy(() =>
   import('./contacts-content.tsx').then((m) => ({ default: m.ContactsContent }))
 );
@@ -55,7 +56,7 @@ export const ContactsList = () => {
     <Suspense
       fallback={Array.from({ length: 10 }).map((_, i) => (
         // eslint-disable-next-line react-x/no-array-index-key
-        <Stack mt={'xs'} key={i}>
+        <Stack key={i}>
           <Space />
           <SkeletonContactItem size={60} />
         </Stack>

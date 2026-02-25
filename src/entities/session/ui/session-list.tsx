@@ -26,8 +26,6 @@ export const SessionList = ({ sessions }: SessionListProps) => {
       <Box h={rowVirtualizer.getTotalSize()} pos="relative">
         {map(items, (virtualItem) => {
           const session = sessions[virtualItem.index];
-          if (!session) return null;
-
           return (
             <Box
               key={session.id}

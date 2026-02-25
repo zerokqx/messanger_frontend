@@ -1,6 +1,6 @@
 import { useBridgeRef } from '../lib';
 import { TabsAnimationVariantProvider } from '../model';
-import { TabManagerProvider } from '../model/history-context';
+import { TabManagerProvider } from '../model/history-provider';
 import { TabRepositoryProvider } from '../model/tab-repository';
 import { ConditionalDisplay } from './conditional-display';
 import { Tab, TabsKeepMounted } from './tab';
@@ -18,7 +18,7 @@ export const Tabs: TabsComponent = ({
 }) => {
   return (
     <TabManagerProvider
-      initialState={{
+      initial={{
         history: [initialTab ?? 'main'],
         current: initialTab ?? 'main',
       }}

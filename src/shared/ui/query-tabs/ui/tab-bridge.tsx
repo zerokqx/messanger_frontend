@@ -8,5 +8,6 @@ export const Bridge: TabsComponent['Bridge'] = ({ saveTo }) => {
   useEffect(() => {
     saveTo.current = actions;
   }, [saveTo, actions]);
+
   return null;
 };
