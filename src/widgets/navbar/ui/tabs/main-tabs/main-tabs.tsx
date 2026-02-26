@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, Stack } from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Input, Stack } from '@mantine/core';
 import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
@@ -6,13 +6,14 @@ import * as m from 'motion/react-m';
 import { SkeletonProfile } from '@/entities/user';
 import { TabsMenu } from '@/widgets/tabs-menu';
 import type { MainTabsProps } from './types.ts';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
 import { ArrowLeft } from 'lucide-react';
 import { EditProfileSkeleton } from '@/features/edit-profile/index.ts';
 import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
+import { socket } from '@/shared/api/socket.ts';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -39,6 +40,7 @@ const ProfileTab = lazy(() =>
 );
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
+  const [inp, setInp] = useState('');
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
     <Tabs animationVariant="stack">
@@ -86,7 +88,20 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
               />
             </Suspense>
           </Tabs.Tab>
-          <Tabs.Tab value="main">Chats</Tabs.Tab>
+          <Tabs.Tab value="main">
+            <Input
+              onChange={(v) => {
+                setInp(v.currentTarget.value);
+              }}
+            />
+            <Button
+              onClick={() => {
+                socket.emit('client_message', {data:inp,user_id:"a92e4c8c-d4e4-4d90-acda-253c1e0abe25"});
+              }}
+            >
+              Send
+            </Button>
+          </Tabs.Tab>
           <Tabs.Tab value="contacts">
             <Suspense fallback={<SkeletonLayout />}>
               <ContactsTab />
