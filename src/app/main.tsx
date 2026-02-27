@@ -1,4 +1,5 @@
 import './lucide.css';
+import "./index.css"
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import { createRouter } from '@tanstack/react-router';

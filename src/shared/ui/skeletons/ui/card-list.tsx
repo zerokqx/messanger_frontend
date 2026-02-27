@@ -18,7 +18,8 @@ export const SkeletonsCardList = ({
 }: SkeletonBaseProps<StackProps>) => {
   return (
     <Stack {...containerProps}>
-      {Array.from({ length: size }).map((i) => (
+      {Array.from({ length: size }).map((_,i) => (
+        // eslint-disable-next-line react-x/no-array-index-key
         <Skeleton w="100%" h={50} key={i} {...props} />
       ))}
     </Stack>

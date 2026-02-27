@@ -1,7 +1,6 @@
 import { $api } from '@/shared/api/repository/$api';
 import { errorNotify } from '@/shared/lib/notifications/error';
-import { successNotify } from '@/shared/lib/notifications/success';
-import type { components } from '@/shared/types/v1';
+import { successNotify } from '@/shared/lib/notifications/success'; import type { components } from '@/shared/types/v1';
 import { useTranslation } from 'react-i18next';
 
 export const useEditProfile = (withReset = false) => {
@@ -33,7 +32,7 @@ export const useEditProfile = (withReset = false) => {
       );
       return { prev };
     },
-    onError(error, variables, onMutateResult, context) {
+    onError(_error, _variables, onMutateResult, context) {
       errorNotify(t('profile:put_profile_error'), t('error'));
       if (withReset) {
         context.client.setQueryData(
@@ -46,7 +45,7 @@ export const useEditProfile = (withReset = false) => {
     onSuccess() {
       successNotify(t('profile:put_success'), t('success'));
     },
-    onSettled(data, error, variables, onMutateResult, context) {
+    onSettled(_data, _error, _variables, _onMutateResult, context) {
       void context.client.invalidateQueries(
         $api.jwtProfile.query.queryOptions('get', '/me', {})
       );

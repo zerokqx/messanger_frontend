@@ -51,10 +51,10 @@ export const ContactMenu = ({ user, onUpdate }: ContactMenu) => {
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        {!inContact && !inBlacklist && (
+        {!inContact && (
           <>
             <Menu.Item
-              disabled={!userId}
+              disabled={!userId || inBlacklist }
               leftSection={loader(isPendingContactAdd, <Plus />)}
               onClick={() => {
                 if (!userId) return;

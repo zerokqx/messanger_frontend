@@ -31,7 +31,7 @@ export const routerMock = {
   useSearch: () => ({}),
   useLoaderData: () => ({}),
   // Добавляем Link как компонент-заглушку
-  Link: ({ children, to, ...props }: any) => {
+  Link: ({ children, to }: any) => {
     return {
       type: 'a',
       props: {

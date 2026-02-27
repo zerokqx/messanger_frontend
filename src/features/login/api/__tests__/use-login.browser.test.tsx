@@ -2,6 +2,7 @@ import { renderHook } from 'vitest-browser-react';
 import { useLogin } from '../use-login';
 import { vi, test, expect, describe } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { FC, ReactNode } from 'react';
 const mockNavigate = vi.fn();
 const mockInvalidate = vi.fn();
 const createTestQueryClient = () =>
@@ -22,8 +23,8 @@ vi.mock('@tanstack/react-router', () => ({
 describe('useLogin Тесты', () => {
   test('Коректные данный', async () => {
     const queryClient = createTestQueryClient();
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    const wrapper: FC<{children: ReactNode}> = (props) => (
+      <QueryClientProvider client={queryClient} {...props}/>
     );
     const { result: mutate } = await renderHook(() => useLogin(), { wrapper });
     const {

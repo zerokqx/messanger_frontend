@@ -7,9 +7,13 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { devtools } from '@tanstack/devtools-vite';
 
 const APP = './src/app';
+const PLAYWRIGHT_EXECUTABLE_PATH =
+  process.env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH ??
+  process.env.PLAYWRIGHT_EXECUTABLE_PATH;
 
 export default defineConfig({
- server: {
+  server: {
+    host: '0.0.0.0',
     watch: {
       ignored: [
         '**/.devenv/**',
@@ -27,9 +31,9 @@ export default defineConfig({
     cssCodeSplit: true,
   },
 
-  preview:{
-    host:'0.0.0.0',
-    port:5173,
+  preview: {
+    host: '0.0.0.0',
+    port: 5173,
   },
   test: {
     globals: true,
@@ -48,6 +52,7 @@ export default defineConfig({
         ],
         test: {
           name: 'node',
+
           include: ['src/**/*.test.{ts,tsx}'],
           exclude: ['src/**/*.browser.test.{ts,tsx}'],
         },
@@ -74,9 +79,16 @@ export default defineConfig({
           setupFiles: './vitest.browser.setup.ts',
           browser: {
             enabled: true,
-            headless: true,
-            provider: playwright(),
-            instances: [{ browser: 'firefox' }],
+            provider: playwright(
+              PLAYWRIGHT_EXECUTABLE_PATH
+                ? {
+                    launchOptions: {
+                      executablePath: PLAYWRIGHT_EXECUTABLE_PATH,
+                    },
+                  }
+                : undefined,
+            ),
+            instances: [{ browser: 'chromium' }],
           },
           exclude: [
             ...configDefaults.exclude,

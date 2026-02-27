@@ -9,7 +9,12 @@ export const useLogout = () => {
   return useCallback(async () => {
     tokenAction.doReset();
     userAction.doReset();
-    await router.navigate({ to: '/auth' });
+    await router.navigate({
+      to: '/auth',
+      search: {
+        redirect: '/y',
+      },
+    });
     await router.invalidate();
   }, [router]);
 };

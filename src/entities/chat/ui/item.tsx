@@ -5,7 +5,6 @@ export const Item: ChatConpouned['Item'] = ({ userName, lastMessage }) => {
   return (
     <Group
       p={'xs'}
-      className={hover}
       style={{
         userSelect: 'none',
         cursor: 'pointer',
@@ -14,7 +13,6 @@ export const Item: ChatConpouned['Item'] = ({ userName, lastMessage }) => {
       <Avatar key={userName} color="initials" name={userName} />
       <Stack gap={'xs'}>
         <Text truncate="end">{userName}</Text>
-
         <Text size="xs">{lastMessage}</Text>
       </Stack>
     </Group>

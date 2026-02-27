@@ -6,7 +6,6 @@ import { RatingSkeleton } from './profile/lazy/rating';
 import { UserProfile } from './profile';
 import { useTranslation } from 'react-i18next';
 import { Edit } from 'lucide-react';
-import { SkeletonLayout } from '@/shared/ui/skeletons';
 
 interface ProfileForCurrentUserBaseProps {
   profile: components['schemas']['ProfileData'];

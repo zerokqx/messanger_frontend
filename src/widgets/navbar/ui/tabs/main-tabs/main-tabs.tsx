@@ -35,9 +35,7 @@ const ProfileTab = lazy(() =>
     default: module.ProfileTabContent,
   }))
 );
-
-export const MainTabs = ({ controller }: MainTabsProps) => {
-  const [inp, setInp] = useState('');
+export const MainTabs = ({ controller }: MainTabsProps) => { const [inp, setInp] = useState('');
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
     <Tabs animationVariant="stack">
@@ -107,7 +105,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="profile/edit">
             <Suspense fallback={<SkeletonLayout />}>
-              <ProfileEditTab />
+              <ProfileEditTab  />
             </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="profile">

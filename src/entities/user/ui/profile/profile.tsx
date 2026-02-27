@@ -2,7 +2,13 @@ import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 import { IconButton } from '@/shared/ui/buttons';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import type { components } from '@/shared/types/v1';
-import { Avatar as MantineAvatar, Stack, Text, ThemeIcon } from '@mantine/core';
+import {
+  Group,
+  Avatar as MantineAvatar,
+  Stack,
+  Text,
+  ThemeIcon,
+} from '@mantine/core';
 import { get } from 'lodash';
 import { BadgeCheck } from 'lucide-react';
 import { lazy, Suspense, createContext, use, useMemo } from 'react';
@@ -27,7 +33,7 @@ const LazyBioFlake = lazy(() =>
 );
 
 const ProfileContext = createContext<
-  | (Record<string, unknown> & {
+  | (Partial<components['schemas']['ProfileByUserIdData']> & {
       formatName: ReturnType<FormatLoginViaCutomNameFn>;
     })
   | null
@@ -41,7 +47,7 @@ const useProfileContext = () => {
 const UserProfileBase = ({ profile, children }: UserProfileProps) => {
   const formatName = useMemo(() => {
     const customName = get(profile, 'custom_name') as string | undefined;
-    const login = get(profile, 'login') as string | undefined;
+    const login = get(profile, 'login') as string | undefined
     const formatName = formatLogin(login, customName);
     return formatName;
   }, [profile.login, profile.custom_name]);
@@ -89,7 +95,7 @@ const Bio = () => {
 const CreatedAt = () => {
   const copy = useNotifyClipboard();
   const context = useProfileContext();
-  const createdAt = get(context, 'created_at') as string | undefined;
+  const createdAt = get(context, 'created_at') 
   const [t] = useTranslation('profile');
   const data = useMemo<string>(() => {
     return (
@@ -118,12 +124,13 @@ const CreatedAt = () => {
 
 const Login = () => {
   const context = useProfileContext();
-  const login = get(context, 'login') as string | undefined;
+
   const [t] = useTranslation('profile');
   const copy = useNotifyClipboard();
+  const login = context.login;
+  const rel = context.relationship;
 
-  if (!login) return null;
-
+  if (!login ) return null;
   return (
     <IconButton
       onMouseUp={() => {
@@ -131,7 +138,12 @@ const Login = () => {
       }}
     >
       <LabelBox>
-        <Text>{context.formatName.format}</Text>
+        <Group>
+          <Text>{context.formatName.format}</Text>
+          { rel && rel.is_target_user_blocked_by_current_user && (
+            <Text c={'vdarkGray'}>Заблокирован</Text>
+          )}
+        </Group>
         <Label>{t('login')}</Label>
       </LabelBox>
     </IconButton>
@@ -140,9 +152,7 @@ const Login = () => {
 
 const Rating = () => {
   const context = useProfileContext();
-  const rating = get(context, 'rating') as
-    | components['schemas']['RatingData']
-    | undefined;
+  const rating = get(context, 'rating');
 
   if (!rating?.rating) return null;
   return (

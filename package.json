@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "vite",
     "build": "tsc -b && vite build",
     "test:ts": "tsc --noEmit",
     "test:node": "vitest --project node",
-    "test:browser": "vitest --project browser",
+    "test:browser": "vitest --project browser --config ./vite.config.ts",
     "lint": "eslint .",
     "preview": "vite build && vite preview --port 5173",
     "openapi:generate": "openapi-typescript https://dev.api.yobble.org/docs/openapi/combined -o ./src/shared/types/v1.d.ts"

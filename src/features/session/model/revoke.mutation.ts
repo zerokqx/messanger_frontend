@@ -41,7 +41,7 @@ export const useRevokeSession = () => {
         return { previous };
       },
 
-      onError(error, variables, onMutateResult, context) {
+      onError(_error, _variables, _onMutateResult, context) {
         if (context?.previous) {
           context.client.setQueryData(
             $api.jwtAuth.query.queryOptions('get', '/sessions/list', {})
@@ -51,7 +51,7 @@ export const useRevokeSession = () => {
         }
       },
 
-      onSettled(data, error, variables, onMutateResult, context) {
+      onSettled(_data, _error, _variables, _onMutateResult, context) {
         void context.client.invalidateQueries(
           $api.jwtAuth.query.queryOptions('get', '/sessions/list', {})
         );

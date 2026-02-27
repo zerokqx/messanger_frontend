@@ -17,7 +17,6 @@ import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
 import { useLogout } from '@/entities/user/index.ts';
 import { useMe } from '@/entities/user/model/me.query.ts';
-import { PrivacySettingsSkeleton } from '@/features/profile-permissions/ui/profile-permissions-skeleton.tsx';
 import { SkeletonLayout, SkeletonsCardList } from '@/shared/ui/skeletons/index.ts';
 
 const MotionStagerList = lazy(() =>

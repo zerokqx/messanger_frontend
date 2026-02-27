@@ -2,7 +2,7 @@ import { $api } from '@/shared/api/repository/$api';
 
 export const useContactAdd = () => {
   const mutate = $api.jwtUser.query.useMutation('post', '/contact/add', {
-    async onMutate(variables, context) {
+    async onMutate(_variables, context) {
       await Promise.all([
         context.client.cancelQueries(
           $api.jwtUser.query.queryOptions('get', '/contact/list')
@@ -13,7 +13,7 @@ export const useContactAdd = () => {
         ),
       ]);
     },
-    async onSettled(data, error, variables, onMutateResult, context) {
+    async onSettled(_data, _error, _variables, _onMutateResult, context) {
       await Promise.all([
         context.client.invalidateQueries({
           queryKey: ['get', '/contact/list'],

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Group, Skeleton, Stack, Text } from '@mantine/core';
 
 export function PrivacySettingsSkeleton() {

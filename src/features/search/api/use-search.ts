@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFetchUsersSearch } from './use-fetch-users-search';
 import { searchStoreAction } from '../model/search-store';
 import Logger from '@/shared/lib/logger/logger';
