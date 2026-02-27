@@ -2,8 +2,6 @@ import { ActionIcon, Box, Button, Group, Input, Stack } from '@mantine/core';
 import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
-import * as m from 'motion/react-m';
-import { SkeletonProfile } from '@/entities/user';
 import { TabsMenu } from '@/widgets/tabs-menu';
 import type { MainTabsProps } from './types.ts';
 import { lazy, Suspense, useState } from 'react';
@@ -11,7 +9,6 @@ import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
 import { ArrowLeft } from 'lucide-react';
-import { EditProfileSkeleton } from '@/features/edit-profile/index.ts';
 import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { socket } from '@/shared/api/socket.ts';
 
@@ -57,6 +54,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 <ArrowLeft />
               </ActionIcon>
               <TabsMenu
+
                 data={['settings']}
                 onClickMenuItem={(value) => {
                   controller.current?.push(value);

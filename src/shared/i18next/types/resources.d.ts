@@ -10,7 +10,7 @@ interface Resources {
     "invalid_login": "Invalid login",
     "invalid_message_login": "Invalid login. Please retry",
     "register": "Register",
-    "return_to_yobble": "Welcome back to Yobble"
+    "return_to_yobble": "Yobble"
   },
   "button-labels": {
     "add": "Add",
@@ -41,9 +41,11 @@ interface Resources {
     "in-contact": "In contacts"
   },
   "contact-menu": {
+    "blacklist-add": "Add to blacklist",
     "contact": "Contact",
     "contact-add": "Add to contacts",
-    "contact-remove": "Remove from contacts"
+    "contact-remove": "Remove from contacts",
+    "from-blacklist-remove": "Remove from blacklist"
   },
   "days": {
     "today": "Today"

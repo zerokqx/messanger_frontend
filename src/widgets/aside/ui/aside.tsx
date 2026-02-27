@@ -3,7 +3,6 @@ import {
   Box,
   CloseButton,
   Group,
-  Loader,
   Stack,
 } from '@mantine/core';
 import { lazy, Suspense } from 'react';
@@ -24,37 +23,31 @@ interface CustomAsideProps {
 export const Aside = ({ onClose }: CustomAsideProps) => {
   const _uuid = useGetUuidFromRouter();
   const uuid = _uuid ?? '';
-  const { data, isFetching, invalidateUser } = useGetUserById({
+  const { data, isLoading, invalidateUser } = useGetUserById({
     id: uuid,
   });
+  
 
   return (
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
       {uuid && (
         <>
           <Group justify="space-between">
-            <Box>
               <CloseButton onClick={onClose} />
-              <ContactMenu userId={uuid} onUpdate={invalidateUser} />
-            </Box>
-            {isFetching && <Loader size={16} />}
+            <ContactMenu  user={data} onUpdate={invalidateUser}/>
           </Group>
           <Suspense fallback={<SkeletonProfile />}>
-            {data && (
-              <>
-                <Stack>
-                  <ProfileForGetUserById profile={data} />
-
-                  <ContactControllPanel
-                    onUpdate={() => {
-                      invalidateUser();
-                    }}
-                    userId={uuid}
-                    user={data}
-                  />
-                  <Group justify="start"></Group>
-                </Stack>
-              </>
+            {isLoading || !data ? (
+              <SkeletonProfile />
+            ) : (
+              <Stack>
+                <ProfileForGetUserById profile={data} />
+                <ContactControllPanel
+                  onUpdate={invalidateUser}
+                  userId={uuid}
+                  user={data}
+                />
+              </Stack>
             )}
           </Suspense>
         </>

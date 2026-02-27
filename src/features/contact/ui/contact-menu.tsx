@@ -1,17 +1,24 @@
-import { ActionIcon, Loader, Menu } from '@mantine/core';
-import { Ellipsis, Plus } from 'lucide-react';
+import { ActionIcon, Loader, Menu, type MantineColor } from '@mantine/core';
+import { Ellipsis, Lock, Plus, Trash, Unlock } from 'lucide-react';
+import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useContactAdd } from '../api';
-import type { ReactNode } from 'react';
+import { useAddBlacklist, useRemoveFromBlacklist } from '@/entities/user';
+import { useContactAdd, useContactRemove } from '../api';
 import type { Fn } from '@/shared/types/utils/functions';
+import type { components } from '@/shared/types/v1';
 
 interface ContactMenu {
-  userId: string;
+  user?: Partial<
+    Pick<
+      components['schemas']['ProfileByUserIdData'],
+      'relationship' | 'user_id'
+    >
+  >;
   onUpdate: (userId: string) => void;
 }
 
-const loader = (bool: boolean, icon: ReactNode) =>
-  bool ? <Loader size={16} /> : icon;
+const loader = (bool: boolean, icon: ReactNode, color?: MantineColor) =>
+  bool ? <Loader size={16} color={color} /> : icon;
 
 const userIdGuard = (callback: Fn, userId: string | undefined | null) => {
   if (userId) {
@@ -19,35 +26,122 @@ const userIdGuard = (callback: Fn, userId: string | undefined | null) => {
   }
 };
 
-export const ContactMenu = ({ userId, onUpdate }: ContactMenu) => {
-  const { mutate: contactAdd, isPending } = useContactAdd();
+export const ContactMenu = ({ user, onUpdate }: ContactMenu) => {
+  const { mutate: contactRemove, isPending: isPendingContactRemove } =
+    useContactRemove();
+  const { mutate: contactAdd, isPending: isPendingContactAdd } =
+    useContactAdd();
   const [t] = useTranslation('contact-menu');
+  const { mutate: addBlacklist, isPending: isPendingAddBlacklist } =
+    useAddBlacklist();
+  const {
+    mutate: removeFromBlacklist,
+    isPending: isPendingRemoveFromBlacklist,
+  } = useRemoveFromBlacklist();
+  const inContact = user?.relationship?.is_target_in_contacts_of_current_user;
+  const userId = user?.user_id;
+  const inBlacklist =
+    user?.relationship?.is_target_user_blocked_by_current_user;
+
   return (
-    <Menu zIndex={1000000} trigger="click">
+    <Menu zIndex={1000000}  transitionProps={{transition:"slide-left"}} closeOnItemClick={false} trigger="click">
       <Menu.Target>
-        <ActionIcon>
+        <ActionIcon variant='subtle'>
           <Ellipsis />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item
-          leftSection={loader(isPending, <Plus />)}
-          onClick={() => {
-            contactAdd(
-              {
-                body: { user_id: userId },
-              },
-              {
-                onSettled(_data, _error, variables) {
-                  userIdGuard(onUpdate, variables.body.user_id);
+        {!inContact && !inBlacklist && (
+          <>
+            <Menu.Item
+              disabled={!userId}
+              leftSection={loader(isPendingContactAdd, <Plus />)}
+              onClick={() => {
+                if (!userId) return;
+                contactAdd(
+                  {
+                    body: { user_id: userId },
+                  },
+                  {
+                    onSettled(_data, _error, variables) {
+                      userIdGuard(onUpdate, variables.body.user_id);
+                    },
+                  }
+                );
+              }}
+            >
+              {t('contact-add')}
+            </Menu.Item>
+          </>
+        )}
+        {inContact && (
+          <Menu.Item
+            disabled={!userId}
+            leftSection={loader(isPendingContactRemove, <Trash />, 'red')}
+            onClick={() => {
+              if (!userId) return;
+              contactRemove(
+                {
+                  body: { user_id: userId },
                 },
-              }
-            );
-          }}
-        >
-          {t('contact-add')}
-        </Menu.Item>
-        <Menu.Item>{t('contact')}</Menu.Item>
+                {
+                  onSettled(_data, _error, variables) {
+                    userIdGuard(onUpdate, variables.body.user_id);
+                  },
+                }
+              );
+            }}
+          >
+            {t('contact-remove')}
+          </Menu.Item>
+        )}
+
+        {inBlacklist ? (
+          <Menu.Item
+            disabled={!userId || isPendingRemoveFromBlacklist}
+            leftSection={loader(
+              isPendingRemoveFromBlacklist,
+              <Unlock />,
+              'red'
+            )}
+            onClick={() => {
+              if (!userId) return;
+
+              removeFromBlacklist(
+                {
+                  body: { user_id: userId },
+                },
+                {
+                  onSettled(_data, _error, variables) {
+                    userIdGuard(onUpdate, variables.body.user_id);
+                  },
+                }
+              );
+            }}
+          >
+            {t('from-blacklist-remove')}
+          </Menu.Item>
+        ) : (
+          <Menu.Item
+            disabled={!userId}
+            leftSection={loader(isPendingAddBlacklist, <Lock />, 'red')}
+            onClick={() => {
+              if (!userId) return;
+              addBlacklist(
+                {
+                  body: { user_id: userId },
+                },
+                {
+                  onSettled(_data, _error, variables) {
+                    userIdGuard(onUpdate, variables.body.user_id);
+                  },
+                }
+              );
+            }}
+          >
+            {t('blacklist-add')}
+          </Menu.Item>
+        )}
       </Menu.Dropdown>
     </Menu>
   );
