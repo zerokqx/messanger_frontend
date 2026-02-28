@@ -1,9 +1,5 @@
 import { type TextInputProps } from '@mantine/core';
 
-export const NavbarHeader = ({
-  input,
-}: {
-  input?: Partial<TextInputProps>;
-}) => {
+export const NavbarHeader = (_props: { input?: Partial<TextInputProps> }) => {
   return <p>dwd</p>;
 };

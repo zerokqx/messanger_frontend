@@ -2,7 +2,7 @@ import { pagesMap } from './pages-map';
 
 import type { components } from '@/shared/types/v1';
 import type { InfiniteData } from '@tanstack/react-query';
-import { describe, expect, it, test } from 'vitest';
+import { describe, expect, it, } from 'vitest';
 type ContactItem = components['schemas']['ContactInfoData']['items'][number];
 interface ContactPage {
   status: string;

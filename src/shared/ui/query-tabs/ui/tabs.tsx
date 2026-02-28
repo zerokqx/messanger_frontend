@@ -1,9 +1,9 @@
 import { useBridgeRef } from '../lib';
 import { TabsAnimationVariantProvider } from '../model';
-import { TabManagerProvider } from '../model/history-context';
+import { TabManagerProvider } from '../model/history-provider';
 import { TabRepositoryProvider } from '../model/tab-repository';
 import { ConditionalDisplay } from './conditional-display';
-import { Tab } from './tab';
+import { Tab, TabsKeepMounted } from './tab';
 import { Bridge } from './tab-bridge';
 import { Hide } from './tab-hide';
 import { MutallyExclusive } from './tab-mutally-exclusive';
@@ -18,7 +18,7 @@ export const Tabs: TabsComponent = ({
 }) => {
   return (
     <TabManagerProvider
-      initialState={{
+      initial={{
         history: [initialTab ?? 'main'],
         current: initialTab ?? 'main',
       }}
@@ -40,3 +40,4 @@ Tabs.Bridge = Bridge;
 Tabs.Show = Show;
 Tabs.useBridgeRef = useBridgeRef;
 Tabs.MutallyExclusive = MutallyExclusive;
+Tabs.TabKeepMounted = TabsKeepMounted;

@@ -1,5 +1,6 @@
 import { Card, Group, Skeleton, Stack } from '@mantine/core';
 
+
 export const SkeletonContactItem = ({ size }: { size: number }) => {
   return (
     <Card

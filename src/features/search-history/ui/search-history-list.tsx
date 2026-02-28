@@ -4,11 +4,13 @@ import { HistoryItem, type SearchHistoryItemPorps } from './history-item.tsx';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { m } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface SearchHistoryListProps {
   onClickItem?: SearchHistoryItemPorps['onClick'];
 }
 export const SearchHistoryList = ({ onClickItem }: SearchHistoryListProps) => {
+  const { t } = useTranslation('search');
   const latestRequests = useHistorySearch((state) => state.data);
   const [collapseVisibility, setCollapseVisibility] = useState(false);
   const isOpen = collapseVisibility;
@@ -30,7 +32,7 @@ export const SearchHistoryList = ({ onClickItem }: SearchHistoryListProps) => {
             setCollapseVisibility((prev) => !prev);
           }}
         >
-          История
+          {t('history')}
         </Button>
         <Button
           variant="transparent"
@@ -46,7 +48,7 @@ export const SearchHistoryList = ({ onClickItem }: SearchHistoryListProps) => {
             }, 1000);
           }}
         >
-          Очистить историю
+          {t('clear-history')}
         </Button>
       </Group>
       <Collapse
@@ -57,7 +59,7 @@ export const SearchHistoryList = ({ onClickItem }: SearchHistoryListProps) => {
       >
         {!latestRequests.length && (
           <Center>
-            <Text opacity={0.7}>История пуста</Text>
+            <Text opacity={0.7}>{t('history-empty')}</Text>
           </Center>
         )}
         {latestRequests.map((request) => (

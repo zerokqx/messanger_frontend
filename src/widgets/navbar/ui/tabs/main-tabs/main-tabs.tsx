@@ -1,34 +1,44 @@
-import { ActionIcon, Box, Group, Stack } from '@mantine/core';
-import {
-  SearchInput,
-  SearchResultList,
-  useSearchStore,
-} from '@/features/search';
+import { ActionIcon, Box, Button, Group, Input, Stack } from '@mantine/core';
+import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
-import { ArrowLeft, Home, User, Users } from 'lucide-react';
-import { ContactsList } from '@/features/contact';
-
-import * as m from 'motion/react-m';
-import { useMe } from '@/entities/user/model/me.query';
-import { ProfileForCurrentUser, SkeletonProfile } from '@/entities/user';
 import { TabsMenu } from '@/widgets/tabs-menu';
 import type { MainTabsProps } from './types.ts';
-import { Suspense } from 'react';
-import { SearchSkeleton } from '@/features/search/ui/search-result-skeleton.tsx';
-import {
-  historySearchActions,
-  SearchHistoryList,
-} from '@/features/search-history/index.ts';
+import { lazy, Suspense, useState } from 'react';
+import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
+import { ArrowLeft } from 'lucide-react';
+import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
+import { socket } from '@/shared/api/socket.ts';
 
-export const MainTabs = ({ controller }: MainTabsProps) => {
+const SearchTab = lazy(() =>
+  import('./ui/search-tab.tsx').then((module) => ({
+    default: module.SearchTabContent,
+  }))
+);
+
+export const ContactsTab = lazy(() =>
+  import('./ui/contacts-tab.tsx').then((module) => ({
+    default: module.ContactsTabContent,
+  }))
+);
+
+const ProfileEditTab = lazy(() =>
+  import('./ui/profile-edit-tab.tsx').then((module) => ({
+    default: module.ProfileEditTabContent,
+  }))
+);
+
+const ProfileTab = lazy(() =>
+  import('./ui/profile-tab.tsx').then((module) => ({
+    default: module.ProfileTabContent,
+  }))
+);
+export const MainTabs = ({ controller }: MainTabsProps) => { const [inp, setInp] = useState('');
   const bottomApiTabs = Tabs.useBridgeRef();
-  const { data: profile } = useMe();
-
   return (
-    <Tabs animationVariant="blur-slide-x">
+    <Tabs animationVariant="stack">
       <Tabs.Bridge saveTo={bottomApiTabs} />
       <Stack h="inherit">
         <Stack m="xs">
@@ -42,22 +52,22 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 <ArrowLeft />
               </ActionIcon>
               <TabsMenu
+
                 data={['settings']}
                 onClickMenuItem={(value) => {
                   controller.current?.push(value);
                 }}
               />
             </Tabs.MutallyExclusive>
-            <m.div layout="size" style={{ flex: 1 }}>
-              <SearchInput
-                onCommit={(v) => {
-                  historySearchActions.doPush(v);
-                }}
-                onFocus={() => {
-                  bottomApiTabs.current?.push('search');
-                }}
-              />
-            </m.div>
+            <SearchInput
+              flex={1}
+              onCommit={(v) => {
+                historySearchActions.doPush(v);
+              }}
+              onFocus={() => {
+                bottomApiTabs.current?.push('search');
+              }}
+            />
           </Group>
           <Tabs.Hide when={['search']}>
             <Panel data={mainPanel} />
@@ -66,28 +76,45 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
           <Tabs.Tab value="search">
-            <Suspense fallback={<SearchSkeleton />}>
-              <Stack gap={'xs'}>
-                <SearchHistoryList
-                  onClickItem={(v) => {
-                    useSearchUserQuery.setState({ data: v });
-                  }}
-                />
-                <SearchResultList />
-              </Stack>
+            <Suspense fallback={<SkeletonLayout />}>
+              <SearchTab
+                onClickHistoryItem={(value) => {
+                  useSearchUserQuery.setState({ data: value });
+                }}
+              />
             </Suspense>
           </Tabs.Tab>
-          <Tabs.Tab value="main">Chats</Tabs.Tab>
+          <Tabs.Tab value="main">
+            <Input
+              onChange={(v) => {
+                setInp(v.currentTarget.value);
+              }}
+            />
+            <Button
+              onClick={() => {
+                socket.emit('client_message', {data:inp,user_id:"a92e4c8c-d4e4-4d90-acda-253c1e0abe25"});
+              }}
+            >
+              Send
+            </Button>
+          </Tabs.Tab>
           <Tabs.Tab value="contacts">
-            <ContactsList />
+            <Suspense fallback={<SkeletonLayout />}>
+              <ContactsTab />
+            </Suspense>
+          </Tabs.Tab>
+          <Tabs.Tab value="profile/edit">
+            <Suspense fallback={<SkeletonLayout />}>
+              <ProfileEditTab  />
+            </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="profile">
-            <Suspense fallback={<SkeletonProfile />}>
-              {profile ? (
-                <ProfileForCurrentUser profile={profile} />
-              ) : (
-                <SkeletonProfile />
-              )}
+            <Suspense fallback={<SkeletonLayout />}>
+              <ProfileTab
+                onEdit={() => {
+                  bottomApiTabs.current?.push('profile/edit');
+                }}
+              />
             </Suspense>
           </Tabs.Tab>
         </Box>

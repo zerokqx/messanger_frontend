@@ -1,1 +1,1 @@
-export { MotionStagerList } from './ui/';
+export { MotionStagerList, StagerItem } from './ui/';

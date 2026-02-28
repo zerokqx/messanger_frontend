@@ -1,5 +1,4 @@
 import { Suspense, lazy } from 'react';
-import { useModalGlobal } from '@/shared/model/use-modal-store';
 import {
   Blockquote,
   Title,
@@ -8,8 +7,12 @@ import {
   Stack,
   Button,
   Group,
+  Center,
+  useModalsStack,
+  Modal,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 
 const LoginModalLazy = lazy(() =>
   import('@/features/login').then((m) => ({ default: m.LoginModal }))
@@ -22,31 +25,87 @@ const RegisterModalLazy = lazy(() =>
 );
 
 export function AuhtPage() {
-  const { t } = useTranslation(['titles', 'buttonLabels', 'texts']);
-  const openLogin = useModalGlobal.usePinOpen()('login');
-  const openRegister = useModalGlobal.usePinOpen()('register');
+  const { t } = useTranslation(['auth', 'button-labels']);
+  const stack = useModalsStack(['login', 'register']);
+  const { mobile } = useResponsive();
 
   return (
     <>
-      <Suspense fallback={null}>
-        <LoginModalLazy whatClose="register" />
-        <RegisterModalLazy />
-      </Suspense>
+      <Modal.Stack>
+        <Suspense fallback={null}>
+          <LoginModalLazy
+            title={t('auth:enter')}
+            fullScreen={mobile}
+            centered
+            {...stack.register('login')}
+          >
+            <Center>
+              <Stack align="center">
+                <Button
+                  variant="transparent"
+                  onClick={() => {
+                    stack.open('register');
+                  }}
+                >
+                  {t('button-labels:register')}
+                </Button>
+              </Stack>
+            </Center>
+          </LoginModalLazy>
+          <RegisterModalLazy
+            fullScreen={mobile}
+            title={t('auth:register')}
+            centered
+            {...stack.register('register')}
+          >
+            <Center mt={'md'}>
+              <Stack gap={'0'} align="center">
+                <Text>{t('auth:have_account')}</Text>
+                <Button
+                  variant="transparent"
+                  onClick={() => {
+                    stack.open('login');
+                  }}
+                >
+                  {t('button-labels:enter')}
+                </Button>
+              </Stack>
+            </Center>
+          </RegisterModalLazy>
+        </Suspense>
+      </Modal.Stack>
 
-      <Stack style={{ zIndex: 2 }} align={'center'}>
-        <Blockquote h={{ base: '100vh', xs: 'auto' }}>
+      <Stack  align={'center'}>
+        <Blockquote
+          display={'flex'}
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
           <Title fw={{ base: 300, sm: 500 }}>
-            {t('titles:return_to_yobble')}
+            {t('auth:return_to_yobble')}
           </Title>
-          <Text>{t('texts:glad_see_you')}</Text>
-          <Text>{t('texts:enter_to_account_for_communicate_friend')}</Text>
+          <Text>{t('auth:glad_see_you')}</Text>
+          <Text>{t('auth:enter_to_account_for_communicate_friend')}</Text>
           <Space h={'xl'} />
-          <Group gap={'md'} justify={'space-around'}>
-            <Button onClick={openLogin} bdrs={'xl'}>
-              {t('buttonLabels:enter')}
+          <Group gap={'md'} justify={'space-around'} wrap='wrap-reverse'>
+            <Button
+              onClick={() => {
+                stack.open('login');
+              }}
+              bdrs={'xl'}
+            >
+              {t('button-labels:enter')}
             </Button>
-            <Button onClick={openRegister} variant="subtle" bdrs={'xl'}>
-              {t('buttonLabels:register')}
+            <Button
+              onClick={() => {
+                stack.open('register');
+              }}
+              variant="subtle"
+              bdrs={'xl'}
+            >
+              {t('button-labels:register')}
             </Button>
           </Group>
         </Blockquote>

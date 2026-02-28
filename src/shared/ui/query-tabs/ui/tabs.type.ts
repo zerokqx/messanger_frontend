@@ -1,5 +1,5 @@
 import type { ReactNode, RefObject } from 'react';
-import type { TabsContext, TabsReducerAction } from '../model/history-context';
+import type { TabsState, TabsReducerAction } from '../model/history-provider';
 import type { TabAnimationVariant } from '../lib';
 
 interface TabsProps {
@@ -16,7 +16,7 @@ export interface Actions {
   batch: (actions: TabsReducerAction[]) => void;
 }
 interface TabsUseApiProps {
-  children: (props: { actions: Actions; state: TabsContext }) => ReactNode;
+  children: (props: { actions: Actions; state: TabsState }) => ReactNode;
 }
 
 export interface AnimationBaseProps {
@@ -43,6 +43,7 @@ interface BridgeProps {
 export interface TabsComponent {
   (props: TabsProps): ReactNode;
   Tab: (props: TabProps) => ReactNode;
+  TabKeepMounted: (props: TabProps) => ReactNode;
   UseApi: (props: TabsUseApiProps) => ReactNode;
   Hide: (props: VisibilityBaseProps) => ReactNode;
   Show: (props: VisibilityBaseProps) => ReactNode;

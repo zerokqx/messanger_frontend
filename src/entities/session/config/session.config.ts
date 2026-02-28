@@ -1,5 +1,5 @@
-import { CircleQuestionMark, Globe, PcCase, Smartphone } from 'lucide-react';
-import type { BrowserToColor, DeviceToIcon } from './types';
+import { Globe } from 'lucide-react';
+import type { BrowserToColor } from './types';
 
 export const browserToColor: BrowserToColor = {
   Firefox: {
@@ -16,17 +16,3 @@ export const browserToColor: BrowserToColor = {
   },
 };
 
-export const deviceToIcon: DeviceToIcon = {
-  mobile: {
-    icon: Smartphone,
-    color: 'green',
-  },
-  desktop: {
-    icon: PcCase,
-    color: 'blue',
-  },
-  unknow: {
-    icon: CircleQuestionMark,
-    color: 'gray',
-  },
-};

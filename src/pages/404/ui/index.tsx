@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export const NotFoundError = () => {
-  const { t } = useTranslation(['titles', 'texts']);
+  const { t } = useTranslation(['titles']);
   return (
     <>
       <AppShell padding={'md'} disabled>
@@ -22,7 +22,7 @@ export const NotFoundError = () => {
               <Title>{t('titles:not_found_page')}</Title>
               <Divider />
               <Space h={'1rem'} />
-              <Text>{t('texts:please_check_address')}</Text>
+              <Text>{t('titles:please_check_address')}</Text>
             </Stack>
           </Center>
         </AppShellMain>

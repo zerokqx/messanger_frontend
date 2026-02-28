@@ -1,19 +1,18 @@
 import { AnimatePresence } from 'motion/react';
 import type { TabsComponent } from './tabs.type';
-import { useTabs } from '../model';
 import * as m from 'motion/react-m';
-import { useAnimationResolve, type DirectionVariants } from '../lib';
-import { useState } from 'react';
-import { useTabRepository } from '../model/tab-repository';
+import { useAnimationResolve } from '../lib';
+import { useCurrentTab } from '../model';
 
 export const Tab: TabsComponent['Tab'] = ({
   children,
   value,
   animationVariant,
 }) => {
-  const [state] = useTabs();
+  const state = useCurrentTab();
   const animation = useAnimationResolve(animationVariant);
-  const isActive = state.current === value;
+  const isActive = state === value;
+
   return (
     <AnimatePresence mode="popLayout">
       {isActive && (
@@ -31,5 +30,30 @@ export const Tab: TabsComponent['Tab'] = ({
         </m.div>
       )}
     </AnimatePresence>
+  );
+};
+
+export const TabsKeepMounted: TabsComponent['TabKeepMounted'] = ({
+  value,
+  animationVariant,
+  children,
+}) => {
+  const state = useCurrentTab();
+  const animation = useAnimationResolve(animationVariant);
+  const isActive = state === value;
+  return (
+    <m.div
+      key={value}
+      animate={isActive ? 'open' : 'closed'}
+      initial={'initial'}
+      variants={animation}
+      style={{
+        display: isActive ? 'block' : 'none',
+        height: '100%',
+        overflow: 'hidden',
+      }}
+    >
+      {children}
+    </m.div>
   );
 };

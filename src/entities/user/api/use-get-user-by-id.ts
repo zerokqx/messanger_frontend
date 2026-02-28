@@ -1,19 +1,15 @@
 import { $api } from '@/shared/api/repository/$api';
-import { usePrevious } from '@mantine/hooks';
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useCallback } from 'react';
 
-const useAbortGetUserById = (id: string) => {
+interface UseGetUserByIdArgs {
+  id: string;
+}
+export const useGetUserById = ({ id }: UseGetUserByIdArgs) => {
   const client = useQueryClient();
-  return () => client.cancelQueries({ queryKey: ['get', id] });
-};
 
-export const useGetUserById = () => {
-  const [id, setId] = useState('');
-  const previous = usePrevious(id);
-  const client = useQueryClient();
-  const invalidateUser = () => {
-    client.invalidateQueries({
+  const invalidateUser = useCallback(() => {
+    void client.invalidateQueries({
       queryKey: [
         'get',
         '/{user_id}',
@@ -26,13 +22,11 @@ export const useGetUserById = () => {
         },
       ],
     });
-  };
-  const abortPrevious = useAbortGetUserById(previous ?? '');
+  }, [id, client]);
 
   const query = $api.jwtProfile.query.useQuery(
     'get',
     '/{user_id}',
-
     {
       params: {
         path: {
@@ -40,7 +34,8 @@ export const useGetUserById = () => {
         },
       },
     },
-    { enabled: !!id, select: (data) => data.data }
+    { enabled: !!id, select: (data) => data.data, staleTime: 25 * 1000 }
   );
-  return { ...query, setId, id, abortPrevious, invalidateUser };
+
+  return { ...query, invalidateUser };
 };

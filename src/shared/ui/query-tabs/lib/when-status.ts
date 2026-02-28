@@ -1,6 +1,6 @@
 import { isArray } from 'lodash';
 import type { VisibilityBaseProps } from '../ui/tabs.type';
-import { useTabs } from '../model';
+import { useCurrentTab } from '../model';
 
 export const whenStatus = (
   when: VisibilityBaseProps['when'],
@@ -12,6 +12,6 @@ export const whenStatus = (
 };
 
 export const useWhenStatus = (when: VisibilityBaseProps['when']) => {
-  const [{ current }] = useTabs();
-  return whenStatus(when, current);
+  const state = useCurrentTab();
+  return whenStatus(when, state);
 };

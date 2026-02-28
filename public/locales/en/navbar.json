@@ -9,5 +9,6 @@
   "interface_edit": "Interface",
   "sessions": "Sessions",
   "settings/interface": "Interface",
-  "settings/sessions": "Sessions"
+  "settings/sessions": "Sessions",
+  "settings/permissions": "Permissions"
 }

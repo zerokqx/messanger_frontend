@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 export const LazyBio = ({ bio }: { bio: string }) => {
   const [t] = useTranslation('profile');
   const copy = useNotifyClipboard();
-  const firstChar = bio.charAt(0);
 
   return (
     <Blockquote

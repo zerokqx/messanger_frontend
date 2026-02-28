@@ -44,7 +44,7 @@ export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
               name: 'currentPassword',
               placeholder: 'Текущий пароль',
 
-              component: (field, fSet, props) => (
+              component: (_field, fSet, props) => (
                 <PasswordInput {...props} placeholder={fSet.placeholder} />
               ),
             },
@@ -54,7 +54,7 @@ export const ChangePasswordModal = ({ ...props }: CustomModalProps) => {
               name: 'newPassword',
               placeholder: 'Новый пороль',
 
-              component: (field, fSet, props) => (
+              component: (_field, fSet, props) => (
                 <PasswordInput {...props} placeholder={fSet.placeholder} />
               ),
             },

@@ -1,93 +1,28 @@
 {
   pkgs,
-  lib,
-  config,
   inputs,
   ...
 }:
 
+let
+  pkgs-playwright = import inputs.nixpkgs-playwright { system = pkgs.stdenv.system; };
+  browsers =
+    (builtins.fromJSON (builtins.readFile "${pkgs-playwright.playwright-driver}/browsers.json"))
+    .browsers;
+  chromium-rev = (builtins.head (builtins.filter (x: x.name == "chromium") browsers)).revision;
+in
 {
   env.GREET = "Yobble";
-  env.LD_LIBRARY_PATH = "${
-    with pkgs;
-    lib.makeLibraryPath [
-      at-spi2-atk
-      atk
-      cairo
-      cups
-      dbus
-      expat
-      fontconfig
-      freetype
-      gdk-pixbuf
-      glib
-      gtk3
-      libGL
-      libuuid
-      libxkbcommon
-      mesa
-      nspr
-      nss
-      pango
-      pipewire
-      udev
-      xorg.libX11
-      xorg.libXcomposite
-      xorg.libXcursor
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXi
-      xorg.libXrandr
-      xorg.libXrender
-      xorg.libXtst
-      xorg.libxcb
-      xorg.xcbutilkeysyms
-      alsa-lib
-      stdenv.cc.cc.lib
-    ]
-  }";
-  packages = with pkgs; [
-    git
-    eslint
-    stdenv.cc.cc.lib
-    bun
-    google-chrome
-    at-spi2-atk
-    atk
-    cairo
-    cups
-    dbus
-    expat
-    fontconfig
-    freetype
-    gdk-pixbuf
-    glib
-    gtk3
-    libGL
-    libuuid
-    libxkbcommon
-    mesa
-    nspr
-    nss
-    pango
-    pipewire
-    udev
-    xorg.libX11
-    xorg.libXcomposite
-    xorg.libXcursor
-    xorg.libXdamage
-    xorg.libXext
-    xorg.libXfixes
-    xorg.libXi
-    xorg.libXrandr
-    xorg.libXrender
-    xorg.libXtst
-    xorg.libxcb
-    xorg.xcbutilkeysyms
-    alsa-lib
-  ];
 
+  env = {
+    PLAYWRIGHT_BROWSERS_PATH = "${pkgs-playwright.playwright.browsers}";
+    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = true;
+    PLAYWRIGHT_NODEJS_PATH = "${pkgs.nodejs}/bin/node";
+    PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH = "${pkgs-playwright.playwright.browsers}/chromium-${chromium-rev}/chrome-linux/chrome";
+  };
+  packages = with pkgs; [
+    eslint
+  ];
   scripts = {
     testProdBuild.exec = "bun vite build && bun serve ./dist -l 5173 -c ../serve.json";
     build.exec = "bun run build";
@@ -102,7 +37,17 @@
     "i18n:ci".exec = "bunx i18next-cli extract --ci";
   };
 
+  languages.javascript = {
+    enable = true;
+    bun = {
+      enable = true;
+      install.enable = true;
+    };
+  };
   enterShell = ''
+    playwrightNpmVersion="$(npm show @playwright/test version)"
+    echo "❄️ Playwright nix version: ${pkgs-playwright.playwright.version}"
+    echo "📦 Playwright npm version: $playwrightNpmVersion"
     hello
     git --version
   '';

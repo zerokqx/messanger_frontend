@@ -1,4 +1,4 @@
-import type { Variant, Variants } from 'motion/react';
+import type { Variants } from 'motion/react';
 
 export interface MotionStagerListAnimationVariant {
   hidden: Variants;

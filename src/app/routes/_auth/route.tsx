@@ -1,0 +1,31 @@
+import { useIsAuth } from '@/entities/session';
+import { AppShell, AppShellMain, Center, Stack } from '@mantine/core';
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/_auth')({
+  beforeLoad() {
+    if (useIsAuth.check()) {
+      redirect({
+        throw: true,
+        to: '/',
+      });
+    }
+  },
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  return (
+    <>
+      <AppShell disabled p={'0'}>
+        <AppShellMain>
+          <Center h={'100vh'}>
+            <Stack>
+              <Outlet />
+            </Stack>
+          </Center>
+        </AppShellMain>
+      </AppShell>
+    </>
+  );
+}

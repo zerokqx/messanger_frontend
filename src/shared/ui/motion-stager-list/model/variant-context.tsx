@@ -1,5 +1,5 @@
 import { createStateContext } from 'react-use';
-import type { MotionStagerListAnimationVariant, VariantsType } from './types';
+import type { VariantsType } from './types';
 
 const defaultValue = {
   hidden: {},

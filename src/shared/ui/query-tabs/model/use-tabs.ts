@@ -1,11 +1,12 @@
 import type { Dispatch } from 'react';
-import {
-  type TabsContext,
-  type TabsReducerAction,
-  useTabManagerIternal,
-} from './history-context';
+import type { TabsReducerAction, TabsState } from './history-provider';
+import { useTabsDispatch, useTabsSelector } from './tabs-selector-hooks';
 
-export const useTabs = (): [TabsContext, Dispatch<TabsReducerAction>] => {
-  const [state, dispatch] = useTabManagerIternal();
-  return [state, dispatch as Dispatch<TabsReducerAction>] as const;
+export const useTabs = (): readonly [
+  TabsState,
+  Dispatch<TabsReducerAction>,
+] => {
+  const state = useTabsSelector((ctx) => ctx.state);
+  const dispatch = useTabsDispatch();
+  return [state, dispatch] as const;
 };

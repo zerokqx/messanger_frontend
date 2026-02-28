@@ -8,13 +8,11 @@
     "module": "ESNext",
     "types": [],
     "skipLibCheck": true,
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -29,8 +27,8 @@
     }
   },
   "include": [
-    "vite.config.ts",
-    "vite.config.ts",
-    "src"
+    "*vite*",
+    "src",
+    "__mocks__"
   ]
 }

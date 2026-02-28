@@ -6,8 +6,8 @@ export const confirmModalForRevokeAllSessions = (onConfirm: () => void) =>
     title: 'Revoke sessions',
     children: <Text size="sm">{t('session:revoke_text_all')}</Text>,
     labels: {
-      confirm: t('session:revoke_all_confirm'),
-      cancel: t('session:revoke_all_cancel'),
+      confirm: t('button-labels:confirm'),
+      cancel: t('button-labels:cancel'),
     },
     onConfirm,
   });

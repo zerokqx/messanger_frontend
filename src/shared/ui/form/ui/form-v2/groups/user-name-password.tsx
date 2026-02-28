@@ -15,7 +15,7 @@ export const FieldGroutpUserNamePassword = withFieldGroup({
           children={(field) => (
             <field.TextInput
               error={getErrorMessage(field.state.meta.errors[0])}
-              label={t('fieldLabels:userName_label')}
+              label={t('field-labels:userName_label')}
               placeholder="john_doe"
             />
           )}
@@ -26,7 +26,7 @@ export const FieldGroutpUserNamePassword = withFieldGroup({
           children={(field) => (
             <field.PasswordInput
               error={getErrorMessage(field.state.meta.errors[0])}
-              label={t('fieldLabels:password_label')}
+              label={t('field-labels:password_label')}
               placeholder="Secure!Pass1"
             />
           )}

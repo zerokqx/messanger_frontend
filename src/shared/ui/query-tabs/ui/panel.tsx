@@ -8,14 +8,15 @@ interface PanelComponentProps {
   size: string;
   onClick: ComponentProps<'button'>['onClick'];
   children?: ReactNode;
+  onMouseEnter?: () => void;
 }
 export interface PanelProps {
   component?: (props: PanelComponentProps) => ReactNode;
   onClickAnyItem?: (v: string, e: MouseEvent<HTMLButtonElement>) => void;
   active?: (v: string) => boolean;
   withStyleAtActive?: boolean;
-
   data: {
+    onHover?: () => void;
     icon?: ReactNode;
     value: string;
     label?: string;
@@ -41,8 +42,8 @@ export const Panel = ({
   const isActive = active ?? ((value: string) => current === value);
 
   return (
-    <PanelContainer bg={colorScheme === 'dark' ? 'dark' : 'gray.1'}>
-      {data.map(({ value, icon, onClick }) => {
+    <PanelContainer  bg={colorScheme === 'dark' ? 'dark' : 'gray.1'}>
+      {data.map(({ value, icon,onHover, onClick }) => {
         const Component = component;
         return (
           <Component
@@ -55,7 +56,7 @@ export const Panel = ({
                 : 'light'
             }
             radius="xl"
-            size="lg"
+            size="lg" onMouseEnter={onHover}
             onClick={(e) => {
               api.push(value);
               onClickAnyItem?.(value, e);

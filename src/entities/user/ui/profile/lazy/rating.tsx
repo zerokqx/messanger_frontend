@@ -17,7 +17,7 @@ export const LazyRating = ({
   return (
     <IconButton
       onMouseUp={() => {
-        copy(toString(rating), t('rating'));
+        copy(rating.toString(), t('rating'));
       }}
     >
       <LabelBox>

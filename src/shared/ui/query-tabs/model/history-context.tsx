@@ -1,61 +1,9 @@
-import { createReducerContext } from 'react-use';
+import { createContext } from "@fluentui/react-context-selector";
+import type { TabsState, TabsReducerAction } from "./history-provider";
 
-export type TabsReducerAction =
-  | { type: 'PUSH'; value: string }
-  | { type: 'BACK' }
-  | { type: 'REPLACE'; value: string }
-  | { type: 'RESET'; value: string }
-  | { type: 'BATCH'; actions: TabsReducerAction[] };
-export interface TabsContext {
-  current: string;
-  history: string[];
+export interface TabsContextValue {
+  state: TabsState;
+  dispatch: React.Dispatch<TabsReducerAction>;
 }
 
-export type TabsReducer = (
-  state: TabsContext,
-  action: TabsReducerAction
-) => TabsContext;
-const reducer: TabsReducer = (state, action) => {
-  switch (action.type) {
-    case 'PUSH': {
-      const { history, current } = state;
-      if (current === action.value) return state;
-      const newHistory = [...history, action.value];
-      return { history: newHistory, current: action.value };
-    }
-    case 'BACK': {
-      const { history, current } = state;
-      if (history.length <= 1) return state;
-      const newHistory = history.slice(0, -1);
-      const newCurrent = newHistory[newHistory.length - 1] ?? current;
-      return { history: newHistory, current: newCurrent };
-    }
-    case 'REPLACE': {
-      const { history, current } = state;
-      if (current === action.value) return state;
-      const newHistory = [...history.slice(0, -1), action.value];
-
-      return { current: action.value, history: newHistory };
-    }
-
-    case 'RESET': {
-      const { history, current } = state;
-      if (current === action.value && history.length === 1) return state;
-      return { current: action.value, history: [action.value] };
-    }
-    case 'BATCH': {
-      return action.actions.reduce(reducer, state);
-    }
-    default: {
-      throw new Error(`Action not exists in reducer.`);
-    }
-  }
-};
-
-export const [useTabManagerIternal, TabManagerProvider] = createReducerContext(
-  reducer,
-  {
-    current: 'main',
-    history: ['main'],
-  }
-);
+export const TabsContext = createContext<TabsContextValue | undefined>(undefined);

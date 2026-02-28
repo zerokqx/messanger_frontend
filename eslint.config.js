@@ -15,6 +15,7 @@ export default defineConfig(
     globalIgnores(['dist']),
     {
       files: ['**/*.{ts,tsx}'],
+
       extends: [
         js.configs.recommended,
         tseslint.configs.strictTypeChecked,
@@ -36,7 +37,7 @@ export default defineConfig(
 
         parserOptions: {
           tsconfigRootDir: import.meta.dirname,
-          project: ['./tsconfig.node.json', './tsconfig.app.json'],
+          project: [ './tsconfig.app.json'],
         },
       },
       settings: {

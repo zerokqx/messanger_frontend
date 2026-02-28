@@ -24,14 +24,14 @@ export const useSessionRevokeAll = () => {
         );
         return { prev };
       },
-      onError(error, variables, onMutateResult, context) {
+      onError(_error, _variables, onMutateResult, context) {
         context.client.setQueryData(
           $api.jwtAuth.query.queryOptions('get', '/sessions/list').queryKey,
           onMutateResult.prev
         );
       },
 
-      async onSettled(data, error, variables, onMutateResult, context) {
+      async onSettled(_data, _error, _variables, _onMutateResult, context) {
         await context.client.invalidateQueries(
           $api.jwtAuth.query.queryOptions('get', '/sessions/list')
         );
