@@ -5,23 +5,33 @@ import { playwright } from '@vitest/browser-playwright';
 import react from '@vitejs/plugin-react';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { devtools } from '@tanstack/devtools-vite';
+import type { ServerOptions } from 'vite';
 
 const APP = './src/app';
 const PLAYWRIGHT_EXECUTABLE_PATH =
   process.env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH ??
   process.env.PLAYWRIGHT_EXECUTABLE_PATH;
 
-export default defineConfig({
-  server: {
-    allowedHosts: ['dev.app.yobble.org'],
-    host: true,
-    port: 5173,
-    hmr: {
-      host: 'dev.app.yobble.org',
-      protocol: 'wss',
-      clientPort: 443,
-    },
+const serverOptionsForRemote: ServerOptions = {
+  allowedHosts: ['dev.app.yobble.org'],
+  host: true,
+  port: 5173,
+  hmr: {
+    host: 'dev.app.yobble.org',
+    protocol: 'wss',
+    clientPort: 443,
   },
+};
+
+const serverOptionsForNoRemote: ServerOptions = {
+  allowedHosts: ['dev.app.yobble.org'],
+  host: '0.0.0.0',
+  port: 5173,
+};
+export default defineConfig({
+  server: process.env.VITE_REMOTE
+    ? serverOptionsForRemote
+    : serverOptionsForNoRemote,
   build: {
     copyPublicDir: true,
     sourcemap: false,
@@ -29,7 +39,6 @@ export default defineConfig({
     cssMinify: 'esbuild',
     cssCodeSplit: true,
   },
-
 
   preview: {
     host: '0.0.0.0',
@@ -86,7 +95,7 @@ export default defineConfig({
                       executablePath: PLAYWRIGHT_EXECUTABLE_PATH,
                     },
                   }
-                : undefined,
+                : undefined
             ),
             instances: [{ browser: 'chromium' }],
           },
