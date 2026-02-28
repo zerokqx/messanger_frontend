@@ -13,24 +13,6 @@ const PLAYWRIGHT_EXECUTABLE_PATH =
 
 export default defineConfig({
   server: {
-    host: '0.0.0.0',
-    watch: {
-      ignored: [
-        '**/.devenv/**',
-        '**/.direnv/**',
-        '**/node_modules/**',
-        '**/.git/**',
-      ],
-    },
-  },
-  build: {
-    copyPublicDir: true,
-    sourcemap: false,
-    minify: 'esbuild',
-    cssMinify: 'esbuild',
-    cssCodeSplit: true,
-  },
-  server: {
     allowedHosts: ['dev.app.yobble.org'],
     host: true,
     port: 5173,
@@ -40,6 +22,14 @@ export default defineConfig({
       clientPort: 443,
     },
   },
+  build: {
+    copyPublicDir: true,
+    sourcemap: false,
+    minify: 'esbuild',
+    cssMinify: 'esbuild',
+    cssCodeSplit: true,
+  },
+
 
   preview: {
     host: '0.0.0.0',
