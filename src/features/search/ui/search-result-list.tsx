@@ -2,7 +2,7 @@ import type { components } from '@/shared/types/v1';
 import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useSearchStore } from '../model';
-import { HorizontalUserCard } from '@/entities/user/ui/horizontal-user-card';
+import { HorizontalUserCard } from '@/entities/user';
 import { lazy, Suspense } from 'react';
 import { SkeletonsCardList } from '@/shared/ui/skeletons';
 

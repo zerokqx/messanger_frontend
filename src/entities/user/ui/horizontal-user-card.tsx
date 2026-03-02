@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import style from './horizontal-user-card.module.css';
 import {
   UserProfileContext,
@@ -41,14 +41,14 @@ export const Avatar = () => {
   );
 };
 
-export const HorizontalUserCard: HorizontalUserCardComponent = ({
-  value,
-  className,
-  ...props
-}) => {
+export const HorizontalUserCard: HorizontalUserCardComponent = (
+  { value, className, ...props },
+  ref?: RefObject<HTMLDivElement>
+) => {
   return (
     <UserProfileContext initialValue={value}>
       <Group
+        ref={ref}
         style={{
           cursor: 'pointer',
         }}

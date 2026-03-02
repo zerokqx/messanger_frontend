@@ -7,6 +7,14 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { devtools } from '@tanstack/devtools-vite';
 import type { ServerOptions } from 'vite';
 
+const WATCH_IGNORED = [
+  '**/.devenv/**',
+  '**/.direnv/**',
+  '**/result/**',
+  '**/.git/**',
+  '**/node_modules/**',
+  '**/dist/**',
+];
 const APP = './src/app';
 const PLAYWRIGHT_EXECUTABLE_PATH =
   process.env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH ??
@@ -21,12 +29,19 @@ const serverOptionsForRemote: ServerOptions = {
     protocol: 'wss',
     clientPort: 443,
   },
+
+  watch: {
+    ignored: WATCH_IGNORED,
+  },
 };
 
 const serverOptionsForNoRemote: ServerOptions = {
   allowedHosts: ['dev.app.yobble.org'],
   host: '0.0.0.0',
   port: 5173,
+  watch: {
+    ignored: WATCH_IGNORED,
+  },
 };
 export default defineConfig({
   server: process.env.VITE_REMOTE

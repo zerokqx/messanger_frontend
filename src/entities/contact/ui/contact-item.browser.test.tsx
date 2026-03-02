@@ -1,12 +1,12 @@
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { ContactItem } from './contact-item';
 import { MantineProvider } from '@mantine/core';
 import { userEvent } from 'vitest/browser';
+import { ContactCard } from './contact-item';
 test('renders name', async () => {
   let onRemove = false;
   const { getByText } = await render(
-    <ContactItem
+    <ContactCard
       onClick={() => {
         console.log('Click');
       }}

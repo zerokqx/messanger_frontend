@@ -1,12 +1,12 @@
 import { Group, Menu } from '@mantine/core';
 import type { IContactElementProp } from './types';
-import { HorizontalUserCard } from '@/entities/user/ui/horizontal-user-card.tsx';
 import { useEffect, useRef, useState } from 'react';
 import { useToggle } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { Trash } from 'lucide-react';
+import { HorizontalUserCard } from '@/entities/user';
 
-export const ContactItem = ({
+export const ContactCard = ({
   user,
   onClick,
   onRemove,
@@ -41,6 +41,7 @@ export const ContactItem = ({
         <HorizontalUserCard
           value={user}
           onClick={(e) => {
+
             if (!opened) onClick?.(e);
           }}
           onContextMenu={(e) => {

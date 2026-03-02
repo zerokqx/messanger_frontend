@@ -5,6 +5,7 @@
   "auto_delete_after_days": "Автоудаление аккаунта через X дней",
   "call_permission": "Кто может звонить",
   "contacts": "Контакты",
+  "do_not_delete": "Не удалять",
   "everyone": "Все",
   "force_auto_delete_messages_in_private": "Принудительное автоудаление в ЛС",
   "group_invite_permission": "Кто может приглашать в беседы",

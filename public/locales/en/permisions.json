@@ -5,6 +5,7 @@
   "auto_delete_after_days": "Auto‑delete account after X days",
   "call_permission": "Who can call you",
   "contacts": "Contacts",
+  "do_not_delete": "Do not delete",
   "everyone": "Everyone",
   "force_auto_delete_messages_in_private": "Force auto‑delete in private chats",
   "group_invite_permission": "Who can invite to conversations",

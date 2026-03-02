@@ -1,6 +1,6 @@
 import type { VirtualItem } from '@tanstack/react-virtual';
 import type { RefObject } from 'react';
-import { ContactItem, SkeletonContactItem } from '@/entities/contact';
+import { ContactCard, SkeletonContactItem } from '@/entities/contact';
 import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import type { useContactListState } from '../model/use-contact-list-state';
 
@@ -67,7 +67,7 @@ export const ContactsContent = ({
                   <SkeletonContactItem size={virtualRow.size} />
                 ) : null
               ) : (
-                <ContactItem
+                <ContactCard
                   user={contact}
                   onRemove={(userId) => {
                     onRemove(userId);

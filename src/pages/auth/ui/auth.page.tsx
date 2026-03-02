@@ -74,8 +74,7 @@ export function AuhtPage() {
           </RegisterModalLazy>
         </Suspense>
       </Modal.Stack>
-
-      <Stack  align={'center'}>
+      <Stack align={'center'}>
         <Blockquote
           display={'flex'}
           style={{
@@ -89,7 +88,7 @@ export function AuhtPage() {
           <Text>{t('auth:glad_see_you')}</Text>
           <Text>{t('auth:enter_to_account_for_communicate_friend')}</Text>
           <Space h={'xl'} />
-          <Group gap={'md'} justify={'space-around'} wrap='wrap-reverse'>
+          <Group gap={'md'} justify={'space-around'} wrap="wrap-reverse">
             <Button
               onClick={() => {
                 stack.open('login');

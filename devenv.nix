@@ -13,7 +13,6 @@ let
 in
 {
   env.GREET = "Yobble";
-
   env = {
     PLAYWRIGHT_BROWSERS_PATH = "${pkgs-playwright.playwright.browsers}";
     PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = true;

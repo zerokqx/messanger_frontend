@@ -28,6 +28,14 @@ export default defineConfig(
       ],
       rules: {
         '@typescript-eslint/only-throw-error': 'off',
+        '@typescript-eslint/no-misused-promises': [
+          'error',
+          {
+            checksVoidReturn: {
+              attributes: false,
+            },
+          },
+        ],
       },
 
       languageOptions: {
@@ -37,7 +45,7 @@ export default defineConfig(
 
         parserOptions: {
           tsconfigRootDir: import.meta.dirname,
-          project: [ './tsconfig.app.json'],
+          project: ['./tsconfig.app.json'],
         },
       },
       settings: {

@@ -90,7 +90,6 @@ export const LoginModal = ({ children, ...props }: ModalProps) => {
               onClick={() => {
                 reset();
               }}
-              loading={formState.isSubmitting}
               variant="subtle"
             >
               {<TimerReset />}
