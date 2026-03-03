@@ -1,6 +1,7 @@
 import type { ReactNode, RefObject } from 'react';
 import type { TabsState, TabsReducerAction } from '../model/history-provider';
 import type { TabAnimationVariant } from '../lib';
+import type { TabActions } from '../model/tabs-selector-hooks';
 
 interface TabsProps {
   initialTab?: string;
@@ -40,6 +41,10 @@ export interface VisibilityBaseProps extends AnimationBaseProps {
 interface BridgeProps {
   saveTo: RefObject<Actions | null>;
 }
+interface TriggerProps {
+  on: unknown;
+  reset: string | ((args:{cur: string,actions: TabActions}) => void);
+}
 export interface TabsComponent {
   (props: TabsProps): ReactNode;
   Tab: (props: TabProps) => ReactNode;
@@ -54,6 +59,7 @@ export interface TabsComponent {
       children: [ReactNode, ReactNode];
     }
   ) => ReactNode;
+  Trigger: (props: TriggerProps) => ReactNode;
 
   ConditionalDisplay: (props: ConditionalDisplayProps) => ReactNode;
 }

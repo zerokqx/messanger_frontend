@@ -9,6 +9,7 @@ import { Hide } from './tab-hide';
 import { MutallyExclusive } from './tab-mutally-exclusive';
 import { Show } from './tab-show';
 import type { TabsComponent } from './tabs.type';
+import { Trigger } from './trigger';
 import { UseApi } from './use-api';
 
 export const Tabs: TabsComponent = ({
@@ -41,3 +42,4 @@ Tabs.Show = Show;
 Tabs.useBridgeRef = useBridgeRef;
 Tabs.MutallyExclusive = MutallyExclusive;
 Tabs.TabKeepMounted = TabsKeepMounted;
+Tabs.Trigger = Trigger

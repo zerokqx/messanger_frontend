@@ -44,6 +44,7 @@ interface Resources {
     "blacklist-add": "Add to blacklist",
     "contact": "Contact",
     "contact-add": "Add to contacts",
+    "contact-edit": "Edit contact",
     "contact-remove": "Remove from contacts",
     "from-blacklist-remove": "Remove from blacklist"
   },
@@ -160,6 +161,10 @@ interface Resources {
     "not_found_page": "Page not found",
     "please_check_address": "Please check the address and repeat",
     "success": "Success"
+  },
+  "update-contact": {
+    "custom-name": "Custom name",
+    "save": "Save"
   }
 }
 

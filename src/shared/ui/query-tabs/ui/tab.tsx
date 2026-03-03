@@ -14,7 +14,7 @@ export const Tab: TabsComponent['Tab'] = ({
   const isActive = state === value;
 
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence mode="popLayout" initial={false}>
       {isActive && (
         <m.div
           key={value}

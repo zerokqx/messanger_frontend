@@ -11,24 +11,24 @@ interface UpdateContactFormState {
 export interface UpdateContactFormProps {
   uuid: string;
   initialState: UpdateContactFormState;
+  onSuccessUpdate?: () => void;
 }
 export const UpdateContactForm = ({
   initialState,
   uuid,
+  onSuccessUpdate,
 }: UpdateContactFormProps) => {
   const { mutateAsync } = useContactUpdate();
   const [t] = useTranslation(['button-labels', 'update-contact']);
 
-  const { register, handleSubmit, formState } = useForm<UpdateContactFormState>(
-    {
+  const { register, handleSubmit, formState, getValues, reset } =
+    useForm<UpdateContactFormState>({
       defaultValues: initialState,
-    }
-  );
+    });
 
   const submit: SubmitHandler<UpdateContactFormState> = async ({
     customName,
-  }) => {
-    await mutateAsync(
+  }) => { await mutateAsync(
       {
         body: {
           custom_name: customName,
@@ -37,22 +37,20 @@ export const UpdateContactForm = ({
       },
       {
         onSuccess: () => {
-          notify.success();
+          (onSuccessUpdate ?? notify.success)();
+          reset(getValues(),{keepValues:true});
         },
       }
     );
   };
   return (
-    <form
-      onSubmit={handleSubmit(submit)}
-    >
+    <form onSubmit={handleSubmit(submit)}>
       <Stack>
-        <TextInput label={t('custom-name')} {...register('customName')} />
+        <TextInput label={t('update-contact:custom-name')} placeholder='...' {...register('customName')} />
         <Button
           type="submit"
           loading={formState.isSubmitting}
           disabled={!formState.isDirty}
-          w={'20rem'}
           variant="light"
         >
           {t('save')}

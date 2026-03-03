@@ -2,17 +2,21 @@ import { AppShellAside, CloseButton, Group, Stack } from '@mantine/core';
 import { lazy, Suspense } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
-import {
-  ContactControllPanel,
-  ContactMenu,
-  UpdateContactForm,
-} from '@/features/contact';
+import { ContactControllPanel, ContactMenu } from '@/features/contact';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft } from 'lucide-react';
+import { notify } from '@/shared/lib/notifications';
+import { SkeletonLayout } from '@/shared/ui/skeletons';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
     default: m.ProfileForGetUserById,
+  }))
+);
+
+const UpdateContactForm = lazy(() =>
+  import('@/features/contact').then((m) => ({
+    default: m.UpdateContactForm,
   }))
 );
 
@@ -30,7 +34,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
   return (
     <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
       {uuid && (
-        <Tabs animationVariant="slide-x">
+        <Tabs animationVariant="scale" key={uuid}>
           <Group justify="space-between">
             <Tabs.UseApi
               children={({ actions, state }) => (
@@ -69,16 +73,23 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
               </Suspense>
             </>
           </Tabs.Tab>
+          {data?.relationship.is_target_in_contacts_of_current_user && (
+
           <Tabs.Tab value="profile-edit">
-            <Suspense >
+            <Suspense fallback={<SkeletonLayout/>}>
               <UpdateContactForm
                 uuid={uuid}
+                onSuccessUpdate={() => {
+                  invalidateUser();
+                  notify.success();
+                }}
                 initialState={{
-                  customName: data?.custom_name ?? '',
+                  customName: data.custom_name ?? '',
                 }}
               />
             </Suspense>
           </Tabs.Tab>
+          )}
         </Tabs>
       )}
     </AppShellAside>

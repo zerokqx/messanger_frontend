@@ -40,3 +40,4 @@ export function useTabActions() {
     [dispatch]
   );
 }
+export type TabActions = ReturnType<typeof useTabActions>
