@@ -105,11 +105,7 @@ export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
             {onEditClick && (
               <Menu.Item
                 disabled={!userId}
-                leftSection={loader(
-                  isPendingContactRemove,
-                  <Pencil />,
-                  'green'
-                )}
+                leftSection={<Pencil/>}
                 onClick={onEditClick}
               >
                 {t('contact-edit')}
