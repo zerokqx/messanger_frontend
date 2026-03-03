@@ -1,13 +1,26 @@
-import { Group, Skeleton } from '@mantine/core';
+import { Card, Group, Skeleton, Stack } from '@mantine/core';
+
 
 export const SkeletonContactItem = ({ size }: { size: number }) => {
   return (
-    <Group h={size} align="center" justify="space-between" w={'100%'}>
-      <Group align="center">
-        <Skeleton circle h={40} w={40} />
-        <Skeleton h={10} w={100} />
+    <Card
+      h={size}
+      p="xs"
+      radius="lg"
+      withBorder
+      w={'100%'}
+      style={{ overflow: 'hidden' }}
+    >
+      <Group align="center" justify="space-between" wrap="nowrap" h="100%">
+        <Group align="center" gap="sm" wrap="nowrap">
+          <Skeleton circle h={38} w={38} />
+          <Stack gap={6}>
+            <Skeleton h={10} w={132} radius="xl" />
+            <Skeleton h={8} w={92} radius="xl" />
+          </Stack>
+        </Group>
+        <Skeleton h={24} w={24} radius="xl" />
       </Group>
-      <Skeleton h={30} w={30} bdrs={'xl'} />
-    </Group>
+    </Card>
   );
 };

@@ -1,14 +1,9 @@
-import { Box, Loader, Stack } from '@mantine/core';
+import { Box, Stack } from '@mantine/core';
 import { map } from 'lodash';
-import { SessionCurrentCard } from './session-card';
-import { lazy, Suspense, useRef } from 'react';
+import { SessionCard, SessionCurrentCard } from './session-card';
+import { useRef } from 'react';
 import type { SessionData } from './session.types';
 import { useVirtualizer } from '@tanstack/react-virtual';
-const SessionCard = lazy(() =>
-  import('./session-card').then((m) => ({
-    default: m.SessionCard,
-  }))
-);
 
 export interface SessionListProps {
   sessions: SessionData[];
@@ -27,27 +22,23 @@ export const SessionList = ({ sessions }: SessionListProps) => {
   const items = rowVirtualizer.getVirtualItems();
 
   return (
-    <Stack ref={parentRef} style={{ overflow: 'auto' }}>
+    <Stack ref={parentRef} style={{ overflow: 'auto', height: '100%' }}>
       <Box h={rowVirtualizer.getTotalSize()} pos="relative">
         {map(items, (virtualItem) => {
           const session = sessions[virtualItem.index];
-          if (!session) return null;
-
           return (
             <Box
-              key={session.id ?? virtualItem.key}
+              key={session.id}
               pos="absolute"
               w="100%"
               style={{
-                transform: `translateY(${virtualItem.start}px)`,
+                transform: `translateY(${virtualItem.start.toString()}px)`,
               }}
             >
               {session.is_current ? (
                 <SessionCurrentCard session={session} />
               ) : (
-                <Suspense fallback={<Loader />}>
-                  <SessionCard session={session} />
-                </Suspense>
+                <SessionCard session={session} />
               )}
             </Box>
           );

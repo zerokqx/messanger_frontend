@@ -1,10 +1,10 @@
 export * from './lib';
 export * from './api';
 export * from './model';
-export * from './types';
+export type { TUser as User } from './model/types';
 export {
+  HorizontalUserCard,
   ProfileForCurrentUser,
   ProfileForGetUserById,
   SkeletonProfile,
-  DisplayPermissionSettings,
 } from './ui';

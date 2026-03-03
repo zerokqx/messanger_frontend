@@ -1,6 +1,5 @@
 import type { Fn } from '@/shared/types/utils/functions';
-import type { ScrollAreaProps } from '@mantine/core';
-import type { ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import type { Asyncify } from 'type-fest';
 
 export interface VirtualListProp<D extends unknown[] = unknown[]> {
@@ -14,5 +13,5 @@ export interface VirtualListProp<D extends unknown[] = unknown[]> {
   dataSelect: Fn<[D, number], D[number] | undefined>;
   esimateSize: Fn<[number], number>;
   overscan?: number;
-  scrollAreaProps?: ScrollAreaProps;
+  scrollAreaProps?: ComponentPropsWithoutRef<'div'>;
 }

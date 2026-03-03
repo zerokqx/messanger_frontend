@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 export const LazyBio = ({ bio }: { bio: string }) => {
   const [t] = useTranslation('profile');
   const copy = useNotifyClipboard();
-  const firstChar = bio.charAt(0);
-  const newBio = bio.slice(1);
 
   return (
     <Blockquote
@@ -23,10 +21,7 @@ export const LazyBio = ({ bio }: { bio: string }) => {
           }}
           w={'100%'}
         >
-          <Text span c={'blue'} fw={'bold'}>
-            {firstChar}
-          </Text>
-          {newBio}
+          {bio}
         </Text>
       }
     </Blockquote>

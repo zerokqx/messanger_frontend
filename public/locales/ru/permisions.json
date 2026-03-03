@@ -1,0 +1,21 @@
+{
+  "allow_message_forwarding": "Можно ли пересылать сообщения",
+  "allow_messages_from_non_contacts": "Принимать сообщения от незнакомцев",
+  "allow_server_chats": "Разрешить чаты хранить на сервере",
+  "auto_delete_after_days": "Автоудаление аккаунта через X дней",
+  "call_permission": "Кто может звонить",
+  "contacts": "Контакты",
+  "do_not_delete": "Не удалять",
+  "everyone": "Все",
+  "force_auto_delete_messages_in_private": "Принудительное автоудаление в ЛС",
+  "group_invite_permission": "Кто может приглашать в беседы",
+  "is_searchable": "Можно ли находить пользователя",
+  "last_seen_visibility": "Видимость «был в сети»",
+  "max_message_auto_delete_seconds": "Макс. таймер удаления сообщений",
+  "nobody": "Никто",
+  "public_invite_permission": "Кто может приглашать в паблики",
+  "show_bio_to_non_contacts": "Показывать био не‑контактам",
+  "show_profile_photo_to_non_contacts": "Показывать фото не‑контактам",
+  "show_stories_to_non_contacts": "Показывать сторисы не‑контактам",
+  "title": "Настройки приватности"
+}

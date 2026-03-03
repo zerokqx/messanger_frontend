@@ -1,7 +1,7 @@
 import { Box, CloseButton, Group } from '@mantine/core';
 import { useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { ASIDE_BUS_EVENTS, useAsideBus } from '@/widgets/aside/model';
-import type { AsideBusCommand } from '@/widgets/aside/model';
+import { ASIDE_BUS_EVENTS, useAsideBus } from '@/features/aside-bus';
+import type { AsideBusCommand } from '@/features/aside-bus';
 import { ContactMenu } from '@/features/contact';
 
 const getHeaderContent = ({ data, type }: AsideBusCommand) => {

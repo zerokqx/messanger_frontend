@@ -3,7 +3,7 @@ import { useTheme } from '../hooks/use-theme';
 import { useTranslation } from 'react-i18next';
 import { useLogger } from 'react-use';
 export const ThemeToggle = () => {
-  const { t } = useTranslation('sideBar');
+  const { t } = useTranslation('side-bar');
   const { Icon, set, colorScheme } = useTheme();
 
   useLogger('theme', { colorScheme });
@@ -12,14 +12,11 @@ export const ThemeToggle = () => {
       onChange={() => {
         set();
       }}
-      style={{
-        transition: '0.6s ease',
-      }}
       aria-label={t('dark_theme')}
       label={t('dark_theme')}
       checked={colorScheme === 'dark'}
-      offLabel={<Icon size={16} color="yellow" />}
-      onLabel={<Icon color={'black'} size={16} />}
+      offLabel={<Icon size={16} />}
+      onLabel={<Icon size={16} />}
     />
   );
 };

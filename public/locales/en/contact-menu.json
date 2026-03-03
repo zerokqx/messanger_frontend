@@ -1,4 +1,7 @@
 {
   "contact-add": "Add to contacts",
-  "contact": "Contact"
+  "contact": "Contact",
+  "contact-remove": "Remove from contacts",
+  "from-blacklist-remove": "Remove from blacklist",
+  "blacklist-add": "Add to blacklist"
 }

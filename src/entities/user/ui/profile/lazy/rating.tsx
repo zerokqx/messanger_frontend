@@ -1,5 +1,5 @@
 import { ratingColor } from '@/entities/user/lib/rating-color';
-import type { IProfileContext } from '@/entities/user/model/types/profile-context.types';
+import type { ICurrentProfileContext } from '@/entities/user/model/types';
 import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 import { IconButton } from '@/shared/ui/buttons';
 import { LabelBox, Label } from '@/shared/ui/lables';
@@ -10,14 +10,14 @@ import { useTranslation } from 'react-i18next';
 export const LazyRating = ({
   rating,
 }: {
-  rating: NonNullable<NonNullable<IProfileContext['rating']>['rating']>;
+  rating: NonNullable<NonNullable<ICurrentProfileContext['rating']>['rating']>;
 }) => {
   const copy = useNotifyClipboard();
   const [t] = useTranslation('profile');
   return (
     <IconButton
       onMouseUp={() => {
-        copy(toString(rating), t('rating'));
+        copy(rating.toString(), t('rating'));
       }}
     >
       <LabelBox>

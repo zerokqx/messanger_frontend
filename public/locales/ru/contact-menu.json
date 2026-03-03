@@ -1,4 +1,7 @@
 {
   "contact-add": "Добавить в контакты",
-  "contact": "Контакт"
+  "contact": "Контакт",
+  "contact-remove": "Удалить из контактов",
+  "from-blacklist-remove": "Убрать из черного списка",
+  "blacklist-add": "Добавить в черный список"
 }

@@ -1,34 +1,103 @@
-import { LoginForm } from '@/features/login';
-import { useModalGlobal } from '@/shared/model/use-modal-store';
-import { useCloseOpen } from '@/shared/model/use-modal-store/lib/use-close-open';
-import { Modal } from '@/shared/ui/modal';
-import { notifications } from '@mantine/notifications';
 import { useRouter } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import type { ILoginModalProps } from '../types/login-modal.interface';
+import {
+  Button,
+  Group,
+  Modal,
+  PasswordInput,
+  Stack,
+  TextInput,
+  type ModalProps,
+} from '@mantine/core';
+import { useCallback } from 'react';
+import { notify } from '@/shared/lib/notifications';
+import { loginFormSchema } from '../model/login-schema';
+import { useLogin } from '../api';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TimerReset } from 'lucide-react';
 
-export const LoginModal = ({ whatClose }: ILoginModalProps) => {
-  const { t } = useTranslation(['titles', 'buttonLabels', 'fieldLabels']);
-  const close = useModalGlobal.usePinClose()('login');
-  const swapMode = useCloseOpen('login', whatClose);
+interface LoginFormState {
+  password: string;
+  userName: string;
+}
+
+export const LoginModal = ({ children, ...props }: ModalProps) => {
+  const { t } = useTranslation(['auth', 'button-labels', 'field-labels']);
   const router = useRouter();
+  const { mutateAsync } = useLogin();
+  const { reset, formState, handleSubmit, register } = useForm<LoginFormState>({
+    resolver: zodResolver(loginFormSchema),
+    mode: 'onChange',
+  });
+
+  const handleError = useCallback(() => {
+    notify.error({
+      title: t('auth:invalid_login'),
+      message: t('auth:invalid_message_login'),
+    });
+  }, [t]);
+
+  const handleSuccess = useCallback(() => {
+    void router.invalidate();
+    props.onClose();
+  }, [router, props.onClose]);
+
+  const submit: SubmitHandler<LoginFormState> = async (
+    { password, userName },
+    e
+  ) => {
+    e?.preventDefault();
+    await mutateAsync(
+      {
+        body: {
+          password,
+          login: userName,
+        },
+      },
+      { onSuccess: handleSuccess, onError: handleError }
+    );
+  };
+
   return (
-    <Modal keyModal="login">
-      <LoginForm
-        onSecondActionClick={swapMode}
-        mutateProps={{
-          onError() {
-            notifications.show({
-              title: t('invalid_login'),
-              message: t('invalid_message_login'),
-            });
-          },
-          onSuccess: () => {
-            void router.invalidate();
-            close();
-          },
+    <Modal {...props}>
+      <form
+        onSubmit={(e) => {
+          void handleSubmit(submit)(e);
         }}
-      />
+      >
+        <Stack justify="center" mih="100%">
+          <TextInput
+            error={formState.errors.userName?.message}
+            label={t('field-labels:userName_label')}
+            {...register('userName')}
+          />
+          <PasswordInput
+            error={formState.errors.password?.message}
+            label={t('field-labels:password_label')}
+            {...register('password')}
+          />
+          <Group grow>
+            <Button
+              loading={formState.isSubmitting}
+              type="submit"
+              variant="light"
+            >
+              {t('button-labels:enter')}
+            </Button>
+            <Button
+              color="gray"
+              onClick={() => {
+                reset();
+              }}
+              variant="subtle"
+            >
+              {<TimerReset />}
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+      {children}
     </Modal>
   );
 };

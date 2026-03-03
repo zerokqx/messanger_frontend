@@ -1,0 +1,7 @@
+.card:hover {
+  background: var(--mantine-color-gray-0);
+}
+
+[data-mantine-color-scheme='dark'] .card:hover {
+  background: var(--mantine-color-dark-8);
+}

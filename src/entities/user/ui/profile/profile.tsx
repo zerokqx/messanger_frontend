@@ -1,31 +1,189 @@
-import { Avatar } from './avatar';
-import { Login } from './login';
-import { Rating } from './ratintg';
-import { CreatedAt } from './created-at';
-import { Stack } from '@mantine/core';
-import { Bio } from './bio';
-import { Verification } from './verification';
-import type { ReactNode } from 'react';
+import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
+import { IconButton } from '@/shared/ui/buttons';
+import { Label, LabelBox } from '@/shared/ui/lables';
+import type { components } from '@/shared/types/v1';
+import {
+  Group,
+  Avatar as MantineAvatar,
+  Stack,
+  Text,
+  ThemeIcon,
+} from '@mantine/core';
+import { get } from 'lodash';
+import { BadgeCheck } from 'lucide-react';
+import { lazy, Suspense, createContext, use, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import type {
+  UserProfileAvatarProps,
+  UserProfileCompoundComponent,
+  UserProfileProps,
+} from './types';
+import { formatLogin } from '@/shared/lib/formaters/format-login.ts';
+import type { FormatLoginViaCutomNameFn } from '@/shared/lib/formaters/format-login.types.ts';
 
-export const UserProfile = <T,>({
-  profile,
-  children,
-}: {
-  children: ReactNode;
-  profile: T;
-}) => {
+const LazyRatingFlake = lazy(() =>
+  import('./lazy/rating.tsx').then((m) => ({
+    default: m.LazyRating,
+  }))
+);
+const LazyBioFlake = lazy(() =>
+  import('./lazy/bio.tsx').then((m) => ({
+    default: m.LazyBio,
+  }))
+);
+
+const ProfileContext = createContext<
+  | (Partial<components['schemas']['ProfileByUserIdData']> & {
+      formatName: ReturnType<FormatLoginViaCutomNameFn>;
+    })
+  | null
+>(null);
+const useProfileContext = () => {
+  const context = use(ProfileContext);
+  if (!context) throw new Error('Profile context is not defined');
+  return context;
+};
+
+const UserProfileBase = ({ profile, children }: UserProfileProps) => {
+  const formatName = useMemo(() => {
+    const customName = get(profile, 'custom_name') as string | undefined;
+    const login = get(profile, 'login') as string | undefined
+    const formatName = formatLogin(login, customName);
+    return formatName;
+  }, [profile.login, profile.custom_name]);
+  const value = useMemo(
+    () => ({
+      formatName,
+      ...profile,
+    }),
+    [profile, formatName]
+  );
   return (
-    <Curr value={profile}>
+    <ProfileContext value={value}>
       <Stack gap={'xs'} align="stretch">
         {children}
       </Stack>
-    </Curr>
+    </ProfileContext>
+  );
+};
+
+export const UserProfile = UserProfileBase as UserProfileCompoundComponent;
+
+const Avatar = ({ ...props }: UserProfileAvatarProps) => {
+  const context = useProfileContext();
+  const login = get(context, 'login') as string | undefined;
+
+  const avatarId = get(context, 'avatars.current.file_id') as
+    | string
+    | undefined;
+
+  if (!login && !avatarId) return null;
+
+  return (
+    <MantineAvatar name={context.formatName.name} src={avatarId} {...props} />
+  );
+};
+
+const Bio = () => {
+  const context = useProfileContext();
+  const bio = get(context, 'bio') as string | undefined;
+
+  if (!bio) return null;
+  return <LazyBioFlake bio={bio} />;
+};
+
+const CreatedAt = () => {
+  const copy = useNotifyClipboard();
+  const context = useProfileContext();
+  const createdAt = get(context, 'created_at') 
+  const [t] = useTranslation('profile');
+  const data = useMemo<string>(() => {
+    return (
+      new Date(createdAt ?? '')
+        .toLocaleString('ru-RU', {
+          timeZone: 'UTC',
+        })
+        .split(',')[0] ?? ''
+    );
+  }, [createdAt]);
+
+  if (!createdAt) return null;
+  return (
+    <IconButton
+      onMouseUp={() => {
+        copy(data, t('created_at'));
+      }}
+    >
+      <LabelBox>
+        <Text>{data}</Text>
+        <Label>{t('created_at')}</Label>
+      </LabelBox>
+    </IconButton>
+  );
+};
+
+const Login = () => {
+  const context = useProfileContext();
+
+  const [t] = useTranslation('profile');
+  const copy = useNotifyClipboard();
+  const login = context.login;
+  const rel = context.relationship;
+
+  if (!login ) return null;
+  return (
+    <IconButton
+      onMouseUp={() => {
+        copy(login, t('login'));
+      }}
+    >
+      <LabelBox>
+        <Group>
+          <Text>{context.formatName.format}</Text>
+          { rel && rel.is_target_user_blocked_by_current_user && (
+            <Text c={'vdarkGray'}>Заблокирован</Text>
+          )}
+        </Group>
+        <Label>{t('login')}</Label>
+      </LabelBox>
+    </IconButton>
+  );
+};
+
+const Rating = () => {
+  const context = useProfileContext();
+  const rating = get(context, 'rating');
+
+  if (!rating?.rating) return null;
+  return (
+    <Suspense fallback={null}>
+      <LazyRatingFlake rating={rating.rating} />
+    </Suspense>
+  );
+};
+
+const Verification = () => {
+  const context = useProfileContext();
+  const isVerified = get(context, 'is_verified') as boolean | undefined;
+  const [t] = useTranslation('profile');
+
+  if (!isVerified) return null;
+  return (
+    <IconButton
+      rightSection={
+        <ThemeIcon>
+          <BadgeCheck />
+        </ThemeIcon>
+      }
+    >
+      {t('verified')}
+    </IconButton>
   );
 };
 
 UserProfile.Avatar = Avatar;
+UserProfile.Bio = Bio;
+UserProfile.CreatedAt = CreatedAt;
 UserProfile.Login = Login;
 UserProfile.Rating = Rating;
-UserProfile.CreatedAt = CreatedAt;
-UserProfile.Bio = Bio;
 UserProfile.Verification = Verification;

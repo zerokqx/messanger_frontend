@@ -15,6 +15,7 @@ import {
   TextInput,
   ThemeIcon,
   Title,
+  virtualColor,
   type MantineColorsTuple,
 } from '@mantine/core';
 
@@ -49,8 +50,14 @@ const colors: Record<string, MantineColorsTuple> = {
 
 export const theme = createTheme({
   colors: {
+    vdarkGray: virtualColor({
+      name: 'vdarkGray',
+      light: 'gray',
+      dark: 'dark',
+    }),
     ...colors,
   },
+
   primaryColor: 'blue',
   primaryShade: { light: 6, dark: 9 },
   other: {
@@ -135,7 +142,7 @@ export const theme = createTheme({
         radius: 'md',
         variant: 'filled',
 
-        styles(_theme) {
+        styles() {
           return {
             input: {},
           };
@@ -148,7 +155,7 @@ export const theme = createTheme({
         radius: 'md',
         variant: 'filled',
 
-        styles(_theme) {
+        styles() {
           return {
             input: {},
           };
@@ -200,7 +207,7 @@ export const theme = createTheme({
       defaultProps: {},
     }),
     Modal: Modal.extend({
-      styles: (_theme) => ({
+      styles: () => ({
         header: {},
         content: {
           overflowX: 'hidden',
@@ -209,7 +216,7 @@ export const theme = createTheme({
     }),
     Select: Select.extend({
       defaultProps: {
-        styles(_theme) {
+        styles() {
           return {
             input: {},
             dropdown: {},

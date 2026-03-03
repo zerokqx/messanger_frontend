@@ -1,0 +1,16 @@
+.git
+.gitignore
+node_modules
+dist
+.devenv
+.direnv
+.env
+.env.*
+Dockerfile*
+README.md
+AGENTS.md
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+!Dockerfile
+!Dockerfile.dev
