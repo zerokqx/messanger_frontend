@@ -3,14 +3,9 @@ import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useSearchStore } from '../model';
 import { HorizontalUserCard } from '@/entities/user';
-import { lazy, Suspense } from 'react';
-import { SkeletonsCardList } from '@/shared/ui/skeletons';
+import { lazy } from 'react';
+import { MotionStagerList } from '@/shared/ui/motion-stager-list';
 
-const MotionStagerList = lazy(() =>
-  import('@/shared/ui/motion-stager-list').then((m) => ({
-    default: m.MotionStagerList,
-  }))
-);
 
 const StagerItem = lazy(() =>
   import('@/shared/ui/motion-stager-list').then((m) => ({
@@ -26,7 +21,6 @@ export const SearchResultList = () => {
   if (users.length === 0) return;
 
   return (
-    <Suspense fallback={<SkeletonsCardList />}>
       <MotionStagerList key={animationKey} stackProps={{ gap: 'xs' }}>
         {users.map((user) => {
           const profile =
@@ -49,6 +43,5 @@ export const SearchResultList = () => {
           );
         })}
       </MotionStagerList>
-    </Suspense>
   );
 };

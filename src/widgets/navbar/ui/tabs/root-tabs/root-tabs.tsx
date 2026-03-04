@@ -17,26 +17,16 @@ import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
 import { useLogout } from '@/entities/user/index.ts';
 import { useMe } from '@/entities/user/model/me.query.ts';
-import { SkeletonLayout, SkeletonsCardList } from '@/shared/ui/skeletons/index.ts';
+import {
+  SkeletonLayout,
+} from '@/shared/ui/skeletons/index.ts';
 
-const MotionStagerList = lazy(() =>
-  import('@/shared/ui/motion-stager-list').then((m) => ({
-    default: m.MotionStagerList,
-  }))
-);
-
-const StagerItem = lazy(() =>
-  import('@/shared/ui/motion-stager-list').then((m) => ({
-    default: m.StagerItem,
-  }))
-);
 
 const SessionsTab = lazy(() =>
   import('@/features/session/ui/session-manager').then((module) => ({
     default: module.SessionsTab,
   }))
 );
-
 const InterfaceEditTab = lazy(() =>
   import('@/features/settings-interface/ui/edit').then((module) => ({
     default: module.InterfaceEditTab,
@@ -124,54 +114,42 @@ export const RootTabs = ({ children }: RootTabsProps) => {
         </Tabs.Tab>
 
         <Tabs.Tab value="settings/permissions">
-            <Suspense fallback={<SkeletonLayout/>}>
-              <ProfilePermissions permissions={data} />
-            </Suspense>
+          <Suspense fallback={<SkeletonLayout />}>
+            <ProfilePermissions permissions={data} />
+          </Suspense>
         </Tabs.Tab>
         <Tabs.Tab value="settings">
           <Stack>
             <Tabs.UseApi
               children={({ actions }) => (
-                <Suspense fallback={<SkeletonsCardList size={4} h={40} />}>
-                  <MotionStagerList
-                    variants={{
-                      item: {
-                        hidden: { scaleY: 0.5 },
-                        visible: {
-                          scaleY: 1,
-                        },
-                      },
-                    }}
-                  >
-                    {rootTabs.map(({ value, leftSection }) => (
-                      <StagerItem key={value}>
-                        <Button
-                          onClick={() => {
-                            actions.push(value);
-                          }}
-                          leftSection={leftSection}
-                          m={'0 auto'}
-                          fullWidth
-                          variant="light"
-                          justify="start"
-                        >
-                          {t(value)}
-                        </Button>
-                      </StagerItem>
-                    ))}
+                <>
+                  {rootTabs.map(({ value, leftSection }) => (
                     <Button
+                      key={value}
                       onClick={() => {
-                        void logout();
+                        actions.push(value);
                       }}
-                      color="red"
-                      leftSection={<LogOut />}
-                      variant="subtle"
+                      leftSection={leftSection}
+                      m={'0 auto'}
+                      fullWidth
+                      variant="light"
                       justify="start"
                     >
-                      Выйти
+                      {t(value)}
                     </Button>
-                  </MotionStagerList>
-                </Suspense>
+                  ))}
+                  <Button
+                    onClick={() => {
+                      void logout();
+                    }}
+                    color="red"
+                    leftSection={<LogOut />}
+                    variant="subtle"
+                    justify="start"
+                  >
+                    {t('button-labels:exit')}
+                  </Button>
+                </>
               )}
             />
           </Stack>
