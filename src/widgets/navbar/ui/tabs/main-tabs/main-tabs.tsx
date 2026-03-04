@@ -4,7 +4,7 @@ import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
 import type { MainTabsProps } from './types.ts';
-import { lazy, Suspense, useState, useTransition } from 'react';
+import { lazy, Suspense, useState} from 'react';
 import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
@@ -79,9 +79,9 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Hide>
         </Stack>
 
-        <ErrorBoundary FallbackComponent={ErrorAlert}>
-          <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-            <Tabs.Tab value="search">
+        <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+          <Tabs.Tab value="search">
+            <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Suspense fallback={<SkeletonLayout />}>
                 <SearchTab
                   onClickHistoryItem={(value) => {
@@ -89,8 +89,10 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                   }}
                 />
               </Suspense>
-            </Tabs.Tab>
-            <Tabs.Tab value="main">
+            </ErrorBoundary>
+          </Tabs.Tab>
+          <Tabs.Tab value="main">
+            <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Input
                 onChange={(v) => {
                   setInp(v.currentTarget.value);
@@ -106,28 +108,34 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
               >
                 Send
               </Button>
-            </Tabs.Tab>
-            <Tabs.Tab value="contacts">
-                <Suspense fallback={<SkeletonsCardList size={10} />}>
-                  <ContactsTab />
-                </Suspense>
-            </Tabs.Tab>
-            <Tabs.Tab value="profile/edit">
+            </ErrorBoundary>
+          </Tabs.Tab>
+          <Tabs.Tab value="contacts">
+            <ErrorBoundary FallbackComponent={ErrorAlert}>
+              <Suspense fallback={<SkeletonsCardList size={10} />}>
+                <ContactsTab />
+              </Suspense>
+            </ErrorBoundary>
+          </Tabs.Tab>
+          <Tabs.Tab value="profile/edit">
+            <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Suspense fallback={<SkeletonLayout />}>
                 <ProfileEditTab />
               </Suspense>
-            </Tabs.Tab>
-            <Tabs.Tab value="profile">
-                <Suspense fallback={<SkeletonProfile />}>
-                  <ProfileTab
-                    onEdit={() => {
-                      bottomApiTabs.current?.push('profile/edit');
-                    }}
-                  />
-                </Suspense>
-            </Tabs.Tab>
-          </Box>
-        </ErrorBoundary>
+            </ErrorBoundary>
+          </Tabs.Tab>
+          <Tabs.Tab value="profile">
+            <ErrorBoundary FallbackComponent={ErrorAlert}>
+              <Suspense fallback={<SkeletonProfile />}>
+                <ProfileTab
+                  onEdit={() => {
+                    bottomApiTabs.current?.push('profile/edit');
+                  }}
+                />
+              </Suspense>
+            </ErrorBoundary>
+          </Tabs.Tab>
+        </Box>
       </Stack>
     </Tabs>
   );
