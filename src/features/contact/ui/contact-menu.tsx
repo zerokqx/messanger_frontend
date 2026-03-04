@@ -6,6 +6,7 @@ import { useAddBlacklist, useRemoveFromBlacklist } from '@/entities/user';
 import { useContactAdd, useContactRemove } from '../api';
 import type { Fn } from '@/shared/types/utils/functions';
 import type { components } from '@/shared/types/v1';
+import { useInvalidateContacts } from '@/entities/contact';
 
 interface ContactMenu {
   user?: Partial<
@@ -32,6 +33,7 @@ export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
     useContactRemove();
   const { mutate: contactAdd, isPending: isPendingContactAdd } =
     useContactAdd();
+  const invalidateContacts = useInvalidateContacts();
   const [t] = useTranslation('contact-menu');
   const { mutate: addBlacklist, isPending: isPendingAddBlacklist } =
     useAddBlacklist();
@@ -105,7 +107,7 @@ export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
             {onEditClick && (
               <Menu.Item
                 disabled={!userId}
-                leftSection={<Pencil/>}
+                leftSection={<Pencil />}
                 onClick={onEditClick}
               >
                 {t('contact-edit')}
@@ -151,6 +153,7 @@ export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
                 },
                 {
                   onSettled(_data, _error, variables) {
+                    if (inContact) void invalidateContacts();
                     userIdGuard(onUpdate, variables.body.user_id);
                   },
                 }

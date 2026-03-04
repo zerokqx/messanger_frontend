@@ -51,6 +51,13 @@ interface Resources {
   "days": {
     "today": "Today"
   },
+  "errors-boundary": {
+    "copied": "Copied",
+    "copy": "Copy",
+    "retry": "Retry",
+    "title": "Something went wrong",
+    "unknown-error": "Unknown error"
+  },
   "field-labels": {
     "bio_label": "Biography",
     "password_label": "Password",

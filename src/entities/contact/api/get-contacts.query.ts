@@ -25,6 +25,7 @@ export const useContactsQuery = (limit: number) => {
       gcTime: 1000 * 60 * 60 * 24,
       placeholderData: keepPreviousData,
       initialPageParam: 0,
+      suspense:true,
       pageParamName: 'offset',
       getNextPageParam: (
         lastPage: { data: { items:unknown[]; has_more: boolean } },

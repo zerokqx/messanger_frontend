@@ -1,16 +1,22 @@
 import { ActionIcon, Box, Button, Group, Input, Stack } from '@mantine/core';
+import { ErrorBoundary } from 'react-error-boundary';
 import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
-import { TabsMenu } from '@/widgets/tabs-menu';
 import type { MainTabsProps } from './types.ts';
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useState, useTransition } from 'react';
 import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
 import { ArrowLeft } from 'lucide-react';
-import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
+import {
+  SkeletonLayout,
+  SkeletonsCardList,
+} from '@/shared/ui/skeletons/index.ts';
 import { socket } from '@/shared/api/socket.ts';
+import { TabsMenu } from './ui/menu.tsx';
+import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
+import { SkeletonProfile } from '@/entities/user/index.ts';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -35,7 +41,8 @@ const ProfileTab = lazy(() =>
     default: module.ProfileTabContent,
   }))
 );
-export const MainTabs = ({ controller }: MainTabsProps) => { const [inp, setInp] = useState('');
+export const MainTabs = ({ controller }: MainTabsProps) => {
+  const [inp, setInp] = useState('');
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
     <Tabs animationVariant="stack">
@@ -52,8 +59,6 @@ export const MainTabs = ({ controller }: MainTabsProps) => { const [inp, setInp]
                 <ArrowLeft />
               </ActionIcon>
               <TabsMenu
-
-                data={['settings']}
                 onClickMenuItem={(value) => {
                   controller.current?.push(value);
                 }}
@@ -74,50 +79,55 @@ export const MainTabs = ({ controller }: MainTabsProps) => { const [inp, setInp]
           </Tabs.Hide>
         </Stack>
 
-        <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          <Tabs.Tab value="search">
-            <Suspense fallback={<SkeletonLayout />}>
-              <SearchTab
-                onClickHistoryItem={(value) => {
-                  useSearchUserQuery.setState({ data: value });
+        <ErrorBoundary FallbackComponent={ErrorAlert}>
+          <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+            <Tabs.Tab value="search">
+              <Suspense fallback={<SkeletonLayout />}>
+                <SearchTab
+                  onClickHistoryItem={(value) => {
+                    useSearchUserQuery.setState({ data: value });
+                  }}
+                />
+              </Suspense>
+            </Tabs.Tab>
+            <Tabs.Tab value="main">
+              <Input
+                onChange={(v) => {
+                  setInp(v.currentTarget.value);
                 }}
               />
-            </Suspense>
-          </Tabs.Tab>
-          <Tabs.Tab value="main">
-            <Input
-              onChange={(v) => {
-                setInp(v.currentTarget.value);
-              }}
-            />
-            <Button
-              onClick={() => {
-                socket.emit('client_message', {data:inp,user_id:"a92e4c8c-d4e4-4d90-acda-253c1e0abe25"});
-              }}
-            >
-              Send
-            </Button>
-          </Tabs.Tab>
-          <Tabs.Tab value="contacts">
-            <Suspense fallback={<SkeletonLayout />}>
-              <ContactsTab />
-            </Suspense>
-          </Tabs.Tab>
-          <Tabs.Tab value="profile/edit">
-            <Suspense fallback={<SkeletonLayout />}>
-              <ProfileEditTab  />
-            </Suspense>
-          </Tabs.Tab>
-          <Tabs.Tab value="profile">
-            <Suspense fallback={<SkeletonLayout />}>
-              <ProfileTab
-                onEdit={() => {
-                  bottomApiTabs.current?.push('profile/edit');
+              <Button
+                onClick={() => {
+                  socket.emit('client_message', {
+                    data: inp,
+                    user_id: 'a92e4c8c-d4e4-4d90-acda-253c1e0abe25',
+                  });
                 }}
-              />
-            </Suspense>
-          </Tabs.Tab>
-        </Box>
+              >
+                Send
+              </Button>
+            </Tabs.Tab>
+            <Tabs.Tab value="contacts">
+                <Suspense fallback={<SkeletonsCardList size={10} />}>
+                  <ContactsTab />
+                </Suspense>
+            </Tabs.Tab>
+            <Tabs.Tab value="profile/edit">
+              <Suspense fallback={<SkeletonLayout />}>
+                <ProfileEditTab />
+              </Suspense>
+            </Tabs.Tab>
+            <Tabs.Tab value="profile">
+                <Suspense fallback={<SkeletonProfile />}>
+                  <ProfileTab
+                    onEdit={() => {
+                      bottomApiTabs.current?.push('profile/edit');
+                    }}
+                  />
+                </Suspense>
+            </Tabs.Tab>
+          </Box>
+        </ErrorBoundary>
       </Stack>
     </Tabs>
   );

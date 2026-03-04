@@ -52,16 +52,8 @@ export const ContactsList = () => {
     return <Alert icon={<CircleSlash />}>{t('contacts-empty')}</Alert>;
   }
 
+
   return (
-    <Suspense
-      fallback={Array.from({ length: 10 }).map((_, i) => (
-        // eslint-disable-next-line react-x/no-array-index-key
-        <Stack key={i}>
-          <Space />
-          <SkeletonContactItem size={60} />
-        </Stack>
-      ))}
-    >
       <ContactsContent
         contactsMap={contactsMap}
         hasNextPage={contacts.hasNextPage}
@@ -85,6 +77,5 @@ export const ContactsList = () => {
         virtualRows={virtualizer.getVirtualItems()}
         viewportRef={viewportRef}
       />
-    </Suspense>
   );
 };

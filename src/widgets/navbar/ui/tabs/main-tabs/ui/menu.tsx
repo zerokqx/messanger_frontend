@@ -1,13 +1,15 @@
+import { menuTabsConfig } from '@/widgets/navbar/config/menu';
 import { Burger, Menu } from '@mantine/core';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface TabsMenuProps {
-  data: string[];
   onClickMenuItem: (v: string) => void;
 }
 
-export const TabsMenu = ({ data, onClickMenuItem }: TabsMenuProps) => {
+export const TabsMenu = ({ onClickMenuItem }: TabsMenuProps) => {
   const [opened, setOpened] = useState(false);
+  const [t] = useTranslation('navbar');
 
   return (
     <Menu
@@ -29,14 +31,15 @@ export const TabsMenu = ({ data, onClickMenuItem }: TabsMenuProps) => {
         />
       </Menu.Target>
       <Menu.Dropdown>
-        {data.map((item) => (
+        {menuTabsConfig.map(({ label, icon }) => (
           <Menu.Item
-            key={item}
+            key={label}
+            leftSection={icon}
             onClick={() => {
-              onClickMenuItem(item);
+              onClickMenuItem(label);
             }}
           >
-            {item}
+            {t(label)}
           </Menu.Item>
         ))}
       </Menu.Dropdown>

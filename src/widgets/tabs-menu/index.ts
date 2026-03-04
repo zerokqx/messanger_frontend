@@ -1,1 +1,0 @@
-export { TabsMenu } from './ui';
