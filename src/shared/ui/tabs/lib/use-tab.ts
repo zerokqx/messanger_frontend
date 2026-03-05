@@ -3,7 +3,7 @@ import type { TaberProviderActions } from '../types/taber-provider.type';
 import { singletoneContext } from './singletone-contexts';
 import { indexOf } from 'lodash';
 
-export const useTab = <
+const useTab = <
   V extends TabsSources,
   W extends readonly TabsWindows[V][],
 >(
@@ -17,7 +17,7 @@ export const useTab = <
   >;
 };
 
-export const useIndexOfWindows = <
+const useIndexOfWindows = <
   V extends TabsSources,
   W extends TabsWindows[V][],
 >(

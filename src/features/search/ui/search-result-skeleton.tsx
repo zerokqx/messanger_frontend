@@ -1,6 +1,6 @@
 import { Stack, Group, Skeleton, Box } from '@mantine/core';
 
-export const SearchSkeleton = () => {
+const SearchSkeleton = () => {
   return (
     <Stack p="sm" gap="md">
       <Stack gap="sm">

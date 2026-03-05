@@ -23,12 +23,12 @@ interface HorizontalUserCardComponent {
 
   Avatar: () => ReactNode;
 }
-export const Login = () => {
+const Login = () => {
   const [profile] = useUserProfileContext();
   return <Text>{profile?.login}</Text>;
 };
 
-export const Avatar = () => {
+const Avatar = () => {
   const [profile] = useUserProfileContext();
   return (
     <AvatarMantine

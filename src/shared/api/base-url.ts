@@ -1,6 +1,6 @@
 export type Services = 'auth' | 'user' | 'profile' | 'feed' | 'chat';
-export type Version = 'v1';
-export type BaseUrlDomain = `https://${string}`;
+type Version = 'v1';
+type BaseUrlDomain = `https://${string}`;
 const apiUrl = import.meta.env.VITE_API_URL as string;
 /**
  * @param service

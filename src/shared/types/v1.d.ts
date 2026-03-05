@@ -3,7 +3,7 @@
  * Do not make direct changes to the file.
  */
 
-export interface paths {
+interface paths {
     "/ping": {
         parameters: {
             query?: never;
@@ -1040,7 +1040,7 @@ export interface paths {
         trace?: never;
     };
 }
-export type webhooks = Record<string, never>;
+type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** BaseResponse */
@@ -2631,8 +2631,8 @@ export interface components {
     headers: never;
     pathItems: never;
 }
-export type $defs = Record<string, never>;
-export interface operations {
+type $defs = Record<string, never>;
+interface operations {
     ping_ping_get: {
         parameters: {
             query?: never;

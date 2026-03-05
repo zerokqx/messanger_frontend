@@ -4,7 +4,7 @@ interface TabDataType<V extends string> {
   index: number | undefined;
   name: V | undefined;
 }
-export interface TaberProviderProp<
+interface TaberProviderProp<
   V extends TabsSources,
   W extends readonly TabsWindows[V][],
 > {

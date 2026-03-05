@@ -31,6 +31,6 @@ export const tokenAction = createStoreAction(
   ],
   ['validate', 'setToken', 'reset', 'getToken'] as const
 );
-export const doValidateToken = (t: string) => {
+const doValidateToken = (t: string) => {
   return z.jwt().safeParse(t).success;
 };

@@ -1,6 +1,6 @@
 import type { Variants } from 'motion/react';
 
-export type DirectionVariants = 'back' | 'next';
+type DirectionVariants = 'back' | 'next';
 
 const PX = {
   sm: 12,

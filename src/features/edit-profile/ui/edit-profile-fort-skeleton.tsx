@@ -1,6 +1,6 @@
 import { Stack, Skeleton } from '@mantine/core';
 
-export function EditProfileSkeleton() {
+function EditProfileSkeleton() {
   return (
     <Stack gap="xs">
       <Skeleton height={18} width={90} radius="sm" />

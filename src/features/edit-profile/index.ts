@@ -1,2 +1,2 @@
 export * from './api/';
-export { ProfileEditForm, EditProfileSkeleton } from './ui';
+export { ProfileEditForm,  } from './ui';

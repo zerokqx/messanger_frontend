@@ -13,7 +13,7 @@ export interface TabsState {
   history: string[];
 }
 
-export type TabsReducer = (state: TabsState, action: TabsReducerAction) => TabsState;
+type TabsReducer = (state: TabsState, action: TabsReducerAction) => TabsState;
 
 const reducer: TabsReducer = (state, action) => {
   switch (action.type) {

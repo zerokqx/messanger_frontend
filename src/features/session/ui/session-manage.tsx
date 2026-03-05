@@ -13,7 +13,7 @@ import { SearchX } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const SessionManage = () => {
+const SessionManage = () => {
   const { data: sessions, isLoading } = useGetSessionsSuspenseQuery();
   const sessionsFiltred = sessions ? sortSessionsByIsCurrent(sessions) : [];
   const { mutateAsync: revokeSessionMutation } = useRevokeSession();

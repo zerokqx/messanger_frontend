@@ -1,6 +1,6 @@
 import { $api } from '@/shared/api/repository/$api';
 
-export const useBlacklist = () => {
+const useBlacklist = () => {
   return $api.jwtUser.query.useSuspenseQuery('get', '/blacklist/list');
 };
 

@@ -21,7 +21,7 @@ export interface SessionProps {
   children: ReactNode;
 }
 
-export interface SessionCardProps {
+interface SessionCardProps {
   session: SessionData;
   onRevoke: Fn<[string], void>;
 }

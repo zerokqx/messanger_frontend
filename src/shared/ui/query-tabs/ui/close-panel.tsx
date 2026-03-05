@@ -6,7 +6,7 @@ import { PanelContainer } from './panel';
 interface ClosePanelProps {
   title?: string;
 }
-export const ClosePanel = ({ title }: ClosePanelProps) => {
+const ClosePanel = ({ title }: ClosePanelProps) => {
   const { colorScheme } = useMantineColorScheme();
   const [api] = useTabsApi();
   return (

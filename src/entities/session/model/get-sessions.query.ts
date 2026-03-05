@@ -2,7 +2,7 @@ import { $api } from '@/shared/api/repository/$api';
 import type { components } from '@/shared/types/v1';
 import { useQueryClient } from '@tanstack/react-query';
 
-export const useGetSessionByIdFromCache = (id: string) => {
+const useGetSessionByIdFromCache = (id: string) => {
   const client = useQueryClient();
   const sessions = client.getQueryData<
     components['schemas']['SessionsListResponse']

@@ -1,5 +1,5 @@
 export * from './lib/';
-export {$api} from "./repository/$api.ts"
+
 export {socket} from "./socket.ts"
 import { QueryClient } from "@tanstack/react-query";
 

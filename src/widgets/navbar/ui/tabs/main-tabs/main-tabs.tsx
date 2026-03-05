@@ -24,7 +24,7 @@ const SearchTab = lazy(() =>
   }))
 );
 
-export const ContactsTab = lazy(() =>
+const ContactsTab = lazy(() =>
   import('./ui/contacts-tab.tsx').then((module) => ({
     default: module.ContactsTabContent,
   }))

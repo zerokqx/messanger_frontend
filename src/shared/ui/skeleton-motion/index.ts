@@ -1,1 +1,0 @@
-export { MotionSkeleton } from './ui';

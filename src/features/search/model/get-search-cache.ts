@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
  * @description Получает данные из кеша котоыре установил запрос. Замена zustand стору
  * @deprecated
  */
-export const useSearchCache = () => {
+const useSearchCache = () => {
   const client = useQueryClient();
   return client.getQueryData<components['schemas']['UserSearchResponse']>(
     $api.jwtFeed.query.queryOptions('get', '/user/search', {

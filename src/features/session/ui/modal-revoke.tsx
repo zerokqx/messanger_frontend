@@ -3,7 +3,7 @@ import type { ModalRevokeProps } from './modal-revoke.types';
 import { useGetSessionByIdFromCache } from '@/entities/session';
 import { useRevokeSession } from '../model';
 
-export const ModalRevoke = ({ opened, onClose, id }: ModalRevokeProps) => {
+const ModalRevoke = ({ opened, onClose, id }: ModalRevokeProps) => {
   const session = useGetSessionByIdFromCache(id);
   const { mutate: mutateRevoke } = useRevokeSession();
   return (

@@ -8,7 +8,7 @@ interface UpdateContactFormState {
   customName?: string;
 }
 
-export interface UpdateContactFormProps {
+interface UpdateContactFormProps {
   uuid: string;
   initialState: UpdateContactFormState;
   onSuccessUpdate?: () => void;

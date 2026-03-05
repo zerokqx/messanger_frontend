@@ -1,9 +1,8 @@
-import { Alert, Space, Stack } from '@mantine/core';
+import { Alert } from '@mantine/core';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Ban, CircleSlash } from 'lucide-react';
-import { lazy, Suspense, useRef } from 'react';
+import { lazy, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SkeletonContactItem } from '@/entities/contact';
 import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
 import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';

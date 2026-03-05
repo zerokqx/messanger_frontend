@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import type { SessionData } from './session.types';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
-export interface SessionListProps {
+interface SessionListProps {
   sessions: SessionData[];
 }
 

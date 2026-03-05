@@ -1,8 +1,8 @@
 import { vi } from 'vitest';
 
 export const mockNavigate = vi.fn();
-export const mockHistoryPush = vi.fn();
-export const mockHistoryGoBack = vi.fn();
+const mockHistoryPush = vi.fn();
+const mockHistoryGoBack = vi.fn();
 
 export const mockInvalidate = vi.fn();
 vi.stubGlobal('mockNavigate', mockNavigate);

@@ -24,7 +24,7 @@ export interface PanelProps {
   }[];
 }
 
-export const PanelContainer = Group.withProps({
+const PanelContainer = Group.withProps({
   bdrs: 'xl',
   p: 'xs',
   justify: 'space-evenly',

@@ -7,7 +7,7 @@ import { $api } from '@/shared/api/repository/$api';
 import type { components } from '@/shared/types/v1';
 import { useQueryClient } from '@tanstack/react-query';
 
-export const meQueryOptions = $api.jwtProfile.query.queryOptions(
+const meQueryOptions = $api.jwtProfile.query.queryOptions(
   'get',
   '/me',
   {},
@@ -28,7 +28,7 @@ export const fetchMe = async () => {
  * @see fetchMe
  * @link fetchMe
  */
-export const useUserQuery = () => {
+const useUserQuery = () => {
   const queryClient = useQueryClient();
   return queryClient.getQueryData<components['schemas']['ProfileData']>(
     meQueryOptions.queryKey

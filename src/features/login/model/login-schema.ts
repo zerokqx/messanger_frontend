@@ -26,6 +26,6 @@ export const loginFormSchema = z.object({
     .regex(/[\W_]/, 'Пароль должен содержать хотя бы один спецсимвол'),
 });
 
-export const test = z.object({
+const test = z.object({
   us: z.object(),
 });

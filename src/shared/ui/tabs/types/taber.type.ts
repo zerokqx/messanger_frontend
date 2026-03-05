@@ -30,7 +30,7 @@ export interface TaberProps<T extends Windows> {
  * Интерфейс для объекта, возвращаемого `createTaber` для программного управления вкладками.
  * @template T - Тип идентификатора вкладки (один из элементов `Windows`).
  */
-export interface ControlTaber<T extends string> {
+interface ControlTaber<T extends string> {
   mainPage: () => { index: number; name: string };
   /** Текущий индекс активной вкладки в массиве windows. */
   currentIndex: number;

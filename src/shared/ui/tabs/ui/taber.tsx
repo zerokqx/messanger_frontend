@@ -32,7 +32,7 @@ import { memo } from 'react';
  * первое окно (`windows[0]`) — главное.
  * Кнопка `Reset` всегда возвращает на это главное окно.
  */
-export const createTaber = <T extends Windows>({
+const createTaber = <T extends Windows>({
   windows,
   initial,
 }: TaberProps<T>): TaberTemplateReturn<T> => {

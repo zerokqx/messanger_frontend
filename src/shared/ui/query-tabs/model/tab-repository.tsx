@@ -1,5 +1,5 @@
 import { createStateContext } from 'react-use';
 
-export const [useTabRepository, TabRepositoryProvider] = createStateContext<
+export const [, TabRepositoryProvider] = createStateContext<
   string[]
 >([]);

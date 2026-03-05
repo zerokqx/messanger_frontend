@@ -1,5 +1,5 @@
 // logger.ts
-export const LOG_LEVEL = {
+const LOG_LEVEL = {
   DEBUG: 0,
   INFO: 1,
   WARN: 2,
@@ -21,7 +21,7 @@ const timeFmt = new Intl.DateTimeFormat('ru-RU', {
 
 const now = (): string => timeFmt.format(new Date());
 
-export class Logger {
+class Logger {
   static debug(location: string, message: string, ...args: LogArgs): void {
     if (CURRENT_LOG_LEVEL <= LOG_LEVEL.DEBUG) {
       console.debug(`${now()} [DEBUG] (${location}) - ${message}:`, ...args);
