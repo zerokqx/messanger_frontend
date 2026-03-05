@@ -22,7 +22,7 @@ interface LoginFormState {
   userName: string;
 }
 
-export const LoginModal = ({ children, ...props }: ModalProps) => {
+export const LoginModal = ({ children,onClose, ...props }: ModalProps) => {
   const { t } = useTranslation(['auth', 'button-labels', 'field-labels']);
   const router = useRouter();
   const { mutateAsync } = useLogin();
@@ -40,8 +40,8 @@ export const LoginModal = ({ children, ...props }: ModalProps) => {
 
   const handleSuccess = useCallback(() => {
     void router.invalidate();
-    props.onClose();
-  }, [router, props.onClose]);
+    onClose();
+  }, [router, onClose]);
 
   const submit: SubmitHandler<LoginFormState> = async (
     { password, userName },
@@ -60,7 +60,7 @@ export const LoginModal = ({ children, ...props }: ModalProps) => {
   };
 
   return (
-    <Modal {...props}>
+    <Modal {...{...props,onClose}}>
       <form
         onSubmit={(e) => {
           void handleSubmit(submit)(e);

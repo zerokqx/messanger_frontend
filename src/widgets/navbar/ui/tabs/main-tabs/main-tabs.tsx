@@ -46,7 +46,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
     <Tabs animationVariant="stack">
-      <Tabs.Bridge saveTo={bottomApiTabs} />
+      <Tabs.Bridge ref={bottomApiTabs} />
       <Stack h="inherit">
         <Stack m="xs">
           <Group>

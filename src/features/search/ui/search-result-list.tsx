@@ -4,14 +4,9 @@ import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useSearchStore } from '../model';
 import { HorizontalUserCard } from '@/entities/user';
 import { lazy } from 'react';
-import { MotionStagerList } from '@/shared/ui/motion-stager-list';
+import { MotionStagerList, StagerItem } from '@/shared/ui/motion-stager-list';
 
 
-const StagerItem = lazy(() =>
-  import('@/shared/ui/motion-stager-list').then((m) => ({
-    default: m.StagerItem,
-  }))
-);
 
 export const SearchResultList = () => {
   const selectUser = useSetUuidForRouter();

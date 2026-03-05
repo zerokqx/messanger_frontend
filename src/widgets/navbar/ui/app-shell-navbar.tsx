@@ -9,7 +9,7 @@ export const AppShellNavbarWidget = () => {
     <AppShellNavbar h="100%" style={{ overflow: 'hidden' }}>
       <Box h="100%" style={{ minHeight: 0 }}>
         <RootTabs>
-          <Tabs.Bridge saveTo={topApiTabs} />
+          <Tabs.Bridge ref={topApiTabs} />
           <Tabs.Tab value="main">
             <MainTabs controller={topApiTabs} />
           </Tabs.Tab>

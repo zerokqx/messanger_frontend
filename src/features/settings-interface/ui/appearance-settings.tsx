@@ -6,7 +6,7 @@ import { supportColors } from '../config/support-colors';
 import { errorNotify } from '@/shared/lib/notifications/error';
 import { ThemeToggle } from '@/shared/ui/theme-toggle';
 import { Select, Text, useMantineTheme } from '@mantine/core';
-import { has } from 'lodash';
+import has from 'lodash/has';
 import { useTranslation } from 'react-i18next';
 import { ChangeLanguage } from './change-language.tsx';
 

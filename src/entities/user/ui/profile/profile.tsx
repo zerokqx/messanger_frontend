@@ -9,7 +9,7 @@ import {
   Text,
   ThemeIcon,
 } from '@mantine/core';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { BadgeCheck } from 'lucide-react';
 import { lazy, Suspense, createContext, use, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -45,22 +45,22 @@ const useProfileContext = () => {
 };
 
 const UserProfileBase = ({ profile, children }: UserProfileProps) => {
-  const formatName = useMemo(() => {
-    const customName = get(profile, 'custom_name') as string | undefined;
-    const login = get(profile, 'login') as string | undefined
-    const formatName = formatLogin(login, customName);
-    return formatName;
-  }, [profile.login, profile.custom_name]);
+  const formatName = formatLogin(
+    profile.login as string,
+    profile.custom_name as string
+  );
+
   const value = useMemo(
     () => ({
-      formatName,
       ...profile,
+      formatName,
     }),
-    [profile, formatName]
+    [formatName, profile]
   );
+
   return (
     <ProfileContext value={value}>
-      <Stack gap={'xs'} align="stretch">
+      <Stack gap="xs" align="stretch">
         {children}
       </Stack>
     </ProfileContext>
@@ -95,7 +95,7 @@ const Bio = () => {
 const CreatedAt = () => {
   const copy = useNotifyClipboard();
   const context = useProfileContext();
-  const createdAt = get(context, 'created_at') 
+  const createdAt = get(context, 'created_at');
   const [t] = useTranslation('profile');
   const data = useMemo<string>(() => {
     return (
@@ -130,7 +130,7 @@ const Login = () => {
   const login = context.login;
   const rel = context.relationship;
 
-  if (!login ) return null;
+  if (!login) return null;
   return (
     <IconButton
       onMouseUp={() => {
@@ -140,7 +140,7 @@ const Login = () => {
       <LabelBox>
         <Group>
           <Text>{context.formatName.format}</Text>
-          { rel && rel.is_target_user_blocked_by_current_user && (
+          {rel && rel.is_target_user_blocked_by_current_user && (
             <Text c={'vdarkGray'}>Заблокирован</Text>
           )}
         </Group>

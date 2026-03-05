@@ -39,7 +39,7 @@ export interface VisibilityBaseProps extends AnimationBaseProps {
   children?: ReactNode;
 }
 interface BridgeProps {
-  saveTo: RefObject<Actions | null>;
+  ref: RefObject<Actions | null>;
 }
 interface TriggerProps {
   on: unknown;

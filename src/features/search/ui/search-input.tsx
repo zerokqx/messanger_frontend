@@ -14,7 +14,8 @@ export const SearchInput = ({ onCommit, ...props }: SaerchInputProps) => {
   const [t] = useTranslation('search');
   const { isLoading } = useSearch();
   const query = useSearchUserQuery((s) => s.data);
-  const [value, setValue] = useState<string>(query);
+
+  const [value, setValue] = useState<string>(()=>query);
   useDebounce(
     () => {
       if (!(value.length > 2)) return;
@@ -25,16 +26,12 @@ export const SearchInput = ({ onCommit, ...props }: SaerchInputProps) => {
     1000,
     [value]
   );
-  useEffect(() => {
-    setValue(query);
-  }, [query]);
   return (
     <TextInput
       {...props}
       placeholder={t('search-placeholder')}
       radius={'xl'}
       leftSection={<Search />}
-      defaultValue={query}
       value={value}
       rightSection={isLoading && <Loader size="xs" />}
       onChange={({ currentTarget }) => {

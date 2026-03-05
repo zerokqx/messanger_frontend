@@ -12,6 +12,7 @@ import type { components } from '@/shared/types/v1';
 import { Check, Save } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, Select, Button, Stack } from '@mantine/core';
+import { useTails } from '@/shared/lib/tails';
 
 type Permissions = components['schemas']['ProfileData'];
 
@@ -36,6 +37,7 @@ export const ProfilePermissions = memo(
     });
 
     const { mutate, isPending, isSuccess } = useProfilePut();
+    const tailIsSuccess = useTails({ interval: 1000, trigger: isSuccess });
 
     const onSubmit = (data: PermissionsStringify) => {
       mutate(
@@ -74,26 +76,9 @@ export const ProfilePermissions = memo(
       return { everyoneContactsNobody, hours, days };
     }, [t, hoursPlurar, daysPlurar]);
 
-    const [isSuccessButton, setIsSuccessButton] = useState(false);
-
-    useEffect(() => {
-      if (isSuccess) {
-        setIsSuccessButton(true);
-        const timeout = setTimeout(() => {
-          setIsSuccessButton(false);
-        }, 1000);
-        return () => {
-          clearTimeout(timeout);
-        };
-      }
-    }, [isSuccess]);
-
     return (
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          void handleSubmit(onSubmit)(e);
-        }}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Stack gap="md">
           <Checkbox
@@ -129,7 +114,6 @@ export const ProfilePermissions = memo(
             label={t('permisions:force_auto_delete_messages_in_private')}
           />
 
-          {/* Селекты через Controller */}
           <Controller
             name="last_seen_visibility"
             control={control}
@@ -219,9 +203,9 @@ export const ProfilePermissions = memo(
             loading={isPending}
             disabled={!isDirty}
             leftSection={
-              isSuccessButton ? <Check size={18} /> : <Save size={18} />
+              tailIsSuccess ? <Check size={18} /> : <Save size={18} />
             }
-            color={isSuccessButton ? 'green' : undefined}
+            color={tailIsSuccess ? 'green' : undefined}
             variant="subtle"
             mt="lg"
           >

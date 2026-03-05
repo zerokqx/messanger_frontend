@@ -1,5 +1,5 @@
 import { Box, Stack } from '@mantine/core';
-import { map } from 'lodash';
+import map from 'lodash/map';
 import { SessionCard, SessionCurrentCard } from './session-card';
 import { useRef } from 'react';
 import type { SessionData } from './session.types';
