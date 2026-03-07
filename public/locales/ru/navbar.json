@@ -10,5 +10,6 @@
   "settings/interface": "Интерфейс",
   "settings/sessions": "Сессии",
   "settings/permissions": "Разрешения",
-  "change-password": "Сменить пароль"
+  "change-password": "Сменить пароль",
+  "submit-logout-text":"Вы уверены что хотите выйти?"
 }

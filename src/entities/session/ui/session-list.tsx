@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mantine/core';
+import { Box, Center, Stack, Text } from '@mantine/core';
 import map from 'lodash/map';
 import { SessionCard, SessionCurrentCard } from './session-card';
 import { useRef } from 'react';
@@ -16,7 +16,7 @@ export const SessionList = ({ sessions }: SessionListProps) => {
     count: sessions.length,
     getScrollElement: () => parentRef.current,
     overscan: 2,
-    estimateSize: (index) => (sessions[index]?.is_current ? 270 : 200),
+    estimateSize: (index) => (sessions[index]?.is_current ? 220 : 200),
   });
 
   const items = rowVirtualizer.getVirtualItems();
@@ -36,7 +36,7 @@ export const SessionList = ({ sessions }: SessionListProps) => {
               }}
             >
               {session.is_current ? (
-                <SessionCurrentCard session={session} />
+                <SessionCurrentCard singleSession={!!items.length} session={session} />
               ) : (
                 <SessionCard session={session} />
               )}
@@ -44,6 +44,13 @@ export const SessionList = ({ sessions }: SessionListProps) => {
           );
         })}
       </Box>
+
+
+        {items.length === 1 && (
+          <Center>
+            <Text opacity={0.6}>Сессий больше нету кроме текущей...</Text>
+          </Center>
+        )}
     </Stack>
   );
 };

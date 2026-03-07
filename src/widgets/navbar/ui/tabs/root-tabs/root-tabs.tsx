@@ -3,8 +3,6 @@ import {
   ActionIcon,
   Button,
   Group,
-  Notification,
-  Portal,
   Skeleton,
   Stack,
   Text,
@@ -23,7 +21,7 @@ import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { ChangePasswordModal } from '@/features/change-password/index.ts';
 import { useDisclosure } from '@mantine/hooks';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive/index.ts';
-import { LoadingIndicatorHeader } from '@/shared/ui/loading-indicator-header/index.ts';
+import { modals } from '@mantine/modals';
 
 const SessionsTab = lazy(() =>
   import('@/features/session/ui/session-manager').then((module) => ({
@@ -63,7 +61,6 @@ const RootTabsTitle = () => {
   );
 };
 
-
 export const RootTabs = ({ children }: RootTabsProps) => {
   const { mobile } = useResponsive();
   const { colorScheme } = useMantineColorScheme();
@@ -74,14 +71,13 @@ export const RootTabs = ({ children }: RootTabsProps) => {
 
   return (
     <Tabs animationVariant="slide-x">
-
       <ChangePasswordModal
         fullScreen={mobile}
         onClose={close}
         opened={opened}
         transitionProps={{ transition: 'slide-right' }}
       />
-      <Stack h="100%" p={'xs'}  style={{ minHeight: 0 }}>
+      <Stack h="100%" p={'xs'} style={{ minHeight: 0 }}>
         <Tabs.Hide when={['main']} animationVariant="slide-y-up">
           <Group
             justify="space-between"
@@ -104,7 +100,6 @@ export const RootTabs = ({ children }: RootTabsProps) => {
             />
             <Suspense fallback={<Skeleton w={100} h={'1ch'} />}>
               <RootTabsTitle />
-
             </Suspense>
             <Tabs.UseApi
               children={({ actions }) => (
@@ -159,8 +154,23 @@ export const RootTabs = ({ children }: RootTabsProps) => {
                   </ButtonLeft>
                   <ButtonLeft
                     onClick={() => {
-                      void logout();
+                      modals.openConfirmModal({
+                        fullScreen: mobile,
+                        children:t("navbar:submit-logout-text"),
+                        cancelProps:{
+                          children:t('button-labels:back')
+                        },
+                        confirmProps:{
+                          color:'deepRed',
+                          children:t('button-labels:exit'),
+                          rightSection: <LogOut/>
+                        },
+                        onConfirm: () => {
+                          void logout();
+                        },
+                      });
                     }}
+                    variant="outline"
                     color="red"
                     leftSection={<LogOut />}
                   >

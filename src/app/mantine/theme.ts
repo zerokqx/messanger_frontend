@@ -34,6 +34,18 @@ const dark: MantineColorsTuple = [
 
 const colors: Record<string, MantineColorsTuple> = {
   dark,
+  deepRed: [
+    '#fceeef',
+    '#f2d9da',
+    '#e8afb2',
+    '#df8286',
+    '#d75c61',
+    '#d3454a',
+    '#d2393e',
+    '#ba2d31',
+    '#a6262a',
+    '#691419',
+  ],
   blue: [
     '#e5f3ff',
     '#cde2ff',

@@ -1,5 +1,4 @@
 import {
-  Affix,
   Group,
   Loader,
   rem,

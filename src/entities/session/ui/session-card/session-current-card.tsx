@@ -5,7 +5,11 @@ import { useToggle } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import type { SessionCurrentProps } from '../session-instance.types';
 import { useSesionActionsContext } from '../../model';
-export const SessionCurrentCard = ({ session }: SessionCurrentProps) => {
+
+export const SessionCurrentCard = ({
+  session,
+  singleSession = false,
+}: SessionCurrentProps) => {
   const [t] = useTranslation('session');
   const [tooltipStatus, tooltipToggle] = useToggle();
   const actions = useSesionActionsContext();
@@ -22,7 +26,7 @@ export const SessionCurrentCard = ({ session }: SessionCurrentProps) => {
         <Session.CreatedAt />
         <Session.LastRefresh />
       </Session.Body>
-      <Session.Footer withDivider>
+      <Session.Footer>
         <Session.Trusted trusted={false}>
           <Tooltip
             w={220}
@@ -45,15 +49,17 @@ export const SessionCurrentCard = ({ session }: SessionCurrentProps) => {
             </Group>
           </Tooltip>
         </Session.Trusted>
-        <Session.Trusted trusted={false}>
-          <Button
-            onClick={() => {
-              actions.onRevokeAll();
-            }}
-          >
-            {t('close_all_sessions')}
-          </Button>
-        </Session.Trusted>
+        {!singleSession && (
+          <Session.Trusted trusted={true}>
+            <Button
+              onClick={() => {
+                actions.onRevokeAll();
+              }}
+            >
+              {t('close_all_sessions')}
+            </Button>
+          </Session.Trusted>
+        )}
       </Session.Footer>
     </Session>
   );

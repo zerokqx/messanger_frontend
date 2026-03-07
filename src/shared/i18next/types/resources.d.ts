@@ -78,7 +78,8 @@ interface Resources {
     "settings": "Settings",
     "settings/interface": "Interface",
     "settings/permissions": "Permissions",
-    "settings/sessions": "Sessions"
+    "settings/sessions": "Sessions",
+    "submit-logout-text": "Are you sure you want to get out?"
   },
   "password-change": {
     "button-change": "Change",

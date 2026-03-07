@@ -12,6 +12,7 @@ import { UserAgent } from './session-components/user-agent';
 import { ThisDevice } from './session-components/this-device';
 import { SessionContext } from '../model/session.context';
 import * as m from 'motion/react-m';
+
 /**
  * @description Базовый компонент сессии. Связывает компоненты через контекст.
  * @remark Не предназначен для использования снаружи. Использовать только для постороения переиспользуемых instance сессий.
