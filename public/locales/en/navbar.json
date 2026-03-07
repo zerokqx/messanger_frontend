@@ -10,5 +10,6 @@
   "sessions": "Sessions",
   "settings/interface": "Interface",
   "settings/sessions": "Sessions",
-  "settings/permissions": "Permissions"
+  "settings/permissions": "Permissions",
+  "change-password": "Change password"
 }

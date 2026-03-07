@@ -22,6 +22,7 @@ interface Resources {
     "delete": "Delete",
     "edit": "Edit",
     "enter": "Enter",
+    "exit": "Exit",
     "next": "Next",
     "register": "Register",
     "remove": "Remove",
@@ -65,6 +66,7 @@ interface Resources {
     "userName_label": "User name"
   },
   "navbar": {
+    "change-password": "Change password",
     "contacts": "Contacts",
     "interface_edit": "Interface",
     "main": "Home",
@@ -77,6 +79,15 @@ interface Resources {
     "settings/interface": "Interface",
     "settings/permissions": "Permissions",
     "settings/sessions": "Sessions"
+  },
+  "password-change": {
+    "button-change": "Change",
+    "button-changed": "Changed",
+    "modal-title": "Change password",
+    "new-password": "New password",
+    "notification-loading-title": "Updating password",
+    "notification-success-message": "Password updated successfully!",
+    "old-password": "Old password"
   },
   "permisions": {
     "allow_message_forwarding": "Allow message forwarding",

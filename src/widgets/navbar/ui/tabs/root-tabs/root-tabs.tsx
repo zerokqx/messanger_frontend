@@ -3,13 +3,15 @@ import {
   ActionIcon,
   Button,
   Group,
+  Notification,
+  Portal,
   Skeleton,
   Stack,
   Text,
   useMantineColorScheme,
 } from '@mantine/core';
 import { Tabs } from '@/shared/ui/query-tabs';
-import { ArrowLeft, Home, LogOut } from 'lucide-react';
+import { ArrowLeft, Home, Lock, LogOut } from 'lucide-react';
 import { InterfaceEditSkeleton } from '@/features/settings-interface';
 import { useTranslation } from 'react-i18next';
 import { SessionListSkeleton } from '@/features/session';
@@ -17,10 +19,10 @@ import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
 import { useLogout } from '@/entities/user/index.ts';
 import { useMe } from '@/entities/user/model/me.query.ts';
-import {
-  SkeletonLayout,
-} from '@/shared/ui/skeletons/index.ts';
-
+import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
+import { ChangePasswordModal } from '@/features/change-password/index.ts';
+import { useDisclosure } from '@mantine/hooks';
+import { useResponsive } from '@/shared/lib/hooks/use-responsive/index.ts';
 
 const SessionsTab = lazy(() =>
   import('@/features/session/ui/session-manager').then((module) => ({
@@ -41,6 +43,12 @@ const ProfilePermissions = lazy(() =>
   )
 );
 
+const ButtonLeft = Button.withProps({
+  m: '0 auto',
+  variant: 'light',
+  justify: 'start',
+  fullWidth: true,
+});
 const RootTabsTitle = () => {
   const [t] = useTranslation('navbar');
   return (
@@ -54,14 +62,24 @@ const RootTabsTitle = () => {
   );
 };
 
+
 export const RootTabs = ({ children }: RootTabsProps) => {
+  const { mobile } = useResponsive();
   const { colorScheme } = useMantineColorScheme();
   const [t] = useTranslation(['navbar', 'button-labels']);
   const { data } = useMe();
   const logout = useLogout();
+  const [opened, { toggle, close }] = useDisclosure();
 
   return (
     <Tabs animationVariant="slide-x">
+
+      <ChangePasswordModal
+        fullScreen={mobile}
+        onClose={close}
+        opened={opened}
+        transitionProps={{ transition: 'slide-right' }}
+      />
       <Stack h="100%" p={'xs'} style={{ minHeight: 0 }}>
         <Tabs.Hide when={['main']} animationVariant="slide-y-up">
           <Group
@@ -124,31 +142,28 @@ export const RootTabs = ({ children }: RootTabsProps) => {
               children={({ actions }) => (
                 <>
                   {rootTabs.map(({ value, leftSection }) => (
-                    <Button
+                    <ButtonLeft
                       key={value}
                       onClick={() => {
                         actions.push(value);
                       }}
                       leftSection={leftSection}
-                      m={'0 auto'}
-                      fullWidth
-                      variant="light"
-                      justify="start"
                     >
                       {t(value)}
-                    </Button>
+                    </ButtonLeft>
                   ))}
-                  <Button
+                  <ButtonLeft leftSection={<Lock />} onClick={toggle}>
+                    {t('change-password')}
+                  </ButtonLeft>
+                  <ButtonLeft
                     onClick={() => {
                       void logout();
                     }}
                     color="red"
                     leftSection={<LogOut />}
-                    variant="subtle"
-                    justify="start"
                   >
                     {t('button-labels:exit')}
-                  </Button>
+                  </ButtonLeft>
                 </>
               )}
             />

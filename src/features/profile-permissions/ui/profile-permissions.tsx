@@ -37,7 +37,7 @@ export const ProfilePermissions = memo(
     });
 
     const { mutate, isPending, isSuccess } = useProfilePut();
-    const tailIsSuccess = useTails({ interval: 1000, trigger: isSuccess });
+    const tailIsSuccess = useTails(1000,isSuccess);
 
     const onSubmit = (data: PermissionsStringify) => {
       mutate(

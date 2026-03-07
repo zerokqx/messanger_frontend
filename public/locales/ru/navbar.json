@@ -9,5 +9,6 @@
   "interface_edit": "Интерфейс",
   "settings/interface": "Интерфейс",
   "settings/sessions": "Сессии",
-  "settings/permissions": "Разрешения"
+  "settings/permissions": "Разрешения",
+  "change-password": "Сменить пароль"
 }
