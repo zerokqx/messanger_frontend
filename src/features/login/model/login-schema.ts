@@ -1,3 +1,4 @@
+import { password } from '@/shared/model/password';
 import { z } from 'zod';
 
 export const loginFormSchema = z.object({
@@ -17,15 +18,5 @@ export const loginFormSchema = z.object({
     )
     .regex(/^[A-Za-z0-9_]+$/, 'Только английские буквы, цифры и подчеркивания')
     .nonoptional(),
-  password: z
-    .string()
-    .nonempty()
-    .min(8, 'Пароль должен быть минимум 8 символов')
-    .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
-    .regex(/[a-z]/, 'Пароль должен содержать хотя бы одну строчную букву')
-    .regex(/[\W_]/, 'Пароль должен содержать хотя бы один спецсимвол'),
-});
-
-const test = z.object({
-  us: z.object(),
+  password,
 });

@@ -13,11 +13,12 @@ import { useTranslation } from 'react-i18next';
 import { notifications } from '@mantine/notifications';
 import { useRef } from 'react';
 import { Check, Save } from 'lucide-react';
+import {
+  changePasswordValidation,
+  type PasswordsSchema,
+} from '../model/change-password-validations';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-interface ChangePasswordForm {
-  oldPassword: string;
-  newPassword: string;
-}
 export const ChangePasswordModal = ({
   opened,
   ...props
@@ -31,10 +32,11 @@ export const ChangePasswordModal = ({
   const [t] = useTranslation('password-change');
   const tailIsSuccess = useTails(1000, isSuccess);
 
-  const { register, reset, handleSubmit, formState } =
-    useForm<ChangePasswordForm>();
+  const { register, reset, handleSubmit, formState } = useForm<PasswordsSchema>(
+    { resolver: zodResolver(changePasswordValidation) }
+  );
   const { current: passwordIdLoading } = useRef('loading-1');
-  const submit: SubmitHandler<ChangePasswordForm> = async ({
+  const submit: SubmitHandler<PasswordsSchema> = async ({
     newPassword,
     oldPassword,
   }) => {
@@ -75,11 +77,13 @@ export const ChangePasswordModal = ({
       <form onSubmit={handleSubmit(submit)}>
         <Stack>
           <PasswordInput
+            error={formState.errors.oldPassword?.message}
             data-autofocus
             label={t('old-password')}
             {...register('oldPassword')}
           />
           <PasswordInput
+            error={formState.errors.newPassword?.message}
             label={t('new-password')}
             {...register('newPassword')}
           />

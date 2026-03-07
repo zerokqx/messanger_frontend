@@ -23,6 +23,7 @@ import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { ChangePasswordModal } from '@/features/change-password/index.ts';
 import { useDisclosure } from '@mantine/hooks';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive/index.ts';
+import { LoadingIndicatorHeader } from '@/shared/ui/loading-indicator-header/index.ts';
 
 const SessionsTab = lazy(() =>
   import('@/features/session/ui/session-manager').then((module) => ({
@@ -80,7 +81,7 @@ export const RootTabs = ({ children }: RootTabsProps) => {
         opened={opened}
         transitionProps={{ transition: 'slide-right' }}
       />
-      <Stack h="100%" p={'xs'} style={{ minHeight: 0 }}>
+      <Stack h="100%" p={'xs'}  style={{ minHeight: 0 }}>
         <Tabs.Hide when={['main']} animationVariant="slide-y-up">
           <Group
             justify="space-between"
@@ -103,6 +104,7 @@ export const RootTabs = ({ children }: RootTabsProps) => {
             />
             <Suspense fallback={<Skeleton w={100} h={'1ch'} />}>
               <RootTabsTitle />
+
             </Suspense>
             <Tabs.UseApi
               children={({ actions }) => (
