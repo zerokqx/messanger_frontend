@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
+import { useUpdateEffect } from 'react-use';
 
 export function useTails(interval: number, trigger: unknown) {
   const ref = useRef<number | undefined>(undefined);
   const [tail, setTail] = useState(false);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     clearTimeout(ref.current);
     setTail(true);
     ref.current = setTimeout(() => {
@@ -26,7 +27,8 @@ export function useSuperTails(interval: number, trigger: unknown) {
   const cooldownRef = useRef<number | undefined>(undefined);
   const [tail, setTail] = useState<Position>('inactive');
 
-  useEffect(() => {
+  useUpdateEffect(() => {
+  console.log('trigger changed:', trigger);
     const clearTimers = () => {
       if (activeRef.current) clearTimeout(activeRef.current);
       if (cooldownRef.current) clearTimeout(cooldownRef.current);

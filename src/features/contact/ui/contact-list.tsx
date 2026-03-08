@@ -51,30 +51,29 @@ export const ContactsList = () => {
     return <Alert icon={<CircleSlash />}>{t('contacts-empty')}</Alert>;
   }
 
-
   return (
-      <ContactsContent
-        contactsMap={contactsMap}
-        hasNextPage={contacts.hasNextPage}
-        onRemove={(userId) => {
-          pendingNotify(t('contact-remove-pending'));
-          removeContact(
-            {
-              body: { user_id: userId },
+    <ContactsContent
+      contactsMap={contactsMap}
+      hasNextPage={contacts.hasNextPage}
+      onRemove={(userId) => {
+        pendingNotify(t('contact-remove-pending'));
+        removeContact(
+          {
+            body: { user_id: userId },
+          },
+          {
+            onSuccess() {
+              successNotify(t('contact-remove-success'));
             },
-            {
-              onSuccess() {
-                successNotify(t('contact-remove-success'));
-              },
-            }
-          );
-        }}
-        onSelect={(userId) => {
-          void selectUser(userId);
-        }}
-        totalSize={virtualizer.getTotalSize()}
-        virtualRows={virtualizer.getVirtualItems()}
-        viewportRef={viewportRef}
-      />
+          }
+        );
+      }}
+      onSelect={(userId) => {
+        void selectUser(userId);
+      }}
+      totalSize={virtualizer.getTotalSize()}
+      virtualRows={virtualizer.getVirtualItems()}
+      viewportRef={viewportRef}
+    />
   );
 };

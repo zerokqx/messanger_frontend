@@ -66,6 +66,7 @@ interface Resources {
     "userName_label": "User name"
   },
   "navbar": {
+    "block-users": "Blocked users",
     "change-password": "Change password",
     "contacts": "Contacts",
     "interface_edit": "Interface",

@@ -1,8 +1,8 @@
 import {
-  pagesMap,
   useContactCountQuery,
   useContactsQuery,
 } from '@/entities/contact';
+import { pagesMap } from '@/shared/lib/pages-map';
 import { useMemo } from 'react';
 
 export const useContactListState = () => {

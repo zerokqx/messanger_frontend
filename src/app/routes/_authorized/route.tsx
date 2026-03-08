@@ -1,11 +1,11 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { AppShell, Loader, useMantineTheme } from '@mantine/core';
-import { Suspense, lazy, useRef } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { notify } from '@/shared/lib/notifications';
 import { useTokenStore } from '@/shared/token';
 import { socket } from '@/shared/api';
-import { useEffectOnce } from 'react-use';
+
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
 );
@@ -21,28 +21,42 @@ export const Route = createFileRoute('/_authorized')({
 function RouteComponent() {
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
-  const socketConnected = useRef(false);
   const token = useTokenStore((s) => s.data.access);
 
-  useEffectOnce(() => {
-    if (socketConnected.current) return;
-    socket.disconnect()
-    socket.onAny((event, ...args) => {
+  useEffect(() => {
+    const onAny = (event: string, ...args: unknown[]) => {
       console.log('EVENT:', event, args);
-    });
+    };
 
-    socket.on('connect', () => {
+    const onConnect = () => {
       notify.success({ title: 'Сокет', message: 'Успешное подключение' });
-    });
+    };
 
-    socket.on('message', () => {
+    const onMessage = () => {
       notify.success({ title: 'Сокет', message: 'Успешное подключение' });
-    });
+    };
 
     socket.auth = { token };
-    socket.connect();
-    socketConnected.current = true;
-  });
+
+    socket.offAny();
+    socket.off('connect', onConnect);
+    socket.off('message', onMessage);
+
+    socket.onAny(onAny);
+    socket.on('connect', onConnect);
+    socket.on('message', onMessage);
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('message', onMessage);
+      socket.offAny(onAny);
+    };
+  }, [token]);
+
   return (
     <AppShell
       navbar={{

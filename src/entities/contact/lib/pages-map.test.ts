@@ -1,4 +1,4 @@
-import { pagesMap } from './pages-map';
+import { pagesMap } from '@/shared/lib/pages-map';
 
 import type { components } from '@/shared/types/v1';
 import type { InfiniteData } from '@tanstack/react-query';

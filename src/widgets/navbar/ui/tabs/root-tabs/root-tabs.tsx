@@ -28,6 +28,12 @@ const SessionsTab = lazy(() =>
     default: module.SessionsTab,
   }))
 );
+
+const BlocklistManager = lazy(() =>
+  import('@/features/blocklist-manager/ui/index.tsx').then((module) => ({
+    default: module.BlocklistManager,
+  }))
+);
 const InterfaceEditTab = lazy(() =>
   import('@/features/settings-interface/ui/edit').then((module) => ({
     default: module.InterfaceEditTab,
@@ -156,14 +162,14 @@ export const RootTabs = ({ children }: RootTabsProps) => {
                     onClick={() => {
                       modals.openConfirmModal({
                         fullScreen: mobile,
-                        children:t("navbar:submit-logout-text"),
-                        cancelProps:{
-                          children:t('button-labels:back')
+                        children: t('navbar:submit-logout-text'),
+                        cancelProps: {
+                          children: t('button-labels:back'),
                         },
-                        confirmProps:{
-                          color:'deepRed',
-                          children:t('button-labels:exit'),
-                          rightSection: <LogOut/>
+                        confirmProps: {
+                          color: 'deepRed',
+                          children: t('button-labels:exit'),
+                          rightSection: <LogOut />,
                         },
                         onConfirm: () => {
                           void logout();
@@ -180,6 +186,11 @@ export const RootTabs = ({ children }: RootTabsProps) => {
               )}
             />
           </Stack>
+        </Tabs.Tab>
+        <Tabs.Tab value="block-users">
+          <Suspense fallback={<SkeletonLayout />}>
+            <BlocklistManager />
+          </Suspense>
         </Tabs.Tab>
       </Stack>
     </Tabs>

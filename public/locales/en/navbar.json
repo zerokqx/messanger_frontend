@@ -11,6 +11,7 @@
   "settings/interface": "Interface",
   "settings/sessions": "Sessions",
   "settings/permissions": "Permissions",
+  "block-users": "Blocked users",
   "change-password": "Change password",
   "submit-logout-text":"Are you sure you want to get out?"
 }

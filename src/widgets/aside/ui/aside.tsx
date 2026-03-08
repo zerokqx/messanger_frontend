@@ -63,32 +63,36 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
                 ) : (
                   <Stack>
                     <ProfileForGetUserById profile={data} />
-                    <ContactControllPanel
-                      onUpdate={invalidateUser}
-                      userId={uuid}
-                      user={data}
-                    />
+                    {!data.relationship
+                      .is_current_user_in_blacklist_of_target &&
+                      !data.relationship
+                        .is_target_user_blocked_by_current_user && (
+                        <ContactControllPanel
+                          onUpdate={invalidateUser}
+                          userId={uuid}
+                          user={data}
+                        />
+                      )}
                   </Stack>
                 )}
               </Suspense>
             </>
           </Tabs.Tab>
           {data?.relationship.is_target_in_contacts_of_current_user && (
-
-          <Tabs.Tab value="profile-edit">
-            <Suspense fallback={<SkeletonLayout/>}>
-              <UpdateContactForm
-                uuid={uuid}
-                onSuccessUpdate={() => {
-                  invalidateUser();
-                  notify.success();
-                }}
-                initialState={{
-                  customName: data.custom_name ?? '',
-                }}
-              />
-            </Suspense>
-          </Tabs.Tab>
+            <Tabs.Tab value="profile-edit">
+              <Suspense fallback={<SkeletonLayout />}>
+                <UpdateContactForm
+                  uuid={uuid}
+                  onSuccessUpdate={() => {
+                    invalidateUser();
+                    notify.success();
+                  }}
+                  initialState={{
+                    customName: data.custom_name ?? '',
+                  }}
+                />
+              </Suspense>
+            </Tabs.Tab>
           )}
         </Tabs>
       )}

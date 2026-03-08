@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useEditProfile } from '../api';
 import { useOs } from '@/shared/lib/use-os';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { Stack, Textarea, Button, Text } from '@mantine/core';
+import { Stack, Textarea, Text } from '@mantine/core';
+import { useTails } from '@/shared/lib/tails';
+import { TailButton } from '@/shared/ui/buttons';
+import { Check, Save } from 'lucide-react';
 
 interface ProfileEditFormProps {
   onSuccess?: () => void;
@@ -21,7 +24,8 @@ export const ProfileEditForm = ({
   const { t } = useTranslation(['field-labels', 'button-labels']);
   const osType = useOs();
   const { data } = useMe();
-  const { mutate, isPending } = useEditProfile();
+  const { mutate, isPending, isSuccess } = useEditProfile();
+  const tailIsSuccess = useTails(1000,isSuccess)
 
   const {
     register,
@@ -74,15 +78,26 @@ export const ProfileEditForm = ({
           }
         />
 
-        <Button
+        <TailButton
           type="submit"
-          variant={isPending ? 'light' : 'subtle'}
+          tailVariant={{
+            true: 'light',
+            false: 'subtle',
+          }}
+          tail={tailIsSuccess}
+          tailColors={{
+            true: 'green',
+          }}
+          tailSection={{
+            true: isDirty && <Check />,
+            false: isDirty && <Save />,
+          }}
           loading={isPending || isSubmitting}
           disabled={!isDirty || isSubmitting}
           fullWidth={!osType.isDesktop}
         >
           {t('button-labels:save')}
-        </Button>
+        </TailButton>
       </Stack>
     </form>
   );
