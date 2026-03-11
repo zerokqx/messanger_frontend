@@ -1,4 +1,4 @@
-import { useSettingsStore } from '@/shared/lib/hooks/settings';
+import { useSettingsStore } from '@/shared/lib/settings';
 import { queryClient } from '@/shared/api';
 import { i18n } from '@/shared/i18next/clients';
 import { MantineProvider } from '@mantine/core';

@@ -1,7 +1,7 @@
 import {
   PrimaryColorSchema,
   useSettingsStore,
-} from '@/shared/lib/hooks/settings';
+} from '@/shared/lib/settings';
 import { supportColors } from '../config/support-colors';
 import { errorNotify } from '@/shared/lib/notifications/error';
 import { ThemeToggle } from '@/shared/ui/theme-toggle';

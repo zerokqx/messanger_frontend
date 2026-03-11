@@ -2,8 +2,6 @@ import { z } from 'zod';
 
 export const AnimationSchema = z.enum(['spring', 'keyframes']);
 
-type Animation = z.infer<typeof AnimationSchema>;
-
 export const PrimaryColorSchema = z.enum([
   'blue',
   'indigo',
@@ -11,8 +9,6 @@ export const PrimaryColorSchema = z.enum([
   'green',
   'gray',
 ]);
-
-type PrimaryColor = z.infer<typeof PrimaryColorSchema>;
 
 export const SettingsSchema = z.object({
   animations: AnimationSchema.default('spring'),

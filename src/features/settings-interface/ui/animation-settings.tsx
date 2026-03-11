@@ -1,7 +1,7 @@
 import {
   AnimationSchema,
   useSettingsStore,
-} from '@/shared/lib/hooks/settings';
+} from '@/shared/lib/settings';
 import { notify } from '@/shared/lib/notifications';
 import { Select, Slider, Space, Switch, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';

@@ -3,4 +3,4 @@ export {
   PrimaryColorSchema,
   SettingsSchema,
 } from './types.ts';
-export type {   Settings } from './types.ts';
+export type { Settings } from './types.ts';
