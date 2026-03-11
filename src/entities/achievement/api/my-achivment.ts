@@ -3,7 +3,7 @@ import { useIsAuth } from '@/entities/session';
 
 export const useMyAchivment = () => {
   const isAuth = useIsAuth();
-  return $api.jwtAchievement.query.useQuery(
+  return $api.jwtAchievement.query.useSuspenseQuery(
     'get',
     '/my',
     {},

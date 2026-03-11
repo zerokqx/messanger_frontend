@@ -1,0 +1,22 @@
+{
+  "loading": "Загрузка ачивок...",
+  "load_error": "Не удалось загрузить ачивки",
+  "empty": "Пока нет ачивок",
+  "empty_filtered": "По выбранным фильтрам ачивки не найдены",
+  "search_placeholder": "Поиск по названию или описанию",
+  "clear_filters": "Сбросить фильтры",
+  "progress": "Прогресс: {{progress}}/{{required}}",
+  "completed_with_date": "Выполнено: {{date}}",
+  "status": {
+    "completed": "Выполненные",
+    "in_progress": "Не выполненные"
+  },
+  "badge": {
+    "bronze": "Бронза",
+    "silver": "Серебро",
+    "gold": "Золото",
+    "platinum": "Платина",
+    "diamond": "Алмаз",
+    "legendary": "Легендарная"
+  }
+}

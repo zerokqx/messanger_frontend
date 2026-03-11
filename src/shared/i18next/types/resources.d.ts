@@ -1,4 +1,26 @@
 interface Resources {
+  "achievement": {
+    "badge": {
+      "bronze": "Bronze",
+      "diamond": "Diamond",
+      "gold": "Gold",
+      "legendary": "Legendary",
+      "platinum": "Platinum",
+      "silver": "Silver"
+    },
+    "clear_filters": "Clear filters",
+    "completed_with_date": "Completed: {{date}}",
+    "empty": "No achievements yet",
+    "empty_filtered": "No achievements match selected filters",
+    "load_error": "Failed to load achievements",
+    "loading": "Loading achievements...",
+    "progress": "Progress: {{progress}}/{{required}}",
+    "search_placeholder": "Search by name or description",
+    "status": {
+      "completed": "Completed",
+      "in_progress": "In progress"
+    }
+  },
   "api-errors": {
     "contact_update": "Couldn't update contact"
   },
@@ -61,11 +83,13 @@ interface Resources {
   },
   "field-labels": {
     "bio_label": "Biography",
+    "full-name": "Full name",
     "password_label": "Password",
     "password_repeat_label": "Repeat password",
     "userName_label": "User name"
   },
   "navbar": {
+    "achievements": "Achievements",
     "block-users": "Blocked users",
     "change-password": "Change password",
     "contacts": "Contacts",

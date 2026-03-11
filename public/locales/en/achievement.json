@@ -1,0 +1,22 @@
+{
+  "loading": "Loading achievements...",
+  "load_error": "Failed to load achievements",
+  "empty": "No achievements yet",
+  "empty_filtered": "No achievements match selected filters",
+  "search_placeholder": "Search by name or description",
+  "clear_filters": "Clear filters",
+  "progress": "Progress: {{progress}}/{{required}}",
+  "completed_with_date": "Completed: {{date}}",
+  "status": {
+    "completed": "Completed",
+    "in_progress": "In progress"
+  },
+  "badge": {
+    "bronze": "Bronze",
+    "silver": "Silver",
+    "gold": "Gold",
+    "platinum": "Platinum",
+    "diamond": "Diamond",
+    "legendary": "Legendary"
+  }
+}

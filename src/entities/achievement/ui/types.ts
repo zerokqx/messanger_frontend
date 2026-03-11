@@ -27,3 +27,15 @@ export interface AchievementCardProps {
   rightSection?: ReactNode;
   simplifycity?: boolean;
 }
+
+export interface AchievementFiltersProps {
+  selectedGrades: AchievementBadgeType[];
+  onSelectedGradesChange: (grades: AchievementBadgeType[]) => void;
+  search: string;
+  onSearchChange: (value: string) => void;
+  showCompleted: boolean;
+  onShowCompletedChange: (value: boolean) => void;
+  showInProgress: boolean;
+  onShowInProgressChange: (value: boolean) => void;
+  onClear: () => void;
+}

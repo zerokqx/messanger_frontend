@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   Group,
-  Image,
   Progress,
   RingProgress,
   Skeleton,
@@ -14,6 +13,7 @@ import {
 } from '@mantine/core';
 import { Check, Lock, Trophy } from 'lucide-react';
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { AchievementBadgeType, AchievementCardProps } from './types';
 
 const badgeThemeMap: Record<
@@ -56,6 +56,7 @@ const AchievementCardBase = ({
   rightSection,
   simplifycity = false,
 }: AchievementCardProps) => {
+  const [t] = useTranslation('achievement');
   const theme = badgeThemeMap[achievement.badge_type];
   const progress = achievement.progress ?? 0;
   const requiredProgress = achievement.required_progress ?? 0;
@@ -65,18 +66,7 @@ const AchievementCardBase = ({
     : null;
 
   return (
-    <Card
-      radius="xl"
-      p="md"
-      bd="1px solid var(--mantine-color-dark-4)"
-      style={{
-        overflow: 'hidden',
-        minHeight: 152,
-        background: achievement.is_completed
-          ? `radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 45%), ${theme.background}`
-          : 'linear-gradient(135deg, var(--mantine-color-dark-8), var(--mantine-color-dark-6))',
-      }}
-    >
+    <Card radius="xl" p="md" bd="1px solid vdarkGray">
       <Group justify="space-between" align="flex-start" wrap="nowrap">
         <Group align="center" wrap="nowrap">
           <ThemeIcon size={52} radius="md" variant="light" color={theme.color}>
@@ -85,17 +75,17 @@ const AchievementCardBase = ({
 
           <Stack gap={2}>
             <Group gap="xs">
-              <Text fw={700} c="white" lineClamp={1}>
+              <Text fw={700} lineClamp={1}>
                 {achievement.name}
               </Text>
               <Badge variant="light" color={theme.color}>
-                {achievement.badge_type}
+                {t(`badge.${achievement.badge_type}`)}
               </Badge>
             </Group>
             <Text size="xs" opacity={0.5} lineClamp={2}>
               {achievement.description}
             </Text>
-            <Text size="xs" c="gray.3">
+            <Text size="xs" opacity={0.4}>
               #{achievement.category}
             </Text>
           </Stack>
@@ -105,21 +95,18 @@ const AchievementCardBase = ({
             <Tooltip
               label={
                 achievement.is_completed
-                  ? `Completed${unlockedDate ? `: ${unlockedDate}` : ''}`
-                  : 'In progress'
+                  ? unlockedDate
+                    ? t('completed_with_date', { date: unlockedDate })
+                    : t('status.completed')
+                  : t('status.in_progress')
               }
             >
               <ThemeIcon
-                size={28}
                 radius="xl"
                 variant="filled"
                 color={achievement.is_completed ? 'teal' : 'dark'}
               >
-                {achievement.is_completed ? (
-                  <Check size={16} />
-                ) : (
-                  <Lock size={16} />
-                )}
+                {achievement.is_completed ? <Check /> : <Lock />}
               </ThemeIcon>
             </Tooltip>
           ) : (
@@ -131,8 +118,8 @@ const AchievementCardBase = ({
 
       <Group mt="md" justify="space-between" wrap="nowrap" align="center">
         <Stack gap={6} flex={1}>
-          <Text size="xs" c="gray.2">
-            Progress: {progress}/{requiredProgress}
+          <Text size="xs">
+            {t('progress', { progress, required: requiredProgress })}
           </Text>
 
           {!simplifycity ? (
@@ -155,7 +142,7 @@ const AchievementCardBase = ({
                 },
               ]}
               label={
-                <Text size="xs" fw={700} ta="center" c="white">
+                <Text size="xs" fw={700} ta="center">
                   {progressPercent}%
                 </Text>
               }

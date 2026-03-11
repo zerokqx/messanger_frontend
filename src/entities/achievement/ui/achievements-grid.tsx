@@ -1,11 +1,16 @@
-import { Alert, Box, Pagination, Text } from '@mantine/core';
+import { Alert, Box, Center, Pagination, Text } from '@mantine/core';
 import { CircleSlash } from 'lucide-react';
 import type { HTMLAttributes } from 'react';
-import { useMemo, useState } from 'react';
+import * as m from 'motion/react-m';
+import { useMemo } from 'react';
 import { Virtuoso } from 'react-virtuoso';
+import { useTranslation } from 'react-i18next';
 import { useMyAchievement } from '../api';
 import { AchievementCard } from './achievement-card';
+import { AchievementFilters } from './achievement-filters';
 import type { AchievementItem } from './types';
+import { useAchievementsGridState } from './use-achievements-grid-state';
+import { AnimatePresence } from 'motion/react';
 
 const PAGE_SIZE = 10;
 
@@ -13,7 +18,9 @@ const VirtuosoList = (props: HTMLAttributes<HTMLDivElement>) => {
   return <div {...props} style={{ ...props.style, paddingBottom: '8px' }} />;
 };
 
-const normalizeAchievement = (item: Partial<AchievementItem>): AchievementItem => ({
+const normalizeAchievement = (
+  item: Partial<AchievementItem>
+): AchievementItem => ({
   achievement_id: item.achievement_id ?? 0,
   code: item.code ?? '',
   name: item.name ?? 'Unknown achievement',
@@ -37,26 +44,59 @@ const flattenAchievements = (
 };
 
 export const AchievementsGrid = () => {
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [page, setPage] = useState(1);
+  const [t] = useTranslation('achievement');
+  const {
+    state,
+    setPage,
+    setScrolling,
+    setSearch,
+    setSelectedGrades,
+    setShowCompleted,
+    setShowInProgress,
+    resetFilters,
+  } = useAchievementsGridState();
   const { data, isLoading, isError } = useMyAchievement();
 
   const allAchievements = useMemo(
     () => flattenAchievements(data?.data.items),
     [data?.data.items]
   );
-  const totalPages = Math.max(1, Math.ceil(allAchievements.length / PAGE_SIZE));
-  const safePage = Math.min(page, totalPages);
+  const filteredAchievements = useMemo(() => {
+    const searchQuery = state.search.trim().toLowerCase();
+
+    return allAchievements.filter((achievement) => {
+      const isGradeMatch =
+        state.selectedGrades.length === 0 ||
+        state.selectedGrades.includes(achievement.badge_type);
+
+      const isStatusMatch =
+        (state.showCompleted && achievement.is_completed) ||
+        (state.showInProgress && !achievement.is_completed);
+
+      const isSearchMatch =
+        searchQuery.length === 0 ||
+        achievement.name.toLowerCase().includes(searchQuery) ||
+        achievement.description.toLowerCase().includes(searchQuery);
+
+      return isGradeMatch && isStatusMatch && isSearchMatch;
+    });
+  }, [allAchievements, state]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredAchievements.length / PAGE_SIZE)
+  );
+  const safePage = Math.min(state.page, totalPages);
   const achievements = useMemo(() => {
     const start = (safePage - 1) * PAGE_SIZE;
-    return allAchievements.slice(start, start + PAGE_SIZE);
-  }, [allAchievements, safePage]);
+    return filteredAchievements.slice(start, start + PAGE_SIZE);
+  }, [filteredAchievements, safePage]);
 
   if (isLoading) {
     return (
       <Box p="xs">
         <Text c="dimmed" size="sm">
-          Loading achievements...
+          {t('loading')}
         </Text>
       </Box>
     );
@@ -65,52 +105,99 @@ export const AchievementsGrid = () => {
   if (isError) {
     return (
       <Alert color="red" icon={<CircleSlash size={16} />} m="xs">
-        Failed to load achievements
+        {t('load_error')}
       </Alert>
     );
   }
 
-  if (achievements.length === 0) {
+  if (allAchievements.length === 0) {
     return (
       <Alert color="gray" icon={<CircleSlash size={16} />} m="xs">
-        No achievements yet
+        {t('empty')}
       </Alert>
     );
   }
 
   return (
-    <Box h="100%" style={{ minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-      <Virtuoso
-        key={safePage}
-        style={{
-          flex: 1,
-          minHeight: 0,
-        }}
-        components={{
-          List: VirtuosoList,
-        }}
-        totalCount={achievements.length}
-        computeItemKey={(index) => achievements[index].achievement_id}
-        increaseViewportBy={300}
-        isScrolling={setIsScrolling}
-        itemContent={(index) => (
-          <Box mb="sm">
-            <AchievementCard
-              achievement={achievements[index]}
-              simplifycity={isScrolling}
-            />
-          </Box>
-        )}
-      />
-      <Box p="xs">
-        <Pagination
-          value={safePage}
-          onChange={setPage}
-          total={totalPages}
-          size="sm"
-          withEdges
+    <Box
+      h="100%"
+      style={{
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'clip',
+      }}
+    >
+      <AnimatePresence initial={false} mode="popLayout">
+        <m.div
+          style={{ zIndex: 200 }}
+          animate={{ y: 0, opacity: 1 }}
+          initial={{ y: -100, opacity: 0 }}
+          exit={{ y: -100, opacity: 0 }}
+        >
+          <AchievementFilters
+            selectedGrades={state.selectedGrades}
+            onSelectedGradesChange={(grades) => {
+              setSelectedGrades(grades);
+            }}
+            search={state.search}
+            onSearchChange={(value) => {
+              setSearch(value);
+            }}
+            showCompleted={state.showCompleted}
+            onShowCompletedChange={(value) => {
+              setShowCompleted(value);
+            }}
+            showInProgress={state.showInProgress}
+            onShowInProgressChange={(value) => {
+              setShowInProgress(value);
+            }}
+            onClear={() => {
+              resetFilters();
+            }}
+          />
+        </m.div>
+      </AnimatePresence>
+      {achievements.length === 0 ? (
+        <Alert color="gray" icon={<CircleSlash size={16} />} m="xs">
+          {t('empty_filtered')}
+        </Alert>
+      ) : (
+        <Virtuoso
+          key={safePage}
+          style={{
+            flex: 1,
+            minHeight: 0,
+          }}
+          components={{
+            List: VirtuosoList,
+          }}
+          totalCount={achievements.length}
+          computeItemKey={(index) => achievements[index].achievement_id}
+          increaseViewportBy={300}
+          isScrolling={setScrolling}
+          itemContent={(index) => (
+            <Box mb="sm">
+              <AchievementCard
+                achievement={achievements[index]}
+                simplifycity={state.isScrolling}
+              />
+            </Box>
+          )}
         />
-      </Box>
+      )}
+      {achievements.length > 0 && (
+        <Center p="xs">
+          <Pagination
+            boundaries={0}
+            value={safePage}
+            onChange={setPage}
+            total={totalPages}
+            size="md"
+            withEdges
+          />
+        </Center>
+      )}
     </Box>
   );
 };

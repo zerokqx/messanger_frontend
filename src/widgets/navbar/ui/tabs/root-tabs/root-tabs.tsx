@@ -15,10 +15,12 @@ import { useTranslation } from 'react-i18next';
 import { SessionListSkeleton } from '@/features/session';
 import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
-import { AchievementsGrid } from '@/entities/achievement';
 import { useLogout } from '@/entities/user/index.ts';
 import { useMe } from '@/entities/user/model/me.query.ts';
-import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
+import {
+  SkeletonLayout,
+  SkeletonsCardList,
+} from '@/shared/ui/skeletons/index.ts';
 import { ChangePasswordModal } from '@/features/change-password/index.ts';
 import { useDisclosure } from '@mantine/hooks';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive/index.ts';
@@ -30,6 +32,11 @@ const SessionsTab = lazy(() =>
   }))
 );
 
+const AchievementsGrid = lazy(() =>
+  import('@/entities/achievement').then((m) => ({
+    default: m.AchievementsGrid,
+  }))
+);
 const BlocklistManager = lazy(() =>
   import('@/features/blocklist-manager/ui/index.tsx').then((module) => ({
     default: module.BlocklistManager,
@@ -58,13 +65,12 @@ const ButtonLeft = Button.withProps({
 const RootTabsTitle = () => {
   const [t] = useTranslation('navbar');
   return (
-    <Tabs.UseApi
-      children={({ state }) => (
-        <Text c="gray" size="sm" fw={'bold'}>
-          {t(state.current)}
+    <Tabs.UseApi>
+      {({ state }) => (
+        <Text c="gray" size="sm" fw={'bold'}> {t(state.current)}
         </Text>
       )}
-    />
+    </Tabs.UseApi>
   );
 };
 
@@ -92,8 +98,8 @@ export const RootTabs = ({ children }: RootTabsProps) => {
             p={'xs'}
             bdrs={'xl'}
           >
-            <Tabs.UseApi
-              children={({ actions }) => (
+            <Tabs.UseApi>
+              {({ actions }) => (
                 <ActionIcon
                   onClick={() => {
                     actions.back();
@@ -104,12 +110,12 @@ export const RootTabs = ({ children }: RootTabsProps) => {
                   <ArrowLeft />
                 </ActionIcon>
               )}
-            />
+            </Tabs.UseApi>
             <Suspense fallback={<Skeleton w={100} h={'1ch'} />}>
               <RootTabsTitle />
             </Suspense>
-            <Tabs.UseApi
-              children={({ actions }) => (
+            <Tabs.UseApi>
+              {({ actions }) => (
                 <ActionIcon
                   onClick={() => {
                     actions.reset('main');
@@ -120,7 +126,7 @@ export const RootTabs = ({ children }: RootTabsProps) => {
                   <Home />
                 </ActionIcon>
               )}
-            />
+            </Tabs.UseApi>
           </Group>
         </Tabs.Hide>
         <Tabs.Tab value="settings/sessions">
@@ -142,8 +148,8 @@ export const RootTabs = ({ children }: RootTabsProps) => {
         </Tabs.Tab>
         <Tabs.Tab value="settings">
           <Stack>
-            <Tabs.UseApi
-              children={({ actions }) => (
+            <Tabs.UseApi>
+              {({ actions }) => (
                 <>
                   {rootTabs.map(({ value, leftSection }) => (
                     <ButtonLeft
@@ -185,7 +191,7 @@ export const RootTabs = ({ children }: RootTabsProps) => {
                   </ButtonLeft>
                 </>
               )}
-            />
+            </Tabs.UseApi>
           </Stack>
         </Tabs.Tab>
         <Tabs.Tab value="block-users">
@@ -194,7 +200,16 @@ export const RootTabs = ({ children }: RootTabsProps) => {
           </Suspense>
         </Tabs.Tab>
         <Tabs.Tab value="achievements">
-          <AchievementsGrid />
+          <Suspense
+            fallback={
+              <Stack>
+                <Skeleton h={62} w={'100%'} />
+                <SkeletonsCardList size={4} h={170} />
+              </Stack>
+            }
+          >
+            <AchievementsGrid />
+          </Suspense>
         </Tabs.Tab>
       </Stack>
     </Tabs>
