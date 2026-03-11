@@ -56,7 +56,7 @@ in
   };
 
   enterTest = ''
-     bun test:browser    
+    bun test:browser    
   '';
 
   git-hooks.hooks.eslint.enable = true;

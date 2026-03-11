@@ -1,3 +1,5 @@
+// Copyright (c) 2026 zerokqx
+// SPDX-License-Identifier: MIT
 import { ChatContainer } from './chat-container';
 import { MessageItem } from './message-item';
 import { SystemMessage } from './system-message';

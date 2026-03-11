@@ -1,5 +1,21 @@
 For launch on localhost need run this command:
 
+Before launch set env variable:
+
+```bash
+VITE_REMOTE=true
+```
+
+Example:
+
+```bash
+cp .env.example .env
+```
+
+And set `VITE_REMOTE=true` in `.env`.
+
+Then run:
+
 ```bash
 dcoker build -t yobble-frontend .
 docker run --name yobble-frontend -p 80:80 yobble-frontend
@@ -24,3 +40,16 @@ And
 ---
 
 Go to `localhost:80`
+
+---
+
+## Author
+
+- zerokqx
+- Murad Shakhsinov
+
+---
+
+## License
+
+MIT. See [LICENSE](./LICENSE).

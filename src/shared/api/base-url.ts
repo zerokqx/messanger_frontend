@@ -1,3 +1,5 @@
+// Copyright (c) 2026 zerokqx
+// SPDX-License-Identifier: MIT
 export type Services = 'auth' | 'user' | 'profile' | 'feed' | 'chat';
 type Version = 'v1';
 type BaseUrlDomain = `https://${string}`;

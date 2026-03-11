@@ -1,3 +1,5 @@
+// Copyright (c) 2026 zerokqx
+// SPDX-License-Identifier: MIT
 import './lucide.css';
 import "./index.css"
 import '@mantine/core/styles.css';
