@@ -1,4 +1,4 @@
-import { Cog, UserLock } from 'lucide-react';
+import { Cog, Trophy, UserLock } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 interface MenuTabs {
@@ -15,5 +15,10 @@ export const menuTabsConfig = [
   {
     label: 'block-users',
     icon: <UserLock />,
+  } as const,
+
+  {
+    label: 'achievements',
+    icon: <Trophy />,
   } as const,
 ] satisfies MenuTabs[];

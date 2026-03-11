@@ -11,6 +11,7 @@
   "settings/sessions": "Сессии",
   "settings/permissions": "Разрешения",
   "block-users": "Заблокированные",
+  "achievements": "Достижения",
   "change-password": "Сменить пароль",
   "submit-logout-text":"Вы уверены что хотите выйти?"
 }

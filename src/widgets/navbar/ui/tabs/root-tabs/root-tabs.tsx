@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { SessionListSkeleton } from '@/features/session';
 import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
+import { AchievementsGrid } from '@/entities/achievement';
 import { useLogout } from '@/entities/user/index.ts';
 import { useMe } from '@/entities/user/model/me.query.ts';
 import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
@@ -191,6 +192,9 @@ export const RootTabs = ({ children }: RootTabsProps) => {
           <Suspense fallback={<SkeletonLayout />}>
             <BlocklistManager />
           </Suspense>
+        </Tabs.Tab>
+        <Tabs.Tab value="achievements">
+          <AchievementsGrid />
         </Tabs.Tab>
       </Stack>
     </Tabs>

@@ -26,4 +26,12 @@ export const $api = {
     },
     authMiddleware,
   }),
+
+  ...coupleOfFetchers('achievement', {
+    autoBaseUrl: true,
+    clientOption: {
+      credentials: 'include',
+    },
+    authMiddleware,
+  }),
 } satisfies I$ApiRepositoryQuery;

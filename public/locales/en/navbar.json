@@ -12,6 +12,7 @@
   "settings/sessions": "Sessions",
   "settings/permissions": "Permissions",
   "block-users": "Blocked users",
+  "achievements": "Achievements",
   "change-password": "Change password",
   "submit-logout-text":"Are you sure you want to get out?"
 }
