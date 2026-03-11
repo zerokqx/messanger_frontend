@@ -3,9 +3,21 @@ import type { AnimationBaseProps } from '../ui/tabs.type';
 import { animationVariants } from './animation-variant';
 
 export const useAnimationResolve = (
-  animationVariant?: AnimationBaseProps['animationVariant']
+  animationVariant?: AnimationBaseProps['animationVariant'],
+  animationClosed?: AnimationBaseProps['animationClosed']
 ) => {
   const [animationVariantFromContext] = useTabsAnimationVariant();
   const variantKey = animationVariant ?? animationVariantFromContext ?? 'none';
-  return animationVariants[variantKey];
+
+  const animation = animationVariants[variantKey];
+  const closed = animationClosed
+    ? animationVariants[animationClosed].closed
+    : animation.closed;
+
+  return {
+    initial: { ...animation.initial },
+    open: { ...animation.open },
+    // Always return an isolated closed variant to prevent cross-component leakage.
+    closed: { ...closed },
+  };
 };

@@ -23,6 +23,7 @@ interface TabsUseApiProps {
 export interface AnimationBaseProps {
   withAnimation?: boolean;
   animationVariant?: TabAnimationVariant;
+  animationClosed?: TabAnimationVariant;
 }
 
 interface TabProps extends AnimationBaseProps {

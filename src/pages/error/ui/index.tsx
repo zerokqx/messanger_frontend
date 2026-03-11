@@ -1,15 +1,13 @@
 import { useLogout } from '@/entities/user';
 import { Stack, Text, Title, Button, Paper, Group } from '@mantine/core';
 import type { ErrorRouteComponent } from '@tanstack/react-router';
-import { capitalize } from 'lodash';
+import capitalize from 'lodash/capitalize';
 import { RefreshCcw, Home, LogOut } from 'lucide-react';
-import { AnimatePresence } from 'motion/react';
 import * as m from 'motion/react-m';
 
 export const PageError: ErrorRouteComponent = ({ error, reset }) => {
   const logout = useLogout();
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
       <Stack
         h="100vh"
         align="center"
@@ -18,8 +16,7 @@ export const PageError: ErrorRouteComponent = ({ error, reset }) => {
         key={'error'}
         renderRoot={(props) => (
           <m.div
-            exit={{ opacity: 0, scale: 0 }}
-            initial={{ opacity: 0, scale: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             {...props}
           />
@@ -70,6 +67,5 @@ export const PageError: ErrorRouteComponent = ({ error, reset }) => {
           </Stack>
         </Paper>
       </Stack>
-    </AnimatePresence>
   );
 };

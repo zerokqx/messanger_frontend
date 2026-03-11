@@ -16,6 +16,7 @@ export const Tabs: TabsComponent = ({
   children,
   initialTab,
   animationVariant,
+  
 }) => {
   return (
     <TabManagerProvider

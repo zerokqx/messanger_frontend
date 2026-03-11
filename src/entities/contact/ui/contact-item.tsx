@@ -9,6 +9,8 @@ import { HorizontalUserCard } from '@/entities/user';
 export const ContactCard = ({
   user,
   onClick,
+  isSelected,
+  simplification,
   onRemove,
 }: IContactElementProp) => {
   const [opened, toggle] = useToggle();
@@ -39,9 +41,9 @@ export const ContactCard = ({
     >
       <Menu.Target>
         <HorizontalUserCard
+          isSelected={isSelected}
           value={user}
           onClick={(e) => {
-
             if (!opened) onClick?.(e);
           }}
           onContextMenu={(e) => {
@@ -57,12 +59,12 @@ export const ContactCard = ({
           justify="space-between"
         >
           <Group ref={cardRef}>
-            <HorizontalUserCard.Avatar />
+            <HorizontalUserCard.Avatar  />
             <HorizontalUserCard.Login />
           </Group>
         </HorizontalUserCard>
       </Menu.Target>
-      {opened && (
+      {opened && !simplification && (
         <Menu.Dropdown left={position?.x} top={position?.y}>
           <Menu.Item
             onClick={() => {

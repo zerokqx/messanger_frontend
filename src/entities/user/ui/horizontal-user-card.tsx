@@ -10,39 +10,43 @@ import {
   Avatar as AvatarMantine,
   Group,
   type GroupProps,
+  type AvatarProps,
 } from '@mantine/core';
 import { formatLogin } from '@/shared/lib/formaters';
 
 interface HorizontalUserCardProps extends GroupProps {
   value: UserProfileContextState;
+  isSelected?: boolean;
 }
 
 interface HorizontalUserCardComponent {
   (props: HorizontalUserCardProps): ReactNode;
   Login: () => ReactNode;
 
-  Avatar: () => ReactNode;
+  Avatar: (props: AvatarProps) => ReactNode;
 }
 const Login = () => {
   const [profile] = useUserProfileContext();
   return <Text>{profile?.login}</Text>;
 };
 
-const Avatar = () => {
+const Avatar: HorizontalUserCardComponent['Avatar'] = (props) => {
   const [profile] = useUserProfileContext();
   return (
     <AvatarMantine
+      {...props}
       name={formatLogin(
         profile?.login,
         profile?.custom_name,
         false
       ).format.slice(0, 2)}
+
     />
   );
 };
 
 export const HorizontalUserCard: HorizontalUserCardComponent = (
-  { value, className, ...props },
+  { value, isSelected, className, ...props },
   ref?: RefObject<HTMLDivElement>
 ) => {
   return (
@@ -55,6 +59,7 @@ export const HorizontalUserCard: HorizontalUserCardComponent = (
         bdrs={'xl'}
         p={'xs'}
         className={[style.card, className].filter(Boolean).join(' ')}
+        bd={isSelected ? '1px solid gray' : undefined}
         {...props}
       />
     </UserProfileContext>

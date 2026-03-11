@@ -56,8 +56,7 @@ in
   };
 
   enterTest = ''
-    echo "Running tests"
-    git --version | grep --color=auto "${pkgs.git.version}"
+     bun test:browser    
   '';
 
   git-hooks.hooks.eslint.enable = true;

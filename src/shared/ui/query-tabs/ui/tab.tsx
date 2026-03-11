@@ -8,9 +8,10 @@ export const Tab: TabsComponent['Tab'] = ({
   children,
   value,
   animationVariant,
+  animationClosed,
 }) => {
   const state = useCurrentTab();
-  const animation = useAnimationResolve(animationVariant);
+  const animation = useAnimationResolve(animationVariant, animationClosed);
   const isActive = state === value;
 
   return (
@@ -36,10 +37,11 @@ export const Tab: TabsComponent['Tab'] = ({
 export const TabsKeepMounted: TabsComponent['TabKeepMounted'] = ({
   value,
   animationVariant,
+  animationClosed,
   children,
 }) => {
   const state = useCurrentTab();
-  const animation = useAnimationResolve(animationVariant);
+  const animation = useAnimationResolve(animationVariant, animationClosed);
   const isActive = state === value;
   return (
     <m.div

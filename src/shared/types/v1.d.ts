@@ -3,7 +3,7 @@
  * Do not make direct changes to the file.
  */
 
-interface paths {
+export interface paths {
     "/ping": {
         parameters: {
             query?: never;
@@ -303,6 +303,23 @@ interface paths {
         put?: never;
         /** [/docs/proxy/auth_service/v1] Update Push Token */
         post: operations["update_push_token_sessions_update_push_token_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/apps/ios-link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** [/docs/proxy/auth_service/v1] Get Ios Link */
+        get: operations["get_ios_link_apps_ios_link_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -874,7 +891,7 @@ interface paths {
         patch?: never;
         trace?: never;
     };
-    "/avatar/upload": {
+    "/upload/avatar": {
         parameters: {
             query?: never;
             header?: never;
@@ -884,14 +901,14 @@ interface paths {
         get?: never;
         put?: never;
         /** [/docs/proxy/storage_service/v1] Upload Avatar */
-        post: operations["upload_avatar_avatar_upload_post"];
+        post: operations["upload_avatar_upload_avatar_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/avatar/download/{user_id}": {
+    "/download/avatar/{user_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -899,7 +916,7 @@ interface paths {
             cookie?: never;
         };
         /** [/docs/proxy/storage_service/v1] Download Avatar */
-        get: operations["download_avatar_avatar_download__user_id__get"];
+        get: operations["download_avatar_download_avatar__user_id__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -919,40 +936,6 @@ interface paths {
         put?: never;
         /** [/docs/proxy/storage_service/v1] Get Avatars Batch */
         post: operations["get_avatars_batch_internal_avatars_list_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chat/private/upload": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** [/docs/proxy/storage_service/v1] Upload Chat Media */
-        post: operations["upload_chat_media_chat_private_upload_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chat/private/download/{chat_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** [/docs/proxy/storage_service/v1] Download Chat Media */
-        get: operations["download_chat_media_chat_private_download__chat_id__get"];
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1040,7 +1023,7 @@ interface paths {
         trace?: never;
     };
 }
-type webhooks = Record<string, never>;
+export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** BaseResponse */
@@ -1083,6 +1066,17 @@ export interface components {
             old_password: string;
             /** New Password */
             new_password: string;
+        };
+        /** IOSLinkData */
+        IOSLinkData: {
+            /** Link */
+            link: string;
+        };
+        /** IOSLinkResponse */
+        IOSLinkResponse: {
+            /** Status */
+            status: string;
+            data: components["schemas"]["IOSLinkData"];
         };
         /** LoginCodeRequest */
         LoginCodeRequest: {
@@ -2448,40 +2442,14 @@ export interface components {
             /** User Ids */
             user_ids: string[];
         };
-        /** Body_upload_avatar_avatar_upload_post */
-        Body_upload_avatar_avatar_upload_post: {
+        /** Body_upload_avatar_upload_avatar_post */
+        Body_upload_avatar_upload_avatar_post: {
             /**
              * File
              * Format: binary
              */
             file: string;
         };
-        /** Body_upload_chat_media_chat_private_upload_post */
-        Body_upload_chat_media_chat_private_upload_post: {
-            /**
-             * Chat Id
-             * Format: uuid
-             * @description Chat id
-             */
-            chat_id: string;
-            media_type: components["schemas"]["ChatMediaType"];
-            /**
-             * No Compress
-             * @description Upload media without compression
-             * @default false
-             */
-            no_compress: boolean;
-            /**
-             * File
-             * Format: binary
-             */
-            file: string;
-        };
-        /**
-         * ChatMediaType
-         * @enum {string}
-         */
-        ChatMediaType: "image" | "video" | "audio" | "file";
         /** UploadAvatarData */
         UploadAvatarData: {
             /**
@@ -2496,21 +2464,6 @@ export interface components {
             /** Status */
             status: string;
             data: components["schemas"]["UploadAvatarData"];
-        };
-        /** UploadChatData */
-        UploadChatData: {
-            /**
-             * File Id
-             * Format: uuid
-             * @description file_id
-             */
-            file_id: string;
-        };
-        /** UploadChatResponse */
-        UploadChatResponse: {
-            /** Status */
-            status: string;
-            data: components["schemas"]["UploadChatData"];
         };
         /** CallActionMessageData */
         CallActionMessageData: {
@@ -2631,8 +2584,8 @@ export interface components {
     headers: never;
     pathItems: never;
 }
-type $defs = Record<string, never>;
-interface operations {
+export type $defs = Record<string, never>;
+export interface operations {
     ping_ping_get: {
         parameters: {
             query?: never;
@@ -3878,6 +3831,98 @@ interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "resource",
+                     *           "message": "Requested resource not found"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /** @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     } */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    get_ios_link_apps_ios_link_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IOSLinkResponse"];
                 };
             };
             /** @description Unauthorized */
@@ -6191,7 +6236,7 @@ interface operations {
             };
         };
     };
-    upload_avatar_avatar_upload_post: {
+    upload_avatar_upload_avatar_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -6200,7 +6245,7 @@ interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": components["schemas"]["Body_upload_avatar_avatar_upload_post"];
+                "multipart/form-data": components["schemas"]["Body_upload_avatar_upload_avatar_post"];
             };
         };
         responses: {
@@ -6251,7 +6296,7 @@ interface operations {
             };
         };
     };
-    download_avatar_avatar_download__user_id__get: {
+    download_avatar_download_avatar__user_id__get: {
         parameters: {
             query: {
                 file_id: string;
@@ -6331,144 +6376,6 @@ interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    upload_chat_media_chat_private_upload_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["Body_upload_chat_media_chat_private_upload_post"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UploadChatResponse"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "login",
-                     *           "message": "Invalid login or password"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "login",
-                     *           "message": "Login must not contain whitespace characters"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-        };
-    };
-    download_chat_media_chat_private_download__chat_id__get: {
-        parameters: {
-            query: {
-                file_id: string;
-            };
-            header?: never;
-            path: {
-                chat_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "login",
-                     *           "message": "Invalid login or password"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "resource",
-                     *           "message": "Requested resource not found"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /** @example {
-                     *       "status": "error",
-                     *       "errors": [
-                     *         {
-                     *           "field": "login",
-                     *           "message": "Login must not contain whitespace characters"
-                     *         }
-                     *       ]
-                     *     } */
-                    "application/json": unknown;
                 };
             };
         };

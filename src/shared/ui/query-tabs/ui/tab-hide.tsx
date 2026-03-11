@@ -8,9 +8,10 @@ export const Hide: TabsComponent['Hide'] = ({
   when,
   children,
   animationVariant,
+  animationClosed
 }) => {
   const state = useCurrentTab();
-  const animation = useAnimationResolve(animationVariant);
+  const animation = useAnimationResolve(animationVariant,animationClosed);
   const ok = whenStatus(when, state);
 
   return (

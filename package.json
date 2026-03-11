@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "benchmark:doctor": "bunx -y react-doctor@latest . --verbose",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test:ts": "tsc --noEmit",
@@ -42,6 +43,7 @@
     "react-hook-form": "^7.71.2",
     "react-i18next": "^16.2.3",
     "react-use": "^17.6.0",
+    "react-virtuoso": "^4.18.3",
     "socket.io-client": "^4.8.3",
     "translation-check": "^1.1.1",
     "ua-parser-js": "^2.0.7",

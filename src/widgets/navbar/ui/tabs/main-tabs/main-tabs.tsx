@@ -4,7 +4,7 @@ import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
 import type { MainTabsProps } from './types.ts';
-import { lazy, Suspense, useState} from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { historySearchActions } from '@/features/search-history/index.ts';
 import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
@@ -45,12 +45,16 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
   const [inp, setInp] = useState('');
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
-    <Tabs animationVariant="stack">
+    <Tabs animationVariant="slide-x">
       <Tabs.Bridge ref={bottomApiTabs} />
       <Stack h="inherit">
         <Stack m="xs">
           <Group>
-            <Tabs.MutallyExclusive animationVariant="scale" when={['search']}>
+            <Tabs.MutallyExclusive
+              animationVariant="scale"
+              animationClosed="rotate"
+              when={['search']}
+            >
               <ActionIcon
                 onClick={() => bottomApiTabs.current?.back()}
                 bdrs="xl"
@@ -58,6 +62,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
               >
                 <ArrowLeft />
               </ActionIcon>
+
               <TabsMenu
                 onClickMenuItem={(value) => {
                   controller.current?.push(value);
@@ -80,7 +85,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
         </Stack>
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          <Tabs.Tab value="search">
+          <Tabs.Tab value="search" animationVariant='stack'>
             <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Suspense fallback={<SkeletonLayout />}>
                 <SearchTab
@@ -112,7 +117,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="contacts">
             <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <Suspense fallback={<SkeletonsCardList size={10} />}>
+              <Suspense fallback={<SkeletonLayout />}>
                 <ContactsTab />
               </Suspense>
             </ErrorBoundary>

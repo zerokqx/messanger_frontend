@@ -6,6 +6,7 @@ export function useTails(interval: number, trigger: unknown) {
   const [tail, setTail] = useState(false);
 
   useUpdateEffect(() => {
+    if (!trigger) return;
     clearTimeout(ref.current);
     setTail(true);
     ref.current = setTimeout(() => {

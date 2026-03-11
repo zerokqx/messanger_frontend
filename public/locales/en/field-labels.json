@@ -1,4 +1,5 @@
 {
+  "full-name": "Full name",
   "bio_label": "Biography",
   "password_label": "Password",
   "password_repeat_label": "Repeat password",

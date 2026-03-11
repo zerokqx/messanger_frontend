@@ -5,11 +5,12 @@ import type { TabsComponent } from './tabs.type';
 import * as m from 'motion/react-m';
 export const MutallyExclusive: TabsComponent['MutallyExclusive'] = ({
   when,
+  animationClosed,
   animationVariant,
   children,
 }) => {
   const ok = useWhenStatus(when);
-  const animation = useAnimationResolve(animationVariant);
+  const animation = useAnimationResolve(animationVariant, animationClosed);
   return (
     <AnimatePresence mode="popLayout">
       {ok && (

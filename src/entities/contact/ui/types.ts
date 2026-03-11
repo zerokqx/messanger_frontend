@@ -5,4 +5,6 @@ export interface IContactElementProp {
   user: components['schemas']['ContactInfo'];
   onClick?: GridProps['onClick'];
   onRemove?: (id: string) => void;
+  simplification?: boolean;
+  isSelected?: boolean;
 }

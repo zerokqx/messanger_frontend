@@ -11,7 +11,6 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { notify } from '@/shared/lib/notifications';
 import { useTranslation } from 'react-i18next';
 import { notifications } from '@mantine/notifications';
-import { useRef } from 'react';
 import { Check, Save } from 'lucide-react';
 import {
   changePasswordValidation,
@@ -35,14 +34,14 @@ export const ChangePasswordModal = ({
   const { register, reset, handleSubmit, formState } = useForm<PasswordsSchema>(
     { resolver: zodResolver(changePasswordValidation) }
   );
-  const { current: passwordIdLoading } = useRef('loading-1');
+  const loadingNotificationId = 'password-change';
   const submit: SubmitHandler<PasswordsSchema> = async ({
     newPassword,
     oldPassword,
   }) => {
     notify.loading({
       title: t('notification-loading-title'),
-      id: passwordIdLoading,
+      id: loadingNotificationId,
     });
     await passwordChange(
       {
@@ -59,7 +58,7 @@ export const ChangePasswordModal = ({
           notify.error();
         },
         onSettled: () => {
-          notifications.hide(passwordIdLoading);
+          notifications.hide(loadingNotificationId);
         },
       }
     );

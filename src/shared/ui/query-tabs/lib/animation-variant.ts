@@ -1,7 +1,5 @@
 import type { Variants } from 'motion/react';
 
-type DirectionVariants = 'back' | 'next';
-
 const PX = {
   sm: 12,
   md: 16,
@@ -12,17 +10,17 @@ const PX = {
 export const animationVariants = {
   scale: {
     initial: {
-      scale: 0,
+      scale: 0.85,
       opacity: 0,
     },
     open: { scale: 1, opacity: 1 },
-    closed: { scale: 0, opacity: 0 },
+    closed: { scale: 0.85, opacity: 0 },
   },
 
   'slide-x': {
-    initial: { x: '-100%', opacity: 0 },
-    open: { x: '0', opacity: 1 },
-    closed: { x: '100%', opacity: 0 },
+    initial: { x: '-100%', opacity: 0,scale:0.95 },
+    open: { x: '0', opacity: 1, scale:1,},
+    closed: { x: '100%', opacity: 0 ,scale:0.95,},
   },
 
   stack: {
@@ -35,6 +33,24 @@ export const animationVariants = {
     initial: { y: -PX.xl, opacity: 0 },
     open: { y: 0, opacity: 1 },
     closed: { y: -PX.xl, opacity: 0 },
+  },
+
+  rotate: {
+    initial: {
+      rotate: 160,
+      scale: 0.5,
+      opacity: 0,
+    },
+    open: {
+      rotate: 0,
+      scale: 1,
+      opacity: 1,
+    },
+    closed: {
+      rotate: 160,
+      scale: 0.5,
+      opacity: 0,
+    },
   },
 
   none: {

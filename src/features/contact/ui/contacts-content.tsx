@@ -1,8 +1,8 @@
-import type { VirtualItem } from '@tanstack/react-virtual';
-import type { RefObject } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 import { ContactCard, SkeletonContactItem } from '@/entities/contact';
 import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import type { useContactListState } from '../model/use-contact-list-state';
+import { useParams } from '@tanstack/react-router';
 
 type ContactsMap = ReturnType<typeof useContactListState>['contactsMap'];
 
@@ -11,77 +11,51 @@ interface ContactsContentProps {
   hasNextPage: boolean;
   onRemove: (userId: string) => void;
   onSelect: (userId: string) => void;
-  totalSize: number;
-  virtualRows: VirtualItem[];
-  viewportRef: RefObject<HTMLDivElement | null>;
+  totalCount: number;
+  onEndReached: () => void;
 }
+
+import { useState } from "react";
 
 export const ContactsContent = ({
   contactsMap,
-  hasNextPage,
   onRemove,
   onSelect,
-  totalSize,
-  virtualRows,
-  viewportRef,
+  totalCount,
+  onEndReached,
 }: ContactsContentProps) => {
+  const { uuid } = useParams({ strict: false });
+  const [scrolling, setScrolling] = useState(false);
+
   return (
-    <div
-      ref={viewportRef}
+    <Virtuoso
       style={{
-        height: '100%',
+        height: "100%",
         minHeight: 0,
-        overflow: 'auto',
       }}
-    >
-      <div
-        style={{
-          height: `${totalSize.toString()}px`,
-          width: '100%',
-          position: 'relative',
-        }}
-      >
-        {virtualRows.map((virtualRow) => {
-          const contact = contactsMap[virtualRow.index];
-          const isSkeleton = virtualRow.index >= contactsMap.length;
+      totalCount={totalCount}
+      increaseViewportBy={150}
+      endReached={onEndReached}
+      isScrolling={setScrolling}
+      itemContent={(index) => {
+        const contact = contactsMap[index];
 
-          return (
-            <div
-              key={virtualRow.key}
-              data-index={virtualRow.index}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: `${virtualRow.size.toString()}px`,
-                transform: `translateY(${virtualRow.start.toString()}px)`,
-                display: 'flex',
-                alignItems: 'center',
-                boxSizing: 'border-box',
-              }}
 
-            >
-              {isSkeleton ? (
-                hasNextPage ? (
-                  <SkeletonContactItem size={virtualRow.size} />
-                ) : null
-              ) : (
-                <ContactCard
-                  user={contact}
-                  onRemove={(userId) => {
-                    onRemove(userId);
-                  }}
-                  onClick={() => {
-                    onSelect(contact.user_id);
-                    layoutAction.doSetAside(true);
-                  }}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+        return (
+          <ContactCard
+            simplification={scrolling}
+            isSelected={uuid === contact.user_id}
+            user={contact}
+            onRemove={(userId) => {
+              onRemove(userId);
+            }}
+            onClick={() => {
+              onSelect(contact.user_id);
+              layoutAction.doSetAside(true);
+            }}
+          />
+        );
+      }}
+    />
   );
 };

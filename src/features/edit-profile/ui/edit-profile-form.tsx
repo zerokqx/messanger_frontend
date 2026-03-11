@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useEditProfile } from '../api';
 import { useOs } from '@/shared/lib/use-os';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { Stack, Textarea, Text } from '@mantine/core';
+import { Stack, Textarea, Text, TextInput } from '@mantine/core';
 import { useTails } from '@/shared/lib/tails';
 import { TailButton } from '@/shared/ui/buttons';
 import { Check, Save } from 'lucide-react';
+import { useMount, useUnmount } from 'react-use';
 
 interface ProfileEditFormProps {
   onSuccess?: () => void;
@@ -15,6 +16,7 @@ interface ProfileEditFormProps {
 
 interface ProfileFormState {
   bio: string;
+  full_name: string;
 }
 
 export const ProfileEditForm = ({
@@ -24,8 +26,10 @@ export const ProfileEditForm = ({
   const { t } = useTranslation(['field-labels', 'button-labels']);
   const osType = useOs();
   const { data } = useMe();
-  const { mutate, isPending, isSuccess } = useEditProfile();
-  const tailIsSuccess = useTails(1000,isSuccess)
+  const { mutate,reset, isPending, isSuccess } = useEditProfile();
+  const tailIsSuccess = useTails(1000, isSuccess);
+  useMount(reset)
+  useUnmount(reset)
 
   const {
     register,
@@ -40,9 +44,7 @@ export const ProfileEditForm = ({
   const onSubmit: SubmitHandler<ProfileFormState> = (values) => {
     mutate(
       {
-        body: {
-          bio: values.bio,
-        },
+        body: values,
       },
       {
         onError,
@@ -56,6 +58,11 @@ export const ProfileEditForm = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap="md">
+        <TextInput
+          {...register('full_name')}
+          label={t('field-labels:full-name')}
+          placeholder='Alexandr ...'
+        />
         <Textarea
           {...register('bio')}
           label={t('field-labels:bio_label')}
@@ -80,6 +87,7 @@ export const ProfileEditForm = ({
 
         <TailButton
           type="submit"
+
           tailVariant={{
             true: 'light',
             false: 'subtle',
