@@ -9,7 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 const useSearchCache = () => {
   const client = useQueryClient();
   return client.getQueryData<components['schemas']['UserSearchResponse']>(
-    $api.jwtFeed.query.queryOptions('get', '/user/search', {
+    $api.feed.jwt.queryOptions('get', '/user/search', {
       params: {
         query: {
           query: '',

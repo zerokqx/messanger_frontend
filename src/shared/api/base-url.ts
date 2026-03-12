@@ -1,6 +1,19 @@
 // Copyright (c) 2026 zerokqx
 // SPDX-License-Identifier: MIT
-export type Services = 'auth' | 'user' | 'profile' | 'feed' | 'chat'|"achievement";
+export const SERVICE_CONFIG = {
+  auth: true,
+  user: true,
+  profile: true,
+  feed: true,
+  chat: true,
+  achievement: true,
+  socket: true,
+  "chat/private":true,
+} as const;
+
+export type Services = keyof typeof SERVICE_CONFIG;
+export const SERVICES = Object.keys(SERVICE_CONFIG) as Services[];
+
 type Version = 'v1';
 type BaseUrlDomain = `https://${string}`;
 const apiUrl = import.meta.env.VITE_API_URL;

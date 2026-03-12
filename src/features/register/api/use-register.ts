@@ -8,7 +8,7 @@ import { useNavigate } from '@tanstack/react-router';
  */
 export const useRegister = () => {
   const navigate = useNavigate();
-  const mutate = $api.queryAuth.useMutation(
+  const mutate = $api.auth.query.useMutation(
     'post',
     '/register',
 

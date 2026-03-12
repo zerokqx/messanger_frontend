@@ -5,7 +5,7 @@ import { keepPreviousData } from '@tanstack/react-query';
 
 export const useBlacklist = (limit = 10) => {
   const isAuth = useIsAuth();
-  return $api.jwtUser.query.useInfiniteQuery(
+  return $api.user.jwt.useInfiniteQuery(
     'get',
     '/blacklist/list',
 

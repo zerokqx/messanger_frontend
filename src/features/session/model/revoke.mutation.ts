@@ -3,12 +3,12 @@ import Logger from '@/shared/lib/logger/logger';
 import type { components } from '@/shared/types/v1';
 
 export const useRevokeSession = () => {
-  return $api.jwtAuth.query.useMutation(
+  return $api.auth.jwt.useMutation(
     'post',
     '/sessions/revoke/{session_id}',
     {
       async onMutate(variables, context) {
-        const sessionsListOptions = $api.jwtAuth.query.queryOptions(
+        const sessionsListOptions = $api.auth.jwt.queryOptions(
           'get',
           '/sessions/list',
           {}
@@ -44,7 +44,7 @@ export const useRevokeSession = () => {
       onError(_error, _variables, _onMutateResult, context) {
         if (context?.previous) {
           context.client.setQueryData(
-            $api.jwtAuth.query.queryOptions('get', '/sessions/list', {})
+            $api.auth.jwt.queryOptions('get', '/sessions/list', {})
               .queryKey,
             context.previous
           );
@@ -53,7 +53,7 @@ export const useRevokeSession = () => {
 
       onSettled(_data, _error, _variables, _onMutateResult, context) {
         void context.client.invalidateQueries(
-          $api.jwtAuth.query.queryOptions('get', '/sessions/list', {})
+          $api.auth.jwt.queryOptions('get', '/sessions/list', {})
         );
       },
     }

@@ -11,9 +11,9 @@ export const useEditProfile = (withReset = false) => {
   const [edit] = useMeDescriptor(true);
   const [t] = useTranslation(['titles', 'profile']);
 
-  return $api.jwtProfile.query.useMutation('put', '/edit', {
+  return $api.profile.jwt.useMutation('put', '/edit', {
     async onMutate(variables, ctx) {
-      const profileQueryOptions = $api.jwtProfile.query.queryOptions(
+      const profileQueryOptions = $api.profile.jwt.queryOptions(
         'get',
         '/me',
         {}
@@ -37,7 +37,7 @@ export const useEditProfile = (withReset = false) => {
 
       if (withReset) {
         void context.client.invalidateQueries(
-          $api.jwtProfile.query.queryOptions('get', '/me', {})
+          $api.profile.jwt.queryOptions('get', '/me', {})
         );
       }
     },
@@ -48,7 +48,7 @@ export const useEditProfile = (withReset = false) => {
 
     onSettled(_data, _error, _variables, _onMutateResult, context) {
       void context.client.invalidateQueries(
-        $api.jwtProfile.query.queryOptions('get', '/me', {})
+        $api.profile.jwt.queryOptions('get', '/me', {})
       );
     },
   });

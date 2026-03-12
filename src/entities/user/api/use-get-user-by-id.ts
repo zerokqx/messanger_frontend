@@ -24,7 +24,7 @@ export const useGetUserById = ({ id }: UseGetUserByIdArgs) => {
     });
   }, [id, client]);
 
-  const query = $api.jwtProfile.query.useQuery(
+  const query = $api.profile.jwt.useQuery(
     'get',
     '/{user_id}',
     {

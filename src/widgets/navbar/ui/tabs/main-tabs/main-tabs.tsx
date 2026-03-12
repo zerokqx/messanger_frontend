@@ -17,6 +17,7 @@ import { socket } from '@/shared/api/socket.ts';
 import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
+import { useSendMessage } from '@/features/send-message/index.ts';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -42,6 +43,7 @@ const ProfileTab = lazy(() =>
   }))
 );
 export const MainTabs = ({ controller }: MainTabsProps) => {
+  const { mutate: sendMessage } = useSendMessage();
   const [inp, setInp] = useState('');
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
@@ -85,7 +87,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
         </Stack>
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          <Tabs.Tab value="search" animationVariant='stack'>
+          <Tabs.Tab value="search" animationVariant="stack">
             <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Suspense fallback={<SkeletonLayout />}>
                 <SearchTab
@@ -105,9 +107,14 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
               />
               <Button
                 onClick={() => {
-                  socket.emit('client_message', {
-                    data: inp,
-                    user_id: 'a92e4c8c-d4e4-4d90-acda-253c1e0abe25',
+                  sendMessage({
+                    body: {
+                      event:"chat_private:new_message",
+                      message: {
+                        inp,
+                      },
+                      user_id: '152e1308-3ad3-4d84-91c5-889d8afed365',
+                    },
                   });
                 }}
               >

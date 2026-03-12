@@ -10,7 +10,7 @@ export const useLogin = () => {
   const router = useRouter();
   const search = useSearch({ from: '/_auth/auth' });
 
-  return $api.queryAuth.useMutation('post', '/login/password', {
+  return $api.auth.query.useMutation('post', '/login/password', {
     onSuccess: async ({ data: { access_token } }) => {
       tokenAction.doSetToken(access_token);
       await router.navigate({ to: search.redirect });

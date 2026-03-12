@@ -26,6 +26,7 @@ in
     testProdBuild.exec = "bun vite build && bun serve ./dist -l 5173 -c ../serve.json";
     build.exec = "bun run build";
     run.exec = "bun run dev";
+    run-preview.exec = "bun preview";
     "i18n:extract".exec = "bunx i18next-cli extract";
     "i18n:sync".exec = "bunx i18next-cli sync";
     "i18n:types".exec = "bunx i18next-cli types";

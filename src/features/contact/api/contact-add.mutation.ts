@@ -1,15 +1,15 @@
 import { $api } from '@/shared/api/repository/$api';
 
 export const useContactAdd = () => {
-  const mutate = $api.jwtUser.query.useMutation('post', '/contact/add', {
+  const mutate = $api.user.jwt.useMutation('post', '/contact/add', {
     async onMutate(_variables, context) {
       await Promise.all([
         context.client.cancelQueries(
-          $api.jwtUser.query.queryOptions('get', '/contact/list')
+          $api.user.jwt.queryOptions('get', '/contact/list')
         ),
 
         context.client.cancelQueries(
-          $api.jwtUser.query.queryOptions('get', '/contact/count')
+          $api.user.jwt.queryOptions('get', '/contact/count')
         ),
       ]);
     },

@@ -23,7 +23,7 @@
 - Репозиторий `$api` (`src/shared/api/repository/$api.ts`) собирает пары клиентов per-сервис через `coupleOfFetchers`: `native<Service>`, `query<Service>`, `jwt<Service>`. `query*` — обертки openapi-react-query, `jwt*` подключают auth-мидлварь.
 - Мидлвары: `set-headers` добавляет общие заголовки, `auth` навешивает Bearer из token-стора и при 401 делает refresh (`/auth/token/refresh`, `tokenAction.doSetToken`), после чего ретраит запрос.
 - QueryClient создается в `src/shared/api/query-clinets.ts` (gcTime сутки). Персистер на localforage — `src/shared/api/storages/base.storage.ts` (подключайте при необходимости).
-- Конкретные запросы/мутации лежат рядом с сущностью/фичей: напр. `entities/user/model/me.query.ts`, `features/login/api/use-login.ts` (берет `$api.queryAuth.useMutation('/login/password')`, сохраняет токен и навигирует по redirect).
+- Конкретные запросы/мутации лежат рядом с сущностью/фичей: напр. `entities/user/model/me.query.ts`, `features/login/api/use-login.ts` (берет `$api.auth.query.useMutation('/login/password')`, сохраняет токен и навигирует по redirect).
 
 ## Состояние
 - ZFY (обертка над zustand) для клиентского стейта. Экшены собираются через `createStoreAction`, чтобы иметь именованные методы `doX`.

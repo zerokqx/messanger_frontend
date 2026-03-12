@@ -9,7 +9,7 @@ import type { components } from '@/shared/types/v1';
 import { useQueryClient } from '@tanstack/react-query';
 import { clone, cloneDeep } from 'lodash';
 
-const meQueryOptions = $api.jwtProfile.query.queryOptions(
+const meQueryOptions = $api.profile.jwt.queryOptions(
   'get',
   '/me',
   {},
@@ -42,7 +42,7 @@ const useUserQuery = () => {
  * fetchMe(loader) => useMe(components)
  */
 export const useMe = () => {
-  return $api.jwtProfile.query.useSuspenseQuery(
+  return $api.profile.jwt.useSuspenseQuery(
     'get',
     '/me',
     {},

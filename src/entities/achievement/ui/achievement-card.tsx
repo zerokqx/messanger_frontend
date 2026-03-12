@@ -125,12 +125,11 @@ const AchievementCardBase = ({
           {!simplifycity ? (
             <Progress value={progressPercent} radius="xl" color={theme.color} />
           ) : (
-            <Skeleton w={259} h={8} />
+            <Skeleton w={279} h={8} />
           )}
         </Stack>
 
         <Box w={54} h={54}>
-          {!simplifycity ? (
             <RingProgress
               size={54}
               thickness={6}
@@ -147,9 +146,6 @@ const AchievementCardBase = ({
                 </Text>
               }
             />
-          ) : (
-            <Skeleton h={42} w={42} circle />
-          )}
         </Box>
       </Group>
     </Card>

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 export const useContactUpdate = () => {
   const { t } = useTranslation(['api-errors']);
-  return $api.jwtUser.query.useMutation('patch', '/contact/update', {
+  return $api.user.jwt.useMutation('patch', '/contact/update', {
     onError() {
       errorNotify(t('contact_update'));
     },

@@ -4,6 +4,7 @@ import { createStore } from '@colorfy-software/zfy';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
+
 export const useTokenStore = createStore<UseTokenStoreState>(
   'token',
   { access: '' },
@@ -31,6 +32,3 @@ export const tokenAction = createStoreAction(
   ],
   ['validate', 'setToken', 'reset', 'getToken'] as const
 );
-const doValidateToken = (t: string) => {
-  return z.jwt().safeParse(t).success;
-};

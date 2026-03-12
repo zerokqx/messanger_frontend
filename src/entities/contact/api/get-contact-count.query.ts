@@ -6,7 +6,7 @@ import { $api } from '@/shared/api/repository/$api';
  */
 export const useContactCountQuery = () => {
   const isAuth = useIsAuth();
-  const query = $api.jwtUser.query.useQuery(
+  const query = $api.user.jwt.useQuery(
     'get',
     '/contact/count',
     {},

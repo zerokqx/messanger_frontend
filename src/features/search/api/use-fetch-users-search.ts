@@ -12,7 +12,7 @@ export const useFetchUsersSearch = (rawQuery: string | undefined | null) => {
   const isAuth = useIsAuth();
 
   const query = rawQuery ?? '';
-  return $api.jwtFeed.query.useQuery(
+  return $api.feed.jwt.useQuery(
     'get',
     '/user/search',
     {

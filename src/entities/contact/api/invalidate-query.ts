@@ -11,10 +11,10 @@ export const useInvalidateContacts = () => {
   return useCallback(async () => {
     await Promise.all([
       client.invalidateQueries(
-        $api.jwtUser.query.queryOptions('get', '/contact/count')
+        $api.user.jwt.queryOptions('get', '/contact/count')
       ),
       client.invalidateQueries(
-        $api.jwtUser.query.queryOptions('get', '/contact/list')
+        $api.user.jwt.queryOptions('get', '/contact/list')
       ),
     ]);
   }, [client]);

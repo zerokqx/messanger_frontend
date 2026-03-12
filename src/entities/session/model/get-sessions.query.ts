@@ -6,13 +6,13 @@ const useGetSessionByIdFromCache = (id: string) => {
   const client = useQueryClient();
   const sessions = client.getQueryData<
     components['schemas']['SessionsListResponse']
-  >($api.jwtAuth.query.queryOptions('get', '/sessions/list', {}).queryKey);
+  >($api.auth.jwt.queryOptions('get', '/sessions/list', {}).queryKey);
   const d = sessions?.data.sessions.find((session) => session.id === id);
   return d;
 };
 
 export const useGetSessionsSuspenseQuery = () => {
-  return $api.jwtAuth.query.useSuspenseQuery(
+  return $api.auth.jwt.useSuspenseQuery(
     'get',
     '/sessions/list',
     {},
