@@ -66,7 +66,7 @@ const AchievementCardBase = ({
     : null;
 
   return (
-    <Card radius="xl" p="md" bd="1px solid vdarkGray">
+    <Card radius="xl" p="md" bd="1px solid vdarkGray.4">
       <Group justify="space-between" align="flex-start" wrap="nowrap">
         <Group align="center" wrap="nowrap">
           <ThemeIcon size={52} radius="md" variant="light" color={theme.color}>
@@ -78,41 +78,17 @@ const AchievementCardBase = ({
               <Text fw={700} lineClamp={1}>
                 {achievement.name}
               </Text>
+            </Group>
+            <Group>
               <Badge variant="light" color={theme.color}>
                 {t(`badge.${achievement.badge_type}`)}
               </Badge>
+              <Badge variant="gradient">#{achievement.category}</Badge>
             </Group>
             <Text size="xs" opacity={0.5} lineClamp={2}>
               {achievement.description}
             </Text>
-            <Text size="xs" opacity={0.4}>
-              #{achievement.category}
-            </Text>
           </Stack>
-        </Group>
-        <Group gap="xs" wrap="nowrap">
-          {!simplifycity ? (
-            <Tooltip
-              label={
-                achievement.is_completed
-                  ? unlockedDate
-                    ? t('completed_with_date', { date: unlockedDate })
-                    : t('status.completed')
-                  : t('status.in_progress')
-              }
-            >
-              <ThemeIcon
-                radius="xl"
-                variant="filled"
-                color={achievement.is_completed ? 'teal' : 'dark'}
-              >
-                {achievement.is_completed ? <Check /> : <Lock />}
-              </ThemeIcon>
-            </Tooltip>
-          ) : (
-            <Skeleton w={28} h={28} circle />
-          )}
-          {rightSection}
         </Group>
       </Group>
 
@@ -122,30 +98,26 @@ const AchievementCardBase = ({
             {t('progress', { progress, required: requiredProgress })}
           </Text>
 
-          {!simplifycity ? (
-            <Progress value={progressPercent} radius="xl" color={theme.color} />
-          ) : (
-            <Skeleton w={279} h={8} />
-          )}
+          <Progress value={progressPercent} radius="xl" color={theme.color} />
         </Stack>
 
         <Box w={54} h={54}>
-            <RingProgress
-              size={54}
-              thickness={6}
-              roundCaps
-              sections={[
-                {
-                  value: progressPercent,
-                  color: `var(--mantine-color-${theme.color}-5)`,
-                },
-              ]}
-              label={
-                <Text size="xs" fw={700} ta="center">
-                  {progressPercent}%
-                </Text>
-              }
-            />
+          <RingProgress
+            size={54}
+            thickness={6}
+            roundCaps
+            sections={[
+              {
+                value: progressPercent,
+                color: `var(--mantine-color-${theme.color}-5)`,
+              },
+            ]}
+            label={
+              <Text size="xs" fw={700} ta="center">
+                {progressPercent}%
+              </Text>
+            }
+          />
         </Box>
       </Group>
     </Card>

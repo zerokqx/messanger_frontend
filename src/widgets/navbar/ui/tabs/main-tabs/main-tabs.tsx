@@ -17,7 +17,7 @@ import { socket } from '@/shared/api/socket.ts';
 import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
-import { useSendMessage } from '@/features/send-message/index.ts';
+import { useSendMessage } from '@/features/chat/index.ts';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -109,10 +109,8 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 onClick={() => {
                   sendMessage({
                     body: {
-                      event:"chat_private:new_message",
-                      message: {
-                        inp,
-                      },
+                      message_type:["text"],
+                      content:inp,
                       user_id: '152e1308-3ad3-4d84-91c5-889d8afed365',
                     },
                   });
