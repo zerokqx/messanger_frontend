@@ -4,7 +4,7 @@ import { playwright } from '@vitest/browser-playwright';
 import react from '@vitejs/plugin-react'; import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { devtools } from '@tanstack/devtools-vite';
 import type { ServerOptions } from 'vite';
-
+import { removeLoggerCallsPlugin } from './vite-plugins/remove-logger';
 const WATCH_IGNORED = [
   '**/.devenv/**',
   '**/.direnv/**',
@@ -136,6 +136,7 @@ export default defineConfig({
     }),
     devtools({}),
     tsPaths(),
+    removeLoggerCallsPlugin()
   ],
   optimizeDeps: {
     esbuildOptions: {

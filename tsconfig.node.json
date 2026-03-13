@@ -29,6 +29,7 @@
   "include": [
     "*vite*",
     "src",
-    "__mocks__"
+    "__mocks__",
+    "./vite-plugins/"
   ]
 }

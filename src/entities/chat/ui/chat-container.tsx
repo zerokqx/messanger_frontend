@@ -19,11 +19,9 @@ export const ChatContainer = ({
       increaseViewportBy={increaseViewportBy}
       itemContent={(index) => {
         const item = items[index];
-
         if (item.message.message_type.includes('system')) {
           return <SystemMessage message={item.message} />;
         }
-
         return <MessageItem {...item} />;
       }}
     />

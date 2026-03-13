@@ -18,6 +18,8 @@ import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
 import { useSendMessage } from '@/features/chat/index.ts';
+import { useChatHistory } from '@/entities/chat/api/chat-history.ts';
+import { pagesMap } from '@/shared/lib/pages-map/pages-map.ts';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -45,6 +47,9 @@ const ProfileTab = lazy(() =>
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const { mutate: sendMessage } = useSendMessage();
   const [inp, setInp] = useState('');
+
+  const ma = useChatHistory()
+  console.log(pagesMap(ma.data))
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
     <Tabs animationVariant="slide-x">
@@ -100,24 +105,6 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="main">
             <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <Input
-                onChange={(v) => {
-                  setInp(v.currentTarget.value);
-                }}
-              />
-              <Button
-                onClick={() => {
-                  sendMessage({
-                    body: {
-                      message_type:["text"],
-                      content:inp,
-                      user_id: '152e1308-3ad3-4d84-91c5-889d8afed365',
-                    },
-                  });
-                }}
-              >
-                Send
-              </Button>
             </ErrorBoundary>
           </Tabs.Tab>
           <Tabs.Tab value="contacts">
