@@ -56,8 +56,8 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
       {uuid && (
         <Tabs animationVariant="scale" key={uuid}>
           <Group justify="space-between">
-            <Tabs.UseApi
-              children={({ actions, state }) => (
+            <Tabs.UseApi>
+              {({ actions, state }) => (
                 <>
                   <CloseButton
                     onClick={state.current !== 'main' ? actions.back : onClose}
@@ -73,7 +73,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
                   />
                 </>
               )}
-            />
+            </Tabs.UseApi>
           </Group>
           <Tabs.Tab value="main">
             <>

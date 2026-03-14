@@ -59,106 +59,112 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
-    server: env.VITE_REMOTE === 'true'
-      ? serverOptionsForRemote
-      : serverOptionsForNoRemote,
-  build: {
-    copyPublicDir: true,
-    sourcemap: false,
-    minify: 'esbuild',
-    cssMinify: 'esbuild',
-    cssCodeSplit: true,
-  },
-
-  preview: {
-    host: '0.0.0.0',
-    port: 5173,
-    proxy,
-  },
-  test: {
-    globals: true,
-    ui: true,
-    exclude: [...configDefaults.exclude, '.devenv/**', '.direnv/**', 'dist/**'],
-    setupFiles: './vitest.setup.ts',
-    projects: [
-      {
-        plugins: [
-          react({
-            babel: {
-              plugins: [['babel-plugin-react-compiler']],
-            },
-          }),
-          tsPaths(),
-        ],
-        test: {
-          name: 'node',
-
-          include: ['src/**/*.test.{ts,tsx}'],
-          exclude: ['src/**/*.browser.test.{ts,tsx}'],
-        },
-      },
-      {
-        plugins: [
-          tanstackRouter({
-            target: 'react',
-            generatedRouteTree: APP + '/route-tree.gen.ts',
-            autoCodeSplitting: true,
-            routesDirectory: APP + '/routes',
-          }),
-          react({
-            babel: {
-              plugins: [['babel-plugin-react-compiler']],
-            },
-          }),
-          tsPaths(),
-        ],
-        test: {
-          name: 'browser',
-
-          include: ['src/**/*.test.{ts,tsx}'],
-          setupFiles: './vitest.browser.setup.ts',
-          browser: {
-            enabled: true,
-            provider: playwright(
-              PLAYWRIGHT_EXECUTABLE_PATH
-                ? {
-                    launchOptions: {
-                      executablePath: PLAYWRIGHT_EXECUTABLE_PATH,
-                    },
-                  }
-                : undefined
-            ),
-            instances: [{ browser: 'chromium' }],
-          },
-          exclude: [
-            ...configDefaults.exclude,
-            '.devenv/**',
-            '.direnv/**',
-            'dist/**',
-          ],
-        },
-      },
-    ],
-  },
-  plugins: [
-    tanstackRouter({
-      target: 'react',
-      generatedRouteTree: APP + '/route-tree.gen.ts',
-      autoCodeSplitting: true,
-      routesDirectory: APP + '/routes',
-    }),
-    react({
-      babel: {
-        plugins: [['babel-plugin-react-compiler']],
-      },
-    }),
-    devtools({}),
-    tsPaths(),
-  ],
-  optimizeDeps: {
-    esbuildOptions: {
-      mainFields: ['module', 'main', 'browser'],
+    server:
+      env.VITE_REMOTE === 'true'
+        ? serverOptionsForRemote
+        : serverOptionsForNoRemote,
+    build: {
+      copyPublicDir: true,
+      sourcemap: false,
+      minify: 'esbuild',
+      cssMinify: 'esbuild',
+      cssCodeSplit: true,
     },
-  },
+
+    preview: {
+      host: '0.0.0.0',
+      port: 5173,
+      proxy,
+    },
+    test: {
+      globals: true,
+      ui: true,
+      exclude: [
+        ...configDefaults.exclude,
+        '.devenv/**',
+        '.direnv/**',
+        'dist/**',
+      ],
+      setupFiles: './vitest.setup.ts',
+      projects: [
+        {
+          plugins: [
+            react({
+              babel: {
+                plugins: [['babel-plugin-react-compiler']],
+              },
+            }),
+            tsPaths(),
+          ],
+          test: {
+            name: 'node',
+
+            include: ['src/**/*.test.{ts,tsx}'],
+            exclude: ['src/**/*.browser.test.{ts,tsx}'],
+          },
+        },
+        {
+          plugins: [
+            tanstackRouter({
+              target: 'react',
+              generatedRouteTree: APP + '/route-tree.gen.ts',
+              autoCodeSplitting: true,
+              routesDirectory: APP + '/routes',
+            }),
+            react({
+              babel: {
+                plugins: [['babel-plugin-react-compiler']],
+              },
+            }),
+            tsPaths(),
+          ],
+          test: {
+            name: 'browser',
+
+            include: ['src/**/*.test.{ts,tsx}'],
+            setupFiles: './vitest.browser.setup.ts',
+            browser: {
+              enabled: true,
+              provider: playwright(
+                PLAYWRIGHT_EXECUTABLE_PATH
+                  ? {
+                      launchOptions: {
+                        executablePath: PLAYWRIGHT_EXECUTABLE_PATH,
+                      },
+                    }
+                  : undefined
+              ),
+              instances: [{ browser: 'chromium' }],
+            },
+            exclude: [
+              ...configDefaults.exclude,
+              '.devenv/**',
+              '.direnv/**',
+              'dist/**',
+            ],
+          },
+        },
+      ],
+    },
+    plugins: [
+      tanstackRouter({
+        target: 'react',
+        generatedRouteTree: APP + '/route-tree.gen.ts',
+        autoCodeSplitting: true,
+        routesDirectory: APP + '/routes',
+      }),
+      react({
+        babel: {
+          plugins: [['babel-plugin-react-compiler']],
+        },
+      }),
+      devtools({}),
+      tsPaths(),
+    ],
+    optimizeDeps: {
+      esbuildOptions: {
+        mainFields: ['module', 'main', 'browser'],
+      },
+    },
   };
 });
