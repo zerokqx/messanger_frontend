@@ -1,5 +1,16 @@
 import { useIsAuth } from '@/entities/session';
 import { $api } from '@/shared/api/repository/$api';
+
+export const makeSearchOptions = (query = '') => {
+  return $api.feed.jwt.queryOptions('get', '/user/search', {
+    params: {
+      query: {
+        query,
+      },
+    },
+  });
+};
+
 /**
  * A hook to fetch users from the search API based on a query.
  * It handles the API request and returns the query results without managing global search state.

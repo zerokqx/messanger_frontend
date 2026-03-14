@@ -5,6 +5,15 @@ import { useCallback } from 'react';
 interface UseGetUserByIdArgs {
   id: string;
 }
+export const makeGetUserById = (id: UseGetUserByIdArgs['id'] = '') => {
+  return $api.profile.jwt.queryOptions('get', '/{user_id}', {
+    params: {
+      path: { user_id: id,
+      },
+    },
+  });
+};
+
 export const useGetUserById = ({ id }: UseGetUserByIdArgs) => {
   const client = useQueryClient();
 

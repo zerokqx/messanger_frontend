@@ -52,7 +52,11 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
     }
   );
   return (
-    <AppShellAside {...bind()} zIndex={1000000} style={{ overflow: 'clip' }}>
+    <AppShellAside
+      {...bind()}
+      zIndex={1000000}
+      style={{ overflow: 'clip', touchAction: 'none' }}
+    >
       {uuid && (
         <Tabs animationVariant="scale" key={uuid}>
           <Group justify="space-between">

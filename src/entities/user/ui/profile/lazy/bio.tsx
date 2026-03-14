@@ -13,17 +13,7 @@ export const LazyBio = ({ bio }: { bio: string }) => {
       }}
       bdrs={'sm'}
     >
-      {
-        <Text
-          style={{
-            wordBreak: 'break-word',
-            overflowWrap: 'anywhere',
-          }}
-          w={'100%'}
-        >
-          {bio}
-        </Text>
-      }
+      {bio}
     </Blockquote>
   );
 };

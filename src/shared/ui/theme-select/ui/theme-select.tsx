@@ -1,8 +1,6 @@
 import { Group, Select, Text, useMantineColorScheme } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Moon, Sun, SunMoon } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
-import { theme } from '@/app/mantine';
 
 const getThemeIcon = (value: string) => {
   if (value === 'auto') {
@@ -21,28 +19,22 @@ export const ThemeSelect = () => {
     keepTransitions: true,
   });
 
-  const onChange = useCallback(
-    (value: string | null) => {
-      if (!value) {
-        return;
-      }
+  const onChange = (value: string | null) => {
+    if (!value) {
+      return;
+    }
 
-      if (value === 'auto' || value === 'dark' || value === 'light') {
-        setColorScheme(value);
-      }
-    },
-    [setColorScheme]
-  );
+    if (value === 'auto' || value === 'dark' || value === 'light') {
+      setColorScheme(value);
+    }
+  };
 
-  const data = useMemo(
-    () => [
-      { value: 'auto', label: t('theme-option-auto') },
-      { value: 'dark', label: t('theme-option-dark') },
-      { value: 'light', label: t('theme-option-light') },
-    ],
-    [t]
-  );
-
+  const data = [
+    { value: 'auto', label: t('theme-option-auto') },
+    { value: 'dark', label: t('theme-option-dark') },
+    { value: 'light', label: t('theme-option-light') },
+  ];
+  const Icon = getThemeIcon(colorScheme)
   return (
     <Select
       aria-label="Theme"
@@ -60,7 +52,7 @@ export const ThemeSelect = () => {
           </Group>
         );
       }}
-      leftSection={getThemeIcon(colorScheme)({})}
+      leftSection={<Icon/>}
     />
   );
 };
