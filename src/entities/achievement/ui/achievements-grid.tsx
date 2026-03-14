@@ -11,6 +11,8 @@ import { AchievementFilters } from './achievement-filters';
 import type { AchievementItem } from './types';
 import { useAchievementsGridState } from './use-achievements-grid-state';
 import { AnimatePresence } from 'motion/react';
+import { createThrottledVibrationHandler } from '@/shared/lib/vibration';
+import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 
 const PAGE_SIZE = 10;
 
@@ -56,10 +58,13 @@ export const AchievementsGrid = () => {
     resetFilters,
   } = useAchievementsGridState();
   const { data, isLoading, isError } = useMyAchievement();
+  const vibrationScroll = createThrottledVibrationHandler()
+  const {mobile} = useResponsive()
 
   const allAchievements = useMemo(
+    
     () => flattenAchievements(data?.data.items),
-    [data?.data.items]
+    [data.data.items]
   );
   const filteredAchievements = useMemo(() => {
     const searchQuery = state.search.trim().toLowerCase();
@@ -172,9 +177,10 @@ export const AchievementsGrid = () => {
           components={{
             List: VirtuosoList,
           }}
+            onScroll={vibrationScroll}
           totalCount={achievements.length}
           computeItemKey={(index) => achievements[index].achievement_id}
-          increaseViewportBy={300}
+          increaseViewportBy={176}
           isScrolling={setScrolling}
           itemContent={(index) => (
             <Box mb="sm">
@@ -193,7 +199,7 @@ export const AchievementsGrid = () => {
             value={safePage}
             onChange={setPage}
             total={totalPages}
-            size="md"
+            size={mobile ? 'sm':'md'}
             withEdges
           />
         </Center>
