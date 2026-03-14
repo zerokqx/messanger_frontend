@@ -21,9 +21,9 @@ export const ContactsList = () => {
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
   //[Save-Logger]
-  useLogger("contactsMap",[contactsMap.length])
+  useLogger('contactsMap', [contactsMap.length]);
   //[Save-Logger]
-  useLogger("contactsCount",[count.data])
+  useLogger('contactsCount', [count.data]);
 
   if (contacts.isError || count.error) {
     return (
@@ -59,7 +59,7 @@ export const ContactsList = () => {
         const isSkeleton = index >= contactsMap.length;
 
         if (isSkeleton) {
-          return <SkeletonContactItem size={60} />
+          return <SkeletonContactItem size={60} />;
         }
 
         return (

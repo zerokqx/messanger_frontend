@@ -193,6 +193,9 @@ interface Resources {
     "red": "Red",
     "spring": "Spring",
     "theme-category": "Theme",
+    "theme-option-auto": "Auto",
+    "theme-option-dark": "Dark",
+    "theme-option-light": "Light",
     "violet": "Violet",
     "with-animation-label": "Animations across the app",
     "with-animations-description": "Enables or disables animations on all app screens and UI elements"

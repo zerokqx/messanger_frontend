@@ -182,7 +182,7 @@ export const theme = createTheme({
     }),
     Button: Button.extend({
       defaultProps: {
-        bdrs: 'lg',
+        bdrs: 'xl',
       },
     }),
     Drawer: Drawer.extend({
@@ -200,18 +200,11 @@ export const theme = createTheme({
         },
       },
     }),
-    Checkbox: Checkbox.extend({
-      defaultProps: {
-        size: 'md',
-      },
-    }),
     ThemeIcon: ThemeIcon.extend({
       defaultProps: {
         variant: 'transparent',
       },
     }),
-    Avatar: Avatar.extend({}),
-    Title: Title.extend({}),
 
     AppShellNavbar: AppShellNavbar.extend({}),
     AppShellAside: AppShellAside.extend({}),

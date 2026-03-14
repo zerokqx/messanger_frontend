@@ -1,11 +1,11 @@
-import { Button, useMantineColorScheme } from '@mantine/core';
+import { Button} from '@mantine/core';
 import type { IIconButtonProps } from './types/icon-button.types';
+import { lightDark } from '@/shared/lib/light-dark';
 
 export const IconButton = ({ leftSection, ...props }: IIconButtonProps) => {
-  const { colorScheme } = useMantineColorScheme();
   return (
     <Button
-      color={colorScheme === 'dark' ? 'white' : 'black'}
+      color={lightDark('gray.9','gray.1')}
       justify="start"
       bdrs={'sm'}
       p={'0'}

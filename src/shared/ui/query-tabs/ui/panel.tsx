@@ -1,6 +1,7 @@
-import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Group } from '@mantine/core';
 import { type ComponentProps, type MouseEvent, type ReactNode } from 'react';
 import { useTabsApi } from '../model';
+import { lightDark } from '@/shared/lib/light-dark';
 
 interface PanelComponentProps {
   variant: string;
@@ -36,14 +37,13 @@ export const Panel = ({
   active,
   onClickAnyItem,
 }: PanelProps) => {
-  const { colorScheme } = useMantineColorScheme();
   const [api, state] = useTabsApi();
   const current = state.current;
   const isActive = active ?? ((value: string) => current === value);
 
   return (
-    <PanelContainer  bg={colorScheme === 'dark' ? 'dark' : 'gray.1'}>
-      {data.map(({ value, icon,onHover, onClick }) => {
+    <PanelContainer bg={lightDark('gray.1', 'dark.8')}>
+      {data.map(({ value, icon, onHover, onClick }) => {
         const Component = component;
         return (
           <Component
@@ -56,7 +56,8 @@ export const Panel = ({
                 : 'light'
             }
             radius="xl"
-            size="lg" onMouseEnter={onHover}
+            size="lg"
+            onMouseEnter={onHover}
             onClick={(e) => {
               api.push(value);
               onClickAnyItem?.(value, e);

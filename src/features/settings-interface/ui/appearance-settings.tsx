@@ -2,9 +2,8 @@ import {
   PrimaryColorSchema,
   useSettingsStore,
 } from '@/shared/lib/settings';
-import { supportColors } from '../config/support-colors';
 import { errorNotify } from '@/shared/lib/notifications/error';
-import { ThemeToggle } from '@/shared/ui/theme-toggle';
+import { ThemeSelect } from '@/shared/ui/theme-select';
 import { Select, Text, useMantineTheme } from '@mantine/core';
 import has from 'lodash/has';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +20,7 @@ export const AppearanceSettings = () => {
   return (
     <>
       <TextTitle>{t('theme-category')}</TextTitle>
-      <ThemeToggle />
+      <ThemeSelect />
       <ChangeLanguage />
 
       <Select
@@ -39,7 +38,7 @@ export const AppearanceSettings = () => {
             );
           }
         }}
-        data={supportColors.map((color) => ({
+        data={PrimaryColorSchema.options.map((color) => ({
           value: color,
           label: t(color),
         }))}

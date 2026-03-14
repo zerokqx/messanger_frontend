@@ -20,6 +20,8 @@ import { SkeletonProfile } from '@/entities/user/index.ts';
 import { useSendMessage } from '@/features/chat/index.ts';
 import { useChatHistory } from '@/entities/chat/api/chat-history.ts';
 import { pagesMap } from '@/shared/lib/pages-map/pages-map.ts';
+import { ChatCard } from '@/entities/chat';
+import type { ChatListItem } from '@/entities/chat';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -44,6 +46,36 @@ const ProfileTab = lazy(() =>
     default: module.ProfileTabContent,
   }))
 );
+
+const MOCK_CHAT_ITEM: ChatListItem = {
+  chat_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  chat_type: 'self',
+  chat_data: {
+    additionalProp1: {},
+  },
+  last_message: {
+    message_id: 0,
+    message_type: ['text'],
+    forward_metadata: {
+      forward_type: 'chat_private_messages',
+      forward_sender_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      forward_message_id: 0,
+      forward_chat_data: 'string',
+    },
+    chat_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    sender_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    sender_data: 'string',
+    content: 'Пример последнего сообщения для превью карточки',
+    media_link: 'string',
+    is_viewed: true,
+    viewed_at: '2026-03-13T23:32:25.848Z',
+    created_at: '2026-03-13T23:32:25.848Z',
+    updated_at: '2026-03-13T23:32:25.848Z',
+  },
+  created_at: '2026-03-13T23:32:25.848Z',
+  unread_count: 3,
+};
+
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const { mutate: sendMessage } = useSendMessage();
   const [inp, setInp] = useState('');
@@ -105,6 +137,12 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="main">
             <ErrorBoundary FallbackComponent={ErrorAlert}>
+              <Stack px="xs" pb="xs">
+                <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
+
+                <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
+                <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
+              </Stack>
             </ErrorBoundary>
           </Tabs.Tab>
           <Tabs.Tab value="contacts">

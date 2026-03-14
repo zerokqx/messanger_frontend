@@ -25,6 +25,7 @@ import { ChangePasswordModal } from '@/features/change-password/index.ts';
 import { useDisclosure } from '@mantine/hooks';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive/index.ts';
 import { modals } from '@mantine/modals';
+import { lightDark } from '@/shared/lib/light-dark/index.ts';
 
 const SessionsTab = lazy(() =>
   import('@/features/session/ui/session-manager').then((module) => ({
@@ -67,7 +68,8 @@ const RootTabsTitle = () => {
   return (
     <Tabs.UseApi>
       {({ state }) => (
-        <Text c="gray" size="sm" fw={'bold'}> {t(state.current)}
+        <Text c="gray" size="sm" fw={'bold'}>
+          {t(state.current)}
         </Text>
       )}
     </Tabs.UseApi>
@@ -94,7 +96,7 @@ export const RootTabs = ({ children }: RootTabsProps) => {
         <Tabs.Hide when={['main']} animationVariant="slide-y-up">
           <Group
             justify="space-between"
-            bg={colorScheme === 'dark' ? 'dark.8' : 'gray.1'}
+            bg={lightDark('gray.1','dark.8')}
             p={'xs'}
             bdrs={'xl'}
           >

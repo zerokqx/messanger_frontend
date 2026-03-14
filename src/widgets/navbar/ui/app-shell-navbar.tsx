@@ -6,8 +6,8 @@ export const AppShellNavbarWidget = () => {
   const topApiTabs = Tabs.useBridgeRef();
 
   return (
-    <AppShellNavbar h="100%" style={{ overflow: 'hidden' }}>
-      <Box h="100%" style={{ minHeight: 0 }}>
+    <AppShellNavbar h="100%" style={{ overflow: 'hidden' }} >
+      <Box h="100%"  style={{ minHeight: 0 }}>
         <RootTabs>
           <Tabs.Bridge ref={topApiTabs} />
           <Tabs.Tab value="main">
