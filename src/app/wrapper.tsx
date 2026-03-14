@@ -33,7 +33,7 @@ export const Wrapper = () => {
             <I18nextProvider i18n={i18n}>
               <ModalsProvider>
                 <MotionConfig
-                  reducedMotion='user'
+                  reducedMotion="user"
                   transition={{
                     type: animationStyle,
                     duration: withAnimations ? duratationAllAnimations : 0,

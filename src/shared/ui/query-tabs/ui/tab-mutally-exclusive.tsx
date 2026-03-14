@@ -12,7 +12,7 @@ export const MutallyExclusive: TabsComponent['MutallyExclusive'] = ({
   const ok = useWhenStatus(when);
   const animation = useAnimationResolve(animationVariant, animationClosed);
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence mode="popLayout" initial={false}>
       {ok && (
         <m.div
           key={'first-children'}

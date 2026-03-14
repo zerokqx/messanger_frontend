@@ -16,7 +16,16 @@ export const SERVICES = Object.keys(SERVICE_CONFIG) as Services[];
 
 type Version = 'v1';
 type BaseUrlDomain = `https://${string}`;
-const apiUrl = import.meta.env.DEV ? '/api' : import.meta.env.VITE_API_URL;
+const useProxy = import.meta.env.VITE_PROXY_API === 'true';
+const directApiUrl = import.meta.env.VITE_API_URL?.trim();
+
+if (!useProxy && !directApiUrl) {
+  throw new Error(
+    'VITE_API_URL is required when VITE_PROXY_API=false. Provide absolute https URL.'
+  );
+}
+
+const apiUrl = useProxy ? '/api' : directApiUrl;
 /**
  * @param service
  * @param version Version api

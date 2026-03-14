@@ -15,7 +15,7 @@ export const Show: TabsComponent['Show'] = ({
   const ok = whenStatus(when, state);
 
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence mode="popLayout" initial={false}>
       {ok && (
         <m.div
           key={'element-for-animate'}

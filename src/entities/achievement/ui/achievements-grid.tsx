@@ -57,13 +57,12 @@ export const AchievementsGrid = () => {
     setShowInProgress,
     resetFilters,
   } = useAchievementsGridState();
-  const { data, isLoading, isError } = useMyAchievement();
+  const { data,  isError } = useMyAchievement();
   const vibrationScroll = createThrottledVibrationHandler()
   const {mobile} = useResponsive()
 
   const allAchievements = useMemo(
-    
-    () => flattenAchievements(data?.data.items),
+    () => flattenAchievements(data.data.items),
     [data.data.items]
   );
   const filteredAchievements = useMemo(() => {
@@ -97,15 +96,6 @@ export const AchievementsGrid = () => {
     return filteredAchievements.slice(start, start + PAGE_SIZE);
   }, [filteredAchievements, safePage]);
 
-  if (isLoading) {
-    return (
-      <Box p="xs">
-        <Text c="dimmed" size="sm">
-          {t('loading')}
-        </Text>
-      </Box>
-    );
-  }
 
   if (isError) {
     return (

@@ -4,7 +4,6 @@ import { useDrag } from '@use-gesture/react';
 import * as m from 'motion/react-m';
 import { useAnimationResolve } from '../lib';
 import { useCurrentTab, useTabActions } from '../model';
-import { act } from 'react';
 
 export const Tab: TabsComponent['Tab'] = ({
   children,

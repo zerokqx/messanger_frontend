@@ -15,7 +15,7 @@ export const Hide: TabsComponent['Hide'] = ({
   const ok = whenStatus(when, state);
 
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence mode="popLayout" initial={false}>
       {!ok && (
         <m.div
           key={'animate-for-show'}

@@ -4,7 +4,8 @@ import { playwright } from '@vitest/browser-playwright';
 import react from '@vitejs/plugin-react';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { devtools } from '@tanstack/devtools-vite';
-import type { ServerOptions } from 'vite';
+import { loadEnv, type ServerOptions } from 'vite';
+
 const WATCH_IGNORED = [
   '**/.devenv/**',
   '**/.direnv/**',
@@ -14,53 +15,53 @@ const WATCH_IGNORED = [
   '**/dist/**',
 ];
 const APP = './src/app';
-const PLAYWRIGHT_EXECUTABLE_PATH =
-  process.env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH ??
-  process.env.PLAYWRIGHT_EXECUTABLE_PATH;
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  const PLAYWRIGHT_EXECUTABLE_PATH =
+    env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH ??
+    env.PLAYWRIGHT_EXECUTABLE_PATH;
+  const proxyEnabled = env.VITE_PROXY_API === 'true';
+  const proxy = proxyEnabled
+    ? {
+        '/api': {
+          target: 'https://dev.api.yobble.org',
+          changeOrigin: true,
+          secure: true,
+          rewrite: (path: string) => path.replace(/^\/api/, ''),
+        },
+      }
+    : undefined;
 
-const serverOptionsForRemote: ServerOptions = {
-  allowedHosts: ['dev.app.yobble.org'],
-  host: true,
-  port: 5173,
-  proxy: {
-    '/api': {
-      target: 'https://dev.api.yobble.org',
-      changeOrigin: true,
-      secure: true,
-      rewrite: (path) => path.replace(/^\/api/, ''),
+  const serverOptionsForRemote: ServerOptions = {
+    allowedHosts: ['dev.app.yobble.org'],
+    host: true,
+    port: 5173,
+    proxy,
+    hmr: {
+      host: 'dev.app.yobble.org',
+      protocol: 'wss',
+      clientPort: 443,
     },
-  },
-  hmr: {
-    host: 'dev.app.yobble.org',
-    protocol: 'wss',
-    clientPort: 443,
-  },
 
-  watch: {
-    ignored: WATCH_IGNORED,
-  },
-};
-
-const serverOptionsForNoRemote: ServerOptions = {
-  allowedHosts: ['dev.app.yobble.org'],
-  host: '0.0.0.0',
-  port: 5173,
-  proxy: {
-    '/api': {
-      target: 'https://dev.api.yobble.org',
-      changeOrigin: true,
-      secure: true,
-      rewrite: (path) => path.replace(/^\/api/, ''),
+    watch: {
+      ignored: WATCH_IGNORED,
     },
-  },
-  watch: {
-    ignored: WATCH_IGNORED,
-  },
-};
-export default defineConfig({
-  server: process.env.VITE_REMOTE
-    ? serverOptionsForRemote
-    : serverOptionsForNoRemote,
+  };
+
+  const serverOptionsForNoRemote: ServerOptions = {
+    allowedHosts: ['dev.app.yobble.org'],
+    host: '0.0.0.0',
+    port: 5173,
+    proxy,
+    watch: {
+      ignored: WATCH_IGNORED,
+    },
+  };
+
+  return {
+    server: env.VITE_REMOTE === 'true'
+      ? serverOptionsForRemote
+      : serverOptionsForNoRemote,
   build: {
     copyPublicDir: true,
     sourcemap: false,
@@ -72,6 +73,7 @@ export default defineConfig({
   preview: {
     host: '0.0.0.0',
     port: 5173,
+    proxy,
   },
   test: {
     globals: true,
@@ -158,4 +160,5 @@ export default defineConfig({
       mainFields: ['module', 'main', 'browser'],
     },
   },
+  };
 });
