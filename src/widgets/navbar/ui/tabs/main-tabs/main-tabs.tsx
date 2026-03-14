@@ -118,7 +118,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
               }}
             />
           </Group>
-          <Tabs.Hide when={['search']}>
+          <Tabs.Hide  when={['search']}>
             <Panel data={mainPanel} />
           </Tabs.Hide>
         </Stack>

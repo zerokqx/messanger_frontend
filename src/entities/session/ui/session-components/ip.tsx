@@ -4,10 +4,10 @@ import type { SessionComponent } from '../session.types';
 
 export const Ip: SessionComponent['Ip'] = ({ textProps }) => {
   const session = useSessionContext();
-  return (
-    <Text  {...textProps}>
 
-      Ip: {session.ip_address}
+  return (
+    <Text c="dimmed" ff="monospace" size="sm" {...textProps}>
+      IP: {session.ip_address}
     </Text>
   );
 };

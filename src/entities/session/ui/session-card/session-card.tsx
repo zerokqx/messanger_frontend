@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 export const SessionCard = ({ session }: SessionNotCurrentProps) => {
   const actions = useSesionActionsContext();
   const [t] = useTranslation('session');
+
   return (
     <Session session={session}>
       <Session.Header>
@@ -20,6 +21,8 @@ export const SessionCard = ({ session }: SessionNotCurrentProps) => {
       <Session.Footer>
         <Button
           variant="light"
+          radius="xl"
+          fullWidth
           onClick={() => {
             actions.onRevoke(session.id);
           }}

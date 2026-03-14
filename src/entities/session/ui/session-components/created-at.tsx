@@ -9,11 +9,11 @@ export const CreatedAt: SessionComponent['CreatedAt'] = () => {
   const [t] = useTranslation('session');
 
   return (
-    <Group>
-      <ThemeIcon>
-        <Plus />
+    <Group gap="xs" wrap="nowrap">
+      <ThemeIcon variant="light" radius="xl" size="sm">
+        <Plus size={14} />
       </ThemeIcon>
-      <Text>
+      <Text size="sm">
         {t('created_at')} {new Date(session.created_at).toLocaleDateString()}
       </Text>
     </Group>

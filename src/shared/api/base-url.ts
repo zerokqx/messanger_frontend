@@ -16,7 +16,7 @@ export const SERVICES = Object.keys(SERVICE_CONFIG) as Services[];
 
 type Version = 'v1';
 type BaseUrlDomain = `https://${string}`;
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.DEV ? '/api' : import.meta.env.VITE_API_URL;
 /**
  * @param service
  * @param version Version api

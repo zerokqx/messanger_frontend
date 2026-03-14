@@ -22,6 +22,14 @@ const serverOptionsForRemote: ServerOptions = {
   allowedHosts: ['dev.app.yobble.org'],
   host: true,
   port: 5173,
+  proxy: {
+    '/api': {
+      target: 'https://dev.api.yobble.org',
+      changeOrigin: true,
+      secure: true,
+      rewrite: (path) => path.replace(/^\/api/, ''),
+    },
+  },
   hmr: {
     host: 'dev.app.yobble.org',
     protocol: 'wss',
@@ -37,6 +45,14 @@ const serverOptionsForNoRemote: ServerOptions = {
   allowedHosts: ['dev.app.yobble.org'],
   host: '0.0.0.0',
   port: 5173,
+  proxy: {
+    '/api': {
+      target: 'https://dev.api.yobble.org',
+      changeOrigin: true,
+      secure: true,
+      rewrite: (path) => path.replace(/^\/api/, ''),
+    },
+  },
   watch: {
     ignored: WATCH_IGNORED,
   },

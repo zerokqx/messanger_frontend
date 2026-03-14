@@ -10,14 +10,14 @@ export const LastRefresh: SessionComponent['LastRefresh'] = () => {
   const session = useSessionContext();
   const date = new Date(session.last_refresh_at);
   const isToday = isSameDay(new Date(session.last_refresh_at), new Date());
-  console.log(isToday);
   const text = isToday ? t('days:today') : date.toLocaleDateString();
+
   return (
-    <Group>
-      <ThemeIcon>
-        <History />
+    <Group gap="xs" wrap="nowrap">
+      <ThemeIcon variant="light" radius="xl" size="sm">
+        <History size={14} />
       </ThemeIcon>
-      <Text>
+      <Text size="sm">
         {t('last_activation')} {text}
       </Text>
     </Group>

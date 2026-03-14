@@ -7,6 +7,8 @@ import { useContactAdd, useContactRemove } from '../api';
 import type { Fn } from '@/shared/types/utils/functions';
 import type { components } from '@/shared/types/v1';
 import { useInvalidateContacts } from '@/entities/contact';
+import { useResponsive } from '@/shared/lib/hooks/use-responsive';
+import { useDisclosure, useToggle } from '@mantine/hooks';
 
 interface ContactMenu {
   user?: Partial<
@@ -29,6 +31,8 @@ const userIdGuard = (callback: Fn, userId: string | undefined | null) => {
 };
 
 export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
+
+  const [opened, {close,toggle}] = useDisclosure()
   const { mutate: contactRemove, isPending: isPendingContactRemove } =
     useContactRemove();
   const { mutate: contactAdd, isPending: isPendingContactAdd } =
@@ -48,13 +52,17 @@ export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
 
   return (
     <Menu
+      opened={opened}
+      onClose={close}
       zIndex={1000000}
-      transitionProps={{ transition: 'slide-left' }}
+      keepMounted
+      offset={6}
+      withinPortal={false}
       closeOnItemClick={false}
       trigger="click"
     >
       <Menu.Target>
-        <ActionIcon variant="subtle">
+        <ActionIcon onClick={toggle} variant={opened ? 'light':'subtle'}>
           <Ellipsis />
         </ActionIcon>
       </Menu.Target>

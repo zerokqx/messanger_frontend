@@ -92,8 +92,8 @@ export function AuhtPage() {
             <Button
               onClick={() => {
 
-                navigator.vibrate(10)
                 stack.open('login');
+                navigator.vibrate(10)
               }}
               bdrs={'xl'}
             >
@@ -101,8 +101,8 @@ export function AuhtPage() {
             </Button>
             <Button
               onClick={() => {
-                navigator.vibrate(10)
                 stack.open('register');
+                navigator.vibrate(10)
               }}
               variant="subtle"
               bdrs={'xl'}

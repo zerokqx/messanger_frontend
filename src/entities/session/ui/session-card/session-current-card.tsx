@@ -13,12 +13,16 @@ export const SessionCurrentCard = ({
   const [t] = useTranslation('session');
   const [tooltipStatus, tooltipToggle] = useToggle();
   const actions = useSesionActionsContext();
+
   return (
     <Session session={session}>
       <Session.Header>
-        <Group justify="space-between">
+        <Group justify="space-between" align="center" mb={4}>
           <Session.UserAgent />
-          <Session.ThisDevice />
+          <Group gap={6}>
+            <Session.CurrentBadge />
+            <Session.ThisDevice />
+          </Group>
         </Group>
         <Session.Ip />
       </Session.Header>
@@ -35,26 +39,33 @@ export const SessionCurrentCard = ({
             events={{ hover: false, focus: false, touch: false }}
             label={t('untrasted_session')}
           >
-            <Group>
+            <Group gap="xs" wrap="nowrap">
               <ActionIcon
                 onClick={() => {
                   tooltipToggle();
                 }}
                 color="orange"
-                bdrs={'xl'}
+                bdrs="xl"
+                variant="light"
               >
-                <CircleQuestionMark />
+                <CircleQuestionMark size={16} />
               </ActionIcon>
-              <Text c={'orange'}>Недовереная сессия</Text>
+              <Text c="orange" size="sm">
+                Недоверенная сессия
+              </Text>
             </Group>
           </Tooltip>
         </Session.Trusted>
+
         {!singleSession && (
-          <Session.Trusted trusted={true}>
+          <Session.Trusted trusted>
             <Button
               onClick={() => {
                 actions.onRevokeAll();
               }}
+              radius="xl"
+              variant="filled"
+              fullWidth
             >
               {t('close_all_sessions')}
             </Button>

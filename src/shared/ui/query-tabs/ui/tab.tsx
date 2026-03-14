@@ -1,8 +1,10 @@
 import { AnimatePresence } from 'motion/react';
 import type { TabsComponent } from './tabs.type';
+import { useDrag } from '@use-gesture/react';
 import * as m from 'motion/react-m';
 import { useAnimationResolve } from '../lib';
-import { useCurrentTab } from '../model';
+import { useCurrentTab, useTabActions } from '../model';
+import { act } from 'react';
 
 export const Tab: TabsComponent['Tab'] = ({
   children,
@@ -10,6 +12,26 @@ export const Tab: TabsComponent['Tab'] = ({
   animationVariant,
   animationClosed,
 }) => {
+  const actions = useTabActions();
+  const bind = useDrag(
+    ({ last, swipe: [sx] }) => {
+      if (!last) return;
+
+      if (sx === 1) {
+        actions.back();
+      }
+    },
+    {
+      swipe: {
+        distance: 50,
+        velocity: 0.3,
+      },
+      axis: 'x',
+      pointer: {
+        touch: true,
+      },
+    }
+  );
   const state = useCurrentTab();
   const animation = useAnimationResolve(animationVariant, animationClosed);
   const isActive = state === value;
@@ -18,12 +40,14 @@ export const Tab: TabsComponent['Tab'] = ({
     <AnimatePresence mode="popLayout" initial={false}>
       {isActive && (
         <m.div
+          {...bind()}
           key={value}
           animate={'open'}
           initial={'initial'}
           exit={'closed'}
           variants={animation}
           style={{
+            touchAction: 'pan-y',
             height: '100%',
           }}
         >

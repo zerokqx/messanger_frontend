@@ -4,5 +4,10 @@ import type { SessionComponent } from '../session.types';
 
 export const CurrentBadge: SessionComponent['CurrentBadge'] = () => {
   const session = useSessionContext();
-  return session.is_current && <Badge>Текущая сессия</Badge>;
+
+  if (!session.is_current) {
+    return null;
+  }
+
+  return <Badge variant="outline" radius="xl">Текущая сессия</Badge>;
 };

@@ -7,6 +7,7 @@ import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft } from 'lucide-react';
 import { notify } from '@/shared/lib/notifications';
 import { SkeletonLayout } from '@/shared/ui/skeletons';
+import { useDrag } from '@use-gesture/react';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -31,8 +32,27 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
     id: uuid,
   });
 
+  const bind = useDrag(
+    ({ last, swipe: [sx] }) => {
+      if (!last) return;
+
+      if (sx === 1) {
+        onClose();
+      }
+    },
+    {
+      swipe: {
+        distance: 50,
+        velocity: 0.3,
+      },
+      axis: 'x',
+      pointer: {
+        touch: true,
+      },
+    }
+  );
   return (
-    <AppShellAside zIndex={1000000} style={{ overflow: 'clip' }}>
+    <AppShellAside {...bind()} zIndex={1000000} style={{ overflow: 'clip' }}>
       {uuid && (
         <Tabs animationVariant="scale" key={uuid}>
           <Group justify="space-between">

@@ -4,19 +4,19 @@ import { Text } from '@mantine/core';
 import type { SessionComponent } from '../session.types';
 import { useMemo } from 'react';
 
-export const UserAgent: SessionComponent['UserAgent'] = () => {
+export const UserAgent: SessionComponent['UserAgent'] = ({ textProps }) => {
   const session = useSessionContext();
   const ua = useMemo(() => {
     return new UAParser(session.user_agent ?? '').getResult();
   }, [session]);
+
   const browser = ua.browser.name ?? '';
   const browserVersion = ua.browser.major ?? '';
-  const device = ua.device.type ?? '';
   const os = ua.os.name ?? '';
 
   return (
-    <Text
-      opacity={0.7}
-    >{`${device} ${os} ${browser}${browserVersion && '-'}${browserVersion}`}</Text>
+    <Text fw={500} size="md" lh={1.2} c="dimmed" {...textProps}>{`${os} ${browser}${
+      browserVersion ? '-' : ''
+    }${browserVersion}`}</Text>
   );
 };
