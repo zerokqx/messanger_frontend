@@ -1,8 +1,7 @@
 export * from './lib/';
 
-export {socket} from "./socket.ts"
-import { QueryClient } from "@tanstack/react-query";
-
+export { socket } from './socket.ts';
+import { QueryClient } from '@tanstack/react-query';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -11,4 +10,10 @@ export const queryClient = new QueryClient({
     },
   },
 });
-
+export { $api } from './repository/$api.ts';
+export {
+  type AllPathsByMethod,
+  type HttpMethod,
+  type TypedQueryKey,
+  typedQueryKey,
+} from './typed-querykey.ts';

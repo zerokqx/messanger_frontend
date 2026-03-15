@@ -1,4 +1,5 @@
 import {
+    ActionIcon,
   AppShell,
   AppShellAside,
   AppShellNavbar,
@@ -218,6 +219,11 @@ export const theme = createTheme({
           overflowX: 'hidden',
         },
       }),
+    }),
+    ActionIcon: ActionIcon.extend({
+      defaultProps:{
+        bdrs:'xl'
+      }
     }),
     Select: Select.extend({
       defaultProps: {

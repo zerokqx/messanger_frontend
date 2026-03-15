@@ -1,18 +1,21 @@
 // Copyright (c) 2026 zerokqx
 // SPDX-License-Identifier: MIT
 import './lucide.css';
-import "./index.css"
+import './index.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import { createRouter } from '@tanstack/react-router';
 import ReactDOM from 'react-dom/client';
 import { routeTree } from './route-tree.gen';
 import { Wrapper } from './wrapper';
-
+import { queryClient } from '@/shared/api';
 
 export const router = createRouter({
   routeTree,
   defaultPreload: 'viewport',
+  context: {
+    queryClient
+  },
   scrollRestoration: true,
 });
 
@@ -36,7 +39,7 @@ async function enableMocking() {
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   void enableMocking()
-  .catch((error:unknown) => {
+    .catch((error: unknown) => {
       console.error('[MSW] Failed to start worker', error);
     })
     .finally(() => {

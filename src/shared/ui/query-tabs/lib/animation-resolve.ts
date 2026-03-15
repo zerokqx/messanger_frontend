@@ -17,7 +17,6 @@ export const useAnimationResolve = (
   return {
     initial: { ...animation.initial, pointerEvents: 'auto' },
     open: { ...animation.open, pointerEvents: 'auto' },
-    // Always return an isolated closed variant to prevent cross-component leakage.
     closed: { ...closed, pointerEvents: 'none' },
   };
 };

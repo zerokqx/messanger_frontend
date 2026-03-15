@@ -35,7 +35,7 @@ export const SearchHistoryList = ({ onClickItem }: SearchHistoryListProps) => {
           {t('history')}
         </Button>
         <Button
-          variant="transparent"
+          variant="subtle"
           disabled={!latestRequests.length}
           color={'red'}
           size="compact-xs"

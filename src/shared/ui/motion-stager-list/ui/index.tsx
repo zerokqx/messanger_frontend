@@ -42,7 +42,7 @@ interface MotionStagerComponent {
 
 export const StagerItem: MotionStagerComponent['StagerItem'] = (props) => {
   const [{ item }] = useVariantContext();
-  return <m.div variants={item}  {...props} />;
+  return <m.div variants={item} {...props} />;
 };
 
 export const MotionStagerList: MotionStagerComponent = ({

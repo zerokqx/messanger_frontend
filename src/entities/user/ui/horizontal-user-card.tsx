@@ -12,7 +12,8 @@ import {
   type GroupProps,
   type AvatarProps,
 } from '@mantine/core';
-import { formatLogin } from '@/shared/lib/formaters';
+import { FormatLogin, formatLogin } from '@/shared/lib/formaters';
+import { lightDark } from '@/shared/lib/light-dark';
 
 interface HorizontalUserCardProps extends GroupProps {
   value: UserProfileContextState;
@@ -22,25 +23,26 @@ interface HorizontalUserCardProps extends GroupProps {
 interface HorizontalUserCardComponent {
   (props: HorizontalUserCardProps): ReactNode;
   Login: () => ReactNode;
-
   Avatar: (props: AvatarProps) => ReactNode;
 }
 const Login = () => {
-  const [profile] = useUserProfileContext();
-  return <Text>{profile?.login}</Text>;
+  const profile = useUserProfileContext();
+  const { format } = formatLogin(profile?.login, profile?.custom_name);
+  return (
+    <FormatLogin
+      title={format}
+      customName={profile?.custom_name}
+      login={profile?.login}
+    />
+  );
 };
 
 const Avatar: HorizontalUserCardComponent['Avatar'] = (props) => {
-  const [profile] = useUserProfileContext();
+  const profile = useUserProfileContext();
   return (
     <AvatarMantine
       {...props}
-      name={formatLogin(
-        profile?.login,
-        profile?.custom_name,
-        false
-      ).format.slice(0, 2)}
-
+      name={formatLogin(profile?.login, profile?.custom_name, false).name}
     />
   );
 };
@@ -50,8 +52,10 @@ export const HorizontalUserCard: HorizontalUserCardComponent = (
   ref?: RefObject<HTMLDivElement>
 ) => {
   return (
-    <UserProfileContext initialValue={value}>
+    <UserProfileContext value={value}>
       <Group
+        justify="start"
+        wrap="nowrap"
         ref={ref}
         style={{
           cursor: 'pointer',
@@ -59,7 +63,10 @@ export const HorizontalUserCard: HorizontalUserCardComponent = (
         bdrs={'xl'}
         p={'xs'}
         className={[style.card, className].filter(Boolean).join(' ')}
-        bd={isSelected ? '1px solid gray' : undefined}
+        bg={isSelected ? lightDark('gray.0', 'dark.9') : undefined}
+        bd={
+          isSelected ? `1px solid ${lightDark('gray.3', 'dark.8')} ` : undefined
+        }
         {...props}
       />
     </UserProfileContext>

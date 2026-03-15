@@ -1,4 +1,5 @@
 import { ActionIcon, Box, Button, Group, Input, Stack } from '@mantine/core';
+import * as m from 'motion/react-m';
 import { ErrorBoundary } from 'react-error-boundary';
 import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
@@ -6,14 +7,13 @@ import { Panel } from '@/shared/ui/query-tabs/ui';
 import type { MainTabsProps } from './types.ts';
 import { lazy, Suspense, useState } from 'react';
 import { historySearchActions } from '@/features/search-history/index.ts';
-import { useSearchUserQuery } from '@/features/search/api/use-search.ts';
-import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
-import { ArrowLeft } from 'lucide-react';
 import {
-  SkeletonLayout,
-  SkeletonsCardList,
-} from '@/shared/ui/skeletons/index.ts';
-import { socket } from '@/shared/api/socket.ts';
+  useSearch,
+  useSearchUserQuery,
+} from '@/features/search/api/use-search.ts';
+import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
+import { ArrowLeft, RefreshCcw } from 'lucide-react';
+import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
@@ -79,9 +79,9 @@ const MOCK_CHAT_ITEM: ChatListItem = {
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const { mutate: sendMessage } = useSendMessage();
   const [inp, setInp] = useState('');
+  const { refetch } = useSearch();
 
-  const ma = useChatHistory()
-  console.log(pagesMap(ma.data))
+  const ma = useChatHistory();
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
     <Tabs animationVariant="slide-x">
@@ -108,17 +108,35 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 }}
               />
             </Tabs.MutallyExclusive>
-            <SearchInput
-              flex={1}
-              onCommit={(v) => {
-                historySearchActions.doPush(v);
+            <m.div
+              layout
+              style={{
+                flex: 1,
               }}
-              onFocus={() => {
-                bottomApiTabs.current?.push('search');
-              }}
-            />
+            >
+              <SearchInput
+                key={"input-search"}
+                onCommit={(v) => {
+                  historySearchActions.doPush(v);
+                }}
+                onFocus={() => {
+                  bottomApiTabs.current?.push('search');
+                }}
+              />
+            </m.div>
+            <Tabs.Show when={['search']} animationVariant="slide-y-up">
+              <ActionIcon
+                onClick={() => {
+                  void refetch();
+                }}
+                variant="light"
+                color="gray"
+              >
+                <RefreshCcw />
+              </ActionIcon>
+            </Tabs.Show>
           </Group>
-          <Tabs.Hide  when={['search']}>
+          <Tabs.Hide when={['search']}>
             <Panel data={mainPanel} />
           </Tabs.Hide>
         </Stack>

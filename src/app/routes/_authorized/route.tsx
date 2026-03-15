@@ -5,6 +5,7 @@ import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { notify } from '@/shared/lib/notifications';
 import { useTokenStore } from '@/shared/token';
 import { socket } from '@/shared/api';
+import { meQueryOptions } from '@/entities/user/model/me.query';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -16,6 +17,9 @@ const LazyAside = lazy(() =>
 
 export const Route = createFileRoute('/_authorized')({
   component: RouteComponent,
+  loader: ({context:{queryClient}}) => {
+    void queryClient.prefetchQuery(meQueryOptions)
+  },
 });
 
 function RouteComponent() {

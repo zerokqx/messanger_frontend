@@ -42,30 +42,33 @@ export const Panel = ({
   const isActive = active ?? ((value: string) => current === value);
 
   return (
-    <PanelContainer bg={lightDark('gray.1', 'dark.8')}>
+    <PanelContainer
+      bg={lightDark('gray.1', 'dark.8')}
+    >
       {data.map(({ value, icon, onHover, onClick }) => {
         const Component = component;
         return (
-          <Component
-            key={value}
-            variant={
-              isActive(value)
-                ? withStyleAtActive
-                  ? 'filled'
+          <Group key={value}>
+            <Component
+              variant={
+                isActive(value)
+                  ? withStyleAtActive
+                    ? 'filled'
+                    : 'light'
                   : 'light'
-                : 'light'
-            }
-            radius="xl"
-            size="lg"
-            onMouseEnter={onHover}
-            onClick={(e) => {
-              api.push(value);
-              onClickAnyItem?.(value, e);
-              onClick?.(e);
-            }}
-          >
-            {icon}
-          </Component>
+              }
+              radius="xl"
+              size="lg"
+              onMouseEnter={onHover}
+              onClick={(e) => {
+                api.push(value);
+                onClickAnyItem?.(value, e);
+                onClick?.(e);
+              }}
+            >
+              {icon}
+            </Component>
+          </Group>
         );
       })}
     </PanelContainer>

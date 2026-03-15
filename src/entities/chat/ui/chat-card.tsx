@@ -6,9 +6,9 @@ import {
   Paper,
   Stack,
   Text,
-  useMantineTheme,
 } from '@mantine/core';
 import type { ChatCardProps } from './types';
+import { lightDark } from '@/shared/lib/light-dark';
 
 const formatTime = (value?: string | null): string => {
   if (!value) return '--:--';
@@ -41,17 +41,15 @@ export const ChatCard = ({ chat, isActive = false, title, onClick }: ChatCardPro
       onClick={onClick}
       w="100%"
       p="sm"
-      radius="md"
+      radius="xl"
       withBorder
       style={{
         textAlign: 'left',
         cursor: 'pointer',
-        borderColor: isActive ? 'var(--mantine-primary-color-filled)' : undefined,
-        background: isActive ? 'var(--mantine-primary-color-light)' : undefined,
       }}
     >
       <Group align="flex-start" wrap="nowrap" gap="sm">
-        <Avatar radius="xl"  variant="light">
+        <Avatar radius="1000px"  variant="light">
           {chatTitle.slice(0, 1).toUpperCase()}
         </Avatar>
 

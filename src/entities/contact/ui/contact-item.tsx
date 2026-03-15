@@ -56,12 +56,9 @@ export const ContactCard = ({
             toggle(true);
           }}
           w={'100%'}
-          justify="space-between"
         >
-          <Group ref={cardRef}>
             <HorizontalUserCard.Avatar  />
             <HorizontalUserCard.Login />
-          </Group>
         </HorizontalUserCard>
       </Menu.Target>
       {opened && !simplification && (

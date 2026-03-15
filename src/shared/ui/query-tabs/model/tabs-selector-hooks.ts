@@ -22,7 +22,7 @@ export function useCurrentTab() {
   return useTabsSelector((ctx) => ctx.state.current);
 }
 
-function useTabHistory() {
+export function useTabHistory() {
   return useTabsSelector((ctx) => ctx.state.history);
 }
 

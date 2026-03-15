@@ -1,22 +1,18 @@
 import type { components } from '@/shared/types/v1';
-import type { Dispatch, SetStateAction } from 'react';
-import { createStateContext } from 'react-use';
+import { createContext, use } from 'react';
 
 export type UserProfileContextState = Partial<
   components['schemas']['ProfileByUserIdData']
 > | null;
 
-const [useUserProfileContextRaw, UserProfileContext] = createStateContext<
-  UserProfileContextState | undefined
->(undefined);
+const UserProfileContext = createContext<UserProfileContextState | undefined>(
+  undefined
+);
 
 export { UserProfileContext };
 
-export const useUserProfileContext = (): [
-  UserProfileContextState,
-  Dispatch<SetStateAction<UserProfileContextState | undefined>>,
-] => {
-  const [profile, setProfile] = useUserProfileContextRaw();
+export const useUserProfileContext = (): UserProfileContextState => {
+  const profile = use(UserProfileContext);
 
   if (profile === undefined) {
     throw new Error(
@@ -24,5 +20,5 @@ export const useUserProfileContext = (): [
     );
   }
 
-  return [profile, setProfile];
+  return profile;
 };

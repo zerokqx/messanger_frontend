@@ -39,14 +39,13 @@ export const ContactsList = () => {
 
   return (
     <Virtuoso
+      data={contactsMap}
       style={{
         height: '100%',
         minHeight: 0,
       }}
       totalCount={count.data ?? 0}
-      computeItemKey={(index) =>
-        contactsMap[index]?.user_id ?? `skeleton-${index.toString()}`
-      }
+      computeItemKey={(_, contact) => contact.user_id}
       increaseViewportBy={150}
       endReached={() => {
         if (contacts.hasNextPage && !contacts.isFetchingNextPage) {
@@ -54,8 +53,7 @@ export const ContactsList = () => {
         }
       }}
       isScrolling={setScrolling}
-      itemContent={(index) => {
-        const contact = contactsMap[index];
+      itemContent={(index, contact) => {
         const isSkeleton = index >= contactsMap.length;
 
         if (isSkeleton) {

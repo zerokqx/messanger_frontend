@@ -11,7 +11,6 @@ export const SearchResultList = () => {
   const selectUser = useSetUuidForRouter();
   const users = useSearchStore((s) => s.data);
   const animationKey = users.map((u) => u.user_id).join(':');
-
   if (users.length === 0) return;
 
   return (

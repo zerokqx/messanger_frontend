@@ -16,7 +16,6 @@ export const Tabs: TabsComponent = ({
   children,
   initialTab,
   animationVariant,
-  
 }) => {
   return (
     <TabManagerProvider
@@ -43,4 +42,4 @@ Tabs.Show = Show;
 Tabs.useBridgeRef = useBridgeRef;
 Tabs.MutallyExclusive = MutallyExclusive;
 Tabs.TabKeepMounted = TabsKeepMounted;
-Tabs.Trigger = Trigger
+Tabs.Trigger = Trigger;

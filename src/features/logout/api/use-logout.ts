@@ -1,14 +1,17 @@
 import { tokenAction } from '@/shared/token';
-import { userAction } from '@/entities/user/model/user-store';
 import { useRouter } from '@tanstack/react-router';
 import { useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const useLogout = () => {
   const router = useRouter();
+  const client = useQueryClient();
 
   return useCallback(async () => {
     tokenAction.doReset();
-    userAction.doReset();
+    await client.cancelQueries();
+    client.clear();
+
     await router.navigate({
       to: '/auth',
       search: {
@@ -16,5 +19,5 @@ export const useLogout = () => {
       },
     });
     await router.invalidate();
-  }, [router]);
+  }, [client, router]);
 };

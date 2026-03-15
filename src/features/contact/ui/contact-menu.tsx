@@ -31,8 +31,7 @@ const userIdGuard = (callback: Fn, userId: string | undefined | null) => {
 };
 
 export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
-
-  const [opened, {close,toggle}] = useDisclosure()
+  const [opened, { close, toggle }] = useDisclosure();
   const { mutate: contactRemove, isPending: isPendingContactRemove } =
     useContactRemove();
   const { mutate: contactAdd, isPending: isPendingContactAdd } =
@@ -58,11 +57,10 @@ export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
       keepMounted
       offset={6}
       withinPortal={false}
-      closeOnItemClick={false}
       trigger="click"
     >
       <Menu.Target>
-        <ActionIcon onClick={toggle} variant={opened ? 'light':'subtle'}>
+        <ActionIcon onClick={toggle} variant={opened ? 'light' : 'subtle'}>
           <Ellipsis />
         </ActionIcon>
       </Menu.Target>

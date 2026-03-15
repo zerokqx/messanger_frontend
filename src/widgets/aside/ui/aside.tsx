@@ -8,6 +8,7 @@ import { ArrowLeft } from 'lucide-react';
 import { notify } from '@/shared/lib/notifications';
 import { SkeletonLayout } from '@/shared/ui/skeletons';
 import { useDrag } from '@use-gesture/react';
+import { Tab } from '@/shared/ui/query-tabs/ui/tab';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -28,6 +29,7 @@ interface CustomAsideProps {
 export const Aside = ({ onClose }: CustomAsideProps) => {
   const _uuid = useGetUuidFromRouter();
   const uuid = _uuid ?? '';
+  const tabsApi = Tabs.useBridgeRef();
   const { data, isLoading, invalidateUser } = useGetUserById({
     id: uuid,
   });
@@ -37,7 +39,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
       if (!last) return;
 
       if (sx === 1) {
-        onClose();
+        tabsApi.current?.back();
       }
     },
     {
@@ -59,6 +61,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
     >
       {uuid && (
         <Tabs animationVariant="scale" key={uuid}>
+          <Tabs.Bridge ref={tabsApi} />
           <Group justify="space-between">
             <Tabs.UseApi>
               {({ actions, state }) => (

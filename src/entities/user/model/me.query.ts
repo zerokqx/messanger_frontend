@@ -10,7 +10,7 @@ import {
   type DescriptorImplementator,
 } from '@/shared/lib/cache-descriptor';
 
-const meQueryOptions = $api.profile.jwt.queryOptions(
+export const meQueryOptions = $api.profile.jwt.queryOptions(
   'get',
   '/me',
   {},
