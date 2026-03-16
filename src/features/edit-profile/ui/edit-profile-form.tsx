@@ -16,20 +16,21 @@ interface ProfileEditFormProps {
 
 interface ProfileFormState {
   bio: string;
-  full_name: string;
+  full_name?: string | null;
 }
 
 export const ProfileEditForm = ({
   onSuccess,
+
   onError,
 }: ProfileEditFormProps) => {
   const { t } = useTranslation(['field-labels', 'button-labels']);
   const osType = useOs();
   const { data } = useMe();
-  const { mutate,reset, isPending, isSuccess } = useEditProfile();
+  const { mutate, reset, isPending, isSuccess } = useEditProfile();
   const tailIsSuccess = useTails(1000, isSuccess);
-  useMount(reset)
-  useUnmount(reset)
+  useMount(reset);
+  useUnmount(reset);
 
   const {
     register,
@@ -37,6 +38,7 @@ export const ProfileEditForm = ({
     formState: { isDirty, isSubmitting },
   } = useForm<ProfileFormState>({
     defaultValues: {
+      full_name: data.full_name,
       bio: data.bio ?? '',
     },
   });
@@ -61,7 +63,7 @@ export const ProfileEditForm = ({
         <TextInput
           {...register('full_name')}
           label={t('field-labels:full-name')}
-          placeholder='Alexandr ...'
+          placeholder="Alexandr ..."
         />
         <Textarea
           {...register('bio')}
@@ -87,7 +89,6 @@ export const ProfileEditForm = ({
 
         <TailButton
           type="submit"
-
           tailVariant={{
             true: 'light',
             false: 'subtle',

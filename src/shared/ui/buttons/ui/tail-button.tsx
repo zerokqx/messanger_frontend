@@ -15,7 +15,7 @@ interface TailButtonProps
     ButtonProps & ComponentProps<'button'>,
     'leftSection' | 'color'
   > {
-  tail: boolean,
+  tail: boolean;
   tailColors?: TailObject<DefaultMantineColor>;
   tailSection?: TailObject<ReactNode>;
   tailVariant?: TailObject<ButtonProps['variant']>;
@@ -36,7 +36,6 @@ export const TailButton = ({
   tailVariant,
   ...props
 }: TailButtonProps) => {
-
   return (
     <Button
       leftSection={tailSection ? selectNode(tail, tailSection) : undefined}

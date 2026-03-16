@@ -47,6 +47,7 @@ export const ProfileForCurrentUser = (props: ProfileForCurrentUserProps) => {
         </Group>
       </Center>
       <UserProfile.Login />
+      <UserProfile.FullName/>
       <Suspense fallback={<RatingSkeleton />}>
         <UserProfile.Rating />
       </Suspense>

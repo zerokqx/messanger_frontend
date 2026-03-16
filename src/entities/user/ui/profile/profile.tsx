@@ -3,14 +3,16 @@ import { IconButton } from '@/shared/ui/buttons';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import type { components } from '@/shared/types/v1';
 import {
+  Button,
   Group,
   Avatar as MantineAvatar,
+  Paper,
   Stack,
   Text,
   ThemeIcon,
 } from '@mantine/core';
 import get from 'lodash/get';
-import { BadgeCheck } from 'lucide-react';
+import { BadgeCheck, Handshake } from 'lucide-react';
 import { lazy, Suspense, createContext, use, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
@@ -20,6 +22,8 @@ import type {
 } from './types';
 import { formatLogin } from '@/shared/lib/formaters/format-login.ts';
 import type { FormatLoginViaCutomNameFn } from '@/shared/lib/formaters/format-login.types.ts';
+import { relations } from '@/shared/lib/realtionship-helpers/compouned.ts';
+import { useSettingsStore } from '@/shared/lib/settings/index.ts';
 
 const LazyRatingFlake = lazy(() =>
   import('./lazy/rating.tsx').then((m) => ({
@@ -60,9 +64,7 @@ const UserProfileBase = ({ profile, children }: UserProfileProps) => {
 
   return (
     <ProfileContext value={value}>
-      <Stack gap="xs" align="stretch">
-        {children}
-      </Stack>
+      <Stack>{children}</Stack>
     </ProfileContext>
   );
 };
@@ -162,6 +164,20 @@ const Rating = () => {
   );
 };
 
+const FullName = () => {
+  const [t] = useTranslation('profile');
+  const context = useProfileContext();
+  return (
+    context.full_name && (
+      <IconButton>
+        <LabelBox>
+          <Text>{context.full_name}</Text>
+          <Label>{t('full-name')}</Label>
+        </LabelBox>
+      </IconButton>
+    )
+  );
+};
 const Verification = () => {
   const context = useProfileContext();
   const isVerified = get(context, 'is_verified') as boolean | undefined;
@@ -180,6 +196,27 @@ const Verification = () => {
     </IconButton>
   );
 };
+const YouFriends = () => {
+  const primaryColor = useSettingsStore((s) => s.data.primaryColor);
+  const [t] = useTranslation('profile');
+  const context = useProfileContext();
+  if (!context.relationship) return;
+  const isMutalFriends = relations.mutalContacts(context.relationship);
+  return (
+    isMutalFriends && (
+      <IconButton
+        variant='light'
+        style={{
+          pointerEvents: 'none',
+        }}
+        leftSection={<Handshake />}
+        color={primaryColor}
+      >
+        {t('you-friends')}
+      </IconButton>
+    )
+  );
+};
 
 UserProfile.Avatar = Avatar;
 UserProfile.Bio = Bio;
@@ -187,3 +224,5 @@ UserProfile.CreatedAt = CreatedAt;
 UserProfile.Login = Login;
 UserProfile.Rating = Rating;
 UserProfile.Verification = Verification;
+UserProfile.FullName = FullName;
+UserProfile.YouFriends = YouFriends;

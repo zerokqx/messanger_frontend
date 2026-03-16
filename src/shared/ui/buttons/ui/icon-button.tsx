@@ -1,21 +1,13 @@
-import { Button} from '@mantine/core';
-import type { IIconButtonProps } from './types/icon-button.types';
+import { Button } from '@mantine/core';
 import { lightDark } from '@/shared/lib/light-dark';
 
-export const IconButton = ({ leftSection, ...props }: IIconButtonProps) => {
-  return (
-    <Button
-      color={lightDark('gray.9','gray.1')}
-      justify="start"
-      bdrs={'sm'}
-      p={'0'}
-      pl={'md'}
-      pt={'xs'}
-      pb={'xs'}
-      leftSection={leftSection}
-      variant="subtle"
-      h={'max-content'}
-      {...props}
-    />
-  );
-};
+export const IconButton = Button.withProps({
+  color: lightDark('gray.8', 'gray.4'),
+  justify: 'start',
+  p: '0',
+  pl: 'md',
+  pt: 'xs',
+  pb: 'xs',
+  variant: 'subtle',
+  h: 'max-content',
+});

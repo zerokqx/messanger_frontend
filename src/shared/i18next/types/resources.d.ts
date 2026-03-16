@@ -151,7 +151,8 @@ interface Resources {
     "put_profile_error": "Profile change failed",
     "put_success": "The changes have been applied",
     "rating": "Rating",
-    "verified": "Verified"
+    "verified": "Verified",
+    "you-friends": "You are friends"
   },
   "search": {
     "clear-history": "Clear history",

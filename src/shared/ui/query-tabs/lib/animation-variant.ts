@@ -18,9 +18,9 @@ export const animationVariants = {
   },
 
   'slide-x': {
-    initial: { x: '-100%', opacity: 1, },
-    open: { x: '0', opacity: 1, },
-    closed: { x: '100%', opacity: 1 },
+    initial: { x: '-100%' },
+    open: { x: '0' },
+    closed: { x: '100%', opacity: 0.5 },
   },
 
   stack: {
@@ -59,6 +59,5 @@ export const animationVariants = {
     closed: {},
   },
 } satisfies Record<string, Variants>;
-
 
 export type TabAnimationVariant = keyof typeof animationVariants;

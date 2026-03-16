@@ -14,7 +14,7 @@ export const SearchResultList = () => {
   if (users.length === 0) return;
 
   return (
-    <MotionStagerList key={animationKey} stackProps={{ gap: 'xs' }}>
+    <MotionStagerList key={animationKey}  gap={'xs'}>
       {users.map((user) => {
         const profile =
           user.profile as components['schemas']['ProfileByUserIdData'];

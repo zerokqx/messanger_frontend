@@ -2,13 +2,12 @@ import { AppShellAside, CloseButton, Group, Stack } from '@mantine/core';
 import { lazy, Suspense } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
-import { ContactControllPanel, ContactMenu } from '@/features/contact';
+import {  ContactMenu } from '@/features/contact';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft } from 'lucide-react';
 import { notify } from '@/shared/lib/notifications';
 import { SkeletonLayout } from '@/shared/ui/skeletons';
 import { useDrag } from '@use-gesture/react';
-import { Tab } from '@/shared/ui/query-tabs/ui/tab';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -90,16 +89,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
                 ) : (
                   <Stack>
                     <ProfileForGetUserById profile={data} />
-                    {!data.relationship
-                      .is_current_user_in_blacklist_of_target &&
-                      !data.relationship
-                        .is_target_user_blocked_by_current_user && (
-                        <ContactControllPanel
-                          onUpdate={invalidateUser}
-                          userId={uuid}
-                          user={data}
-                        />
-                      )}
+
                   </Stack>
                 )}
               </Suspense>

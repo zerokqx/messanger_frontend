@@ -157,7 +157,6 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
             <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Stack px="xs" pb="xs">
                 <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
-
                 <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
                 <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
               </Stack>
@@ -173,7 +172,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           <Tabs.Tab value="profile/edit">
             <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Suspense fallback={<SkeletonLayout />}>
-                <ProfileEditTab />
+                <ProfileEditTab  onSuccess={()=>{bottomApiTabs.current?.back()}}/>
               </Suspense>
             </ErrorBoundary>
           </Tabs.Tab>

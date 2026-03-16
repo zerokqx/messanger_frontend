@@ -5,7 +5,6 @@ export interface UserProfileProps<T = Record<string, unknown>> {
   children: ReactNode;
   profile: T;
 }
-
 export type UserProfileAvatarProps = Omit<
   AvatarProps & ComponentProps<'img'>,
   'src' | 'name'
@@ -19,4 +18,6 @@ export interface UserProfileCompoundComponent {
   CreatedAt: () => ReactNode;
   Bio: () => ReactNode;
   Verification: () => ReactNode;
+  FullName: ()=>ReactNode
+  YouFriends: ()=> ReactNode
 }

@@ -7,8 +7,7 @@ import { useContactAdd, useContactRemove } from '../api';
 import type { Fn } from '@/shared/types/utils/functions';
 import type { components } from '@/shared/types/v1';
 import { useInvalidateContacts } from '@/entities/contact';
-import { useResponsive } from '@/shared/lib/hooks/use-responsive';
-import { useDisclosure, useToggle } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 
 interface ContactMenu {
   user?: Partial<
@@ -86,8 +85,7 @@ export const ContactMenu = ({ user, onUpdate, onEditClick }: ContactMenu) => {
             >
               {t('contact-add')}
             </Menu.Item>
-          </>
-        )}
+          </>)}
         {inContact && (
           <>
             <Menu.Item

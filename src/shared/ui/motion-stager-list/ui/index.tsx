@@ -28,8 +28,7 @@ const variantsByDefault: VariantsType = {
 
 type MotionPropsWithoutVariants = Omit<HTMLMotionProps<'div'>, 'variants'>;
 
-interface MotionStagerListPorps {
-  stackProps?: StackProps;
+interface MotionStagerListPorps extends StackProps {
   containerProps?: MotionPropsWithoutVariants;
   children?: ReactNode;
   variants?: VariantsType;
@@ -47,15 +46,16 @@ export const StagerItem: MotionStagerComponent['StagerItem'] = (props) => {
 
 export const MotionStagerList: MotionStagerComponent = ({
   children,
-  stackProps,
   containerProps,
   variants,
+  ...stackProps
 }) => {
   const __variants = variants ?? variantsByDefault;
 
   return (
     <VariantContext initialValue={__variants}>
       <Stack
+        component={m.div}
         {...stackProps}
         renderRoot={(props) => (
           <m.div

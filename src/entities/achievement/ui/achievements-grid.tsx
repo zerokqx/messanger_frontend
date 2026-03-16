@@ -57,9 +57,9 @@ export const AchievementsGrid = () => {
     setShowInProgress,
     resetFilters,
   } = useAchievementsGridState();
-  const { data,  isError } = useMyAchievement();
-  const vibrationScroll = createThrottledVibrationHandler()
-  const {mobile} = useResponsive()
+  const { data, isError } = useMyAchievement();
+  const vibrationScroll = createThrottledVibrationHandler();
+  const { mobile } = useResponsive();
 
   const allAchievements = useMemo(
     () => flattenAchievements(data.data.items),
@@ -96,7 +96,6 @@ export const AchievementsGrid = () => {
     return filteredAchievements.slice(start, start + PAGE_SIZE);
   }, [filteredAchievements, safePage]);
 
-
   if (isError) {
     return (
       <Alert color="red" icon={<CircleSlash size={16} />} m="xs">
@@ -123,42 +122,34 @@ export const AchievementsGrid = () => {
         overflow: 'clip',
       }}
     >
-      <AnimatePresence initial={false} mode="popLayout">
-        <m.div
-          style={{ zIndex: 200 }}
-          animate={{ y: 0, opacity: 1 }}
-          initial={{ y: -100, opacity: 0 }}
-          exit={{ y: -100, opacity: 0 }}
-        >
-          <AchievementFilters
-            selectedGrades={state.selectedGrades}
-            onSelectedGradesChange={(grades) => {
-              setSelectedGrades(grades);
-            }}
-            search={state.search}
-            onSearchChange={(value) => {
-              setSearch(value);
-            }}
-            showCompleted={state.showCompleted}
-            onShowCompletedChange={(value) => {
-              setShowCompleted(value);
-            }}
-            showInProgress={state.showInProgress}
-            onShowInProgressChange={(value) => {
-              setShowInProgress(value);
-            }}
-            onClear={() => {
-              resetFilters();
-            }}
-          />
-        </m.div>
-      </AnimatePresence>
+      <AchievementFilters
+        selectedGrades={state.selectedGrades}
+        onSelectedGradesChange={(grades) => {
+          setSelectedGrades(grades);
+        }}
+        search={state.search}
+        onSearchChange={(value) => {
+          setSearch(value);
+        }}
+        showCompleted={state.showCompleted}
+        onShowCompletedChange={(value) => {
+          setShowCompleted(value);
+        }}
+        showInProgress={state.showInProgress}
+        onShowInProgressChange={(value) => {
+          setShowInProgress(value);
+        }}
+        onClear={() => {
+          resetFilters();
+        }}
+      />
       {achievements.length === 0 ? (
         <Alert color="gray" icon={<CircleSlash size={16} />} m="xs">
           {t('empty_filtered')}
         </Alert>
       ) : (
         <Virtuoso
+          data={achievements}
           key={safePage}
           style={{
             flex: 1,
@@ -167,15 +158,15 @@ export const AchievementsGrid = () => {
           components={{
             List: VirtuosoList,
           }}
-            onScroll={vibrationScroll}
+          onScroll={vibrationScroll}
           totalCount={achievements.length}
-          computeItemKey={(index) => achievements[index].achievement_id}
+          computeItemKey={(_, achievement) => achievement.achievement_id}
           increaseViewportBy={176}
           isScrolling={setScrolling}
-          itemContent={(index) => (
+          itemContent={(_, achievement) => (
             <Box mb="sm">
               <AchievementCard
-                achievement={achievements[index]}
+                achievement={achievement}
                 simplifycity={state.isScrolling}
               />
             </Box>
@@ -189,7 +180,7 @@ export const AchievementsGrid = () => {
             value={safePage}
             onChange={setPage}
             total={totalPages}
-            size={mobile ? 'sm':'md'}
+            size={mobile ? 'sm' : 'md'}
             withEdges
           />
         </Center>
