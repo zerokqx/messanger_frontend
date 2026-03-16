@@ -7,14 +7,14 @@ import '@mantine/notifications/styles.css';
 import { createRouter } from '@tanstack/react-router';
 import ReactDOM from 'react-dom/client';
 import { routeTree } from './route-tree.gen';
-import { Wrapper } from './wrapper';
 import { queryClient } from '@/shared/api';
+import { Wrapper } from './wrapper.tsx';
 
 export const router = createRouter({
   routeTree,
   defaultPreload: 'viewport',
   context: {
-    queryClient
+    queryClient,
   },
   scrollRestoration: true,
 });
@@ -38,11 +38,10 @@ async function enableMocking() {
 
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-  void enableMocking()
-    .catch((error: unknown) => {
-      console.error('[MSW] Failed to start worker', error);
-    })
-    .finally(() => {
-      root.render(<Wrapper />);
-    });
+  root.render(
+      <Wrapper />
+  );
+  void enableMocking().catch((error: unknown) => {
+    console.error('[MSW] Failed to start worker', error);
+  });
 }

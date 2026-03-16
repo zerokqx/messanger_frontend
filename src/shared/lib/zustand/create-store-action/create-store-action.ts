@@ -1,6 +1,7 @@
 import { fromPairs, zip } from 'lodash';
 import type { Fn } from '@/shared/types/utils/functions';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyFn = (...args: any[]) => any; // чтобы не потерять конкретные сигнатуры функций
 type TupleKeys<T extends readonly unknown[]> = Extract<keyof T, `${number}`>;
 

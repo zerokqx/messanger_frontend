@@ -1,9 +1,9 @@
 import type { TabsConfig } from '@/shared/ui/tabs';
 import type { ComponentType, ReactNode } from 'react';
 
-type AppShellTabName = string;
+export type AppShellTabName = string;
 
-interface NavbarTabSlot extends TabsConfig {
+export interface NavbarTabSlot extends TabsConfig {
   value: AppShellTabName;
   label: string;
   fallback?: ReactNode;

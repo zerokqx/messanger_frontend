@@ -1,5 +1,5 @@
 import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
-import { Blockquote, Skeleton, Text } from '@mantine/core';
+import { Blockquote, Skeleton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 export const LazyBio = ({ bio }: { bio: string }) => {

@@ -1,11 +1,11 @@
-import { ActionIcon, Box, Button, Group, Input, Stack } from '@mantine/core';
+import { ActionIcon, Box, Group, Stack } from '@mantine/core';
 import * as m from 'motion/react-m';
 import { ErrorBoundary } from 'react-error-boundary';
 import { SearchInput } from '@/features/search';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { Panel } from '@/shared/ui/query-tabs/ui';
 import type { MainTabsProps } from './types.ts';
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense } from 'react';
 import { historySearchActions } from '@/features/search-history/index.ts';
 import {
   useSearch,
@@ -17,9 +17,6 @@ import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
-import { useSendMessage } from '@/features/chat/index.ts';
-import { useChatHistory } from '@/entities/chat/api/chat-history.ts';
-import { pagesMap } from '@/shared/lib/pages-map/pages-map.ts';
 import { ChatCard } from '@/entities/chat';
 import type { ChatListItem } from '@/entities/chat';
 
@@ -77,11 +74,7 @@ const MOCK_CHAT_ITEM: ChatListItem = {
 };
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
-  const { mutate: sendMessage } = useSendMessage();
-  const [inp, setInp] = useState('');
   const { refetch } = useSearch();
-
-  const ma = useChatHistory();
   const bottomApiTabs = Tabs.useBridgeRef();
   return (
     <Tabs animationVariant="slide-x">

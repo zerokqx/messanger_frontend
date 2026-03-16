@@ -48,7 +48,7 @@ export const mockCurrentUser: components['schemas']['ProfileData'] = {
   },
 };
 
-const mockCurrentUserResponse: components['schemas']['ProfileResponse'] = {
+export const mockCurrentUserResponse: components['schemas']['ProfileResponse'] = {
   status: 'success',
   data: mockCurrentUser,
 };

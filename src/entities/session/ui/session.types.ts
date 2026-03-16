@@ -1,4 +1,3 @@
-import type { Fn } from '@/shared/types/utils/functions';
 import type { components } from '@/shared/types/v1';
 import type { GridProps, TextProps } from '@mantine/core';
 import type { ReactNode } from 'react';
@@ -19,11 +18,6 @@ export interface SessionProps {
   session: SessionData;
   gridProps?: GridProps;
   children: ReactNode;
-}
-
-interface SessionCardProps {
-  session: SessionData;
-  onRevoke: Fn<[string], void>;
 }
 
 export interface SessionHeaderProps {

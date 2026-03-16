@@ -9,7 +9,7 @@ const toMantineVar = (color: Color): string => {
     return '';
   }
 
-  if (shade !== undefined && shade !== '') {
+  if (shade !== '') {
     return `var(--mantine-color-${name}-${shade})`;
   }
 

@@ -26,5 +26,12 @@
   "animation-speed-fast": "Fast",
   "animation-speed-normal": "Normal",
   "animation-speed-smoothly": "Smooth",
-  "animation-speed-super-smoothly": "Very smooth"
+  "animation-speed-super-smoothly": "Very smooth",
+  "radius": "Corner radius",
+  "reset": "Reset",
+  "radius-size-xs": "Extra small (xs)",
+  "radius-size-sm": "Small (sm)",
+  "radius-size-md": "Medium (md)",
+  "radius-size-lg": "Large (lg)",
+  "radius-size-xl": "Extra large (xl)"
 }

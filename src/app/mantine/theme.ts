@@ -1,11 +1,10 @@
+import { RadiusSchema } from '@/shared/lib/settings/settings/model/types';
 import {
     ActionIcon,
   AppShell,
   AppShellAside,
   AppShellNavbar,
-  Avatar,
   Button,
-  Checkbox,
   createTheme,
   Drawer,
   MenuDropdown,
@@ -15,7 +14,6 @@ import {
   Textarea,
   TextInput,
   ThemeIcon,
-  Title,
   virtualColor,
   type MantineColorsTuple,
 } from '@mantine/core';
@@ -71,7 +69,7 @@ export const theme = createTheme({
     ...colors,
   },
 
-  primaryColor: 'blue',
+  primaryColor: 'violet',
   primaryShade: { light: 6, dark: 9 },
   other: {
     borders: {
@@ -81,6 +79,7 @@ export const theme = createTheme({
     },
   },
 
+  
   cursorType: 'pointer',
   white: '#FFFFFF',
   black: '#000000',
@@ -103,13 +102,7 @@ export const theme = createTheme({
     },
   },
 
-  radius: {
-    xs: '0px',
-    sm: '6px',
-    md: '8px',
-    lg: '12px',
-    xl: '16px',
-  },
+  radius: RadiusSchema.parse({}),
   defaultRadius: 'md',
 
   spacing: {

@@ -1,7 +1,7 @@
 import { useSearch } from '../api';
 import { Loader, TextInput, type TextInputProps } from '@mantine/core';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDebounce } from 'react-use';
 import { historySearchActions } from '@/features/search-history';
 import { useSearchUserQuery } from '../api/use-search';

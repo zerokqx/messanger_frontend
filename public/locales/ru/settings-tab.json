@@ -26,5 +26,12 @@
   "animation-speed-fast": "Быстро",
   "animation-speed-normal": "Нормально",
   "animation-speed-smoothly": "Плавно",
-  "animation-speed-super-smoothly": "Очень плавно"
+  "animation-speed-super-smoothly": "Очень плавно",
+  "radius": "Скругления",
+  "reset": "Сбросить",
+  "radius-size-xs": "Очень маленький (xs)",
+  "radius-size-sm": "Маленький (sm)",
+  "radius-size-md": "Средний (md)",
+  "radius-size-lg": "Большой (lg)",
+  "radius-size-xl": "Очень большой (xl)"
 }

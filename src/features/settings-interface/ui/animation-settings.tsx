@@ -5,8 +5,8 @@ import {
 import { notify } from '@/shared/lib/notifications';
 import { Select, Slider, Space, Switch, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { TextTitle } from './text-title';
 
-const TextTitle = Text.withProps({ size: 'md', opacity: 0.8 });
 
 export const AnimationSettings = () => {
   const { t } = useTranslation('settings-tab');

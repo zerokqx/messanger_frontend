@@ -1,6 +1,6 @@
-import { Group, Menu } from '@mantine/core';
+import { Menu } from '@mantine/core';
 import type { IContactElementProp } from './types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect,  useState } from 'react';
 import { useToggle } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { Trash } from 'lucide-react';
@@ -15,7 +15,6 @@ export const ContactCard = ({
 }: IContactElementProp) => {
   const [opened, toggle] = useToggle();
   const [t] = useTranslation('contact-menu');
-  const cardRef = useRef<HTMLDivElement | null>(null);
   const [position, setPosition] = useState<{ x: number; y: number } | null>(
     null
   );

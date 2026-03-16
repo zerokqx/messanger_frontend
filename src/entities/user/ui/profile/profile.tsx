@@ -3,10 +3,8 @@ import { IconButton } from '@/shared/ui/buttons';
 import { Label, LabelBox } from '@/shared/ui/lables';
 import type { components } from '@/shared/types/v1';
 import {
-  Button,
   Group,
   Avatar as MantineAvatar,
-  Paper,
   Stack,
   Text,
   ThemeIcon,

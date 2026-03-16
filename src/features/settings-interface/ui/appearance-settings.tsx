@@ -1,21 +1,20 @@
-import {
-  PrimaryColorSchema,
-  useSettingsStore,
-} from '@/shared/lib/settings';
+import { PrimaryColorSchema, useSettingsStore } from '@/shared/lib/settings';
 import { errorNotify } from '@/shared/lib/notifications/error';
 import { ThemeSelect } from '@/shared/ui/theme-select';
-import { Select, Text, useMantineTheme } from '@mantine/core';
+import { Select,  useMantineTheme } from '@mantine/core';
 import has from 'lodash/has';
 import { useTranslation } from 'react-i18next';
 import { ChangeLanguage } from './change-language.tsx';
-
-const TextTitle = Text.withProps({ size: 'md', opacity: 0.8 });
+import { RadiusForm } from './radius.tsx';
+import { TextTitle } from './text-title.tsx';
 
 export const AppearanceSettings = () => {
   const { t } = useTranslation('settings-tab');
   const theme = useMantineTheme().colors;
   const primaryColor = useSettingsStore((s) => s.data.primaryColor);
   const update = useSettingsStore((s) => s.update);
+  const d = useSettingsStore((s) => s.data.radius);
+  console.log(d);
 
   return (
     <>
@@ -43,6 +42,7 @@ export const AppearanceSettings = () => {
           label: t(color),
         }))}
       />
+      <RadiusForm />
     </>
   );
 };

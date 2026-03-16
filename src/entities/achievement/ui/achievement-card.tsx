@@ -5,13 +5,11 @@ import {
   Group,
   Progress,
   RingProgress,
-  Skeleton,
   Stack,
   Text,
   ThemeIcon,
-  Tooltip,
 } from '@mantine/core';
-import { Check, Lock, Trophy } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { AchievementBadgeType, AchievementCardProps } from './types';
@@ -53,18 +51,12 @@ const getProgressPercent = (progress: number, required: number) => {
 
 const AchievementCardBase = ({
   achievement,
-  rightSection,
-  simplifycity = false,
 }: AchievementCardProps) => {
   const [t] = useTranslation('achievement');
   const theme = badgeThemeMap[achievement.badge_type];
   const progress = achievement.progress ?? 0;
   const requiredProgress = achievement.required_progress ?? 0;
   const progressPercent = getProgressPercent(progress, requiredProgress);
-  const unlockedDate = achievement.unlocked_at
-    ? new Date(achievement.unlocked_at).toLocaleDateString()
-    : null;
-
   return (
     <Card radius="xl" p="md" bd="1px solid vdarkGray.4">
       <Group justify="space-between" align="flex-start" wrap="nowrap">

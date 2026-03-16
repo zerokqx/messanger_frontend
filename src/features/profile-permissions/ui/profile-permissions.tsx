@@ -1,7 +1,7 @@
 import { useProfilePut } from '@/features/profile-put';
 import { usePlurarDates } from '@/shared/lib/hooks/use-date';
 import { useQueryClient } from '@tanstack/react-query';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   createPermissions,

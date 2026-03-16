@@ -1,4 +1,4 @@
-import { Button, Center } from '@mantine/core';
+import { Center } from '@mantine/core';
 import type { components } from '@/shared/types/v1';
 import { UserProfile } from './profile';
 import { useIsMe } from '../lib/use-is-me';

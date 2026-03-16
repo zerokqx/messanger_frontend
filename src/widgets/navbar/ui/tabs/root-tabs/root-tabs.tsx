@@ -1,12 +1,12 @@
 import { lazy, Suspense } from 'react';
 import {
   ActionIcon,
+  Box,
   Button,
   Group,
   Skeleton,
   Stack,
   Text,
-  useMantineColorScheme,
 } from '@mantine/core';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft, Home, Lock, LogOut } from 'lucide-react';
@@ -78,7 +78,6 @@ const RootTabsTitle = () => {
 
 export const RootTabs = ({ children }: RootTabsProps) => {
   const { mobile } = useResponsive();
-  const { colorScheme } = useMantineColorScheme();
   const [t] = useTranslation(['navbar', 'button-labels']);
   const { data } = useMe();
   const logout = useLogout();
@@ -131,88 +130,92 @@ export const RootTabs = ({ children }: RootTabsProps) => {
             </Tabs.UseApi>
           </Group>
         </Tabs.Hide>
-        <Tabs.Tab value="settings/sessions">
-          <Suspense fallback={<SessionListSkeleton />}>
-            <SessionsTab />
-          </Suspense>
-        </Tabs.Tab>
-        {children}
-        <Tabs.Tab value="settings/interface">
-          <Suspense fallback={<InterfaceEditSkeleton />}>
-            <InterfaceEditTab />
-          </Suspense>
-        </Tabs.Tab>
+        <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+          <Tabs.Tab value="settings/sessions">
+            <Suspense fallback={<SessionListSkeleton />}>
+              <SessionsTab />
+            </Suspense>
+          </Tabs.Tab>
+          {children}
+          <Tabs.Tab value="settings/interface">
+            <Box h="100%" style={{ overflowY: 'auto' }}>
+              <Suspense fallback={<InterfaceEditSkeleton />}>
+                <InterfaceEditTab />
+              </Suspense>
+            </Box>
+          </Tabs.Tab>
 
-        <Tabs.Tab value="settings/permissions">
-          <Suspense fallback={<SkeletonLayout />}>
-            <ProfilePermissions permissions={data} />
-          </Suspense>
-        </Tabs.Tab>
-        <Tabs.Tab value="settings">
-          <Stack>
-            <Tabs.UseApi>
-              {({ actions }) => (
-                <>
-                  {rootTabs.map(({ value, leftSection }) => (
-                    <ButtonLeft
-                      key={value}
-                      onClick={() => {
-                        actions.push(value);
-                      }}
-                      leftSection={leftSection}
-                    >
-                      {t(value)}
+          <Tabs.Tab value="settings/permissions">
+            <Suspense fallback={<SkeletonLayout />}>
+              <ProfilePermissions permissions={data} />
+            </Suspense>
+          </Tabs.Tab>
+          <Tabs.Tab value="settings">
+            <Stack>
+              <Tabs.UseApi>
+                {({ actions }) => (
+                  <>
+                    {rootTabs.map(({ value, leftSection }) => (
+                      <ButtonLeft
+                        key={value}
+                        onClick={() => {
+                          actions.push(value);
+                        }}
+                        leftSection={leftSection}
+                      >
+                        {t(value)}
+                      </ButtonLeft>
+                    ))}
+                    <ButtonLeft leftSection={<Lock />} onClick={toggle}>
+                      {t('change-password')}
                     </ButtonLeft>
-                  ))}
-                  <ButtonLeft leftSection={<Lock />} onClick={toggle}>
-                    {t('change-password')}
-                  </ButtonLeft>
-                  <ButtonLeft
-                    onClick={() => {
-                      modals.openConfirmModal({
-                        fullScreen: mobile,
-                        children: t('navbar:submit-logout-text'),
-                        cancelProps: {
-                          children: t('button-labels:back'),
-                        },
-                        confirmProps: {
-                          color: 'deepRed',
-                          children: t('button-labels:exit'),
-                          rightSection: <LogOut />,
-                        },
-                        onConfirm: () => {
-                          void logout();
-                        },
-                      });
-                    }}
-                    variant="outline"
-                    color="red"
-                    leftSection={<LogOut />}
-                  >
-                    {t('button-labels:exit')}
-                  </ButtonLeft>
-                </>
-              )}
-            </Tabs.UseApi>
-          </Stack>
-        </Tabs.Tab>
-        <Tabs.Tab value="block-users">
-          <Suspense fallback={<SkeletonLayout />}>
-            <BlocklistManager />
-          </Suspense>
-        </Tabs.Tab>
-        <Tabs.Tab value="achievements">
-          <Suspense
-            fallback={
-              <Stack>
-                <Skeleton h={62} w={'100%'} />
-                <SkeletonsCardList size={4} h={170} />
-              </Stack>
-            }
-          >
-            <AchievementsGrid />
-          </Suspense>
-        </Tabs.Tab>
+                    <ButtonLeft
+                      onClick={() => {
+                        modals.openConfirmModal({
+                          fullScreen: mobile,
+                          children: t('navbar:submit-logout-text'),
+                          cancelProps: {
+                            children: t('button-labels:back'),
+                          },
+                          confirmProps: {
+                            color: 'deepRed',
+                            children: t('button-labels:exit'),
+                            rightSection: <LogOut />,
+                          },
+                          onConfirm: () => {
+                            void logout();
+                          },
+                        });
+                      }}
+                      variant="outline"
+                      color="red"
+                      leftSection={<LogOut />}
+                    >
+                      {t('button-labels:exit')}
+                    </ButtonLeft>
+                  </>
+                )}
+              </Tabs.UseApi>
+            </Stack>
+          </Tabs.Tab>
+          <Tabs.Tab value="block-users">
+            <Suspense fallback={<SkeletonLayout />}>
+              <BlocklistManager />
+            </Suspense>
+          </Tabs.Tab>
+          <Tabs.Tab value="achievements">
+            <Suspense
+              fallback={
+                <Stack>
+                  <Skeleton h={62} w={'100%'} />
+                  <SkeletonsCardList size={4} h={170} />
+                </Stack>
+              }
+            >
+              <AchievementsGrid />
+            </Suspense>
+          </Tabs.Tab>
+        </Box>
       </Stack>
     </Tabs>
   );

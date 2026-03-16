@@ -1,6 +1,5 @@
 import { NotFoundError } from '@/pages/404';
 import {
-  createRootRoute,
   createRootRouteWithContext,
   Outlet,
 } from '@tanstack/react-router';

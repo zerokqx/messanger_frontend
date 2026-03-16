@@ -2,7 +2,7 @@ import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 import type { RevokeAllModalProps } from './revoke-all-modal.types';
 import { useSessionRevokeAll } from '../model';
 
-const RevokeAllModal = ({ opened, onClose }: RevokeAllModalProps) => {
+export const RevokeAllModal = ({ opened, onClose }: RevokeAllModalProps) => {
   const { mutate: mutateAllRevoke } = useSessionRevokeAll();
   return (
     <Modal opened={opened} onClose={onClose}>

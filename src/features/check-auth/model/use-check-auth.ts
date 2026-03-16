@@ -5,7 +5,6 @@ import z from 'zod';
 
 /**
  * @returns boolean
- * @deprecated
  */
 function useCheckAuth(): boolean {
   const validate = useCallback((t: string) => z.jwt().safeParse(t).success, []);

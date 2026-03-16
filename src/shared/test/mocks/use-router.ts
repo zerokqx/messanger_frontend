@@ -1,3 +1,4 @@
+/* eslint-disable react-x/no-unnecessary-use-prefix */
 import { vi } from 'vitest';
 
 export const mockNavigate = vi.fn();
@@ -35,7 +36,7 @@ export const routerMock = {
     return {
       type: 'a',
       props: {
-        onClick: (e: any) => {
+        onClick: (e: MouseEvent) => {
           e.preventDefault();
           mockNavigate({ to });
         },

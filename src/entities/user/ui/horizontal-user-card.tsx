@@ -6,7 +6,6 @@ import {
   type UserProfileContextState,
 } from '../model/user-profile-context';
 import {
-  Text,
   Avatar as AvatarMantine,
   Group,
   type GroupProps,

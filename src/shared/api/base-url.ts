@@ -17,7 +17,7 @@ export const SERVICES = Object.keys(SERVICE_CONFIG) as Services[];
 type Version = 'v1';
 type BaseUrlDomain = `https://${string}`;
 const useProxy = import.meta.env.VITE_PROXY_API === 'true';
-const directApiUrl = import.meta.env.VITE_API_URL?.trim();
+const directApiUrl = import.meta.env.VITE_API_URL.trim();
 
 if (!useProxy && !directApiUrl) {
   throw new Error(

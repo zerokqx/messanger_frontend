@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 type ProfileResponse = components['schemas']['ProfileResponse'];
 
 export const useEditProfile = (withReset = false) => {
-  const [edit] = useMeDescriptor(true);
+  const [edit] = useMeDescriptor({ autoCommit: true });
   const [t] = useTranslation(['titles', 'profile']);
 
   return $api.profile.jwt.useMutation('put', '/edit', {

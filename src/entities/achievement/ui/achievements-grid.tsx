@@ -1,7 +1,6 @@
-import { Alert, Box, Center, Pagination, Text } from '@mantine/core';
+import { Alert, Box, Center, Pagination } from '@mantine/core';
 import { CircleSlash } from 'lucide-react';
 import type { HTMLAttributes } from 'react';
-import * as m from 'motion/react-m';
 import { useMemo } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +9,6 @@ import { AchievementCard } from './achievement-card';
 import { AchievementFilters } from './achievement-filters';
 import type { AchievementItem } from './types';
 import { useAchievementsGridState } from './use-achievements-grid-state';
-import { AnimatePresence } from 'motion/react';
 import { createThrottledVibrationHandler } from '@/shared/lib/vibration';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 

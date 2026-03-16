@@ -1,14 +1,5 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  Group,
-  Paper,
-  Stack,
-  Text,
-} from '@mantine/core';
+import { Avatar, Badge, Box, Group, Paper, Stack, Text } from '@mantine/core';
 import type { ChatCardProps } from './types';
-import { lightDark } from '@/shared/lib/light-dark';
 
 const formatTime = (value?: string | null): string => {
   if (!value) return '--:--';
@@ -29,10 +20,12 @@ const getMessagePreview = (message: string | null | undefined): string => {
   return message;
 };
 
-export const ChatCard = ({ chat, isActive = false, title, onClick }: ChatCardProps) => {
+export const ChatCard = ({ chat, title, onClick }: ChatCardProps) => {
   const messagePreview = getMessagePreview(chat.last_message?.content);
   const chatTitle = getTitle(title, chat.chat_type);
-  const timeLabel = formatTime(chat.last_message?.created_at ?? chat.created_at);
+  const timeLabel = formatTime(
+    chat.last_message?.created_at ?? chat.created_at
+  );
 
   return (
     <Paper
@@ -49,7 +42,7 @@ export const ChatCard = ({ chat, isActive = false, title, onClick }: ChatCardPro
       }}
     >
       <Group align="flex-start" wrap="nowrap" gap="sm">
-        <Avatar radius="1000px"  variant="light">
+        <Avatar radius="1000px" variant="light">
           {chatTitle.slice(0, 1).toUpperCase()}
         </Avatar>
 
@@ -70,7 +63,7 @@ export const ChatCard = ({ chat, isActive = false, title, onClick }: ChatCardPro
 
         <Box>
           {chat.unread_count > 0 ? (
-            <Badge  radius="xl" size="sm" variant="filled">
+            <Badge radius="xl" size="sm" variant="filled">
               {chat.unread_count}
             </Badge>
           ) : null}
