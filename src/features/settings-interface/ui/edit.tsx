@@ -17,7 +17,6 @@ export const InterfaceEditTab = () => {
   return (
     <Stack gap={'md'}>
       <AnimationSettings />
-      <Divider />
       <AppearanceSettings />
     </Stack>
   );

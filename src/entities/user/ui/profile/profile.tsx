@@ -22,6 +22,7 @@ import { formatLogin } from '@/shared/lib/formaters/format-login.ts';
 import type { FormatLoginViaCutomNameFn } from '@/shared/lib/formaters/format-login.types.ts';
 import { relations } from '@/shared/lib/realtionship-helpers/compouned.ts';
 import { useSettingsStore } from '@/shared/lib/settings/index.ts';
+import { GroupedList } from '@/shared/ui/grouped-list/ui/grouped-list.tsx';
 
 const LazyRatingFlake = lazy(() =>
   import('./lazy/rating.tsx').then((m) => ({
@@ -124,7 +125,6 @@ const CreatedAt = () => {
 
 const Login = () => {
   const context = useProfileContext();
-
   const [t] = useTranslation('profile');
   const copy = useNotifyClipboard();
   const login = context.login;
@@ -132,7 +132,7 @@ const Login = () => {
 
   if (!login) return null;
   return (
-    <IconButton
+    <GroupedList.Item
       onMouseUp={() => {
         copy(login, t('login'));
       }}
@@ -146,7 +146,7 @@ const Login = () => {
         </Group>
         <Label>{t('login')}</Label>
       </LabelBox>
-    </IconButton>
+    </GroupedList.Item>
   );
 };
 

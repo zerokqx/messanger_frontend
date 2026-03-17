@@ -54,14 +54,21 @@ interface Resources {
   },
   "contact": {
     "add": "Add",
+    "block": "Block",
+    "contact-blocked-you": "{{username}} blocked you",
     "contact-remove-pending": "Removing...",
     "contact-remove-success": "Contact removed",
     "contacts": "Contacts",
     "contacts-empty": "You do not have any contacts yet. Add them via search.",
     "contacts-load-error": "An unexpected error occurred while loading contacts. Please reload the page.",
+    "current-user-in-contact-target": "You are in this user's contacts",
     "error-contact-operation": "Contact operation error",
     "error-contact-operation-message": "Failed to update contact. Please try again.",
-    "in-contact": "In contacts"
+    "in-contact": "In contacts",
+    "mutal-blocked": "You are mutually blocked",
+    "relations": "Relations",
+    "you-block-user": "You blocked {{username}}",
+    "yours-not-have-relation": "You have no relation"
   },
   "contact-menu": {
     "blacklist-add": "Add to blacklist",
@@ -146,8 +153,14 @@ interface Resources {
   },
   "profile": {
     "bio": "Biography",
+    "bio-undefined": "Biography is not set",
+    "bio-user-not-write-about-himself": "User did not fill in biography",
     "created_at": "Created at",
+    "full-name": "Full name",
+    "full-name-undefined": "Full name is not set",
+    "full-name-user-not-write-himself-name": "User did not specify a full name",
     "login": "Login",
+    "mutal-contacts": "You are mutual contacts",
     "put_profile_error": "Profile change failed",
     "put_success": "The changes have been applied",
     "rating": "Rating",

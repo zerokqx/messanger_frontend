@@ -1,17 +1,11 @@
 import { useSettingsStore, type Radius } from '@/shared/lib/settings';
-import { Button, NumberInput, SimpleGrid, Stack } from '@mantine/core';
-import { LucideTimerReset, RotateCcw } from 'lucide-react';
+import { Button, NumberInput, SimpleGrid } from '@mantine/core';
+import { RotateCcw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { TextTitle } from './text-title';
 import { RadiusSchema } from '@/shared/lib/settings/settings/model/types';
-
-const DEFAULT_RADIUS: Radius = {
-  xs: '0px',
-  sm: '6px',
-  md: '8px',
-  lg: '12px',
-  xl: '16px',
-};
+import { RoundedContainerStack } from '@/shared/ui/boxes';
+import { NamedList } from '@/shared/ui/named-list';
 
 const px = (value: number | string) => `${value}px`;
 
@@ -27,13 +21,6 @@ const Input = NumberInput.withProps({
 
 const radiusKeys: (keyof Radius)[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
-const radiusLabelMap: Record<keyof Radius, string> = {
-  xs: 'radius-size-xs',
-  sm: 'radius-size-sm',
-  md: 'radius-size-md',
-  lg: 'radius-size-lg',
-  xl: 'radius-size-xl',
-};
 
 export const RadiusForm = () => {
   const [t] = useTranslation('settings-tab');
@@ -55,14 +42,14 @@ export const RadiusForm = () => {
   };
 
   return (
-    <Stack bdrs={'xl'} bg="dark" p="xs">
-      <TextTitle>{t('radius')}</TextTitle>
+    <NamedList title={t('radius')} bdrs={0}>
 
       <SimpleGrid cols={{ base: 1, sm: 2 }}>
         {radiusKeys.map((key) => (
           <Input
+            variant="default"
             key={key}
-            label={t(radiusLabelMap[key])}
+            label={key}
             value={toNumber(radius[key])}
             onChange={(value) => {
               handleChange(key, value);
@@ -72,13 +59,12 @@ export const RadiusForm = () => {
       </SimpleGrid>
 
       <Button
-        variant="light"
-        color="gray"
+        variant="subtle"
         leftSection={<RotateCcw />}
         onClick={handleReset}
       >
         {t('reset')}
       </Button>
-    </Stack>
+    </NamedList>
   );
 };

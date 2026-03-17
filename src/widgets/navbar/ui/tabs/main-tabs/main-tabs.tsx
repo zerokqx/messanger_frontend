@@ -1,4 +1,5 @@
-import { ActionIcon, Box, Group, Stack } from '@mantine/core';
+import { ActionIcon, Box, factory, getWithProps, Group, Stack } from '@mantine/core';
+
 import * as m from 'motion/react-m';
 import { ErrorBoundary } from 'react-error-boundary';
 import { SearchInput } from '@/features/search';
@@ -12,13 +13,16 @@ import {
   useSearchUserQuery,
 } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
-import { ArrowLeft, RefreshCcw } from 'lucide-react';
+import { ArrowLeft, RefreshCcw, Settings, User } from 'lucide-react';
 import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
 import { ChatCard } from '@/entities/chat';
 import type { ChatListItem } from '@/entities/chat';
+import { GroupedList } from '@/shared/ui/grouped-list/ui/grouped-list.tsx';
+import { RoundedContainerStack } from '@/shared/ui/boxes/index.ts';
+import { motion } from 'motion/react';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -73,6 +77,8 @@ const MOCK_CHAT_ITEM: ChatListItem = {
   unread_count: 3,
 };
 
+
+
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const { refetch } = useSearch();
   const bottomApiTabs = Tabs.useBridgeRef();
@@ -80,73 +86,77 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
     <Tabs animationVariant="slide-x">
       <Tabs.Bridge ref={bottomApiTabs} />
       <Stack h="inherit">
-        <Stack m="xs">
-          <Group>
-            <Tabs.MutallyExclusive
-              animationVariant="scale"
-              animationClosed="rotate"
-              when={['search']}
-            >
-              <ActionIcon
-                onClick={() => bottomApiTabs.current?.back()}
-                bdrs="xl"
-                variant="light"
+        <m.div layout="size">
+          <RoundedContainerStack bd="none" bdrs={'0'}>
+            <Group>
+              <Tabs.MutallyExclusive
+                animationVariant="scale"
+                animationClosed="rotate"
+                when={['search']}
               >
-                <ArrowLeft />
-              </ActionIcon>
+                <ActionIcon
+                  onClick={() => bottomApiTabs.current?.back()}
+                  bdrs="xl"
+                  variant="light"
+                >
+                  <ArrowLeft />
+                </ActionIcon>
 
-              <TabsMenu
-                onClickMenuItem={(value) => {
-                  controller.current?.push(value);
+                <TabsMenu
+                  onClickMenuItem={(value) => {
+                    controller.current?.push(value);
+                  }}
+                />
+              </Tabs.MutallyExclusive>
+              <m.div
+                layout
+                style={{
+                  flex: 1,
                 }}
-              />
-            </Tabs.MutallyExclusive>
-            <m.div
-              layout
-              style={{
-                flex: 1,
-              }}
-            >
-              <SearchInput
-                key={"input-search"}
-                onCommit={(v) => {
-                  historySearchActions.doPush(v);
-                }}
-                onFocus={() => {
-                  bottomApiTabs.current?.push('search');
-                }}
-              />
-            </m.div>
-            <Tabs.Show when={['search']} animationVariant="slide-y-up">
-              <ActionIcon
-                onClick={() => {
-                  void refetch();
-                }}
-                variant="light"
-                color="gray"
               >
-                <RefreshCcw />
-              </ActionIcon>
-            </Tabs.Show>
-          </Group>
-          <Tabs.Hide when={['search']}>
-            <Panel data={mainPanel} />
-          </Tabs.Hide>
-        </Stack>
+                <SearchInput
+                  key={'input-search'}
+                  onCommit={(v) => {
+                    historySearchActions.doPush(v);
+                  }}
+                  onFocus={() => {
+                    bottomApiTabs.current?.push('search');
+                  }}
+                />
+              </m.div>
+              <Tabs.Show when={['search']} animationVariant="slide-y-up">
+                <ActionIcon
+                  onClick={() => {
+                    void refetch();
+                  }}
+                  variant="light"
+                  color="gray"
+                >
+                  <RefreshCcw />
+                </ActionIcon>
+              </Tabs.Show>
+            </Group>
+            <Tabs.Hide animationVariant="scale" when={['search']}>
+              <Panel data={mainPanel} />
+            </Tabs.Hide>
+          </RoundedContainerStack>
+        </m.div>
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
           <Tabs.Tab value="search" animationVariant="stack">
-            <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <Suspense fallback={<SkeletonLayout />}>
-                <SearchTab
-                  onClickHistoryItem={(value) => {
-                    useSearchUserQuery.setState({ data: value });
-                  }}
-                />
-              </Suspense>
-            </ErrorBoundary>
+            <Box p={'xs'} mih={0} h={'100%'}>
+              <ErrorBoundary FallbackComponent={ErrorAlert}>
+                <Suspense fallback={<SkeletonLayout />}>
+                  <SearchTab
+                    onClickHistoryItem={(value) => {
+                      useSearchUserQuery.setState({ data: value });
+                    }}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+            </Box>
           </Tabs.Tab>
-          <Tabs.Tab value="main">
+          <Tabs.Tab  value="main">
             <ErrorBoundary FallbackComponent={ErrorAlert}>
               <Stack px="xs" pb="xs">
                 <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
@@ -156,29 +166,39 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
             </ErrorBoundary>
           </Tabs.Tab>
           <Tabs.Tab value="contacts">
-            <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <Suspense fallback={<SkeletonLayout />}>
-                <ContactsTab />
-              </Suspense>
-            </ErrorBoundary>
+            <Box p="xs" h="100%" mih={0}>
+              <ErrorBoundary FallbackComponent={ErrorAlert}>
+                <Suspense fallback={<SkeletonLayout />}>
+                  <ContactsTab />
+                </Suspense>
+              </ErrorBoundary>
+            </Box>
           </Tabs.Tab>
-          <Tabs.Tab value="profile/edit">
-            <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <Suspense fallback={<SkeletonLayout />}>
-                <ProfileEditTab  onSuccess={()=>{bottomApiTabs.current?.back()}}/>
-              </Suspense>
-            </ErrorBoundary>
+          <Tabs.Tab animationVariant='slide-y-up' value="profile/edit">
+            <Box p={'xs'}>
+              <ErrorBoundary FallbackComponent={ErrorAlert}>
+                <Suspense fallback={<SkeletonLayout />}>
+                  <ProfileEditTab
+                    onSuccess={() => {
+                      bottomApiTabs.current?.back();
+                    }}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+            </Box>
           </Tabs.Tab>
           <Tabs.Tab value="profile">
-            <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <Suspense fallback={<SkeletonProfile />}>
-                <ProfileTab
-                  onEdit={() => {
-                    bottomApiTabs.current?.push('profile/edit');
-                  }}
-                />
-              </Suspense>
-            </ErrorBoundary>
+            <Box p={'xs'}>
+              <ErrorBoundary FallbackComponent={ErrorAlert}>
+                <Suspense fallback={<SkeletonProfile />}>
+                  <ProfileTab
+                    onEdit={() => {
+                      bottomApiTabs.current?.push('profile/edit');
+                    }}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+            </Box>
           </Tabs.Tab>
         </Box>
       </Stack>

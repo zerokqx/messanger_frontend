@@ -1,4 +1,4 @@
-import { Alert } from '@mantine/core';
+import { Alert, Box } from '@mantine/core';
 import { useParams } from '@tanstack/react-router';
 import { Ban, CircleSlash } from 'lucide-react';
 import { useState } from 'react';

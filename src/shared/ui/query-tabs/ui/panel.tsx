@@ -2,6 +2,7 @@ import { ActionIcon, Group } from '@mantine/core';
 import { type ComponentProps, type MouseEvent, type ReactNode } from 'react';
 import { useTabsApi } from '../model';
 import { lightDark } from '@/shared/lib/light-dark';
+import { RoundedContainerGroup } from '../../boxes';
 
 interface PanelComponentProps {
   variant: string;
@@ -42,9 +43,7 @@ export const Panel = ({
   const isActive = active ?? ((value: string) => current === value);
 
   return (
-    <PanelContainer
-      bg={lightDark('gray.1', 'dark.8')}
-    >
+    <RoundedContainerGroup justify="space-evenly">
       {data.map(({ value, icon, onHover, onClick }) => {
         const Component = component;
         return (
@@ -71,6 +70,6 @@ export const Panel = ({
           </Group>
         );
       })}
-    </PanelContainer>
+    </RoundedContainerGroup>
   );
 };

@@ -79,7 +79,7 @@ export const ProfileEditForm = ({
           }}
           description={
             osType.isDesktop && (
-              <Text size="xs" c="dimmed">
+              <Text component="span" size="xs" c="dimmed">
                 Enter — Отправить <br />
                 Shift + Enter — Перенос строки
               </Text>

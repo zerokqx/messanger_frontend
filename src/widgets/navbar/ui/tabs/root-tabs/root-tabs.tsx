@@ -59,7 +59,9 @@ const ProfilePermissions = lazy(() =>
 
 const ButtonLeft = Button.withProps({
   m: '0 auto',
-  variant: 'light',
+  variant: 'subtle',
+  bdrs: 'md',
+  mih: 50,
   justify: 'start',
   fullWidth: true,
 });
@@ -91,13 +93,12 @@ export const RootTabs = ({ children }: RootTabsProps) => {
         opened={opened}
         transitionProps={{ transition: 'slide-right' }}
       />
-      <Stack h="100%" p={'xs'} style={{ minHeight: 0 }}>
+      <Stack gap={'0'} h="100%" style={{ minHeight: 0 }}>
         <Tabs.Hide when={['main']} animationVariant="slide-y-up">
           <Group
             justify="space-between"
-            bg={lightDark('gray.1','dark.8')}
+            bg={lightDark('gray.1', 'dark.8')}
             p={'xs'}
-            bdrs={'xl'}
           >
             <Tabs.UseApi>
               {({ actions }) => (
@@ -131,14 +132,16 @@ export const RootTabs = ({ children }: RootTabsProps) => {
           </Group>
         </Tabs.Hide>
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          <Tabs.Tab value="settings/sessions">
-            <Suspense fallback={<SessionListSkeleton />}>
-              <SessionsTab />
-            </Suspense>
-          </Tabs.Tab>
           {children}
+          <Tabs.Tab value="settings/sessions">
+            <Box p={'xs'} miw={0} h={'100%'}>
+              <Suspense fallback={<SessionListSkeleton />}>
+                <SessionsTab />
+              </Suspense>
+            </Box>
+          </Tabs.Tab>
           <Tabs.Tab value="settings/interface">
-            <Box h="100%" style={{ overflowY: 'auto' }}>
+            <Box h="100%" p={'0'} style={{ overflowY: 'auto' }}>
               <Suspense fallback={<InterfaceEditSkeleton />}>
                 <InterfaceEditTab />
               </Suspense>
@@ -146,57 +149,63 @@ export const RootTabs = ({ children }: RootTabsProps) => {
           </Tabs.Tab>
 
           <Tabs.Tab value="settings/permissions">
-            <Suspense fallback={<SkeletonLayout />}>
-              <ProfilePermissions permissions={data} />
-            </Suspense>
+            <Box h={'100%'} p={'0'} style={{ overflow: 'auto' }}>
+              <Suspense fallback={<SkeletonLayout />}>
+                <ProfilePermissions permissions={data} />
+              </Suspense>
+            </Box>
           </Tabs.Tab>
           <Tabs.Tab value="settings">
-            <Stack>
+            <Box p={'0'}>
               <Tabs.UseApi>
                 {({ actions }) => (
                   <>
                     {rootTabs.map(({ value, leftSection }) => (
-                      <ButtonLeft
-                        key={value}
-                        onClick={() => {
-                          actions.push(value);
-                        }}
-                        leftSection={leftSection}
-                      >
-                        {t(value)}
-                      </ButtonLeft>
+                      <Box key={value} p="xs">
+                        <ButtonLeft
+                          onClick={() => {
+                            actions.push(value);
+                          }}
+                          leftSection={leftSection}
+                        >
+                          {t(value)}
+                        </ButtonLeft>
+                      </Box>
                     ))}
-                    <ButtonLeft leftSection={<Lock />} onClick={toggle}>
-                      {t('change-password')}
-                    </ButtonLeft>
-                    <ButtonLeft
-                      onClick={() => {
-                        modals.openConfirmModal({
-                          fullScreen: mobile,
-                          children: t('navbar:submit-logout-text'),
-                          cancelProps: {
-                            children: t('button-labels:back'),
-                          },
-                          confirmProps: {
-                            color: 'deepRed',
-                            children: t('button-labels:exit'),
-                            rightSection: <LogOut />,
-                          },
-                          onConfirm: () => {
-                            void logout();
-                          },
-                        });
-                      }}
-                      variant="outline"
-                      color="red"
-                      leftSection={<LogOut />}
-                    >
-                      {t('button-labels:exit')}
-                    </ButtonLeft>
+                    <Box p="xs">
+                      <ButtonLeft leftSection={<Lock />} onClick={toggle}>
+                        {t('change-password')}
+                      </ButtonLeft>
+                    </Box>
+                    <Box p="xs">
+                      <ButtonLeft
+                        onClick={() => {
+                          modals.openConfirmModal({
+                            fullScreen: mobile,
+                            children: t('navbar:submit-logout-text'),
+                            cancelProps: {
+                              children: t('button-labels:back'),
+                            },
+                            confirmProps: {
+                              color: 'deepRed',
+                              children: t('button-labels:exit'),
+                              rightSection: <LogOut />,
+                            },
+                            onConfirm: () => {
+                              void logout();
+                            },
+                          });
+                        }}
+                        color="red"
+                        leftSection={<LogOut />}
+                      >
+                        {t('button-labels:exit')}
+                      </ButtonLeft>
+                    </Box>
                   </>
                 )}
               </Tabs.UseApi>
-            </Stack>
+            </Box>
           </Tabs.Tab>
           <Tabs.Tab value="block-users">
             <Suspense fallback={<SkeletonLayout />}>

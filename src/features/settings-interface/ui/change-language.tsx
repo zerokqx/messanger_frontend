@@ -8,6 +8,7 @@ export const ChangeLanguage = () => {
 
   return (
     <Select
+      variant='filled'
       label={t('language-select')}
       value={LanguageSchema.safeParse(i18n.language).data ?? null}
       data={languages}

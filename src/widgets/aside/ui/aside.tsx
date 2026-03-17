@@ -2,12 +2,13 @@ import { AppShellAside, CloseButton, Group, Stack } from '@mantine/core';
 import { lazy, Suspense } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
-import {  ContactMenu } from '@/features/contact';
+import { ContactMenu } from '@/features/contact';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft } from 'lucide-react';
 import { notify } from '@/shared/lib/notifications';
 import { SkeletonLayout } from '@/shared/ui/skeletons';
 import { useDrag } from '@use-gesture/react';
+import { useIsMe } from '@/entities/user/lib/use-is-me';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -28,6 +29,7 @@ interface CustomAsideProps {
 export const Aside = ({ onClose }: CustomAsideProps) => {
   const _uuid = useGetUuidFromRouter();
   const uuid = _uuid ?? '';
+  const isMe = useIsMe(uuid);
   const tabsApi = Tabs.useBridgeRef();
   const { data, isLoading, invalidateUser } = useGetUserById({
     id: uuid,
@@ -59,7 +61,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
       style={{ overflow: 'clip', touchAction: 'none' }}
     >
       {uuid && (
-        <Tabs animationVariant="scale" key={uuid}>
+        <Tabs animationVariant="slide-y-up" key={uuid}>
           <Tabs.Bridge ref={tabsApi} />
           <Group justify="space-between">
             <Tabs.UseApi>
@@ -71,6 +73,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
                   />
 
                   <ContactMenu
+                    disabled={isMe}
                     user={data}
                     onUpdate={invalidateUser}
                     onEditClick={() => {
@@ -89,7 +92,6 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
                 ) : (
                   <Stack>
                     <ProfileForGetUserById profile={data} />
-
                   </Stack>
                 )}
               </Suspense>

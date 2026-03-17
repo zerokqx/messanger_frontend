@@ -18,9 +18,9 @@ export const animationVariants = {
   },
 
   'slide-x': {
-    initial: { x: '-100%' },
-    open: { x: '0' },
-    closed: { x: '100%', opacity: 0.5 },
+    initial: { x: -PX.xl, opacity: 0 },
+    open: { x: 0, opacity: 1 },
+    closed: { x: PX.xl * 2, opacity: 0, scale: 0.96},
   },
 
   stack: {

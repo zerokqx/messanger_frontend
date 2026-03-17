@@ -59,7 +59,7 @@ export const HorizontalUserCard: HorizontalUserCardComponent = (
         style={{
           cursor: 'pointer',
         }}
-        bdrs={'xl'}
+        bdrs={'md'}
         p={'xs'}
         className={[style.card, className].filter(Boolean).join(' ')}
         bg={isSelected ? lightDark('gray.0', 'dark.9') : undefined}

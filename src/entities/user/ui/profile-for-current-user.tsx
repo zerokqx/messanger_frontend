@@ -1,11 +1,19 @@
-import { ActionIcon, Center, Group } from '@mantine/core';
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  Center,
+  Rating,
+  Stack,
+  Text,
+} from '@mantine/core';
 import type { components } from '@/shared/types/v1';
-import { Suspense } from 'react';
-import { BioSkeleton } from './profile/lazy/bio';
-import { RatingSkeleton } from './profile/lazy/rating';
-import { UserProfile } from './profile';
 import { useTranslation } from 'react-i18next';
-import { Edit } from 'lucide-react';
+import { AtSign, Clock, Edit, Star, User } from 'lucide-react';
+import { GroupedList } from '@/shared/ui/grouped-list';
+import { ratingColor } from '../lib/rating-color';
+import { useCreatedAt } from '../lib';
+import { useSettingsStore } from '@/shared/lib/settings';
 
 interface ProfileForCurrentUserBaseProps {
   profile: components['schemas']['ProfileData'];
@@ -22,40 +30,78 @@ type ProfileForCurrentUserProps =
   | ProfileForCurrentUserBaseProps
   | ProfileForCurrentUserWithEditProps;
 
-export const ProfileForCurrentUser = (props: ProfileForCurrentUserProps) => {
-  const { t } = useTranslation('button-labels');
+export const ProfileForCurrentUser = ({
+  onEdit,
+  profile,
+}: ProfileForCurrentUserProps) => {
+  const { t } = useTranslation(['button-labels', 'profile']);
+  const createdAt = useCreatedAt(profile.created_at);
+  const primaryColor = useSettingsStore(s=>s.data.primaryColor)
+
   return (
-    <UserProfile profile={props.profile}>
+    <Stack>
       <Center>
-        <Group pos={'relative'} align="start" gap={'0'}>
-          <UserProfile.Avatar size={'xl'} />
-          {props.withEdit && (
-            <ActionIcon
-              title={t('edit')}
-              onClick={() => {
-                props.onEdit(props.profile);
-              }}
-              right={0}
-              top={0}
-              variant="subtle"
-              bdrs={'xl'}
-              pos={'absolute'}
-            >
-              <Edit />
-            </ActionIcon>
-          )}
-        </Group>
+        <Box pos={'relative'}>
+          <Avatar  name={profile.login} size={'xl'} />
+          <ActionIcon
+            pos={'absolute'}
+            bottom={'0'}
+            onClick={() => {
+              onEdit?.(profile);
+            }}
+            right={'0'}
+          >
+            <Edit />
+          </ActionIcon>
+        </Box>
       </Center>
-      <UserProfile.Login />
-      <UserProfile.FullName/>
-      <Suspense fallback={<RatingSkeleton />}>
-        <UserProfile.Rating />
-      </Suspense>
-      <UserProfile.CreatedAt />
-      <Suspense fallback={<BioSkeleton />}>
-        <UserProfile.Bio />
-      </Suspense>
-      <UserProfile.Verification />
-    </UserProfile>
+      <GroupedList>
+        <GroupedList.Item leftSection={<AtSign />} label={t('profile:login')}>
+          {profile.login}
+        </GroupedList.Item>
+
+        <GroupedList.Item
+          leftSection={<User />}
+          leftSectionColor="green"
+          fallback={<Text c="dimmed">{t('profile:full-name-undefined')}</Text>}
+          label={t('profile:full-name')}
+        >
+          {profile.full_name}
+        </GroupedList.Item>
+      </GroupedList>
+
+      <GroupedList>
+        <GroupedList.Item
+          leftSection={<Star />}
+          leftSectionColor="yellow"
+          isText={false}
+          label={t('profile:rating')}
+        >
+          <Rating
+            readOnly
+            count={5}
+            color={ratingColor(profile.rating.rating ?? 0,primaryColor)}
+            value={profile.rating.rating ?? 0}
+          />
+        </GroupedList.Item>
+
+        <GroupedList.Item
+          leftSection={<Clock />}
+          leftSectionColor="violet"
+          label={t('profile:created_at')}
+        >
+          {createdAt}
+        </GroupedList.Item>
+
+        <GroupedList.Item
+          leftSection={<Clock />}
+          leftSectionColor="gray"
+          label={t('profile:bio')}
+          fallback={<Text c={'dimmed'}>{t('profile:bio-undefined')}</Text>}
+        >
+          {profile.bio}
+        </GroupedList.Item>
+      </GroupedList>
+    </Stack>
   );
 };

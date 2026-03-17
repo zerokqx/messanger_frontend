@@ -1,10 +1,16 @@
 {
   "bio": "Biography",
+  "bio-undefined": "Biography is not set",
   "created_at": "Created at",
+  "full-name": "Full name",
+  "full-name-user-not-write-himself-name": "User did not specify a full name",
+  "full-name-undefined": "Full name is not set",
   "login": "Login",
   "put_profile_error": "Profile change failed",
   "put_success": "The changes have been applied",
   "rating": "Rating",
+  "bio-user-not-write-about-himself": "User did not fill in biography",
+  "mutal-contacts": "You are mutual contacts",
   "verified": "Verified",
   "you-friends": "You are friends"
 }

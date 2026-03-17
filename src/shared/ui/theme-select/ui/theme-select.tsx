@@ -1,6 +1,13 @@
-import { Group, Select, Text, useMantineColorScheme } from '@mantine/core';
+import {
+  ActionIcon,
+  Group,
+  Select,
+  Text,
+  useMantineColorScheme,
+} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Moon, Sun, SunMoon } from 'lucide-react';
+import { useSettingsStore } from '@/shared/lib/settings';
 
 const getThemeIcon = (value: string) => {
   if (value === 'auto') {
@@ -34,9 +41,10 @@ export const ThemeSelect = () => {
     { value: 'dark', label: t('theme-option-dark') },
     { value: 'light', label: t('theme-option-light') },
   ];
-  const Icon = getThemeIcon(colorScheme)
+  const Icon = getThemeIcon(colorScheme);
   return (
     <Select
+      variant="filled"
       aria-label="Theme"
       allowDeselect={false}
       value={colorScheme}
@@ -47,12 +55,18 @@ export const ThemeSelect = () => {
 
         return (
           <Group gap="sm">
-            <Icon size={16} />
+            <ActionIcon variant="transparent" size={'xs'}>
+              <Icon />
+            </ActionIcon>
             <Text>{option.label}</Text>
           </Group>
         );
       }}
-      leftSection={<Icon/>}
+      leftSection={
+        <ActionIcon variant="transparent">
+          <Icon />
+        </ActionIcon>
+      }
     />
   );
 };

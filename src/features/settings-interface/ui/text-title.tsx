@@ -1,3 +1,3 @@
 import { Text } from "@mantine/core";
 
-export const TextTitle = Text.withProps({ size: 'md', opacity: 0.8 });
+export const TextTitle = Text.withProps({ size: 'md', c:'dimmed' });

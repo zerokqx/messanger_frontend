@@ -1,6 +1,6 @@
 import { Menu } from '@mantine/core';
 import type { IContactElementProp } from './types';
-import { useEffect,  useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToggle } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { Trash } from 'lucide-react';
@@ -56,8 +56,8 @@ export const ContactCard = ({
           }}
           w={'100%'}
         >
-            <HorizontalUserCard.Avatar  />
-            <HorizontalUserCard.Login />
+          <HorizontalUserCard.Avatar />
+          <HorizontalUserCard.Login />
         </HorizontalUserCard>
       </Menu.Target>
       {opened && !simplification && (

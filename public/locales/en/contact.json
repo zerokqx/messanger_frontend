@@ -7,5 +7,12 @@
   "contacts-load-error": "An unexpected error occurred while loading contacts. Please reload the page.",
   "contacts-empty": "You do not have any contacts yet. Add them via search.",
   "contact-remove-pending": "Removing...",
-  "contact-remove-success": "Contact removed"
+  "contact-remove-success": "Contact removed",
+  "block": "Block",
+  "relations": "Relations",
+  "yours-not-have-relation": "You have no relation",
+  "current-user-in-contact-target": "You are in this user's contacts",
+  "mutal-blocked": "You are mutually blocked",
+  "contact-blocked-you": "{{username}} blocked you",
+  "you-block-user": "You blocked {{username}}"
 }

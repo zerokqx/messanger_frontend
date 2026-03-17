@@ -13,6 +13,7 @@ import { Check, Save } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, Select, Button, Stack } from '@mantine/core';
 import { useTails } from '@/shared/lib/tails';
+import { RoundedContainerStack } from '@/shared/ui/boxes';
 
 type Permissions = components['schemas']['ProfileData'];
 
@@ -37,7 +38,7 @@ export const ProfilePermissions = memo(
     });
 
     const { mutate, isPending, isSuccess } = useProfilePut();
-    const tailIsSuccess = useTails(1000,isSuccess);
+    const tailIsSuccess = useTails(1000, isSuccess);
 
     const onSubmit = (data: PermissionsStringify) => {
       mutate(
@@ -77,74 +78,53 @@ export const ProfilePermissions = memo(
     }, [t, hoursPlurar, daysPlurar]);
 
     return (
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Stack gap="md">
-          <Checkbox
-            {...register('is_searchable')}
-            label={t('permisions:is_searchable')}
-          />
-          <Checkbox
-            {...register('allow_message_forwarding')}
-            label={t('permisions:allow_message_forwarding')}
-          />
-          <Checkbox
-            {...register('allow_messages_from_non_contacts')}
-            label={t('permisions:allow_messages_from_non_contacts')}
-          />
-          <Checkbox
-            {...register('show_profile_photo_to_non_contacts')}
-            label={t('permisions:show_profile_photo_to_non_contacts')}
-          />
-          <Checkbox
-            {...register('show_bio_to_non_contacts')}
-            label={t('permisions:show_bio_to_non_contacts')}
-          />
-          <Checkbox
-            {...register('show_stories_to_non_contacts')}
-            label={t('permisions:show_stories_to_non_contacts')}
-          />
-          <Checkbox
-            {...register('allow_server_chats')}
-            label={t('permisions:allow_server_chats')}
-          />
-          <Checkbox
-            {...register('force_auto_delete_messages_in_private')}
-            label={t('permisions:force_auto_delete_messages_in_private')}
-          />
+          <RoundedContainerStack bdrs={0}>
+            <Checkbox
+              {...register('is_searchable')}
+              label={t('permisions:is_searchable')}
+            />
+            <Checkbox
+              {...register('allow_message_forwarding')}
+              label={t('permisions:allow_message_forwarding')}
+            />
+            <Checkbox
+              {...register('allow_messages_from_non_contacts')}
+              label={t('permisions:allow_messages_from_non_contacts')}
+            />
+            <Checkbox
+              {...register('show_profile_photo_to_non_contacts')}
+              label={t('permisions:show_profile_photo_to_non_contacts')}
+            />
+            <Checkbox
+              {...register('show_bio_to_non_contacts')}
+              label={t('permisions:show_bio_to_non_contacts')}
+            />
+            <Checkbox
+              {...register('show_stories_to_non_contacts')}
+              label={t('permisions:show_stories_to_non_contacts')}
+            />
+            <Checkbox
+              {...register('allow_server_chats')}
+              label={t('permisions:allow_server_chats')}
+            />
+            <Checkbox
+              {...register('force_auto_delete_messages_in_private')}
+              label={t('permisions:force_auto_delete_messages_in_private')}
+            />
+          </RoundedContainerStack>
+          <RoundedContainerStack bdrs={0}>
 
           <Controller
             name="last_seen_visibility"
             control={control}
             render={({ field }) => (
+
               <Select
+                  variant='filled'
                 {...field}
                 label={t('permisions:last_seen_visibility')}
-                data={selectData.everyoneContactsNobody}
-              />
-            )}
-          />
-
-          <Controller
-            name="public_invite_permission"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                label={t('permisions:public_invite_permission')}
-                data={selectData.everyoneContactsNobody}
-              />
-            )}
-          />
-
-          <Controller
-            name="group_invite_permission"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                label={t('permisions:group_invite_permission')}
                 data={selectData.everyoneContactsNobody}
               />
             )}
@@ -155,6 +135,8 @@ export const ProfilePermissions = memo(
             control={control}
             render={({ field }) => (
               <Select
+
+                  variant='filled'
                 {...field}
                 label={t('permisions:call_permission')}
                 data={selectData.everyoneContactsNobody}
@@ -162,41 +144,76 @@ export const ProfilePermissions = memo(
             )}
           />
 
-          <Controller
-            name="max_message_auto_delete_seconds"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                label={t('permisions:max_message_auto_delete_seconds')}
-                data={[
-                  {
-                    value: 'null',
-                    label: t('permisions:do_not_delete'),
-                  },
-                  ...selectData.hours,
-                ]}
-              />
-            )}
-          />
+          </RoundedContainerStack>
+          <RoundedContainerStack bdrs={0}>
+            <Controller
+              name="public_invite_permission"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  variant="filled"
+                  label={t('permisions:public_invite_permission')}
+                  data={selectData.everyoneContactsNobody}
+                />
+              )}
+            />
 
-          <Controller
-            name="auto_delete_after_days"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                label={t('permisions:auto_delete_after_days')}
-                data={[
-                  {
-                    value: 'null',
-                    label: t('permisions:do_not_delete'),
-                  },
-                  ...selectData.days,
-                ]}
-              />
-            )}
-          />
+            <Controller
+              name="group_invite_permission"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  variant="filled"
+                  label={t('permisions:group_invite_permission')}
+                  data={selectData.everyoneContactsNobody}
+                />
+              )}
+            />
+          </RoundedContainerStack>
+
+
+          <RoundedContainerStack bdrs={0}>
+            <Controller
+              name="max_message_auto_delete_seconds"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  variant='filled'
+                  {...field}
+                  label={t('permisions:max_message_auto_delete_seconds')}
+                  data={[
+                    {
+                      value: 'null',
+                      label: t('permisions:do_not_delete'),
+                    },
+                    ...selectData.hours,
+                  ]}
+                />
+              )}
+            />
+
+            <Controller
+              name="auto_delete_after_days"
+              control={control}
+              render={({ field }) => (
+                <Select
+
+                  variant='filled'
+                  {...field}
+                  label={t('permisions:auto_delete_after_days')}
+                  data={[
+                    {
+                      value: 'null',
+                      label: t('permisions:do_not_delete'),
+                    },
+                    ...selectData.days,
+                  ]}
+                />
+              )}
+            />
+          </RoundedContainerStack>
 
           <Button
             type="submit"

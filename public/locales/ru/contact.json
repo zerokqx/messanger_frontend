@@ -7,5 +7,12 @@
   "contacts-load-error": "Произошла непредвиденная ошибка загрузки контактов. Перезагрузите страницу.",
   "contacts-empty": "У вас ещё нет контактов. Добавьте их через поиск.",
   "contact-remove-pending": "Удаление...",
-  "contact-remove-success": "Контакт удалён"
+  "contact-remove-success": "Контакт удалён",
+  "block": "Блокировка",
+  "relations": "Отношения",
+  "yours-not-have-relation": "У вас нет отношений",
+  "current-user-in-contact-target": "Вы в контактах у пользователя",
+  "mutal-blocked": "Вы взаимно заблокированы",
+  "contact-blocked-you": "{{username}} заблокировал вас",
+  "you-block-user": "Вы заблокировали {{username}}"
 }

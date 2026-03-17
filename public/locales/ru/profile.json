@@ -1,10 +1,16 @@
 {
   "bio": "Биография",
+  "bio-undefined": "Биография не заполнена",
   "created_at": "Дата создания",
+  "full-name": "Полное имя",
+  "full-name-user-not-write-himself-name": "Пользователь не указал полное имя",
+  "full-name-undefined": "Полное имя не указано",
   "login": "Логин",
   "put_profile_error": "Изменение профиля не удалось",
   "put_success": "Изменения применены",
   "rating": "Рейтинг",
+  "bio-user-not-write-about-himself": "Пользователь не заполнил биографию",
+  "mutal-contacts": "Вы взаимные контакты",
   "verified": "Верефицировано",
   "you-friends": "Вы друзья"
 }

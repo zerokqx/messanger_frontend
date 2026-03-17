@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type Chat = components['schemas']['PrivateChatListItem'];
 
-
 export const useSelectedChat = createStore('selected-chat', '', {
   persist: {
     getStorage: () => AsyncStorage,
