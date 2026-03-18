@@ -3,14 +3,11 @@ import { $api } from '@/shared/api/repository/$api';
 import Logger from '@/shared/lib/logger/logger';
 import { keepPreviousData } from '@tanstack/react-query';
 
-
-
-
-export const useBlacklist = (limit = 10) => {
+export const useChatList = (limit = 20) => {
   const isAuth = useIsAuth();
-  return $api.user.jwt.useInfiniteQuery(
+  return $api['chat/private'].jwt.useInfiniteQuery(
     'get',
-    '/blacklist/list',
+    '/list',
 
     {
       params: {
@@ -19,6 +16,7 @@ export const useBlacklist = (limit = 10) => {
         },
       },
     },
+
     {
       staleTime: 1000 * 60 * 10,
       gcTime: 1000 * 60 * 60 * 24,
@@ -32,17 +30,15 @@ export const useBlacklist = (limit = 10) => {
         lastPageParam: number
       ) => {
         if (lastPage.data.has_more) {
-          Logger.debug('useBlacklist', 'has_more=true', {
+          Logger.debug('useChatList', 'has_more=true', {
             preData: lastPage.data,
+
           });
           return lastPageParam + lastPage.data.items.length;
         }
-
         return undefined;
       },
       enabled: isAuth,
     }
   );
 };
-
-export type UseBlackList = ReturnType<typeof useBlacklist>['data'];

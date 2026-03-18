@@ -1,11 +1,12 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { components } from '@/shared/types/v1';
 
-export type MessageItem = components['schemas']['MessageItem'];
+export type ChatMessage =
+  components['schemas']['PrivateChatHistoryResponse']['data']['items'][number];
 export type ChatListItem = components['schemas']['PrivateChatListItem'];
 
 export interface MessageProps {
-  message: MessageItem;
+  message: ChatMessage;
   isOwn?: boolean;
   senderName?: string;
   avatarLabel?: string;
@@ -15,15 +16,11 @@ export interface MessageProps {
 }
 
 export interface SystemMessageProps {
-  message: MessageItem;
-}
-
-export interface MessageListItem extends MessageProps {
-  message: MessageItem;
+  message: ChatMessage;
 }
 
 export interface MessageContainerProps {
-  items: MessageListItem[];
+  messages: ChatMessage[];
   style?: CSSProperties;
   increaseViewportBy?: number;
 }

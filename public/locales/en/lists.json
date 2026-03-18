@@ -1,0 +1,14 @@
+{
+  "title": "List",
+  "empty": "The list is empty",
+  "empty-filtered": "No items match the selected filters",
+  "empty-search": "No items found for your query",
+  "loading": "Loading list...",
+  "load-more": "Load more",
+  "load-more-loading": "Loading more...",
+  "refresh": "Refresh list",
+  "retry": "Retry loading",
+  "error": "Failed to load the list",
+  "selected": "Selected: {{count}}",
+  "items-count": "Items: {{count}}"
+}

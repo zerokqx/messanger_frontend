@@ -11,13 +11,14 @@ import { successNotify } from '@/shared/lib/notifications/success';
 import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
-import { useLogger } from '@mantine/hooks';
+import { useHash, useLogger } from '@mantine/hooks';
 
 export const ContactsList = () => {
   const { uuid } = useParams({ strict: false });
   const selectUser = useSetUuidForRouter();
   const { contacts, count, contactsMap } = useContactListState();
   const [scrolling, setScrolling] = useState(false);
+  const [, setHash] = useHash();
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
   //[Save-Logger]
@@ -79,7 +80,7 @@ export const ContactsList = () => {
               );
             }}
             onClick={() => {
-              void selectUser(contact.user_id);
+              setHash(contact.user_id);
               layoutAction.doSetAside(true);
             }}
           />

@@ -2,11 +2,11 @@ import { MantineProvider } from '@mantine/core';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { Chat } from '@/entities/chat';
-import type { MessageItem } from './types';
+import type { ChatMessage } from './types';
 
 const createMessage = (
-  overrides: Partial<MessageItem> = {}
-): MessageItem => ({
+  overrides: Partial<ChatMessage> = {}
+): ChatMessage => ({
   message_id: 1,
   message_type: ['text'],
   forward_metadata: null,
@@ -49,23 +49,17 @@ test('Chat.SystemMessage renders content', async () => {
 
 test('Chat container renders virtuoso items', async () => {
   const items = [
-    {
-      message: createMessage({ message_id: 11, content: 'First chat message' }),
-      senderName: 'Alice',
-      avatarLabel: 'AL',
-    },
-    {
-      message: createMessage({
-        message_id: 12,
-        message_type: ['system'],
-        content: 'Joined chat',
-      }),
-    },
+    createMessage({ message_id: 11, content: 'First chat message' }),
+    createMessage({
+      message_id: 12,
+      message_type: ['system'],
+      content: 'Joined chat',
+    }),
   ];
 
   const { getByText } = await render(
     <div style={{ height: 240 }}>
-      <Chat items={items} />
+      <Chat messages={items} />
     </div>,
     { wrapper: ({ children }) => <MantineProvider>{children}</MantineProvider> }
   );

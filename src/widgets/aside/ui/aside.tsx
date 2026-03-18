@@ -1,4 +1,11 @@
-import { AppShellAside, CloseButton, Group, Stack } from '@mantine/core';
+import {
+  AppShellAside,
+  Box,
+  CloseButton,
+  Group,
+  ScrollArea,
+  Stack,
+} from '@mantine/core';
 import { lazy, Suspense } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
 import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
@@ -9,6 +16,7 @@ import { notify } from '@/shared/lib/notifications';
 import { SkeletonLayout } from '@/shared/ui/skeletons';
 import { useDrag } from '@use-gesture/react';
 import { useIsMe } from '@/entities/user/lib/use-is-me';
+import { useHash } from '@mantine/hooks';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -27,8 +35,8 @@ interface CustomAsideProps {
 }
 
 export const Aside = ({ onClose }: CustomAsideProps) => {
-  const _uuid = useGetUuidFromRouter();
-  const uuid = _uuid ?? '';
+  const [hash] = useHash();
+  const uuid = hash.slice(1);
   const isMe = useIsMe(uuid);
   const tabsApi = Tabs.useBridgeRef();
   const { data, isLoading, invalidateUser } = useGetUserById({
@@ -59,6 +67,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
       {...bind()}
       zIndex={1000000}
       style={{ overflow: 'clip', touchAction: 'none' }}
+      component={ScrollArea}
     >
       {uuid && (
         <Tabs animationVariant="slide-y-up" key={uuid}>

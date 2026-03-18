@@ -1,18 +1,20 @@
 import { useIsAuth } from '@/entities/session';
-import { $api } from '@/shared/api/repository/$api';
+import { $api } from '@/shared/api';
 import Logger from '@/shared/lib/logger/logger';
 import { keepPreviousData } from '@tanstack/react-query';
 
-export const useChatHistory = (limit = 20) => {
-  const isAuth = useIsAuth()
+export const useChatHistory = (chatId: string, limit = 10) => {
+  const isAuth = useIsAuth();
+
   return $api['chat/private'].jwt.useInfiniteQuery(
     'get',
-    '/list',
+    '/history',
 
     {
       params: {
         query: {
           limit,
+          chat_id: chatId,
         },
       },
     },
@@ -23,22 +25,28 @@ export const useChatHistory = (limit = 20) => {
       placeholderData: keepPreviousData,
       initialPageParam: 0,
       suspense: true,
-      pageParamName: 'offset',
-      getNextPageParam: (
-        lastPage: { data: { items: unknown[]; has_more: boolean } },
-        _: unknown,
-        lastPageParam: number
-      ) => {
-        if (lastPage.data.has_more) {
-          Logger.debug('useChatHistory', 'has_more=true', {
-            preData: lastPage.data,
-          });
-          return lastPageParam + lastPage.data.items.length;
+      pageParamName: 'before_message_id',
+      getNextPageParam: (lastPage) => {
+        if (!lastPage.data.has_more) {
+          return undefined;
         }
 
-        return undefined;
+        const items = lastPage.data.items;
+        if (!items.length) {
+          return undefined;
+        }
+
+        const lastMessage = items[items.length - 1];
+
+        Logger.debug('useChatHistory', 'has_more=true', {
+          preData: lastPage.data,
+          nextCursor: lastMessage.id,
+        });
+
+        return lastMessage.id;
       },
-      enabled: isAuth,
+
+      enabled: isAuth && Boolean(chatId),
     }
   );
 };

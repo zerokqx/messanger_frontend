@@ -209,20 +209,24 @@ export const RootTabs = ({ children }: RootTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="block-users">
             <Suspense fallback={<SkeletonLayout />}>
-              <BlocklistManager />
+              <Box p={'xs'} h={'100%'} miw={0}>
+                <BlocklistManager />
+              </Box>
             </Suspense>
           </Tabs.Tab>
           <Tabs.Tab value="achievements">
-            <Suspense
-              fallback={
-                <Stack>
-                  <Skeleton h={62} w={'100%'} />
-                  <SkeletonsCardList size={4} h={170} />
-                </Stack>
-              }
-            >
-              <AchievementsGrid />
-            </Suspense>
+            <Box p={'xs'} mih={0} h={'100%'}>
+              <Suspense
+                fallback={
+                  <Stack>
+                    <Skeleton h={62} w={'100%'} />
+                    <SkeletonsCardList size={4} h={170} />
+                  </Stack>
+                }
+              >
+                <AchievementsGrid />
+              </Suspense>
+            </Box>
           </Tabs.Tab>
         </Box>
       </Stack>

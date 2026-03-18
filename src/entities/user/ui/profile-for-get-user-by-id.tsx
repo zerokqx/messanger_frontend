@@ -1,22 +1,19 @@
 import {
-  ActionIcon,
   Avatar,
-  Box,
   Center,
   Rating,
   Stack,
   Text,
 } from '@mantine/core';
 import type { components } from '@/shared/types/v1';
-import { UserProfile } from './profile';
 import { useIsMe } from '../lib/use-is-me';
-import { AtSign, Ban, Clock, Edit, Handshake, Star, User } from 'lucide-react';
+import { AtSign, Ban, Clock, Handshake, Star, User } from 'lucide-react';
 import { GroupedList } from '@/shared/ui/grouped-list';
 import { useTranslation } from 'react-i18next';
 import { ratingColor } from '../lib/rating-color';
 import { useCreatedAt } from '../lib';
 import { useSettingsStore } from '@/shared/lib/settings';
-import { comboRelations, relations } from '@/shared/lib/realtionship-helpers';
+import { comboRelations } from '@/shared/lib/realtionship-helpers';
 import { formatLogin } from '@/shared/lib/formaters';
 
 interface ProfileForGetUserByIdProps {
@@ -51,7 +48,7 @@ export const ProfileForGetUserById = ({
       return t('contact:you-block-user', { username: profile.login ?? '' });
     return null;
   }
-  const {format,name} = formatLogin(profile.login, profile.custom_name)
+  const { format, name } = formatLogin(profile.login, profile.custom_name);
   const blocked = getBlocked();
   return (
     <Stack>
@@ -113,26 +110,28 @@ export const ProfileForGetUserById = ({
           {profile.bio}
         </GroupedList.Item>
       </GroupedList>
-      <GroupedList>
-        <GroupedList.Item
-          label={t('contact:relations')}
-          fallback={
-            <Text c="dimmed">{t('contact:yours-not-have-relation')}</Text>
-          }
-          leftSection={<Handshake />}
-        >
-          {getRelationLabel()}
-        </GroupedList.Item>
-        {blocked ? (
+      {!isMe && (
+        <GroupedList>
           <GroupedList.Item
-            label={t('contact:block')}
-            leftSectionColor="red"
-            leftSection={<Ban />}
+            label={t('contact:relations')}
+            fallback={
+              <Text c="dimmed">{t('contact:yours-not-have-relation')}</Text>
+            }
+            leftSection={<Handshake />}
           >
-            {blocked}
+            {getRelationLabel()}
           </GroupedList.Item>
-        ) : null}
-      </GroupedList>
+          {blocked ? (
+            <GroupedList.Item
+              label={t('contact:block')}
+              leftSectionColor="red"
+              leftSection={<Ban />}
+            >
+              {blocked}
+            </GroupedList.Item>
+          ) : null}
+        </GroupedList>
+      )}
     </Stack>
   );
 };

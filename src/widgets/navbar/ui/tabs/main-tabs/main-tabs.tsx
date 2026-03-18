@@ -1,4 +1,4 @@
-import { ActionIcon, Box, factory, getWithProps, Group, Stack } from '@mantine/core';
+import { ActionIcon, Box, Group, Stack } from '@mantine/core';
 
 import * as m from 'motion/react-m';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -13,16 +13,15 @@ import {
   useSearchUserQuery,
 } from '@/features/search/api/use-search.ts';
 import { mainPanel } from '@/widgets/navbar/config/main-tabs.tsx';
-import { ArrowLeft, RefreshCcw, Settings, User } from 'lucide-react';
+import { ArrowLeft, RefreshCcw } from 'lucide-react';
 import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
 import { ChatCard } from '@/entities/chat';
 import type { ChatListItem } from '@/entities/chat';
-import { GroupedList } from '@/shared/ui/grouped-list/ui/grouped-list.tsx';
 import { RoundedContainerStack } from '@/shared/ui/boxes/index.ts';
-import { motion } from 'motion/react';
+import { ChatsTab } from './ui/chats-tab.tsx';
 
 const SearchTab = lazy(() =>
   import('./ui/search-tab.tsx').then((module) => ({
@@ -76,8 +75,6 @@ const MOCK_CHAT_ITEM: ChatListItem = {
   created_at: '2026-03-13T23:32:25.848Z',
   unread_count: 3,
 };
-
-
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const { refetch } = useSearch();
@@ -143,7 +140,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
         </m.div>
 
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-          <Tabs.Tab value="search" animationVariant="stack">
+          <Tabs.Tab value="search" animationVariant="slide-y-up">
             <Box p={'xs'} mih={0} h={'100%'}>
               <ErrorBoundary FallbackComponent={ErrorAlert}>
                 <Suspense fallback={<SkeletonLayout />}>
@@ -156,14 +153,13 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
               </ErrorBoundary>
             </Box>
           </Tabs.Tab>
-          <Tabs.Tab  value="main">
+          <Tabs.Tab value="main">
+            <Box p={'xs'} h={'100%'} miw={0}>
+
             <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <Stack px="xs" pb="xs">
-                <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
-                <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
-                <ChatCard chat={MOCK_CHAT_ITEM} title="testlogin" />
-              </Stack>
+              <ChatsTab/>
             </ErrorBoundary>
+            </Box>
           </Tabs.Tab>
           <Tabs.Tab value="contacts">
             <Box p="xs" h="100%" mih={0}>
@@ -174,7 +170,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
               </ErrorBoundary>
             </Box>
           </Tabs.Tab>
-          <Tabs.Tab animationVariant='slide-y-up' value="profile/edit">
+          <Tabs.Tab animationVariant="slide-y-up" value="profile/edit">
             <Box p={'xs'}>
               <ErrorBoundary FallbackComponent={ErrorAlert}>
                 <Suspense fallback={<SkeletonLayout />}>

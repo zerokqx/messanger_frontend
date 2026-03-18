@@ -3,6 +3,7 @@ import type { ClientOptions, Middleware } from 'openapi-fetch';
 import type { Services } from '../base-url';
 import type { I$ApiRepository } from '../types/fetchers-repository.interface';
 import { coupleOfFetchers } from './couple-of-fetchers';
+import { typedQueryKey } from '../typed-querykey';
 
 interface ServiceConfig {
   clientOption?: Omit<ClientOptions, 'baseUrl'>;
@@ -48,3 +49,5 @@ export const $api = serviceKeys.reduce<I$ApiRepository>((acc, key) => {
     }),
   };
 }, {} as I$ApiRepository);
+
+$api.typedQueryKey = typedQueryKey;

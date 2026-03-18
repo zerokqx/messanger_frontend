@@ -1,5 +1,6 @@
 import { Avatar, Badge, Box, Group, Paper, Stack, Text } from '@mantine/core';
 import type { ChatCardProps } from './types';
+import { RoundedContainerGroup } from '@/shared/ui/boxes';
 
 const formatTime = (value?: string | null): string => {
   if (!value) return '--:--';
@@ -28,14 +29,10 @@ export const ChatCard = ({ chat, title, onClick }: ChatCardProps) => {
   );
 
   return (
-    <Paper
-      component="button"
-      type="button"
+    <RoundedContainerGroup
       onClick={onClick}
       w="100%"
       p="sm"
-      radius="xl"
-      withBorder
       style={{
         textAlign: 'left',
         cursor: 'pointer',
@@ -69,6 +66,6 @@ export const ChatCard = ({ chat, title, onClick }: ChatCardProps) => {
           ) : null}
         </Box>
       </Group>
-    </Paper>
+    </RoundedContainerGroup>
   );
 };

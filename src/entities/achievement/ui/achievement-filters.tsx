@@ -95,8 +95,8 @@ export const AchievementFilters = ({
         )}
       </AnimatePresence>
       <Paper withBorder radius="md" p="xs">
-        <Group gap="md" justify="space-between">
-          <Group>
+        <Group gap="md" wrap='nowrap' justify="space-between">
+          <Group wrap='wrap'>
             <Checkbox
               label={t('status.completed')}
               checked={showCompleted}
