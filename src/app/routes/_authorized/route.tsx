@@ -1,11 +1,20 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import { AppShell, Loader, useMantineTheme } from '@mantine/core';
+import {
+  AppShell,
+  AppShellAside,
+  AppShellNavbar,
+  Box,
+  Loader,
+  useMantineTheme,
+} from '@mantine/core';
 import { Suspense, lazy, useEffect } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { notify } from '@/shared/lib/notifications';
 import { useTokenStore } from '@/shared/token';
 import { socket } from '@/shared/api';
 import { meQueryOptions } from '@/entities/user/model/me.query';
+import { useSelectedChat } from '@/features/chat';
+import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -17,12 +26,14 @@ const LazyAside = lazy(() =>
 
 export const Route = createFileRoute('/_authorized')({
   component: RouteComponent,
-  loader: ({context:{queryClient}}) => {
-    void queryClient.prefetchQuery(meQueryOptions)
+  loader: ({ context: { queryClient } }) => {
+    void queryClient.prefetchQuery(meQueryOptions);
   },
 });
 
 function RouteComponent() {
+  const selectedChat = useSelectedChat((s) => s.data);
+  const { mobile } = useResponsive();
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const token = useTokenStore((s) => s.data.access);
@@ -66,6 +77,7 @@ function RouteComponent() {
       navbar={{
         width: 400,
         breakpoint: 'sm',
+        collapsed: { mobile: !!selectedChat },
       }}
       styles={{
         aside: {
@@ -78,9 +90,8 @@ function RouteComponent() {
         collapsed: { desktop: !asside, mobile: !asside },
         breakpoint: 'sm',
       }}
-      p="md"
     >
-      <Suspense>
+      <Suspense fallback={<AppShellAside />}>
         <LazyAside
           onClose={() => {
             layoutAction.doSetAside(false);
@@ -88,11 +99,13 @@ function RouteComponent() {
         />
       </Suspense>
 
-      <AppShell.Main>
-        <Outlet />
+      <AppShell.Main style={{ height: '100dvh', minHeight: 0, overflow: 'hidden' }}>
+        <Box h="100%" mih={0}>
+          <Outlet />
+        </Box>
       </AppShell.Main>
 
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<AppShellNavbar />}>
         <LazyAppShellNavbar />
       </Suspense>
     </AppShell>

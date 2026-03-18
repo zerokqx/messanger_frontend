@@ -1,7 +1,8 @@
 import { ChatCard, useChatList } from '@/entities/chat';
+import { selectedChatAction } from '@/features/chat';
 import { pagesMap } from '@/shared/lib/pages-map';
-import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useHash } from '@mantine/hooks';
+import { useNavigate } from '@tanstack/react-router';
 import { Virtuoso } from 'react-virtuoso';
 
 export const ChatsTab = () => {
@@ -12,8 +13,8 @@ export const ChatsTab = () => {
     fetchNextPage,
   } = useChatList();
   const chatsMap = pagesMap(chats);
-  const [,setHash] = useHash()
-  const setChatId = useSetUuidForRouter()
+  const navigate = useNavigate();
+  const [, setHash] = useHash();
 
   return (
     <Virtuoso
@@ -34,7 +35,9 @@ export const ChatsTab = () => {
         return (
           <ChatCard
             onClick={() => {
-              setHash(chat.chat_id)
+              selectedChatAction.doSelect(chat.chat_id);
+              setHash(chat.chat_id);
+              void navigate({ to: '/y/chat', hash: chat.chat_id });
             }}
             chat={chat}
           />

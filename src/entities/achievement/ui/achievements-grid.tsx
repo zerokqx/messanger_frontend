@@ -1,4 +1,4 @@
-import { Alert, Box, Center, Pagination } from '@mantine/core';
+import { Alert, Box, Center, Pagination, Stack } from '@mantine/core';
 import { CircleSlash } from 'lucide-react';
 import type { HTMLAttributes } from 'react';
 import { useMemo } from 'react';
@@ -11,11 +11,13 @@ import type { AchievementItem } from './types';
 import { useAchievementsGridState } from './use-achievements-grid-state';
 import { createThrottledVibrationHandler } from '@/shared/lib/vibration';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive';
+import { SkeletonsCardList } from '@/shared/ui/skeletons';
 
 const PAGE_SIZE = 10;
+const VirtuosoSeekPlaceholder = ()=>(<SkeletonsCardList h={176}/>)
 
 const VirtuosoList = (props: HTMLAttributes<HTMLDivElement>) => {
-  return <div {...props} style={{ ...props.style, paddingBottom: '8px' }} />;
+  return <Stack {...props} gap={'xs'} />;
 };
 
 const normalizeAchievement = (
@@ -149,13 +151,19 @@ export const AchievementsGrid = () => {
         <Virtuoso
           data={achievements}
           key={safePage}
+          scrollSeekConfiguration={{
+            enter: (velocity) => Math.abs(velocity) > 600,
+            exit: (velocity) => Math.abs(velocity) < 30,
+          }}
           style={{
             flex: 1,
             minHeight: 0,
           }}
           components={{
             List: VirtuosoList,
+              ScrollSeekPlaceholder: VirtuosoSeekPlaceholder
           }}
+            
           onScroll={vibrationScroll}
           totalCount={achievements.length}
           computeItemKey={(_, achievement) => achievement.achievement_id}

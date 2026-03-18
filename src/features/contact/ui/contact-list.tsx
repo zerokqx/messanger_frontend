@@ -8,23 +8,16 @@ import { ContactCard, SkeletonContactItem } from '@/entities/contact';
 import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
-import { useSetUuidForRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
-import { useHash, useLogger } from '@mantine/hooks';
+import { useHash} from '@mantine/hooks';
 
 export const ContactsList = () => {
-  const { uuid } = useParams({ strict: false });
-  const selectUser = useSetUuidForRouter();
   const { contacts, count, contactsMap } = useContactListState();
   const [scrolling, setScrolling] = useState(false);
-  const [, setHash] = useHash();
+  const [hash, setHash] = useHash();
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
-  //[Save-Logger]
-  useLogger('contactsMap', [contactsMap.length]);
-  //[Save-Logger]
-  useLogger('contactsCount', [count.data]);
 
   if (contacts.isError || count.error) {
     return (
@@ -64,7 +57,7 @@ export const ContactsList = () => {
         return (
           <ContactCard
             simplification={scrolling}
-            isSelected={uuid === contact.user_id}
+            isSelected={hash.slice(1) === contact.user_id}
             user={contact}
             onRemove={(userId) => {
               pendingNotify(t('contact-remove-pending'));

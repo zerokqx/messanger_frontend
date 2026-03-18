@@ -9,11 +9,19 @@ export const ChatContainer = ({
   messages,
   style,
   increaseViewportBy = 280,
+  initialTopMostItemIndex,
+  startReached,
+  followOutput,
+  computeItemKey,
 }: MessageContainerProps) => {
   return (
     <Virtuoso
       data={messages}
       useWindowScroll
+      initialTopMostItemIndex={initialTopMostItemIndex}
+      startReached={startReached}
+      followOutput={followOutput}
+      computeItemKey={computeItemKey}
       components={{
         List: StackList,
       }}

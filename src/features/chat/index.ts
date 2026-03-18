@@ -1,2 +1,2 @@
 export { useSendMessage, type Message } from './api';
-export { type Chat, useSelectedChat } from './model/';
+export { selectedChatAction, type Chat, useSelectedChat } from './model/';

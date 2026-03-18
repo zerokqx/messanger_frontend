@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, Key, ReactNode } from 'react';
 import type { components } from '@/shared/types/v1';
 
 export type ChatMessage =
@@ -22,7 +22,11 @@ export interface SystemMessageProps {
 export interface MessageContainerProps {
   messages: ChatMessage[];
   style?: CSSProperties;
-  increaseViewportBy?: number;
+  increaseViewportBy?: number | { top: number; bottom: number };
+  initialTopMostItemIndex?: number;
+  startReached?: () => void | Promise<void>;
+  followOutput?: (isAtBottom: boolean) => 'auto' | false;
+  computeItemKey?: (index: number, item: ChatMessage) => Key;
 }
 
 export interface ChatCompound {

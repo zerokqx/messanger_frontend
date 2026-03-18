@@ -1,1 +1,1 @@
-export {useSelectedChat, type Chat} from './selected-chat.ts'
+export {useSelectedChat, type Chat,selectedChatAction} from './selected-chat.ts'
