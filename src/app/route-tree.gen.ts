@@ -15,8 +15,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthorizedSessionsRouteImport } from './routes/_authorized/sessions'
 import { Route as AuthAuthRouteImport } from './routes/_auth/auth'
 import { Route as AuthorizedYIndexRouteImport } from './routes/_authorized/y/index'
-import { Route as AuthorizedYChatRouteImport } from './routes/_authorized/y/chat'
-import { Route as AuthorizedYUUuidRouteImport } from './routes/_authorized/y/u/$uuid'
 
 const AuthorizedRouteRoute = AuthorizedRouteRouteImport.update({
   id: '/_authorized',
@@ -46,32 +44,18 @@ const AuthorizedYIndexRoute = AuthorizedYIndexRouteImport.update({
   path: '/y/',
   getParentRoute: () => AuthorizedRouteRoute,
 } as any)
-const AuthorizedYChatRoute = AuthorizedYChatRouteImport.update({
-  id: '/y/chat',
-  path: '/y/chat',
-  getParentRoute: () => AuthorizedRouteRoute,
-} as any)
-const AuthorizedYUUuidRoute = AuthorizedYUUuidRouteImport.update({
-  id: '/y/u/$uuid',
-  path: '/y/u/$uuid',
-  getParentRoute: () => AuthorizedRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthAuthRoute
   '/sessions': typeof AuthorizedSessionsRoute
-  '/y/chat': typeof AuthorizedYChatRoute
   '/y': typeof AuthorizedYIndexRoute
-  '/y/u/$uuid': typeof AuthorizedYUUuidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthAuthRoute
   '/sessions': typeof AuthorizedSessionsRoute
-  '/y/chat': typeof AuthorizedYChatRoute
   '/y': typeof AuthorizedYIndexRoute
-  '/y/u/$uuid': typeof AuthorizedYUUuidRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,15 +64,13 @@ export interface FileRoutesById {
   '/_authorized': typeof AuthorizedRouteRouteWithChildren
   '/_auth/auth': typeof AuthAuthRoute
   '/_authorized/sessions': typeof AuthorizedSessionsRoute
-  '/_authorized/y/chat': typeof AuthorizedYChatRoute
   '/_authorized/y/': typeof AuthorizedYIndexRoute
-  '/_authorized/y/u/$uuid': typeof AuthorizedYUUuidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/sessions' | '/y/chat' | '/y' | '/y/u/$uuid'
+  fullPaths: '/' | '/auth' | '/sessions' | '/y'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/sessions' | '/y/chat' | '/y' | '/y/u/$uuid'
+  to: '/' | '/auth' | '/sessions' | '/y'
   id:
     | '__root__'
     | '/'
@@ -96,9 +78,7 @@ export interface FileRouteTypes {
     | '/_authorized'
     | '/_auth/auth'
     | '/_authorized/sessions'
-    | '/_authorized/y/chat'
     | '/_authorized/y/'
-    | '/_authorized/y/u/$uuid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -151,20 +131,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedYIndexRouteImport
       parentRoute: typeof AuthorizedRouteRoute
     }
-    '/_authorized/y/chat': {
-      id: '/_authorized/y/chat'
-      path: '/y/chat'
-      fullPath: '/y/chat'
-      preLoaderRoute: typeof AuthorizedYChatRouteImport
-      parentRoute: typeof AuthorizedRouteRoute
-    }
-    '/_authorized/y/u/$uuid': {
-      id: '/_authorized/y/u/$uuid'
-      path: '/y/u/$uuid'
-      fullPath: '/y/u/$uuid'
-      preLoaderRoute: typeof AuthorizedYUUuidRouteImport
-      parentRoute: typeof AuthorizedRouteRoute
-    }
   }
 }
 
@@ -182,16 +148,12 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface AuthorizedRouteRouteChildren {
   AuthorizedSessionsRoute: typeof AuthorizedSessionsRoute
-  AuthorizedYChatRoute: typeof AuthorizedYChatRoute
   AuthorizedYIndexRoute: typeof AuthorizedYIndexRoute
-  AuthorizedYUUuidRoute: typeof AuthorizedYUUuidRoute
 }
 
 const AuthorizedRouteRouteChildren: AuthorizedRouteRouteChildren = {
   AuthorizedSessionsRoute: AuthorizedSessionsRoute,
-  AuthorizedYChatRoute: AuthorizedYChatRoute,
   AuthorizedYIndexRoute: AuthorizedYIndexRoute,
-  AuthorizedYUUuidRoute: AuthorizedYUUuidRoute,
 }
 
 const AuthorizedRouteRouteWithChildren = AuthorizedRouteRoute._addFileChildren(

@@ -1,10 +1,12 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  Outlet,
+} from '@tanstack/react-router';
 import {
   AppShell,
   AppShellAside,
   AppShellNavbar,
   Box,
-  Loader,
   useMantineTheme,
 } from '@mantine/core';
 import { Suspense, lazy, useEffect } from 'react';
@@ -14,7 +16,7 @@ import { useTokenStore } from '@/shared/token';
 import { socket } from '@/shared/api';
 import { meQueryOptions } from '@/entities/user/model/me.query';
 import { useSelectedChat } from '@/features/chat';
-import { useResponsive } from '@/shared/lib/hooks/use-responsive';
+import { SafeChat } from '@/widgets/chat';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -33,7 +35,6 @@ export const Route = createFileRoute('/_authorized')({
 
 function RouteComponent() {
   const selectedChat = useSelectedChat((s) => s.data);
-  const { mobile } = useResponsive();
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const token = useTokenStore((s) => s.data.access);
@@ -99,8 +100,15 @@ function RouteComponent() {
         />
       </Suspense>
 
-      <AppShell.Main style={{ height: '100dvh', minHeight: 0, overflow: 'hidden' }}>
+      <AppShell.Main
+        style={{ height: '100dvh', minHeight: 0, overflow: 'hidden' }}
+      >
         <Box h="100%" mih={0}>
+          <Suspense fallback={<p>dawdw</p>}>
+
+
+          <SafeChat/>
+          </Suspense>
           <Outlet />
         </Box>
       </AppShell.Main>

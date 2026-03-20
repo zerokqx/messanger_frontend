@@ -1,4 +1,4 @@
-export { ChatCard, MessageSkeleton, Chat } from './ui';
+export { ChatCard,  Chat } from './ui';
 export type {
   ChatMessage,
   ChatCardProps,

@@ -1,34 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useHash } from '@mantine/hooks';
-import { useNavigate } from '@tanstack/react-router';
-import {
-  ActionIcon,
-  Alert,
-  Box,
-  Group,
-  Input,
-  Skeleton,
-  Stack,
-} from '@mantine/core';
+import { useNavigate, useRouterState } from '@tanstack/react-router';
+import { ActionIcon, Alert, Box, Group, Input, Stack } from '@mantine/core';
 import { ArrowLeft, CircleSlash } from 'lucide-react';
 import { Virtuoso } from 'react-virtuoso';
 import z from 'zod';
 
-import { MessageSkeleton, useChatHistory } from '@/entities/chat';
+import {  useChatHistory } from '@/entities/chat';
 import { MessageItem } from '@/entities/chat/ui/message-item';
 import { SystemMessage } from '@/entities/chat/ui/system-message';
-import { useSelectedChat } from '@/features/chat';
 import { RoundedContainerGroup } from '@/shared/ui/boxes';
 
 const uuidSchema = z.uuid();
 const VIRTUOSO_START_INDEX = 100000;
 
 export const ChatWidget = () => {
-  const [hash] = useHash();
+  const chatId = useRouterState({ select: (state) => state.location.hash });
   const navigate = useNavigate();
-  const reset = useSelectedChat((s) => s.reset);
-  const selectedChatId = useSelectedChat((s) => s.data);
-  const chatId = selectedChatId || hash.slice(1);
+
   const isValidChatId = uuidSchema.safeParse(chatId).success;
 
   const {
@@ -45,11 +33,10 @@ export const ChatWidget = () => {
   const hasNextPageRef = useRef(false);
 
   useEffect(() => {
-    hasNextPageRef.current = Boolean(hasNextPage);
+    hasNextPageRef.current = hasNextPage;
   }, [hasNextPage]);
 
   useEffect(() => {
-    // при смене чата сбрасываем виртуальный базовый индекс
     setFirstItemIndex(VIRTUOSO_START_INDEX);
     isLoadingMoreRef.current = false;
     isAtTopRef.current = false;
@@ -57,43 +44,38 @@ export const ChatWidget = () => {
 
   const messages = useMemo(() => {
     if (!historyChat?.pages) return [];
-
-    // если сервер отдаёт newest -> oldest,
-    // то для UI делаем oldest -> newest
     return historyChat.pages.flatMap((page) => page.data.items).reverse();
   }, [historyChat]);
 
-const loadMore = useCallback(async () => {
-  if (
-    isLoadingMoreRef.current ||
-    isFetchingNextPage ||
-    !hasNextPageRef.current
-  ) {
-    return;
-  }
-
-  isLoadingMoreRef.current = true;
-
-  try {
-    const result = await fetchNextPage();
-    const newPage = result.data?.pages?.at(-1);
-    const addedCount = newPage?.data.items.length ?? 0;
-
-    if (addedCount > 0) {
-      setFirstItemIndex((prev) => prev - addedCount);
+  const loadMore = useCallback(async () => {
+    if (
+      isLoadingMoreRef.current ||
+      isFetchingNextPage ||
+      !hasNextPageRef.current
+    ) {
+      return;
     }
-  } finally {
-    isLoadingMoreRef.current = false;
-  }
-}, [fetchNextPage, isFetchingNextPage]);
 
+    isLoadingMoreRef.current = true;
+
+    try {
+      const result = await fetchNextPage();
+      const newPage = result.data?.pages.at(-1);
+      const addedCount = newPage?.data.items.length ?? 0;
+
+      if (addedCount > 0) {
+        setFirstItemIndex((prev) => prev - addedCount);
+      }
+    } finally {
+      isLoadingMoreRef.current = false;
+    }
+  }, [fetchNextPage, isFetchingNextPage]);
   return (
     <Stack h="100%" mih={0} gap={0}>
       <RoundedContainerGroup bdrs={0} style={{ zIndex: 100 }} w="100%">
         <ActionIcon
           onClick={() => {
-            reset();
-            void navigate({ to: '/y', hash: hash.slice(1) });
+            void navigate({ hash: '' });
           }}
         >
           <ArrowLeft />
@@ -103,11 +85,14 @@ const loadMore = useCallback(async () => {
       {isValidChatId ? (
         <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
           <Virtuoso
-            key={chatId}
             data={messages}
             firstItemIndex={firstItemIndex}
             style={{ height: '100%' }}
             initialTopMostItemIndex={Math.max(messages.length - 1, 0)}
+            scrollSeekConfiguration={{
+              enter: (velocity) => Math.abs(velocity) > 1000,
+              exit: (velocity) => Math.abs(velocity) < 500,
+            }}
             followOutput={(isAtBottom) => (isAtBottom ? 'smooth' : false)}
             computeItemKey={(_, item) => String(item.message_id)}
             atTopStateChange={(atTop) => {

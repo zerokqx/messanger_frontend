@@ -1,5 +1,5 @@
 import { Alert, Box } from '@mantine/core';
-import { useParams } from '@tanstack/react-router';
+import { useNavigate, useParams, useRouterState } from '@tanstack/react-router';
 import { Ban, CircleSlash } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,12 +10,12 @@ import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
-import { useHash} from '@mantine/hooks';
 
 export const ContactsList = () => {
   const { contacts, count, contactsMap } = useContactListState();
   const [scrolling, setScrolling] = useState(false);
-  const [hash, setHash] = useHash();
+  const navigate = useNavigate();
+  const hash  = useRouterState({select:s=>s.location.hash})
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
 
@@ -72,8 +72,8 @@ export const ContactsList = () => {
                 }
               );
             }}
-            onClick={() => {
-              setHash(contact.user_id);
+            onClick={async () => {
+              await navigate({ hash: contact.user_id });
               layoutAction.doSetAside(true);
             }}
           />

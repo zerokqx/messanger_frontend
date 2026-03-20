@@ -1,1 +1,2 @@
-export {ChatWidget as Chat} from "./chat.tsx"
+export { ChatWidget } from './chat.tsx';
+export { SafeChat } from './safe-chat.tsx';

@@ -1,1 +1,1 @@
-export {Chat} from "./ui"
+export {ChatWidget,SafeChat} from "./ui"
