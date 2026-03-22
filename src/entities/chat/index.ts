@@ -9,4 +9,4 @@ export type {
   SystemMessageProps,
 } from './ui';
 export { useChatHistory, useChatCreate, useChatList } from './api/';
-export { type ChatItem } from './model/';
+export { type ChatItem,chatExists } from './model/';

@@ -36,6 +36,7 @@
   "include": [
     "src",
     "__mocks__",
-    "public/locales"
+    "public/locales",
+"scripts"
   ]
 }

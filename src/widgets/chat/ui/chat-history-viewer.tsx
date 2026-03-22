@@ -27,7 +27,6 @@ export const ChatHistoryViewer = ({ chatId }: ChatHistoryViewerProps) => {
     hasNextPageRef.current = hasNextPage;
   }, [hasNextPage]);
 
-  // Сброс при смене чата
   useEffect(() => {
     setFirstItemIndex(VIRTUOSO_START_INDEX);
     isLoadingMoreRef.current = false;

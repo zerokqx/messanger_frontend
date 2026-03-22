@@ -10,14 +10,17 @@ import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
-import { useChatCreate } from '@/entities/chat';
+import { chatExists, useChatCreate } from '@/entities/chat';
+import type { DexieChatId } from '@/shared/api';
+import { useCreateIfNotExistsChat } from '@/entities/chat/model/create-if-not-exists';
+import { selectedChatAction } from '@/features/chat';
 
 export const ContactsList = () => {
-  const { mutateAsync: createChat } = useChatCreate();
   const { contacts, count, contactsMap } = useContactListState();
   const [scrolling, setScrolling] = useState(false);
   const navigate = useNavigate();
   const hash = useRouterState({ select: (s) => s.location.hash });
+  const createChat = useCreateIfNotExistsChat();
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
 
@@ -75,14 +78,9 @@ export const ContactsList = () => {
               );
             }}
             onClick={async () => {
-              const d  = await createChat({
-                params: {
-                  query: {
-                    target_user_id: contact.user_id,
-                  },
-                },
-              });
-              await navigate({ hash: d.data.chat_id });
+              const chat = await createChat(contact.user_id);
+              await navigate({ hash: chat.user_id });
+              selectedChatAction.doSelect(chat.chat_id);
               layoutAction.doSetAside(true);
             }}
           />
