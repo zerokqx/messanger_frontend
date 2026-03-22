@@ -4,7 +4,7 @@ import createClient from 'openapi-react-query';
 import type { paths } from '../types/storage-service';
 
 const fetchClient = createFetchClient<paths>({
-  baseUrl: 'https://dev.api.yobble.org/docs/openapi',
+  baseUrl: 'https://dev.api.yobble.org/v1/storage',
   credentials: 'include',
 });
 

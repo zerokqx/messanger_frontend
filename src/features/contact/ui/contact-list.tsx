@@ -20,7 +20,7 @@ export const ContactsList = () => {
   const [scrolling, setScrolling] = useState(false);
   const navigate = useNavigate();
   const hash = useRouterState({ select: (s) => s.location.hash });
-  const createChat = useCreateIfNotExistsChat();
+  const {smartCreateMutate} = useChatCreate();
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
 
@@ -78,7 +78,7 @@ export const ContactsList = () => {
               );
             }}
             onClick={async () => {
-              const chat = await createChat(contact.user_id);
+              const chat = await smartCreateMutate(contact.user_id);
               await navigate({ hash: chat.user_id });
               selectedChatAction.doSelect(chat.chat_id);
               layoutAction.doSetAside(true);
