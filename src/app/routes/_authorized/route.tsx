@@ -78,7 +78,6 @@ function RouteComponent() {
       navbar={{
         width: 400,
         breakpoint: 'sm',
-        collapsed: { mobile: !!selectedChat },
       }}
       styles={{
         aside: {
@@ -86,6 +85,7 @@ function RouteComponent() {
           padding: t.spacing.md,
         },
       }}
+
       aside={{
         width: 500,
         collapsed: { desktop: !asside, mobile: !asside },
@@ -105,9 +105,7 @@ function RouteComponent() {
       >
         <Box h="100%" mih={0}>
           <Suspense fallback={<p>dawdw</p>}>
-
-
-          <SafeChat/>
+            <SafeChat/>
           </Suspense>
           <Outlet />
         </Box>

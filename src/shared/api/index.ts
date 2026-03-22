@@ -17,3 +17,11 @@ export {
   type TypedQueryKey,
   typedQueryKey,
 } from './typed-querykey.ts';
+export {
+  db,
+  type Chat,
+  type Message,
+  type MessageItem,
+  type DexieChatId,
+  type DexieUserId,
+} from './db.ts';

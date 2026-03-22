@@ -1,10 +1,10 @@
 import { ChatCard, useChatList } from '@/entities/chat';
+import { hasUserId } from '@/entities/chat/lib/has-user-id';
 import { selectedChatAction } from '@/features/chat';
+import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { pagesMap } from '@/shared/lib/pages-map';
 import {
   useNavigate,
-  useRouterState,
-  type ValidateNavigateOptions,
 } from '@tanstack/react-router';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -17,7 +17,6 @@ export const ChatsTab = () => {
   } = useChatList();
   const chatsMap = pagesMap(chats);
   const navigate = useNavigate();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <Virtuoso
@@ -38,9 +37,10 @@ export const ChatsTab = () => {
         return (
           <ChatCard
             onClick={() => {
+              layoutAction.doSetAside(true)
               selectedChatAction.doSelect(chat.chat_id);
               void navigate({
-                hash: chat.chat_id,
+                hash: hasUserId(chat.chat_data ?? null),
               });
             }}
             chat={chat}

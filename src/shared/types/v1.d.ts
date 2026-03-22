@@ -702,7 +702,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/send": {
+    "/message/send": {
         parameters: {
             query?: never;
             header?: never;
@@ -712,7 +712,58 @@ export interface paths {
         get?: never;
         put?: never;
         /** [/docs/proxy/chat_private_service/v1] Send Private Message With Uuid */
-        post: operations["send_private_message_with_uuid_send_post"];
+        post: operations["send_private_message_with_uuid_message_send_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/message/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [/docs/proxy/chat_private_service/v1] Delete Private Message */
+        post: operations["delete_private_message_message_delete_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/message/edit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** [/docs/proxy/chat_private_service/v1] Edit Private Message */
+        put: operations["edit_private_message_message_edit_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/message/mark-read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [/docs/proxy/chat_private_service/v1] Mark Private Chat Read */
+        post: operations["mark_private_chat_read_message_mark_read_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1520,10 +1571,10 @@ export interface components {
             /** @description Рейтинг пользователя */
             rating: components["schemas"]["RatingData"];
             /**
-             * Last Seen
-             * @description Последний раз 'был в сети' разница в секундах или null если скрыто
+             * Last Seen At
+             * @description Дата последнего посещения (null если скрыто)
              */
-            last_seen?: number | null;
+            last_seen_at?: string | null;
             /**
              * Created At
              * Format: date-time
@@ -2071,6 +2122,12 @@ export interface components {
              */
             created_at: string;
             /**
+             * Is Edited
+             * @description Было ли сообщение отредактировано
+             * @default false
+             */
+            is_edited: boolean;
+            /**
              * Updated At
              * @description Дата и время обновления сообщения
              */
@@ -2115,12 +2172,6 @@ export interface components {
              * @description ID приватного чата
              */
             chat_id: string;
-            /**
-             * Delete For Both
-             * @description Удалить чат у обоих пользователей
-             * @default false
-             */
-            delete_for_both: boolean;
         };
         /** PrivateChatHistoryData */
         PrivateChatHistoryData: {
@@ -2157,6 +2208,11 @@ export interface components {
              */
             chat_type: "self" | "private";
             /**
+             * Chat Companion Ids
+             * @description ID участников чата
+             */
+            chat_companion_ids?: string[];
+            /**
              * Chat Data
              * @description Данные о чате
              */
@@ -2182,6 +2238,156 @@ export interface components {
             /** Status */
             status: string;
             data: components["schemas"]["PrivateChatListData"];
+        };
+        /** PrivateChatMarkReadData */
+        PrivateChatMarkReadData: {
+            /**
+             * Chat Id
+             * Format: uuid
+             * @description ID чата
+             */
+            chat_id: string;
+            /**
+             * Marked Count
+             * @description Количество отмеченных сообщений
+             */
+            marked_count: number;
+        };
+        /** PrivateChatMarkReadRequest */
+        PrivateChatMarkReadRequest: {
+            /**
+             * Chat Id
+             * Format: uuid
+             * @description ID приватного чата
+             */
+            chat_id: string;
+            /**
+             * Message Id
+             * @description ID сообщения для отметки (если None - все непрочитанные до последнего)
+             */
+            message_id?: number | null;
+            /**
+             * Mark All
+             * @description Отметить все непрочитанные сообщения в чате
+             * @default false
+             */
+            mark_all: boolean;
+        };
+        /** PrivateChatMarkReadResponse */
+        PrivateChatMarkReadResponse: {
+            /**
+             * Status
+             * @default fine
+             */
+            status: string;
+            data: components["schemas"]["PrivateChatMarkReadData"];
+        };
+        /** PrivateMessageDeleteData */
+        PrivateMessageDeleteData: {
+            /**
+             * Message Id
+             * @description ID удалённого сообщения
+             */
+            message_id: number;
+            /**
+             * Chat Id
+             * Format: uuid
+             * @description ID чата
+             */
+            chat_id: string;
+            /**
+             * Deleted At
+             * Format: date-time
+             * @description Дата и время удаления
+             */
+            deleted_at: string;
+            /**
+             * Delete For All
+             * @description Удалено у всех или только у себя
+             */
+            delete_for_all: boolean;
+        };
+        /** PrivateMessageDeleteRequest */
+        PrivateMessageDeleteRequest: {
+            /**
+             * Chat Id
+             * Format: uuid
+             * @description ID приватного чата
+             */
+            chat_id: string;
+            /**
+             * Message Id
+             * @description ID сообщения для удаления
+             */
+            message_id: number;
+            /**
+             * Delete For All
+             * @description Удалить у всех или только у себя
+             * @default false
+             */
+            delete_for_all: boolean;
+        };
+        /** PrivateMessageDeleteResponse */
+        PrivateMessageDeleteResponse: {
+            /**
+             * Status
+             * @default fine
+             */
+            status: string;
+            data: components["schemas"]["PrivateMessageDeleteData"];
+        };
+        /** PrivateMessageEditData */
+        PrivateMessageEditData: {
+            /**
+             * Message Id
+             * @description ID отредактированного сообщения
+             */
+            message_id: number;
+            /**
+             * Chat Id
+             * Format: uuid
+             * @description ID чата
+             */
+            chat_id: string;
+            /**
+             * Content
+             * @description Новый текст сообщения
+             */
+            content: string;
+            /**
+             * Updated At
+             * Format: date-time
+             * @description Дата и время редактирования
+             */
+            updated_at: string;
+        };
+        /** PrivateMessageEditRequest */
+        PrivateMessageEditRequest: {
+            /**
+             * Chat Id
+             * Format: uuid
+             * @description ID приватного чата
+             */
+            chat_id: string;
+            /**
+             * Message Id
+             * @description ID сообщения для редактирования
+             */
+            message_id: number;
+            /**
+             * Content
+             * @description Новый текст сообщения
+             */
+            content: string;
+        };
+        /** PrivateMessageEditResponse */
+        PrivateMessageEditResponse: {
+            /**
+             * Status
+             * @default fine
+             */
+            status: string;
+            data: components["schemas"]["PrivateMessageEditData"];
         };
         /** PrivateMessageSendData */
         PrivateMessageSendData: {
@@ -2630,7 +2836,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2638,7 +2845,8 @@ export interface operations {
                      *           "message": "Bad request syntax or invalid parameters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2648,7 +2856,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2656,7 +2865,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2666,7 +2876,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2674,7 +2885,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2684,7 +2896,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2692,7 +2905,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2702,7 +2916,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2710,7 +2925,8 @@ export interface operations {
                      *           "message": "Method not allowed on this endpoint"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2720,7 +2936,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2728,7 +2945,8 @@ export interface operations {
                      *           "message": "Resource already exists or conflict occurred"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2738,7 +2956,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2746,7 +2965,8 @@ export interface operations {
                      *           "message": "This feature is under development"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2756,7 +2976,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2764,7 +2985,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2774,7 +2996,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2782,7 +3005,8 @@ export interface operations {
                      *           "message": "An unexpected error occurred. Please try again later."
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2818,7 +3042,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2826,7 +3051,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2836,7 +3062,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2844,7 +3071,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2854,7 +3082,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2862,7 +3091,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2898,7 +3128,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2906,7 +3137,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2916,7 +3148,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2924,7 +3157,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2934,7 +3168,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2942,7 +3177,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2952,7 +3188,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -2960,7 +3197,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -2996,7 +3234,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3004,7 +3243,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3014,7 +3254,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3022,7 +3263,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3032,7 +3274,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3040,7 +3283,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3074,7 +3318,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3082,7 +3327,8 @@ export interface operations {
                      *           "message": "Bad request syntax or invalid parameters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3092,7 +3338,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3100,7 +3347,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3110,7 +3358,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3118,7 +3367,8 @@ export interface operations {
                      *           "message": "Resource already exists or conflict occurred"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3128,7 +3378,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3136,7 +3387,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3170,7 +3422,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3178,7 +3431,8 @@ export interface operations {
                      *           "message": "Bad request syntax or invalid parameters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3188,7 +3442,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3196,7 +3451,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3206,7 +3462,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3214,7 +3471,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3244,7 +3502,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3252,7 +3511,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3282,7 +3542,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3290,7 +3551,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3324,7 +3586,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3332,7 +3595,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3342,7 +3606,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3350,7 +3615,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3360,7 +3626,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3368,7 +3635,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3402,7 +3670,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3410,7 +3679,8 @@ export interface operations {
                      *           "message": "Bad request syntax or invalid parameters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3420,7 +3690,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3428,7 +3699,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3438,7 +3710,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3446,7 +3719,8 @@ export interface operations {
                      *           "message": "Resource already exists or conflict occurred"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3456,7 +3730,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3464,7 +3739,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3499,7 +3775,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3507,7 +3784,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3517,7 +3795,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3525,7 +3804,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3555,7 +3835,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3563,7 +3844,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3573,7 +3855,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3581,7 +3864,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3613,7 +3897,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3621,7 +3906,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3631,7 +3917,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3639,7 +3926,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3649,7 +3937,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3657,7 +3946,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3687,7 +3977,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3695,7 +3986,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3705,7 +3997,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3713,7 +4006,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3723,7 +4017,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3731,7 +4026,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3741,7 +4037,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3749,7 +4046,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3781,7 +4079,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3789,7 +4088,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3799,7 +4099,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3807,7 +4108,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3839,7 +4141,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3847,7 +4150,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3857,7 +4161,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3865,7 +4170,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3875,7 +4181,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3883,7 +4190,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3893,7 +4201,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3901,7 +4210,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3931,7 +4241,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3939,7 +4250,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3949,7 +4261,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3957,7 +4270,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3967,7 +4281,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3975,7 +4290,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -3985,7 +4301,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -3993,7 +4310,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4023,7 +4341,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4031,7 +4350,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4041,7 +4361,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4049,7 +4370,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4084,7 +4406,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4092,7 +4415,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4102,7 +4426,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4110,7 +4435,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4144,7 +4470,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4152,7 +4479,8 @@ export interface operations {
                      *           "message": "Bad request syntax or invalid parameters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4162,7 +4490,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4170,7 +4499,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4180,7 +4510,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4188,7 +4519,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4198,7 +4530,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4206,7 +4539,8 @@ export interface operations {
                      *           "message": "Resource already exists or conflict occurred"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4216,7 +4550,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4224,7 +4559,8 @@ export interface operations {
                      *           "message": "This feature is under development"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4234,7 +4570,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4242,7 +4579,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4276,7 +4614,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4284,7 +4623,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4294,7 +4634,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4302,7 +4643,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4312,7 +4654,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4320,7 +4663,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4354,7 +4698,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4362,7 +4707,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4372,7 +4718,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4380,7 +4727,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4390,7 +4738,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4398,7 +4747,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4433,7 +4783,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4441,7 +4792,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4451,7 +4803,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4459,7 +4812,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4493,7 +4847,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4501,7 +4856,8 @@ export interface operations {
                      *           "message": "Bad request syntax or invalid parameters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4511,7 +4867,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4519,7 +4876,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4529,7 +4887,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4537,7 +4896,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4547,7 +4907,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4555,7 +4916,8 @@ export interface operations {
                      *           "message": "Resource already exists or conflict occurred"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4565,7 +4927,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4573,7 +4936,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4607,7 +4971,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4615,7 +4980,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4625,7 +4991,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4633,7 +5000,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4643,7 +5011,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4651,7 +5020,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4683,7 +5053,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4691,7 +5062,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4701,7 +5073,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4709,7 +5082,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4719,7 +5093,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4727,7 +5102,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4757,7 +5133,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4765,7 +5142,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4775,7 +5153,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4783,7 +5162,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4793,7 +5173,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4801,7 +5182,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4835,7 +5217,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4843,7 +5226,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4853,7 +5237,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4861,7 +5246,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4893,7 +5279,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4901,7 +5288,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4911,7 +5299,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4919,7 +5308,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4953,7 +5343,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4961,7 +5352,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -4971,7 +5363,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -4979,7 +5372,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5044,7 +5438,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5052,7 +5447,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5062,7 +5458,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5070,7 +5467,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5102,7 +5500,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5110,7 +5509,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5120,7 +5520,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5128,7 +5529,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5162,7 +5564,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5170,7 +5573,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5180,7 +5584,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5188,7 +5593,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5198,7 +5604,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5206,7 +5613,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5241,7 +5649,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5249,7 +5658,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5259,7 +5669,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5267,7 +5678,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5277,7 +5689,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5285,7 +5698,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5324,7 +5738,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5332,7 +5747,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5342,7 +5758,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5350,7 +5767,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5360,7 +5778,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5368,7 +5787,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5402,7 +5822,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5410,7 +5831,8 @@ export interface operations {
                      *           "message": "Bad request syntax or invalid parameters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5420,7 +5842,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5428,7 +5851,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5438,7 +5862,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5446,7 +5871,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5456,7 +5882,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5464,13 +5891,14 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
         };
     };
-    send_private_message_with_uuid_send_post: {
+    send_private_message_with_uuid_message_send_post: {
         parameters: {
             query?: never;
             header?: {
@@ -5500,7 +5928,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5508,7 +5937,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5518,7 +5948,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5526,7 +5957,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5536,7 +5968,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5544,7 +5977,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5554,7 +5988,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5562,7 +5997,320 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    delete_private_message_message_delete_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PrivateMessageDeleteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrivateMessageDeleteResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "resource",
+                     *           "message": "Requested resource not found"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    edit_private_message_message_edit_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PrivateMessageEditRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrivateMessageEditResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "resource",
+                     *           "message": "Requested resource not found"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    mark_private_chat_read_message_mark_read_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PrivateChatMarkReadRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrivateChatMarkReadResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Invalid login or password"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "permission",
+                     *           "message": "You don't have access to this resource"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "resource",
+                     *           "message": "Requested resource not found"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "error",
+                     *       "errors": [
+                     *         {
+                     *           "field": "login",
+                     *           "message": "Login must not contain whitespace characters"
+                     *         }
+                     *       ]
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5596,7 +6344,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5604,7 +6353,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5614,7 +6364,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5622,7 +6373,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5632,7 +6384,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5640,7 +6393,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5650,7 +6404,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5658,7 +6413,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5690,7 +6446,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5698,7 +6455,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5708,7 +6466,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5716,7 +6475,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5726,7 +6486,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5734,7 +6495,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5744,7 +6506,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5752,7 +6515,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5819,7 +6583,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5827,7 +6592,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5837,7 +6603,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5845,7 +6612,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5855,7 +6623,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5863,7 +6632,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5873,7 +6643,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5881,7 +6652,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5915,7 +6687,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5923,7 +6696,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5933,7 +6707,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5941,7 +6716,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5951,7 +6727,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5959,7 +6736,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -5969,7 +6747,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -5977,7 +6756,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6012,7 +6792,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6020,7 +6801,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6030,7 +6812,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6038,7 +6821,8 @@ export interface operations {
                      *           "message": "You don't have access to this resource"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6048,7 +6832,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6056,7 +6841,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6086,7 +6872,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6094,7 +6881,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6104,7 +6892,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6112,7 +6901,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6144,7 +6934,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6152,7 +6943,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6162,7 +6954,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6170,7 +6963,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6204,7 +6998,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6212,7 +7007,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6222,7 +7018,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6230,7 +7027,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6264,7 +7062,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6272,7 +7071,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6282,7 +7082,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6290,7 +7091,8 @@ export interface operations {
                      *           "message": "Login must not contain whitespace characters"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6324,7 +7126,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6332,7 +7135,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6476,7 +7280,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6484,7 +7289,8 @@ export interface operations {
                      *           "message": "Invalid login or password"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6494,7 +7300,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6502,7 +7309,8 @@ export interface operations {
                      *           "message": "Requested resource not found"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };
@@ -6512,7 +7320,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    /** @example {
+                    /**
+                     * @example {
                      *       "status": "error",
                      *       "errors": [
                      *         {
@@ -6520,7 +7329,8 @@ export interface operations {
                      *           "message": "Resource already exists or conflict occurred"
                      *         }
                      *       ]
-                     *     } */
+                     *     }
+                     */
                     "application/json": unknown;
                 };
             };

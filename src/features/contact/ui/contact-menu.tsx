@@ -52,6 +52,7 @@ export const ContactMenu = ({ user, onUpdate, onEditClick,...props }: ContactMen
   return (
     <Menu
       opened={opened}
+      withArrow
       onClose={close}
       zIndex={1000000}
       keepMounted
@@ -64,7 +65,7 @@ export const ContactMenu = ({ user, onUpdate, onEditClick,...props }: ContactMen
           <Ellipsis />
         </ActionIcon>
       </Menu.Target>
-      <Menu.Dropdown>
+      <Menu.Dropdown  >
         {!inContact && (
           <>
             <Menu.Item

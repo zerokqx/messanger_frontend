@@ -1,6 +1,6 @@
-import { Divider, factory } from '@mantine/core';
+import clases from './grouped-list.module.css';
+import { factory } from '@mantine/core';
 import type { GroupedListProps } from './types';
-import { Fragment } from 'react';
 import { GroupedItem } from './grouped-item';
 import { RoundedContainerStack } from '../../boxes';
 
@@ -10,19 +10,22 @@ interface GroupedListFactory {
 }
 
 const GroupedListRoot = factory<GroupedListFactory>(
-  ({ children, ...others }, ref) => {
-   const items = children?.filter(Boolean);
-
+  ({ children, ...props }, ref) => {
+    
+    const items = children?.filter(Boolean);
     if (!items?.length) return null;
-
     return (
-      <RoundedContainerStack ref={ref} p="sm" {...others}>
-        {items.map((child, i) => (
-          <Fragment key={i}>
-            {child}
-            {i < items.length - 1 && <Divider opacity={0.5} />}
-          </Fragment>
-        ))}
+      <RoundedContainerStack
+        className={clases.list}
+        ref={ref}
+        gap={0}
+        p={0}
+        style={{
+          overflow: 'clip',
+        }}
+        {...props}
+      >
+        {children}
       </RoundedContainerStack>
     );
   }

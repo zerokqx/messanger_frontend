@@ -121,7 +121,6 @@ export const ProfileForGetUserById = ({
           >
             {getRelationLabel()}
           </GroupedList.Item>
-          {blocked ? (
             <GroupedList.Item
               label={t('contact:block')}
               leftSectionColor="red"
@@ -129,7 +128,6 @@ export const ProfileForGetUserById = ({
             >
               {blocked}
             </GroupedList.Item>
-          ) : null}
         </GroupedList>
       )}
     </Stack>

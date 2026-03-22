@@ -2,7 +2,6 @@ import { useIsAuth } from '@/entities/session';
 import { $api } from '@/shared/api';
 import Logger from '@/shared/lib/logger/logger';
 import type { components } from '@/shared/types/v1';
-import { keepPreviousData } from '@tanstack/react-query';
 
 export const useChatHistory = (chatId: string, limit = 10) => {
   const isAuth = useIsAuth();
@@ -16,7 +15,6 @@ export const useChatHistory = (chatId: string, limit = 10) => {
         query: {
           limit,
           chat_id: chatId,
-
         },
       },
     },
@@ -27,7 +25,9 @@ export const useChatHistory = (chatId: string, limit = 10) => {
       initialPageParam: null,
       suspense: true,
       pageParamName: 'before_message_id',
-      getNextPageParam: (lastPage: components['schemas']['PrivateChatHistoryResponse']) => {
+      getNextPageParam: (
+        lastPage: components['schemas']['PrivateChatHistoryResponse']
+      ) => {
         if (!lastPage.data.has_more) {
           return undefined;
         }
@@ -47,7 +47,7 @@ export const useChatHistory = (chatId: string, limit = 10) => {
         return lastMessage.message_id.toString();
       },
 
-      enabled: isAuth && Boolean(chatId),
+      enabled: isAuth && typeof chatId === 'string' && chatId.length > 0,
     }
   );
 };

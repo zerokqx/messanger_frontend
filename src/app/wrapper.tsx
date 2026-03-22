@@ -10,19 +10,27 @@ import { I18nextProvider } from 'react-i18next';
 import { theme } from './mantine';
 import { InnerApp } from './ui/inner-app';
 import { NotificationStyled } from './ui/notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+
+const asyncStoragePersister = createAsyncStoragePersister({
+  
+  storage: AsyncStorage,
+});
 
 const loadFeatures = () =>
   import('./features-dom-animation.ts').then((res) => res.default);
+
 export const Wrapper = () => {
   const primaryColor = useSettingsStore((s) => s.data.primaryColor);
   const animationStyle = useSettingsStore((s) => s.data.animations);
   const withAnimations = useSettingsStore((s) => s.data.withAnimations);
-  const radius= useSettingsStore(s=>s.data.radius)
+  const radius = useSettingsStore((s) => s.data.radius);
   const duratationAllAnimations = useSettingsStore(
     (s) => s.data.duratationAllAnimations
   );
-  console.log(radius);
-  
   return (
     <StrictMode>
       <MantineProvider
@@ -35,7 +43,10 @@ export const Wrapper = () => {
       >
         <Suspense fallback={<Loader pos={'absolute'} left={'50%'} top="50%" />}>
           <LazyMotion strict features={loadFeatures}>
-            <QueryClientProvider client={queryClient}>
+            <PersistQueryClientProvider
+              client={queryClient}
+              persistOptions={{ persister: asyncStoragePersister }}
+            >
               <I18nextProvider i18n={i18n}>
                 <ModalsProvider>
                   <MotionConfig
@@ -50,7 +61,7 @@ export const Wrapper = () => {
                 </ModalsProvider>
                 <NotificationStyled />
               </I18nextProvider>
-            </QueryClientProvider>
+            </PersistQueryClientProvider>
           </LazyMotion>
         </Suspense>
       </MantineProvider>

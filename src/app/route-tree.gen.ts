@@ -49,7 +49,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthAuthRoute
   '/sessions': typeof AuthorizedSessionsRoute
-  '/y': typeof AuthorizedYIndexRoute
+  '/y/': typeof AuthorizedYIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,7 +68,7 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/sessions' | '/y'
+  fullPaths: '/' | '/auth' | '/sessions' | '/y/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/auth' | '/sessions' | '/y'
   id:
@@ -92,14 +92,14 @@ declare module '@tanstack/react-router' {
     '/_authorized': {
       id: '/_authorized'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthorizedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
       id: '/_auth'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -127,7 +127,7 @@ declare module '@tanstack/react-router' {
     '/_authorized/y/': {
       id: '/_authorized/y/'
       path: '/y'
-      fullPath: '/y'
+      fullPath: '/y/'
       preLoaderRoute: typeof AuthorizedYIndexRouteImport
       parentRoute: typeof AuthorizedRouteRoute
     }

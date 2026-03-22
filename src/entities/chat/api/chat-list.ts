@@ -1,11 +1,15 @@
 import { useIsAuth } from '@/entities/session';
+import { db } from '@/shared/api';
 import { $api } from '@/shared/api/repository/$api';
 import Logger from '@/shared/lib/logger/logger';
+import { pagesMap } from '@/shared/lib/pages-map';
 import { keepPreviousData } from '@tanstack/react-query';
+import { hasUserId } from '../lib/has-user-id';
+import { useEffect } from 'react';
 
 export const useChatList = (limit = 20) => {
   const isAuth = useIsAuth();
-  return $api['chat/private'].jwt.useInfiniteQuery(
+  const query = $api['chat/private'].jwt.useInfiniteQuery(
     'get',
     '/list',
 
@@ -32,7 +36,6 @@ export const useChatList = (limit = 20) => {
         if (lastPage.data.has_more) {
           Logger.debug('useChatList', 'has_more=true', {
             preData: lastPage.data,
-
           });
           return lastPageParam + lastPage.data.items.length;
         }
@@ -41,4 +44,16 @@ export const useChatList = (limit = 20) => {
       enabled: isAuth,
     }
   );
+  useEffect(() => {
+    if (query.data) {
+      const allChats = pagesMap(query.data);
+      void db.chats.bulkPut(
+        allChats.map((chat) => ({
+          chat_id: chat.chat_id,
+          user_id: hasUserId(chat.chat_data ?? null),
+        }))
+      );
+    }
+  }, [query.data]);
+  return query;
 };

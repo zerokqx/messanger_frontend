@@ -2,6 +2,8 @@ import { Avatar, Group, Paper, Stack, Text } from '@mantine/core';
 import { Check, CheckCheck } from 'lucide-react';
 import { useSettingsStore } from '@/shared/lib/settings';
 import type { ChatMessage, MessageProps } from './types';
+import { lightDark } from '@/shared/lib/light-dark';
+import { formatLogin } from '@/shared/lib/formaters';
 
 const timeFormatter = new Intl.DateTimeFormat('ru-RU', {
   hour: '2-digit',
@@ -22,6 +24,8 @@ export const MessageItem = ({
   withSenderName = true,
   rightSection,
 }: MessageProps) => {
+  
+
   const primaryColor = useSettingsStore((s) => s.data.primaryColor);
   const text = getMessageText(message.content);
   const time = timeFormatter.format(new Date(message.created_at));
@@ -37,13 +41,21 @@ export const MessageItem = ({
   return (
     <Group
       justify={isOwn ? 'flex-end' : 'flex-start'}
-      align="flex-end"
+      align='start'
       wrap="nowrap"
       w="100%"
       gap="xs"
     >
       {!isOwn && withAvatar && (
-        <Avatar radius="xl" size="sm" name={avatarLabel ?? senderName ?? 'U'} />
+        <Avatar
+          radius="xl"
+          size="sm"
+          // name={
+          //   avatarLabel ??
+          //   senderName ??
+          //   formatLogin(message.sender_data.login).name
+          // }
+        />
       )}
 
       <Stack gap={4} maw="75%" align={isOwn ? 'flex-end' : 'flex-start'}>
@@ -57,8 +69,7 @@ export const MessageItem = ({
           px="sm"
           py={8}
           radius="md"
-          bg={isOwn ? `${primaryColor}.9` : 'dark.6'}
-          c={isOwn ? 'white' : 'gray.0'}
+          bg={isOwn ? `${primaryColor}.9` : lightDark('gray.2', 'dark.8')}
           style={{
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap',

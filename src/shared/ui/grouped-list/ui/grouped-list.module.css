@@ -1,0 +1,11 @@
+.element:hover {
+  background: var(--mantine-color-gray-1);
+}
+
+[data-mantine-color-scheme='dark'] .element:hover {
+  background: var(--mantine-color-dark-6);
+}
+
+.list:empty {
+  display: none;
+}

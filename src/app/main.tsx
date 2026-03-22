@@ -38,9 +38,7 @@ async function enableMocking() {
 
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(
-      <Wrapper />
-  );
+  root.render(<Wrapper />);
   void enableMocking().catch((error: unknown) => {
     console.error('[MSW] Failed to start worker', error);
   });

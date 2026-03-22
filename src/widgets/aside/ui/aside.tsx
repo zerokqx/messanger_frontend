@@ -1,6 +1,5 @@
 import {
   AppShellAside,
-  Box,
   CloseButton,
   Group,
   ScrollArea,
@@ -8,7 +7,6 @@ import {
 } from '@mantine/core';
 import { lazy, Suspense } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
-import { useGetUuidFromRouter } from '@/shared/lib/use-get-uuid-from-router';
 import { ContactMenu } from '@/features/contact';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft } from 'lucide-react';
@@ -16,7 +14,7 @@ import { notify } from '@/shared/lib/notifications';
 import { SkeletonLayout } from '@/shared/ui/skeletons';
 import { useDrag } from '@use-gesture/react';
 import { useIsMe } from '@/entities/user/lib/use-is-me';
-import { useHash } from '@mantine/hooks';
+import { useRouterState } from '@tanstack/react-router';
 
 const ProfileForGetUserById = lazy(() =>
   import('@/entities/user').then((m) => ({
@@ -35,8 +33,7 @@ interface CustomAsideProps {
 }
 
 export const Aside = ({ onClose }: CustomAsideProps) => {
-  const [hash] = useHash();
-  const uuid = hash.slice(1);
+  const uuid = useRouterState({ select: (s) => s.location.hash });
   const isMe = useIsMe(uuid);
   const tabsApi = Tabs.useBridgeRef();
   const { data, isLoading, invalidateUser } = useGetUserById({

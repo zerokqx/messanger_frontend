@@ -1,4 +1,4 @@
-export { ChatCard,  Chat } from './ui';
+export { ChatCard, Chat } from './ui';
 export type {
   ChatMessage,
   ChatCardProps,
@@ -8,4 +8,5 @@ export type {
   MessageProps,
   SystemMessageProps,
 } from './ui';
-export { useChatHistory, useChatList } from './api/';
+export { useChatHistory, useChatCreate, useChatList } from './api/';
+export { type ChatItem } from './model/';

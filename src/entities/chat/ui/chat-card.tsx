@@ -1,6 +1,9 @@
 import { Avatar, Badge, Box, Group, Paper, Stack, Text } from '@mantine/core';
 import type { ChatCardProps } from './types';
 import { RoundedContainerGroup } from '@/shared/ui/boxes';
+import useRipple from 'useripple';
+import { lightDark } from '@/shared/lib/light-dark';
+import { formatLogin } from '@/shared/lib/formaters';
 
 const formatTime = (value?: string | null): string => {
   if (!value) return '--:--';
@@ -22,31 +25,42 @@ const getMessagePreview = (message: string | null | undefined): string => {
 };
 
 export const ChatCard = ({ chat, title, onClick }: ChatCardProps) => {
+  const [addRipple, ripples] = useRipple({
+    background: lightDark('gray.4', 'dark.5'),
+  });
   const messagePreview = getMessagePreview(chat.last_message?.content);
   const chatTitle = getTitle(title, chat.chat_type);
   const timeLabel = formatTime(
     chat.last_message?.created_at ?? chat.created_at
   );
+  console.log(chat.chat_data);
+  
 
   return (
     <RoundedContainerGroup
-      onClick={onClick}
-      w="100%"
-      p="sm"
+      pos={'relative'}
+      bdrs={0}
+      onClick={(e) => {
+        onClick?.();
+        addRipple(e);
+      }}
+      bd={'none'}
+      bg={'transparent'}
       style={{
+        overflow: 'hidden',
         textAlign: 'left',
         cursor: 'pointer',
       }}
     >
+      {ripples}
       <Group align="flex-start" wrap="nowrap" gap="sm">
         <Avatar radius="1000px" variant="light">
           {chatTitle.slice(0, 1).toUpperCase()}
         </Avatar>
 
         <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
-          <Group justify="space-between" wrap="nowrap" gap="xs">
-            <Text fw={600} size="sm" truncate>
-              {chatTitle}
+          <Group justify="space-between" wrap="nowrap" gap="xs"> <Text fw={600} size="sm" truncate>
+              {formatLogin(chat.chat_data.login).name}
             </Text>
             <Text size="xs" c="dimmed">
               {timeLabel}
