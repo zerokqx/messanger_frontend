@@ -1,8 +1,14 @@
 import type { Middleware } from 'openapi-fetch';
 import { useTokenStore, tokenAction } from '../token';
 import { createBaseUrl } from '../api/base-url';
-import { authHeaderSet } from '../api';
 import type { components } from '../types/v1';
+
+export const authHeaderSet = (req: Request, access?: string) => {
+  const token = access ?? tokenAction.doGetToken();
+  const headers = new Headers(req.headers);
+  if (token) headers.set('Authorization', `Bearer ${token}`);
+  return new Request(req, { headers });
+};
 
 type RefreshResponse = components['schemas']['TokenRefreshResponse'];
 

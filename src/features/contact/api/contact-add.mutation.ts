@@ -1,10 +1,11 @@
-import { $api } from '@/shared/api/repository/$api';
-import { infinityQueryOptimisticInsert } from '@/shared/lib/infinity-query-optimistic-update';
-import type { components } from '@/shared/types/v1';
-import type { InfiniteData } from '@tanstack/react-query';
-
-type Count = components['schemas']['ContactCountResponse'];
-type ContactResponse = components['schemas']['ContactInfoResponse'];
+import { $userService, type UserService } from '@/shared/api/generated';
+import {
+  getGetContactCountContactCountGetQueryKey,
+  getGetContactsContactListGetQueryKey,
+  useAddContactContactAddPost,
+} from '@/shared/api/orval/user-service/v1-user/v1-user';
+type Count = UserService.components['schemas']['ContactCountResponse'];
+type ContactResponse = UserService.components['schemas']['ContactInfoResponse'];
 
 interface MutateContext {
   prevCount?: Count;
@@ -14,71 +15,47 @@ const contactListFilter = {
   queryKey: ['get', '/contact/list'] as const,
   exact: false,
 };
-const countOptions = $api.user.jwt.queryOptions('get', '/contact/count', {});
+const countOptions = $userService.queryOptions('get', '/contact/count', {});
 
 export const useContactAdd = () => {
-  const mutate = $api.user.jwt.useMutation('post', '/contact/add', {
-    async onMutate(_variables, context): Promise<MutateContext> {
-      await Promise.all([
-        context.client.cancelQueries(contactListFilter),
-        context.client.cancelQueries(countOptions),
-      ]);
+  return useAddContactContactAddPost({
+    mutation: {
+      async onMutate(_variables, context) {
+        await Promise.all([
+          context.client.cancelQueries({
+            queryKey: getGetContactsContactListGetQueryKey(),
+          }),
+          context.client.cancelQueries({
+            queryKey: getGetContactCountContactCountGetQueryKey(),
+          }),
+        ]);
 
-      const prevCount = context.client.getQueryData<Count>(
-        countOptions.queryKey
-      );
-
-      context.client.setQueryData(
-        countOptions.queryKey,
-        (old: Count | undefined) => {
-          if (!old) return old;
-
-          return {
-            ...old,
-            data: { count: old.data.count + 1 },
-          };
-        }
-      );
-
-      return { prevCount };
-    },
-    onError(_error, _variables, onMutateResult, context) {
-      const typedResult = onMutateResult as MutateContext | undefined;
-      if (typedResult?.prevCount) {
-        context.client.setQueryData(
-          countOptions.queryKey,
-          typedResult.prevCount
+        const prevCount = context.client.getQueryData<Count>(
+          getGetContactCountContactCountGetQueryKey()
         );
-      }
-    },
-    async onSettled(_data, _error, _variables, _onMutateResult, context) {
-      const contact = _data?.data;
-      if (contact) {
-        context.client.setQueriesData<InfiniteData<ContactResponse>>(
-          contactListFilter,
-          (old) => {
+
+        context.client.setQueryData(
+          getGetContactCountContactCountGetQueryKey(),
+          (old: Count | undefined) => {
             if (!old) return old;
 
-            const exists = old.pages.some((page) =>
-              page.data.items.some((item) => item.user_id === contact.user_id)
-            );
-
-            if (exists) return old;
-
-            return infinityQueryOptimisticInsert(
-              old,
-              (page) => page.data.items,
-              contact
-            );
+            return {
+              ...old,
+              data: { count: old.data.count + 1 },
+            };
           }
         );
-      }
 
-      await Promise.all([
-        context.client.invalidateQueries(contactListFilter),
-        context.client.invalidateQueries(countOptions),
-      ]);
+        return { prevCount };
+      },
+      onError(_error, _variables, onMutateResult, context) {
+        if (onMutateResult?.prevCount) {
+          context.client.setQueryData(
+            getGetContactCountContactCountGetQueryKey(),
+            onMutateResult.prevCount
+          );
+        }
+      },
     },
   });
-  return mutate;
 };

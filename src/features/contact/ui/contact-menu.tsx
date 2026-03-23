@@ -1,4 +1,11 @@
-import { ActionIcon, Loader, Menu, type ActionIconProps, type MantineColor, type MenuTargetProps } from '@mantine/core';
+import {
+  ActionIcon,
+  Loader,
+  Menu,
+  type ActionIconProps,
+  type MantineColor,
+  type MenuTargetProps,
+} from '@mantine/core';
 import { Ellipsis, Lock, Pencil, Plus, Trash, Unlock } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,14 +16,14 @@ import type { components } from '@/shared/types/v1';
 import { useInvalidateContacts } from '@/entities/contact';
 import { useDisclosure } from '@mantine/hooks';
 
-interface ContactMenu  extends ActionIconProps{
+interface ContactMenu extends ActionIconProps {
   user?: Partial<
     Pick<
       components['schemas']['ProfileByUserIdData'],
       'relationship' | 'user_id'
     >
   >;
-  
+
   onUpdate: (userId: string) => void;
   onEditClick?: () => void;
 }
@@ -30,7 +37,12 @@ const userIdGuard = (callback: Fn, userId: string | undefined | null) => {
   }
 };
 
-export const ContactMenu = ({ user, onUpdate, onEditClick,...props }: ContactMenu) => {
+export const ContactMenu = ({
+  user,
+  onUpdate,
+  onEditClick,
+  ...props
+}: ContactMenu) => {
   const [opened, { close, toggle }] = useDisclosure();
   const { mutate: contactRemove, isPending: isPendingContactRemove } =
     useContactRemove();
@@ -61,11 +73,15 @@ export const ContactMenu = ({ user, onUpdate, onEditClick,...props }: ContactMen
       trigger="click"
     >
       <Menu.Target>
-        <ActionIcon onClick={toggle} variant={opened ? 'light' : 'subtle'} {...props}>
+        <ActionIcon
+          onClick={toggle}
+          variant={opened ? 'light' : 'subtle'}
+          {...props}
+        >
           <Ellipsis />
         </ActionIcon>
       </Menu.Target>
-      <Menu.Dropdown  >
+      <Menu.Dropdown>
         {!inContact && (
           <>
             <Menu.Item
@@ -75,11 +91,13 @@ export const ContactMenu = ({ user, onUpdate, onEditClick,...props }: ContactMen
                 if (!userId) return;
                 contactAdd(
                   {
-                    body: { user_id: userId },
+                    data: {
+                      user_id: userId,
+                    },
                   },
                   {
                     onSettled(_data, _error, variables) {
-                      userIdGuard(onUpdate, variables.body.user_id);
+                      userIdGuard(onUpdate, variables.data.user_id);
                     },
                   }
                 );

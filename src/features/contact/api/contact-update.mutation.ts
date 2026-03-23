@@ -1,14 +1,14 @@
 import { makeGetUserById } from '@/entities/user';
 import { typedQueryKey } from '@/shared/api';
+import type { ProfileService, UserService } from '@/shared/api/generated';
 import { $api } from '@/shared/api/repository/$api';
 import { infinityQueryOptimisticUpdate } from '@/shared/lib/infinity-query-optimistic-update';
 import { notify } from '@/shared/lib/notifications';
-import type { components } from '@/shared/types/v1';
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-type Profile = components['schemas']['ProfileByUserIdData'];
-type ContactResponse = components['schemas']['ContactInfoResponse'];
+type Profile = ProfileService.components['schemas']['ProfileByUserIdData'];
+type ContactResponse = UserService.components['schemas']['ContactInfoResponse'];
 
 interface MutateContext {
   prevGetById?: Profile;
@@ -21,7 +21,7 @@ const searchOpt = typedQueryKey('get', '/search');
 export const useContactUpdate = () => {
   const { t } = useTranslation(['api-errors']);
   return $api.user.jwt.useMutation('patch', '/contact/update', {
-    async onMutate({ body }, context): Promise<MutateContext> {
+    async onMutate({ body }, context) {
       const getUserByIdOpt = makeGetUserById(body.user_id);
       await Promise.all([
         context.client.cancelQueries({
@@ -71,15 +71,14 @@ export const useContactUpdate = () => {
       return { prevGetById, prevContactList };
     },
     onError(_error, variables, onMutateResult, context) {
-      const typedMutateResult = onMutateResult as MutateContext | undefined;
 
       context.client.setQueryData<Profile>(
         makeGetUserById(variables.body.user_id).queryKey,
-        typedMutateResult?.prevGetById
+        onMutateResult?.prevGetById
       );
       context.client.setQueriesData(
         { queryKey: contactOpt },
-        typedMutateResult?.prevContactList
+        onMutateResult?.prevContactList
       );
       notify.error({ message: t('api-errors:contact_update') });
     },

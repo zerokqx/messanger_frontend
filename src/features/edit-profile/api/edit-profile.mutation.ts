@@ -1,4 +1,5 @@
 import { useMeDescriptor } from '@/entities/user/model/me.query';
+import { $profileService } from '@/shared/api/generated';
 import { $api } from '@/shared/api/repository/$api';
 import { errorNotify } from '@/shared/lib/notifications/error';
 import { successNotify } from '@/shared/lib/notifications/success';
@@ -11,7 +12,7 @@ export const useEditProfile = (withReset = false) => {
   const [edit] = useMeDescriptor({ autoCommit: true });
   const [t] = useTranslation(['titles', 'profile']);
 
-  return $api.profile.jwt.useMutation('put', '/edit', {
+  return $profileService.useMutation('put', '/edit', {
     async onMutate(variables, ctx) {
       const profileQueryOptions = $api.profile.jwt.queryOptions(
         'get',

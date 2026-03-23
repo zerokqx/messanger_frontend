@@ -2,35 +2,41 @@ import { camelCase, kebabCase } from 'lodash';
 import { writeFile, mkdir, access } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import chalk from 'chalk';
+import { config } from './config';
 
 interface MkMethodsOptions {
   outputRoot: string;
   serviceName: string;
   baseUrl: string;
-  // Новые опции
-  middlewarePath?: string; // Путь для импорта, например '@/shared/middlewares/auth'
+  middlewarePath?: string;
   withCredentials?: boolean;
+  withMiddleware?: boolean; // Добавляем новый флаг
 }
 
 const template = ({
   variableName,
-  serviceName,
   baseUrl,
   middlewarePath,
+  typeFileName,
   withCredentials,
+  withMiddleware, // Прокидываем сюда
 }: {
   variableName: string;
-  serviceName: string;
+  typeFileName: string;
   baseUrl: string;
   middlewarePath?: string;
   withCredentials?: boolean;
+  withMiddleware?: boolean;
 }) => {
-  const importMiddleware = middlewarePath
+  // Импортируем и используем только если флаг true И путь указан
+  const showMiddleware = withMiddleware && middlewarePath;
+
+  const importMiddleware = showMiddleware
     ? `import { authMiddleware } from '${middlewarePath}';\n`
     : '';
 
-  const useMiddleware = middlewarePath
-    ? `fetchClient.use(authMiddleware);\n`
+  const useMiddleware = showMiddleware
+    ? `\nfetchClient.use(authMiddleware);\n`
     : '';
 
   const credentialsOption = withCredentials
@@ -39,14 +45,13 @@ const template = ({
 
   return `${importMiddleware}import createFetchClient from 'openapi-fetch';
 import createClient from 'openapi-react-query';
-import type { paths } from '../types/${kebabCase(serviceName)}';
+import type { paths } from '../types/${typeFileName}';
 
 const fetchClient = createFetchClient<paths>({
   baseUrl: '${baseUrl}',${credentialsOption}
 });
-
 ${useMiddleware}
-export const $${variableName} = createClient(fetchClient);
+export const ${variableName} = createClient(fetchClient);
 `;
 };
 
@@ -56,8 +61,11 @@ export const mkMethods = async ({
   baseUrl,
   middlewarePath,
   withCredentials,
+  withMiddleware, // Принимаем флаг
 }: MkMethodsOptions) => {
-  const fileName = `${kebabCase(serviceName)}.ts`;
+  const fileName = config.fileName
+    ? `${config.fileName(serviceName)}.ts`
+    : `${serviceName}.ts`;
 
   const apiDir = resolve(outputRoot, 'api');
   const typesDir = resolve(outputRoot, 'types');
@@ -74,12 +82,17 @@ export const mkMethods = async ({
     return;
   }
 
+  const variableName = config.methodNameTemplate
+    ? config.methodNameTemplate(serviceName)
+    : camelCase(serviceName);
+
   const content = template({
     baseUrl,
-    variableName: camelCase(serviceName),
-    serviceName,
+    variableName,
+    typeFileName: config.fileName ? config.fileName(serviceName) : serviceName,
     middlewarePath,
     withCredentials,
+    withMiddleware, // Передаем в шаблон
   });
 
   await mkdir(apiDir, { recursive: true });
@@ -90,6 +103,7 @@ export const mkMethods = async ({
     chalk.blue('    ∟ ') +
       chalk.cyan('Методы:') +
       chalk.gray(` ${fileName}`) +
-      (withCredentials ? chalk.yellow(' [with creds]') : '')
+      (withCredentials ? chalk.yellow(' [creds]') : '') +
+      (withMiddleware ? chalk.magenta(' [auth]') : '') // Логируем наличие мидлвара
   );
 };

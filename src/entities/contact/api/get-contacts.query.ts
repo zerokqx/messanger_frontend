@@ -1,4 +1,5 @@
 import { useIsAuth } from '@/entities/session';
+import { $userService } from '@/shared/api/generated';
 import { $api } from '@/shared/api/repository/$api';
 import Logger from '@/shared/lib/logger/logger';
 import { keepPreviousData } from '@tanstack/react-query';
@@ -39,7 +40,7 @@ export const makeContactsInfinityOptions = (limit = 10) => {
 export const useContactsQuery = (limit = 10) => {
   const isAuth = useIsAuth();
 
-  return $api.user.jwt.useInfiniteQuery(
+  return $userService.useInfiniteQuery(
     'get',
     '/contact/list',
     {
@@ -54,11 +55,10 @@ export const useContactsQuery = (limit = 10) => {
       gcTime: 1000 * 60 * 60 * 24,
       placeholderData: keepPreviousData,
       initialPageParam: 0,
-      suspense: true,
-      pageParamName: 'offset',
+      suspense: true, pageParamName: 'offset',
       getNextPageParam: (
-        lastPage: { data: { items: unknown[]; has_more: boolean } },
-        _: unknown,
+        lastPage,
+        _,
         lastPageParam: number
       ) => {
         if (lastPage.data.has_more) {

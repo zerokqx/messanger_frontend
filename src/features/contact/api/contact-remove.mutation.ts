@@ -1,10 +1,10 @@
+import type { UserService } from '@/shared/api/generated';
 import { $api } from '@/shared/api/repository/$api';
 import { infinityQueryOptimisticRemove } from '@/shared/lib/infinity-query-optimistic-update';
-import type { components } from '@/shared/types/v1';
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 
-type Count = components['schemas']['ContactCountResponse'];
-type ContactResponse = components['schemas']['ContactInfoResponse'];
+type Count = UserService.components['schemas']['ContactCountResponse'];
+type ContactResponse = UserService.components['schemas']['ContactInfoResponse'];
 
 interface MutateContext {
   prevCount?: Count;
@@ -19,16 +19,19 @@ const countOptions = $api.user.jwt.queryOptions('get', '/contact/count', {});
 
 export const useContactRemove = () => {
   return $api.user.jwt.useMutation('delete', '/contact/remove', {
-    async onMutate(variables, context): Promise<MutateContext> {
+    async onMutate(variables, context) {
       await Promise.all([
         context.client.cancelQueries(contactListFilter),
         context.client.cancelQueries(countOptions),
       ]);
 
-      const prevCount = context.client.getQueryData<Count>(countOptions.queryKey);
-      const prevContacts = context.client.getQueriesData<
-        InfiniteData<ContactResponse>
-      >(contactListFilter);
+      const prevCount = context.client.getQueryData<Count>(
+        countOptions.queryKey
+      );
+      const prevContacts =
+        context.client.getQueriesData<InfiniteData<ContactResponse>>(
+          contactListFilter
+        );
 
       context.client.setQueryData(
         countOptions.queryKey,
@@ -58,12 +61,14 @@ export const useContactRemove = () => {
       return { prevCount, prevContacts };
     },
     onError(_error, _variables, onMutateResult, context) {
-      const typedResult = onMutateResult as MutateContext | undefined;
-      if (typedResult?.prevCount) {
-        context.client.setQueryData(countOptions.queryKey, typedResult.prevCount);
+      if (onMutateResult?.prevCount) {
+        context.client.setQueryData(
+          countOptions.queryKey,
+          onMutateResult.prevCount
+        );
       }
 
-      typedResult?.prevContacts.forEach(([queryKey, data]) => {
+      onMutateResult?.prevContacts.forEach(([queryKey, data]) => {
         context.client.setQueryData(queryKey, data);
       });
     },

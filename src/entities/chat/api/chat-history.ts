@@ -1,12 +1,13 @@
 import { useIsAuth } from '@/entities/session';
 import { $api } from '@/shared/api';
+import { $chatPrivateService } from '@/shared/api/generated';
 import Logger from '@/shared/lib/logger/logger';
 import type { components } from '@/shared/types/v1';
 
 export const useChatHistory = (chatId: string, limit = 10) => {
   const isAuth = useIsAuth();
 
-  return $api['chat/private'].jwt.useInfiniteQuery(
+  return $chatPrivateService.useInfiniteQuery(
     'get',
     '/history',
 

@@ -1,6 +1,6 @@
 import { tokenAction } from '@/shared/token';
 import { useRouter, useSearch } from '@tanstack/react-router';
-import { $api } from '@/shared/api/repository/$api';
+import { $authService } from '@/shared/api/generated';
 
 /**
  * @param search - Return data from hook useForm
@@ -9,8 +9,7 @@ import { $api } from '@/shared/api/repository/$api';
 export const useLogin = () => {
   const router = useRouter();
   const search = useSearch({ from: '/_auth/auth' });
-
-  return $api.auth.query.useMutation('post', '/login/password', {
+  return $authService.useMutation('post', '/login/password', {
     onSuccess: async ({ data: { access_token } }) => {
       tokenAction.doSetToken(access_token);
       await router.navigate({ to: search.redirect });

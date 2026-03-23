@@ -1,8 +1,8 @@
 import openapiTS, { astToString } from 'openapi-typescript';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { kebabCase } from 'lodash';
 import { purePath } from './pure-path';
+import { config } from './config';
 
 interface FetchServiceSchemaOptions {
   saveTo: string;
@@ -18,7 +18,9 @@ export const fetchAndSaveServiceSchema = async ({
   const ast = await openapiTS(`${baseUrl}/${serviceName}`);
   const content = astToString(ast);
   const dir = purePath(saveTo);
-  const fileName = `${kebabCase(serviceName)}.ts`;
+  const fileName = config.fileName
+    ? `${config.fileName(serviceName)}.ts`
+    : `${serviceName}.ts`;
   await mkdir(dir, { recursive: true });
   await writeFile(join(dir, fileName), content, 'utf-8');
   console.log(`📥 Типы: ${serviceName} -> ${join(dir, fileName)}`);
