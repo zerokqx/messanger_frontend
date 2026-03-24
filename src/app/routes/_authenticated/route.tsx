@@ -28,7 +28,7 @@ export const Route = createFileRoute('/_authenticated')({
   beforeLoad: ({ context: { auth }, location }) => {
     Logger.debug('_authenticated/route.tsx', 'AUTH', auth);
     if (!auth)
-      return redirect({
+      throw redirect({
         to: '/auth',
         search: {
           redirect: location.pathname,

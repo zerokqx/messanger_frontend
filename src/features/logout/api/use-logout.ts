@@ -9,19 +9,17 @@ export const useLogout = () => {
   const client = useQueryClient();
 
   return useCallback(async () => {
+    localStorage.clear();
+    sessionStorage.clear();
+
+
     await client.cancelQueries();
-    client.clear();
 
     useTokenStore.getState().reset();
     useTokenStore.persist?.clearStorage();
 
     await db.delete();
-    await router.navigate({
-      to: '/auth',
-      search: {
-        redirect: '/y',
-      },
-      replace: true,
-    });
+    await router.invalidate();
+    client.clear();
   }, [client, router]);
 };
