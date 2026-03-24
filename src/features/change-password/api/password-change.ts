@@ -1,5 +1,5 @@
-import { $api } from '@/shared/api/repository/$api';
+import { useChangePasswordPasswordChangePost } from '@/shared/api/orval/auth-service/v1-auth/v1-auth';
 
 export const usePasswordChange = () => {
-  return $api.auth.jwt.useMutation('post', '/password/change');
+  return useChangePasswordPasswordChangePost();
 };

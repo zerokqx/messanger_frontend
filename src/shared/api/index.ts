@@ -9,14 +9,6 @@ export const queryClient = new QueryClient({
     },
   },
 });
-export { $api } from './repository/$api.ts';
-
-export {
-  type AllPathsByMethod,
-  type HttpMethod,
-  type TypedQueryKey,
-  typedQueryKey,
-} from './typed-querykey.ts';
 export {
   db,
   type Chat,

@@ -1,4 +1,4 @@
-import { $api } from '@/shared/api/repository/$api';
+import { useRegisterRegisterPost } from '@/shared/api/orval/auth-service/v1-auth/v1-auth';
 import { notify } from '@/shared/lib/notifications';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -8,19 +8,16 @@ import { useNavigate } from '@tanstack/react-router';
  */
 export const useRegister = () => {
   const navigate = useNavigate();
-  const mutate = $api.auth.query.useMutation(
-    'post',
-    '/register',
-
-    {
+  const mutate = useRegisterRegisterPost({
+    mutation: {
       onSuccess: () => {
         void navigate({ to: '.', replace: true });
       },
 
       onError: () => {
-        notify.error()
+        notify.error();
       },
-    }
-  );
+    },
+  });
   return { ...mutate };
 };

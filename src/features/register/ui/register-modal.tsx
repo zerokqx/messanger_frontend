@@ -39,7 +39,7 @@ export const RegisterModal = ({
     e?.preventDefault();
     await mutateAsync(
       {
-        body: {
+        data: {
           password,
           login: userName,
           invite: '2025',

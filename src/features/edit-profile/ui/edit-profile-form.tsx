@@ -46,7 +46,7 @@ export const ProfileEditForm = ({
   const onSubmit: SubmitHandler<ProfileFormState> = (values) => {
     mutate(
       {
-        body: values,
+        data: values,
       },
       {
         onError,

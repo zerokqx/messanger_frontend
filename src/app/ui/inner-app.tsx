@@ -2,6 +2,7 @@ import { RouterProvider } from '@tanstack/react-router';
 import { router } from '../main';
 import { queryClient } from '@/shared/api';
 import { useIsAuth } from '@/entities/session';
+import {  useQueryClient } from '@tanstack/react-query';
 
 window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
@@ -13,5 +14,6 @@ declare global {
 
 export const InnerApp = () => {
   const auth = useIsAuth();
-  return <RouterProvider router={router} context={{ auth }} />;
+  const queryClient = useQueryClient()
+  return <RouterProvider router={router} context={{ auth ,queryClient}} />;
 };

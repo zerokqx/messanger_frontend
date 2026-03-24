@@ -7,7 +7,6 @@ import {
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Moon, Sun, SunMoon } from 'lucide-react';
-import { useSettingsStore } from '@/shared/lib/settings';
 
 const getThemeIcon = (value: string) => {
   if (value === 'auto') {

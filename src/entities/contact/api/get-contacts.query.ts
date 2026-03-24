@@ -1,14 +1,21 @@
 import { useIsAuth } from '@/entities/session';
-import { $userService } from '@/shared/api/generated';
-import { $api } from '@/shared/api/repository/$api';
+import {
+  getContactsContactListGet,
+  getGetContactsContactListGetInfiniteQueryKey,
+  getGetContactsContactListGetSuspenseInfiniteQueryOptions,
+  useGetContactsContactListGetSuspenseInfinite,
+} from '@/shared/api/orval/user-service/v1-user/v1-user';
 import Logger from '@/shared/lib/logger/logger';
-import { keepPreviousData } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useSuspenseInfiniteQuery,
+} from '@tanstack/react-query';
 
 export const makeContactsInfinityOptions = (limit = 10) => {
-  return $api.user.jwt.queryOptions('get', '/contact/list', {
-    params: { query: { limit } },
-  },
-{
+  return getGetContactsContactListGetSuspenseInfiniteQueryOptions(
+    { limit },
+    {
+      query: {
       staleTime: 1000 * 60 * 10,
       gcTime: 1000 * 60 * 60 * 24,
       placeholderData: keepPreviousData,
@@ -29,6 +36,7 @@ export const makeContactsInfinityOptions = (limit = 10) => {
 
         return undefined;
       },
+      },
     }
   );
 };
@@ -38,39 +46,19 @@ export const makeContactsInfinityOptions = (limit = 10) => {
  * @param limit Сколько записей максимально можно вернуть (Backend Option)
  */
 export const useContactsQuery = (limit = 10) => {
-  const isAuth = useIsAuth();
-
-  return $userService.useInfiniteQuery(
-    'get',
-    '/contact/list',
+  return useGetContactsContactListGetSuspenseInfinite(
+    { limit },
     {
-      params: {
-        query: {
-          limit,
+      query: {
+        initialPageParam: 0,
+        getNextPageParam: (lastPage, _pages, lastOffset) => {
+          if (!lastPage.data.has_more) {
+            return undefined;
+          }
+
+          return (lastOffset ?? 0) + lastPage.data.items.length;
         },
       },
-    },
-    {
-      staleTime: 1000 * 60 * 10,
-      gcTime: 1000 * 60 * 60 * 24,
-      placeholderData: keepPreviousData,
-      initialPageParam: 0,
-      suspense: true, pageParamName: 'offset',
-      getNextPageParam: (
-        lastPage,
-        _,
-        lastPageParam: number
-      ) => {
-        if (lastPage.data.has_more) {
-          Logger.debug('useContactsQuery', 'has_more=true', {
-            preData: lastPage.data,
-          });
-          return lastPageParam + lastPage.data.items.length;
-        }
-
-        return undefined;
-      },
-      enabled: isAuth,
     }
   );
 };

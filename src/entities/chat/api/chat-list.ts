@@ -1,49 +1,47 @@
 import { useIsAuth } from '@/entities/session';
 import { db } from '@/shared/api';
+import {
+  getGetListPrivateChatsListGetQueryKey,
+  getListPrivateChatsListGet,
+} from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
+import type { PrivateChatListResponse } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
 import Logger from '@/shared/lib/logger/logger';
 import { pagesMap } from '@/shared/lib/pages-map';
-import { keepPreviousData } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { hasUserId } from '../lib/has-user-id';
 import { useEffect } from 'react';
-import { $chatPrivateService } from '@/shared/api/generated';
 
 export const useChatList = (limit = 20) => {
   const isAuth = useIsAuth();
-  const query = $chatPrivateService.useInfiniteQuery(
-    'get',
-    '/list',
-
-    {
-      params: {
-        query: {
-          limit,
-        },
-      },
-    },
-
-    {
+  const query = useInfiniteQuery<PrivateChatListResponse>({
+      queryKey: getGetListPrivateChatsListGetQueryKey({ limit }),
+      queryFn: ({ pageParam, signal }) =>
+        getListPrivateChatsListGet(
+          {
+            limit,
+            offset: typeof pageParam === 'number' ? pageParam : 0,
+          },
+          undefined,
+          signal
+      ),
       staleTime: 1000 * 60 * 10,
       gcTime: 1000 * 60 * 60 * 24,
-      placeholderData: keepPreviousData,
       initialPageParam: 0,
-      suspense: true,
-      pageParamName: 'offset',
       getNextPageParam: (
         lastPage,
         _,
-        lastPageParam: number
+        lastPageParam
       ) => {
         if (lastPage.data.has_more) {
           Logger.debug('useChatList', 'has_more=true', {
             preData: lastPage.data,
           });
-          return lastPageParam + lastPage.data.items.length;
+          return (lastPageParam ?? 0) + lastPage.data.items.length;
         }
         return undefined;
       },
       enabled: isAuth,
-    }
-  );
+  });
   useEffect(() => {
     if (query.data) {
       const allChats = pagesMap(query.data);

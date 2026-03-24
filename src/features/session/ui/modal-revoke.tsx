@@ -16,13 +16,7 @@ export const ModalRevoke = ({ opened, onClose, id }: ModalRevokeProps) => {
             <Group grow>
               <Button
                 onClick={() => {
-                  mutateRevoke({
-                    params: {
-                      path: {
-                        session_id: id,
-                      },
-                    },
-                  });
+                  mutateRevoke({ sessionId: id });
                 }}
                 color="red"
               >

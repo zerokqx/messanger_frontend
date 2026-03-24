@@ -45,7 +45,7 @@ export const ChangePasswordModal = ({
     });
     await passwordChange(
       {
-        body: {
+        data: {
           old_password: oldPassword,
           new_password: newPassword,
         },

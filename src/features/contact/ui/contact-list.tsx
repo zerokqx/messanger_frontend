@@ -1,7 +1,5 @@
 import { Alert, Box } from '@mantine/core';
-import { useNavigate, useParams, useRouterState } from '@tanstack/react-router';
-import { Ban, CircleSlash } from 'lucide-react';
-import { useState } from 'react';
+import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'; import { Ban, CircleSlash } from 'lucide-react'; import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
 import { ContactCard, SkeletonContactItem } from '@/entities/contact';
@@ -10,9 +8,7 @@ import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
-import { chatExists, useChatCreate } from '@/entities/chat';
-import type { DexieChatId } from '@/shared/api';
-import { useCreateIfNotExistsChat } from '@/entities/chat/model/create-if-not-exists';
+import { useChatCreate } from '@/entities/chat';
 import { selectedChatAction } from '@/features/chat';
 
 export const ContactsList = () => {
@@ -20,7 +16,7 @@ export const ContactsList = () => {
   const [scrolling, setScrolling] = useState(false);
   const navigate = useNavigate();
   const hash = useRouterState({ select: (s) => s.location.hash });
-  const {smartCreateMutate} = useChatCreate();
+  const { smartCreateMutate } = useChatCreate();
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
 
@@ -68,7 +64,7 @@ export const ContactsList = () => {
               pendingNotify(t('contact-remove-pending'));
               removeContact(
                 {
-                  body: { user_id: userId },
+                  data: { user_id: userId },
                 },
                 {
                   onSuccess() {

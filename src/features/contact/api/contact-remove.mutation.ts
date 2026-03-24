@@ -1,82 +1,88 @@
-import type { UserService } from '@/shared/api/generated';
-import { $api } from '@/shared/api/repository/$api';
+import type {
+  ContactCountResponse,
+  ContactInfoResponse,
+} from '@/shared/api/orval/user-service/user-service.schemas';
+import {
+  getGetContactCountContactCountGetQueryKey,
+  getGetContactsContactListGetInfiniteQueryKey,
+  useRemoveContactContactRemoveDelete,
+} from '@/shared/api/orval/user-service/v1-user/v1-user';
 import { infinityQueryOptimisticRemove } from '@/shared/lib/infinity-query-optimistic-update';
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 
-type Count = UserService.components['schemas']['ContactCountResponse'];
-type ContactResponse = UserService.components['schemas']['ContactInfoResponse'];
-
 interface MutateContext {
-  prevCount?: Count;
-  prevContacts: [QueryKey, InfiniteData<ContactResponse> | undefined][];
+  prevCount?: ContactCountResponse;
+  prevContacts: [QueryKey, InfiniteData<ContactInfoResponse> | undefined][];
 }
 
 const contactListFilter = {
-  queryKey: ['get', '/contact/list'] as const,
+  queryKey: getGetContactsContactListGetInfiniteQueryKey(),
   exact: false,
 };
-const countOptions = $api.user.jwt.queryOptions('get', '/contact/count', {});
+const countQueryKey = getGetContactCountContactCountGetQueryKey();
 
 export const useContactRemove = () => {
-  return $api.user.jwt.useMutation('delete', '/contact/remove', {
-    async onMutate(variables, context) {
-      await Promise.all([
-        context.client.cancelQueries(contactListFilter),
-        context.client.cancelQueries(countOptions),
-      ]);
+  return useRemoveContactContactRemoveDelete({
+    mutation: {
+      async onMutate(variables, context) {
+        await Promise.all([
+          context.client.cancelQueries(contactListFilter),
+          context.client.cancelQueries({ queryKey: countQueryKey }),
+        ]);
 
-      const prevCount = context.client.getQueryData<Count>(
-        countOptions.queryKey
-      );
-      const prevContacts =
-        context.client.getQueriesData<InfiniteData<ContactResponse>>(
-          contactListFilter
+        const prevCount = context.client.getQueryData<ContactCountResponse>(
+          countQueryKey
+        );
+        const prevContacts =
+          context.client.getQueriesData<InfiniteData<ContactInfoResponse>>(
+            contactListFilter
+          );
+
+        context.client.setQueryData(
+          countQueryKey,
+          (old: ContactCountResponse | undefined) => {
+            if (!old) return old;
+
+            return {
+              ...old,
+              data: { count: Math.max(0, old.data.count - 1) },
+            };
+          }
         );
 
-      context.client.setQueryData(
-        countOptions.queryKey,
-        (old: Count | undefined) => {
-          if (!old) return old;
+        context.client.setQueriesData<InfiniteData<ContactInfoResponse>>(
+          contactListFilter,
+          (old) => {
+            if (!old) return old;
 
-          return {
-            ...old,
-            data: { count: Math.max(0, old.data.count - 1) },
-          };
-        }
-      );
+            return infinityQueryOptimisticRemove(
+              old,
+              (page) => page.data.items,
+              (item) => item.user_id === variables.data.user_id
+            );
+          }
+        );
 
-      context.client.setQueriesData<InfiniteData<ContactResponse>>(
-        contactListFilter,
-        (old) => {
-          if (!old) return old;
-
-          return infinityQueryOptimisticRemove(
-            old,
-            (page) => page.data.items,
-            (item) => item.user_id === variables.body.user_id
+        return { prevCount, prevContacts };
+      },
+      onError(_error, _variables, onMutateResult, context) {
+        if (onMutateResult?.prevCount) {
+          context.client.setQueryData(
+            countQueryKey,
+            onMutateResult.prevCount
           );
         }
-      );
 
-      return { prevCount, prevContacts };
-    },
-    onError(_error, _variables, onMutateResult, context) {
-      if (onMutateResult?.prevCount) {
-        context.client.setQueryData(
-          countOptions.queryKey,
-          onMutateResult.prevCount
-        );
-      }
-
-      onMutateResult?.prevContacts.forEach(([queryKey, data]) => {
-        context.client.setQueryData(queryKey, data);
-      });
-    },
-    async onSettled(_data, _error, _variables, _onMutateResult, context) {
-      await Promise.all([
-        context.client.invalidateQueries(contactListFilter),
-        context.client.invalidateQueries(countOptions),
-      ]);
+        onMutateResult?.prevContacts.forEach(([queryKey, data]) => {
+          context.client.setQueryData(queryKey, data);
+        });
+      },
+      async onSettled(_data, _error, _variables, _onMutateResult, context) {
+        await Promise.all([
+          context.client.invalidateQueries(contactListFilter),
+          context.client.invalidateQueries({ queryKey: countQueryKey }),
+        ]);
+      },
     },
   });
 };

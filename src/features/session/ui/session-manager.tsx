@@ -22,12 +22,12 @@ export const SessionsTab = () => {
     () => ({
       onRevoke: (id) => {
         confirmModalForRevokeSession(() => {
-          void revokeSessionMutation({ params: { path: { session_id: id } } });
+          void revokeSessionMutation({ sessionId: id });
         });
       },
       onRevokeAll() {
         confirmModalForRevokeAllSessions(() => {
-          void revokeSessionsAllMutation({});
+          void revokeSessionsAllMutation();
         });
       },
     }),

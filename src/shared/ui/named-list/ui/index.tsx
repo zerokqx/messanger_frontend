@@ -1,6 +1,6 @@
 import { factory, Text, type StackProps } from '@mantine/core';
 import { RoundedContainerStack } from '../../boxes';
-import { upperCase } from 'lodash';
+import upperCase from 'lodash/upperCase';
 
 interface NamedListProps extends StackProps {
   title: string;

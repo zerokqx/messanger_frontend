@@ -18,12 +18,11 @@
 - 404 — `pages/404`. Не найденные маршруты обрабатываются через `notFoundComponent` в root.
 
 ## Данные и API
-- Типы OpenAPI живут в `src/shared/types/v1.d.ts`; обновление — `npm run openapi:generate` (берет swagger с https://api.yobble.org/docs/openapi/combined).
+- Типы OpenAPI живут в `src/shared/types/v1.d.ts`; клиентские хуки и схемы генерируются в `src/shared/api/orval`; обновление — `npm run openapi:generate`.
 - Базовый URL собирается `createBaseUrl(service)` из `VITE_API_URL`; сервисы: auth/user/profile/feed/chat (`src/shared/api/base-url.ts`).
-- Репозиторий `$api` (`src/shared/api/repository/$api.ts`) собирает пары клиентов per-сервис через `coupleOfFetchers`: `native<Service>`, `query<Service>`, `jwt<Service>`. `query*` — обертки openapi-react-query, `jwt*` подключают auth-мидлварь.
-- Мидлвары: `set-headers` добавляет общие заголовки, `auth` навешивает Bearer из token-стора и при 401 делает refresh (`/auth/token/refresh`, `tokenAction.doSetToken`), после чего ретраит запрос.
+- HTTP-клиент для orval находится в `src/shared/api/axios-client.ts`; авторизация и refresh обрабатываются там через `tokenStore` и `/auth/token/refresh`.
 - QueryClient создается в `src/shared/api/query-clinets.ts` (gcTime сутки). Персистер на localforage — `src/shared/api/storages/base.storage.ts` (подключайте при необходимости).
-- Конкретные запросы/мутации лежат рядом с сущностью/фичей: напр. `entities/user/model/me.query.ts`, `features/login/api/use-login.ts` (берет `$api.auth.query.useMutation('/login/password')`, сохраняет токен и навигирует по redirect).
+- Конкретные запросы/мутации лежат рядом с сущностью/фичей и используют orval-генерацию: напр. `entities/user/model/me.query.ts`, `features/login/api/use-login.ts`.
 
 ## Состояние
 - ZFY (обертка над zustand) для клиентского стейта. Экшены собираются через `createStoreAction`, чтобы иметь именованные методы `doX`.
@@ -38,7 +37,7 @@
 
 ## Как вносить изменения
 - Соблюдайте зависимость слоев: `shared → entities → features → widgets → pages → app`. Не тяните код вниз по иерархии.
-- Для новых API используйте `$api`/`coupleOfFetchers`, чтобы не дублировать конфиг и мидлвары. Проверяйте, что запросы, требующие авторизации, идут через `jwt<Service>`.
+- Для новых API используйте orval-хуки, `get...QueryOptions` и `get...QueryKey`, чтобы не дублировать конфиг запросов.
 - Для guarded-страниц используйте `beforeLoad`/`loader` TanStack Router вместо эффектов в компонентах; редиректы делайте через `redirect({ throw: true, ... })`.
 - В клиентском стейте предпочитайте `createStore` + `createStoreAction`; не мутируйте данные сторы напрямую из компонентов.
 

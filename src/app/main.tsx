@@ -14,6 +14,7 @@ export const router = createRouter({
   routeTree,
   defaultPreload: 'viewport',
   context: {
+    auth: undefined,
     queryClient,
   },
   scrollRestoration: true,

@@ -50,7 +50,7 @@ export const LoginModal = ({ children,onClose, ...props }: ModalProps) => {
     e?.preventDefault();
     await mutateAsync(
       {
-        body: {
+        data: {
           password,
           login: userName,
         },

@@ -1,6 +1,7 @@
 import { tokenAction } from '@/shared/token';
-import { useRouter, useSearch } from '@tanstack/react-router';
-import { $authService } from '@/shared/api/generated';
+import { useRouter } from '@tanstack/react-router';
+import { useLoginLoginPasswordPost } from '@/shared/api/orval/auth-service/v1-auth/v1-auth';
+import { db } from '@/shared/api';
 
 /**
  * @param search - Return data from hook useForm
@@ -8,12 +9,14 @@ import { $authService } from '@/shared/api/generated';
  */
 export const useLogin = () => {
   const router = useRouter();
-  const search = useSearch({ from: '/_auth/auth' });
-  return $authService.useMutation('post', '/login/password', {
-    onSuccess: async ({ data: { access_token } }) => {
-      tokenAction.doSetToken(access_token);
-      await router.navigate({ to: search.redirect });
-      await router.invalidate();
+  return useLoginLoginPasswordPost({
+    mutation: {
+      onSuccess: async ({ data: { access_token } }) => {
+        tokenAction.doSetToken(access_token);
+        await db.delete();
+        localStorage.clear();
+        await router.invalidate();
+      },
     },
   });
 };

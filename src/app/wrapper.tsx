@@ -3,7 +3,6 @@ import { queryClient } from '@/shared/api';
 import { i18n } from '@/shared/i18next/clients';
 import { Loader, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
-import { QueryClientProvider } from '@tanstack/react-query';
 import { LazyMotion, MotionConfig } from 'motion/react';
 import { StrictMode, Suspense } from 'react';
 import { I18nextProvider } from 'react-i18next';
@@ -14,10 +13,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { getContactCountContactCountGet, getGetContactCountContactCountGetQueryKey } from '@/shared/api/orval/user-service/v1-user/v1-user.ts';
+import {
+  getGetContactCountContactCountGetQueryKey,
+} from '@/shared/api/orval/user-service/v1-user/v1-user.ts';
 
 const asyncStoragePersister = createAsyncStoragePersister({
-  
   storage: AsyncStorage,
 });
 
@@ -32,8 +32,8 @@ export const Wrapper = () => {
   const duratationAllAnimations = useSettingsStore(
     (s) => s.data.duratationAllAnimations
   );
-  console.log(getGetContactCountContactCountGetQueryKey(),"SDA");
-  
+  console.log(getGetContactCountContactCountGetQueryKey(), 'SDA');
+
   return (
     <StrictMode>
       <MantineProvider

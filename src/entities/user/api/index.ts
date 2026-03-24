@@ -1,4 +1,4 @@
-export { useGetUserById,makeGetUserById } from './use-get-user-by-id';
+export { useGetUserById,makeGetUserById ,useInvalidateUserById} from './use-get-user-by-id';
 export {
   
   useAddBlacklist,

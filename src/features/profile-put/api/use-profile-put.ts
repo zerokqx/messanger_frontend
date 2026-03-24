@@ -1,6 +1,6 @@
-import { $api } from '@/shared/api/repository/$api';
+import { useEditProfileEditPut } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 
 export const useProfilePut = () => {
-  const mutate = $api.profile.jwt.useMutation('put', '/edit');
+  const mutate = useEditProfileEditPut();
   return mutate;
 };

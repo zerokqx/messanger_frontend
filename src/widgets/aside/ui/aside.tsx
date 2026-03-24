@@ -59,6 +59,7 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
       },
     }
   );
+  if(!uuid ) return
   return (
     <AppShellAside
       {...bind()}

@@ -2,7 +2,7 @@ import { clsx } from 'clsx';
 import clases from './grouped-list.module.css';
 import { ActionIcon, factory, Group, Stack, Text } from '@mantine/core';
 import type { GroupedItemProps } from './types';
-import { upperCase } from 'lodash';
+import  upperCase from 'lodash/upperCase';
 import useRipple from 'useripple';
 import { lightDark } from '@/shared/lib/light-dark';
 

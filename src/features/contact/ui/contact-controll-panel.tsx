@@ -40,10 +40,10 @@ export const ContactControllPanel = ({
         leftSection={Icon}
         onClick={() => {
           callback(
-            { body: { user_id: userId } },
+            { data: { user_id: userId } },
             {
               onSuccess: (_, variables) => {
-                const id = variables.body.user_id;
+                const id = variables.data.user_id;
                 if (id) onUpdate(id);
               },
               onError: () => {

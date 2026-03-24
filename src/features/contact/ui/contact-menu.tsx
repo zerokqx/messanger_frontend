@@ -116,11 +116,11 @@ export const ContactMenu = ({
                 if (!userId) return;
                 contactRemove(
                   {
-                    body: { user_id: userId },
+                    data: { user_id: userId },
                   },
                   {
                     onSettled(_data, _error, variables) {
-                      userIdGuard(onUpdate, variables.body.user_id);
+                      userIdGuard(onUpdate, variables.data.user_id);
                     },
                   }
                 );
@@ -154,11 +154,11 @@ export const ContactMenu = ({
 
               removeFromBlacklist(
                 {
-                  body: { user_id: userId },
+                  data: { user_id: userId },
                 },
                 {
                   onSettled(_data, _error, variables) {
-                    userIdGuard(onUpdate, variables.body.user_id);
+                    userIdGuard(onUpdate, variables.data.user_id);
                   },
                 }
               );
@@ -174,12 +174,12 @@ export const ContactMenu = ({
               if (!userId) return;
               addBlacklist(
                 {
-                  body: { user_id: userId },
+                  data: { user_id: userId },
                 },
                 {
                   onSettled(_data, _error, variables) {
                     if (inContact) void invalidateContacts();
-                    userIdGuard(onUpdate, variables.body.user_id);
+                    userIdGuard(onUpdate, variables.data.user_id);
                   },
                 }
               );

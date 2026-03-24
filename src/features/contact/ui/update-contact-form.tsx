@@ -34,7 +34,7 @@ export const UpdateContactForm = ({
   }) => {
     await mutateAsync(
       {
-        body: {
+        data: {
           custom_name: customName,
           user_id: uuid,
         },

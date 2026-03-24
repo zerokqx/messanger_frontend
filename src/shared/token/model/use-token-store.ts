@@ -2,16 +2,17 @@ import type { UseTokenStoreState } from '../types/use-token-store.type';
 import z from 'zod';
 import { createStore } from '@colorfy-software/zfy';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
+
+const initialTokenState: UseTokenStoreState = { access: '' };
 
 export const useTokenStore = createStore<UseTokenStoreState>(
   'token',
-  { access: '' },
+  initialTokenState,
   {
     subscribe: true,
     persist: {
-      getStorage: () => AsyncStorage,
+      getStorage: () => localStorage,
     },
   }
 );
@@ -20,9 +21,13 @@ export const tokenAction = createStoreAction(
   [
     (t: string) => z.jwt().safeParse(t).success,
     (t: string) => {
-      useTokenStore.setState((s) => {
-        s.data.access = t;
-      });
+      useTokenStore.setState((s) => ({
+        ...s,
+        data: {
+          ...s.data,
+          access: t,
+        },
+      }));
     },
     () => {
       useTokenStore.getState().reset();

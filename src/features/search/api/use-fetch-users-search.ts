@@ -1,14 +1,11 @@
 import { useIsAuth } from '@/entities/session';
-import { $api } from '@/shared/api/repository/$api';
+import {
+  getSearchByQueryUserSearchGetQueryOptions,
+  useSearchByQueryUserSearchGet,
+} from '@/shared/api/orval/feed-service/v1-feed-user-search/v1-feed-user-search';
 
 export const makeSearchOptions = (query = '') => {
-  return $api.feed.jwt.queryOptions('get', '/user/search', {
-    params: {
-      query: {
-        query,
-      },
-    },
-  });
+  return getSearchByQueryUserSearchGetQueryOptions({ query });
 };
 
 /**
@@ -23,23 +20,17 @@ export const useFetchUsersSearch = (rawQuery: string | undefined | null) => {
   const isAuth = useIsAuth();
 
   const query = rawQuery ?? '';
-  return $api.feed.jwt.useQuery(
-    'get',
-    '/user/search',
+  return useSearchByQueryUserSearchGet(
+    { query },
     {
-      params: {
-        query: {
-          query,
+      query: {
+        staleTime: 60 * 20,
+        retry: 2,
+        select(data) {
+          return data.data.users;
         },
+        enabled: query.length > 0 && isAuth,
       },
     },
-    {
-      staleTime: 60 * 20,
-      retry: 2,
-      select(data) {
-        return data.data.users;
-      },
-      enabled: query.length > 0 && isAuth,
-    }
   );
 };

@@ -1,5 +1,5 @@
-import { $api } from '@/shared/api/repository/$api';
-import type { components } from '@/shared/types/v1';
+import type { UserSearchResponse } from '@/shared/api/orval/feed-service/feed-service.schemas';
+import { getSearchByQueryUserSearchGetQueryKey } from '@/shared/api/orval/feed-service/v1-feed-user-search/v1-feed-user-search';
 import { useQueryClient } from '@tanstack/react-query';
 
 /**
@@ -8,13 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
  */
 export const useSearchCache = () => {
   const client = useQueryClient();
-  return client.getQueryData<components['schemas']['UserSearchResponse']>(
-    $api.feed.jwt.queryOptions('get', '/user/search', {
-      params: {
-        query: {
-          query: '',
-        },
-      },
-    }).queryKey
+  return client.getQueryData<UserSearchResponse>(
+    getSearchByQueryUserSearchGetQueryKey({ query: '' })
   );
 };

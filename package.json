@@ -12,7 +12,7 @@
     "test:browser": "vitest --project browser --config ./vite.config.ts",
     "lint": "eslint .",
     "preview": "vite build && vite preview --port 5173",
-    "openapi:generate": "bun ./scripts/yobble-openapi-generator -o ./src/shared/api/generated --mw '@/shared/middlewares/auth' -c --api-version v1"
+    "openapi:generate": "orval --config ./orval.config.ts"
   },
   "dependencies": {
     "@colorfy-software/zfy": "^1.0.0",
@@ -41,8 +41,6 @@
     "lucide-react": "^0.545.0",
     "motion": "^12.38.0",
     "nuqs": "^2.8.9",
-    "openapi-fetch": "^0.17.0",
-    "openapi-react-query": "^0.5.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-error-boundary": "^6.1.1",

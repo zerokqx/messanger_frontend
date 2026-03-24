@@ -1,5 +1,4 @@
-import { tr } from 'motion/react-m';
-import { defineConfig, log } from 'orval';
+import { defineConfig } from 'orval';
 
 const BASE_TARGET_PATH = './src/shared/api/orval';
 
@@ -34,7 +33,7 @@ export default defineConfig({
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
-      override: { mutator: MUTATOR_CONFIG },
+      override: { mutator: MUTATOR_CONFIG, query: {} },
     },
   },
 
@@ -55,7 +54,6 @@ export default defineConfig({
               onMutations: [
                 'add_contact_contact_add_post',
                 'remove_contact_contact_remove_delete',
-                '',
               ],
               invalidates: [
                 'get_contacts_contact_list_get',
@@ -127,7 +125,9 @@ export default defineConfig({
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
-      override: { mutator: MUTATOR_CONFIG },
+      override: {
+        mutator: MUTATOR_CONFIG,
+      },
     },
   },
 

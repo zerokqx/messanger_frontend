@@ -102,7 +102,7 @@ export interface TokenData {
 }
 
 export interface TokenRefreshRequest {
-  access_token: string;
+  access_token?: string | null;
   refresh_token?: string | null;
 }
 

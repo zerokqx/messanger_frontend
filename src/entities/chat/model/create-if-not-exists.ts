@@ -18,13 +18,11 @@ export const useCreateIfNotExistsChat = (): ((
       }
       const request = await createChat({
         params: {
-          query: {
-            target_user_id: userId,
-          },
+          target_user_id: userId,
         },
       });
       return {
-        chat_id: request.chat_id,
+        chat_id: request.data.chat_id,
         user_id: userId,
       };
     },

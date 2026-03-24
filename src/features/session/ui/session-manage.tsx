@@ -11,8 +11,9 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const SessionManage = () => {
-  const { data: sessions, } = useGetSessionsSuspenseQuery();
-  const sessionsFiltred = sessions.length !== 0 ? sortSessionsByIsCurrent(sessions) : [];
+  const { data: sessions } = useGetSessionsSuspenseQuery();
+  const sessionsFiltred =
+    sessions.length !== 0 ? sortSessionsByIsCurrent(sessions) : [];
   const { mutateAsync: revokeSessionMutation } = useRevokeSession();
   const { mutateAsync: revokeSessionsAllMutation } = useSessionRevokeAll();
   const [t] = useTranslation('session');
@@ -21,12 +22,12 @@ export const SessionManage = () => {
     () => ({
       onRevoke: (id) => {
         confirmModalForRevokeSession(() => {
-          void revokeSessionMutation({ params: { path: { session_id: id } } });
+          void revokeSessionMutation({ sessionId: id });
         });
       },
       onRevokeAll() {
         confirmModalForRevokeAllSessions(() => {
-          void revokeSessionsAllMutation({});
+          void revokeSessionsAllMutation();
         });
       },
     }),

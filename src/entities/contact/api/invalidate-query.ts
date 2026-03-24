@@ -1,6 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import { $api } from '@/shared/api/repository/$api';
+import {
+  getGetContactCountContactCountGetQueryKey,
+  getGetContactsContactListGetInfiniteQueryKey,
+} from '@/shared/api/orval/user-service/v1-user/v1-user';
 
 /**
  * @description Инвалидирует за один раз count и list, contact эндпоинта
@@ -10,12 +13,12 @@ export const useInvalidateContacts = () => {
 
   return useCallback(async () => {
     await Promise.all([
-      client.invalidateQueries(
-        $api.user.jwt.queryOptions('get', '/contact/count')
-      ),
-      client.invalidateQueries(
-        $api.user.jwt.queryOptions('get', '/contact/list')
-      ),
+      client.invalidateQueries({
+        queryKey: getGetContactsContactListGetInfiniteQueryKey(),
+      }),
+      client.invalidateQueries({
+        queryKey: getGetContactCountContactCountGetQueryKey(),
+      }),
     ]);
   }, [client]);
 };

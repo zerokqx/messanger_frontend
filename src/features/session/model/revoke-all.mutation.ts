@@ -1,20 +1,18 @@
-import { $api } from '@/shared/api/repository/$api';
-import type { components } from '@/shared/types/v1';
+import type { SessionsListResponse } from '@/shared/api/orval/auth-service/auth-service.schemas';
+import {
+  getSessionsListSessionsListGetQueryOptions,
+  useRevokeAllExceptCurrentSessionsRevokeAllExceptCurrentPost,
+} from '@/shared/api/orval/auth-service/v1-auth/v1-auth';
 
 interface MutateContext {
-  previous?: components['schemas']['SessionsListResponse'];
+  previous?: SessionsListResponse;
 }
 
 export const useSessionRevokeAll = () => {
-  return $api.auth.jwt.useMutation(
-    'post',
-    '/sessions/revoke_all_except_current',
-    {
+  return useRevokeAllExceptCurrentSessionsRevokeAllExceptCurrentPost({
+    mutation: {
       async onMutate(_, ctx): Promise<MutateContext> {
-        const queryOptions = $api.auth.jwt.queryOptions(
-          'get',
-          '/sessions/list'
-        );
+        const queryOptions = getSessionsListSessionsListGetQueryOptions();
         await ctx.client.cancelQueries(queryOptions);
         const previous = ctx.client.getQueryData<MutateContext['previous']>(
           queryOptions.queryKey
@@ -24,8 +22,16 @@ export const useSessionRevokeAll = () => {
         );
         ctx.client.setQueryData(
           queryOptions.queryKey,
-          (old: components['schemas']['SessionsListResponse']) => {
-            return { ...old, data: [currentSession] };
+          (old: SessionsListResponse | undefined) => {
+            if (!old) return old;
+
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                sessions: currentSession ? [currentSession] : [],
+              },
+            };
           }
         );
         return { previous };
@@ -33,16 +39,16 @@ export const useSessionRevokeAll = () => {
       onError(_error, _variables, onMutateResult, context) {
         const typedMutateContext = onMutateResult as MutateContext;
         context.client.setQueryData(
-          $api.auth.jwt.queryOptions('get', '/sessions/list').queryKey,
+          getSessionsListSessionsListGetQueryOptions().queryKey,
           typedMutateContext.previous
         );
       },
 
       async onSettled(_data, _error, _variables, _onMutateResult, context) {
         await context.client.invalidateQueries(
-          $api.auth.jwt.queryOptions('get', '/sessions/list')
+          getSessionsListSessionsListGetQueryOptions()
         );
       },
-    }
-  );
+    },
+  });
 };

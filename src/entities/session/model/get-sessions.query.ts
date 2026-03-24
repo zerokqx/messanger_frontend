@@ -1,26 +1,29 @@
-import { $api } from '@/shared/api/repository/$api';
-import type { components } from '@/shared/types/v1';
-import { useQueryClient } from '@tanstack/react-query';
+import type { SessionsListResponse } from '@/shared/api/orval/auth-service/auth-service.schemas';
+import {
+  getSessionsListSessionsListGetQueryKey,
+  getSessionsListSessionsListGetQueryOptions,
+} from '@/shared/api/orval/auth-service/v1-auth/v1-auth';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetSessionByIdFromCache = (id: string) => {
   const client = useQueryClient();
-  const sessions = client.getQueryData<
-    components['schemas']['SessionsListResponse']
-  >($api.auth.jwt.queryOptions('get', '/sessions/list', {}).queryKey);
+  const sessions =
+    client.getQueryData<SessionsListResponse>(
+      getSessionsListSessionsListGetQueryKey()
+    );
   const d = sessions?.data.sessions.find((session) => session.id === id);
   return d;
 };
 
 export const useGetSessionsSuspenseQuery = () => {
-  return $api.auth.jwt.useSuspenseQuery(
-    'get',
-    '/sessions/list',
-    {},
-    {
-      staleTime: 60 * 1000,
-      select(data) {
-        return data.data.sessions;
+  return useQuery(
+    getSessionsListSessionsListGetQueryOptions({
+      query: {
+        staleTime: 60 * 1000,
+        select(data) {
+          return data.data.sessions;
+        },
       },
-    }
+    })
   );
 };

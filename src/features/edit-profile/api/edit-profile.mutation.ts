@@ -1,56 +1,50 @@
 import { useMeDescriptor } from '@/entities/user/model/me.query';
-import { $profileService } from '@/shared/api/generated';
-import { $api } from '@/shared/api/repository/$api';
 import { errorNotify } from '@/shared/lib/notifications/error';
 import { successNotify } from '@/shared/lib/notifications/success';
-import type { components } from '@/shared/types/v1';
+import {
+  getGetMyProfileMeGetQueryOptions,
+  useEditProfileEditPut,
+} from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
+import type { ProfileResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { useTranslation } from 'react-i18next';
-
-type ProfileResponse = components['schemas']['ProfileResponse'];
 
 export const useEditProfile = (withReset = false) => {
   const [edit] = useMeDescriptor({ autoCommit: true });
   const [t] = useTranslation(['titles', 'profile']);
 
-  return $profileService.useMutation('put', '/edit', {
-    async onMutate(variables, ctx) {
-      const profileQueryOptions = $api.profile.jwt.queryOptions(
-        'get',
-        '/me',
-        {}
-      );
+  return useEditProfileEditPut({
+    mutation: {
+      async onMutate(variables, ctx) {
+        const profileQueryOptions = getGetMyProfileMeGetQueryOptions();
 
-      await ctx.client.cancelQueries(profileQueryOptions);
+        await ctx.client.cancelQueries(profileQueryOptions);
 
-      const prev = ctx.client.getQueryData<ProfileResponse>(
-        profileQueryOptions.queryKey
-      );
-
-      edit((draft) => {
-        Object.assign(draft.data, variables.body);
-      });
-
-      return { prev };
-    },
-
-    onError(_error, _variables, _onMutateResult, context) {
-      errorNotify(t('profile:put_profile_error'), t('error'));
-
-      if (withReset) {
-        void context.client.invalidateQueries(
-          $api.profile.jwt.queryOptions('get', '/me', {})
+        const prev = ctx.client.getQueryData<ProfileResponse>(
+          profileQueryOptions.queryKey
         );
-      }
-    },
 
-    onSuccess() {
-      successNotify(t('profile:put_success'), t('success'));
-    },
+        edit((draft) => {
+          Object.assign(draft, variables.data);
+        });
 
-    onSettled(_data, _error, _variables, _onMutateResult, context) {
-      void context.client.invalidateQueries(
-        $api.profile.jwt.queryOptions('get', '/me', {})
-      );
+        return { prev };
+      },
+
+      onError(_error, _variables, _onMutateResult, context) {
+        errorNotify(t('profile:put_profile_error'), t('error'));
+
+        if (withReset) {
+          void context.client.invalidateQueries(getGetMyProfileMeGetQueryOptions());
+        }
+      },
+
+      onSuccess() {
+        successNotify(t('profile:put_success'), t('success'));
+      },
+
+      onSettled(_data, _error, _variables, _onMutateResult, context) {
+        void context.client.invalidateQueries(getGetMyProfileMeGetQueryOptions());
+      },
     },
   });
 };

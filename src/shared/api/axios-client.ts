@@ -16,12 +16,17 @@ interface RefreshResponse {
   };
 }
 
+const MOCK_REFRESH_TOKEN = 'cookie-refresh-token';
+
 let refreshPromise: Promise<string> | null = null;
 
 const refreshAccessToken = async (access: string): Promise<string> => {
   const { data } = await Axios.post<RefreshResponse>(
     `${import.meta.env.VITE_API_URL}/v1/auth/token/refresh`,
-    { access_token: access },
+    {
+      access_token: access,
+      refresh_token: MOCK_REFRESH_TOKEN,
+    },
     {
       withCredentials: true,
       headers: {

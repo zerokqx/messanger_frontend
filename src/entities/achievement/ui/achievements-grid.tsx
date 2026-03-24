@@ -12,16 +12,20 @@ import { useAchievementsGridState } from './use-achievements-grid-state';
 import { createThrottledVibrationHandler } from '@/shared/lib/vibration';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 import { SkeletonsCardList } from '@/shared/ui/skeletons';
+import type {
+  PublicAchievementListDataItems,
+  PublicAchievementItem,
+} from '@/shared/api/orval/achievement-service/achievement-service.schemas';
 
 const PAGE_SIZE = 10;
-const VirtuosoSeekPlaceholder = ()=>(<SkeletonsCardList h={176}/>)
+const VirtuosoSeekPlaceholder = () => <SkeletonsCardList h={176} />;
 
 const VirtuosoList = (props: HTMLAttributes<HTMLDivElement>) => {
   return <Stack {...props} gap={'xs'} />;
 };
 
 const normalizeAchievement = (
-  item: Partial<AchievementItem>
+  item: Partial<AchievementItem> | Partial<PublicAchievementItem>
 ): AchievementItem => ({
   achievement_id: item.achievement_id ?? 0,
   code: item.code ?? '',
@@ -37,11 +41,11 @@ const normalizeAchievement = (
 });
 
 const flattenAchievements = (
-  items: Record<string, Partial<AchievementItem>[] | undefined> | undefined
+  items: PublicAchievementListDataItems | undefined
 ): AchievementItem[] => {
   if (!items) return [];
   return Object.values(items).flatMap((group) =>
-    (group ?? []).map((achievement) => normalizeAchievement(achievement))
+    group.map((achievement) => normalizeAchievement(achievement))
   );
 };
 
@@ -62,8 +66,8 @@ export const AchievementsGrid = () => {
   const { mobile } = useResponsive();
 
   const allAchievements = useMemo(
-    () => flattenAchievements(data.data.items),
-    [data.data.items]
+    () => flattenAchievements(data?.data.items),
+    [data]
   );
   const filteredAchievements = useMemo(() => {
     const searchQuery = state.search.trim().toLowerCase();
@@ -161,9 +165,8 @@ export const AchievementsGrid = () => {
           }}
           components={{
             List: VirtuosoList,
-              ScrollSeekPlaceholder: VirtuosoSeekPlaceholder
+            ScrollSeekPlaceholder: VirtuosoSeekPlaceholder,
           }}
-            
           onScroll={vibrationScroll}
           totalCount={achievements.length}
           computeItemKey={(_, achievement) => achievement.achievement_id}

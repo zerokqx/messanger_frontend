@@ -1,4 +1,5 @@
 import { useProfilePut } from '@/features/profile-put';
+import { getGetMyProfileMeGetQueryKey } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 import { usePlurarDates } from '@/shared/lib/hooks/use-date';
 import { useQueryClient } from '@tanstack/react-query';
 import { memo, useMemo } from 'react';
@@ -43,14 +44,14 @@ export const ProfilePermissions = memo(
     const onSubmit = (data: PermissionsStringify) => {
       mutate(
         {
-          body: {
+          data: {
             profile_permissions: normilizePermissions(data),
           },
         },
         {
           async onSuccess() {
             await queryClient.invalidateQueries({
-              queryKey: ['get', '/me', {}],
+              queryKey: getGetMyProfileMeGetQueryKey(),
             });
           },
         }

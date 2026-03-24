@@ -1,33 +1,38 @@
 import { useIsAuth } from '@/entities/session';
-import { $api } from '@/shared/api';
-import { $chatPrivateService } from '@/shared/api/generated';
+import {
+  getGetPrivateChatHistoryHistoryGetQueryKey,
+  getPrivateChatHistoryHistoryGet,
+} from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import Logger from '@/shared/lib/logger/logger';
-import type { components } from '@/shared/types/v1';
+import type { PrivateChatHistoryResponse } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 export const useChatHistory = (chatId: string, limit = 10) => {
   const isAuth = useIsAuth();
 
-  return $chatPrivateService.useInfiniteQuery(
-    'get',
-    '/history',
-
-    {
-      params: {
-        query: {
-          limit,
-          chat_id: chatId,
-        },
-      },
-    },
-
-    {
+  return useInfiniteQuery<PrivateChatHistoryResponse, Error, PrivateChatHistoryResponse, ReturnType<typeof getGetPrivateChatHistoryHistoryGetQueryKey>, number | null>({
+      queryKey: getGetPrivateChatHistoryHistoryGetQueryKey({
+        limit,
+        chat_id: chatId,
+      }),
+      queryFn: ({ pageParam, signal }) =>
+        getPrivateChatHistoryHistoryGet(
+          {
+            limit,
+            chat_id: chatId,
+            before_message_id:
+              typeof pageParam === 'number' || pageParam === null
+                ? pageParam ?? undefined
+                : undefined,
+          },
+          undefined,
+          signal
+        ),
       staleTime: 1000 * 60 * 10,
       gcTime: 1000 * 60 * 60 * 24,
       initialPageParam: null,
-      suspense: true,
-      pageParamName: 'before_message_id',
       getNextPageParam: (
-        lastPage: components['schemas']['PrivateChatHistoryResponse']
+        lastPage: PrivateChatHistoryResponse
       ) => {
         if (!lastPage.data.has_more) {
           return undefined;
@@ -45,10 +50,9 @@ export const useChatHistory = (chatId: string, limit = 10) => {
           nextCursor: lastMessage.message_id,
         });
 
-        return lastMessage.message_id.toString();
+        return lastMessage.message_id;
       },
 
       enabled: isAuth && typeof chatId === 'string' && chatId.length > 0,
-    }
-  );
+  });
 };

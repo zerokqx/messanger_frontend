@@ -1,13 +1,13 @@
-import { useIsAuth } from '@/entities/session';
+import Logger from '@/shared/lib/logger/logger';
 import { AppShell, AppShellMain, Center, Stack } from '@mantine/core';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_auth')({
-  beforeLoad() {
-    if (useIsAuth.check()) {
-      redirect({
-        throw: true,
-        to: '/',
+export const Route = createFileRoute('/_unauthenticated')({
+  beforeLoad: ({ context: { auth }, }): void => {
+    Logger.debug('_unathenticated/route.tsx', 'AUTH', auth);
+    if (auth) {
+      throw redirect({
+        to: '/y',
       });
     }
   },

@@ -1,8 +1,8 @@
 import { db, type Chat } from '@/shared/api';
-import { $chatPrivateService } from '@/shared/api/generated';
+import { useCreatePrivateChatByUuidCreatePost } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 
 export const useChatCreate = () => {
-  const query = $chatPrivateService.useMutation('post', '/create');
+  const query = useCreatePrivateChatByUuidCreatePost();
 
   const smartCreateMutate = async (userId: string): Promise<Chat> => {
     const chat = await db.chats.get(userId);
@@ -10,11 +10,7 @@ export const useChatCreate = () => {
       return chat;
     }
     const request = await query.mutateAsync({
-      params: {
-        query: {
-          target_user_id: userId,
-        },
-      },
+      params: { target_user_id: userId },
     });
     void db.chats.add({
       chat_id: request.data.chat_id,

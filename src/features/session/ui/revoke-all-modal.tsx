@@ -12,7 +12,7 @@ export const RevokeAllModal = ({ opened, onClose }: RevokeAllModalProps) => {
         <Group grow>
           <Button
             onClick={() => {
-              mutateAllRevoke({});
+              mutateAllRevoke();
             }}
             color="red"
           >

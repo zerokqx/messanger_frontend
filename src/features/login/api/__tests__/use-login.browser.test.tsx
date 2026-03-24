@@ -30,7 +30,7 @@ describe('useLogin Тесты', () => {
     const {
       data: { access_token },
     } = await mutate.current.mutateAsync({
-      body: {
+      data: {
         login: 'mock-user',
         password: 'mock-password',
       },
