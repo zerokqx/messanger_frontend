@@ -18,8 +18,7 @@ export const Tab: TabsComponent['Tab'] = ({
 
       if (sx === 1) {
         actions.back();
-      }
-    },
+      } },
     {
       swipe: {
         distance: 50,
@@ -66,6 +65,7 @@ export const TabsKeepMounted: TabsComponent['TabKeepMounted'] = ({
   const state = useCurrentTab();
   const animation = useAnimationResolve(animationVariant, animationClosed);
   const isActive = state === value;
+
   return (
     <m.div
       key={value}
@@ -75,7 +75,6 @@ export const TabsKeepMounted: TabsComponent['TabKeepMounted'] = ({
       style={{
         display: isActive ? 'block' : 'none',
         height: '100%',
-        overflow: 'hidden',
       }}
     >
       {children}

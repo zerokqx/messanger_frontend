@@ -1,10 +1,10 @@
 import { useSettingsStore } from '@/shared/lib/settings';
 import { queryClient } from '@/shared/api';
 import { i18n } from '@/shared/i18next/clients';
-import { Loader, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { LazyMotion, MotionConfig } from 'motion/react';
-import { StrictMode, Suspense } from 'react';
+import { StrictMode } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { theme } from './mantine';
 import { InnerApp } from './ui/inner-app';
@@ -42,7 +42,6 @@ export const Wrapper = () => {
         }}
         defaultColorScheme="light"
       >
-        <Suspense fallback={<Loader pos={'absolute'} left={'50%'} top="50%" />}>
           <LazyMotion strict features={loadFeatures}>
             <PersistQueryClientProvider
               client={queryClient}
@@ -64,7 +63,6 @@ export const Wrapper = () => {
               </I18nextProvider>
             </PersistQueryClientProvider>
           </LazyMotion>
-        </Suspense>
       </MantineProvider>
     </StrictMode>
   );

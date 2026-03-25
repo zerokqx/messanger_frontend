@@ -1,5 +1,7 @@
-import { Alert } from '@mantine/core';
-import { useNavigate,  useRouterState } from '@tanstack/react-router'; import { Ban, CircleSlash } from 'lucide-react'; import { useState } from 'react';
+import { Alert, Center, Loader } from '@mantine/core';
+import { useNavigate, useRouterState } from '@tanstack/react-router';
+import { Ban, CircleSlash } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
 import { ContactCard, SkeletonContactItem } from '@/entities/contact';
@@ -39,22 +41,22 @@ export const ContactsList = () => {
         height: '100%',
         minHeight: 0,
       }}
-      totalCount={count.data ?? 0}
+      components={{
+        Footer: () =>
+          contacts.isFetchingNextPage ? (
+            <Center py="sm">
+              <Loader size="sm" />
+            </Center>
+          ) : null,
+      }}
       computeItemKey={(_, contact) => contact.user_id}
-      increaseViewportBy={150}
       endReached={() => {
         if (contacts.hasNextPage && !contacts.isFetchingNextPage) {
           void contacts.fetchNextPage();
         }
       }}
       isScrolling={setScrolling}
-      itemContent={(index, contact) => {
-        const isSkeleton = index >= contactsMap.length;
-
-        if (isSkeleton) {
-          return <SkeletonContactItem size={60} />;
-        }
-
+      itemContent={(_index, contact) => {
         return (
           <ContactCard
             simplification={scrolling}

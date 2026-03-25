@@ -161,7 +161,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
             </ErrorBoundary>
             </Box>
           </Tabs.Tab>
-          <Tabs.Tab value="contacts">
+          <Tabs.TabKeepMounted value="contacts">
             <Box p="xs" h="100%" mih={0}>
               <ErrorBoundary FallbackComponent={ErrorAlert}>
                 <Suspense fallback={<SkeletonLayout />}>
@@ -169,7 +169,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 </Suspense>
               </ErrorBoundary>
             </Box>
-          </Tabs.Tab>
+          </Tabs.TabKeepMounted>
           <Tabs.Tab animationVariant="slide-y-up" value="profile/edit">
             <Box p={'xs'}>
               <ErrorBoundary FallbackComponent={ErrorAlert}>

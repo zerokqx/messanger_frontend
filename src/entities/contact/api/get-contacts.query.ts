@@ -41,7 +41,7 @@ export const makeContactsInfinityOptions = (limit = 10) => {
  * @description Хук для получения всех контктов текущего пользователя
  * @param limit Сколько записей максимально можно вернуть (Backend Option)
  */
-export const useContactsQuery = (limit = 10) => {
+export const useContactsQuery = (limit = 15) => {
   return useGetContactsContactListGetSuspenseInfinite(
     { limit },
     {
