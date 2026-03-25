@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import { FormatLogin, formatLogin } from '@/shared/lib/formaters';
 import { lightDark } from '@/shared/lib/light-dark';
+import { urlAvatar, useDownloadAvatar } from '../api';
 
 interface HorizontalUserCardProps extends GroupProps {
   value: UserProfileContextState;
@@ -38,9 +39,13 @@ const Login = () => {
 
 const Avatar: HorizontalUserCardComponent['Avatar'] = (props) => {
   const profile = useUserProfileContext();
+  const uId = profile?.user_id ?? '';
+  const fId = profile?.avatars?.current?.file_id ?? '';
+
   return (
     <AvatarMantine
       {...props}
+      src={urlAvatar(uId,fId)}
       name={formatLogin(profile?.login, profile?.custom_name, false).name}
     />
   );

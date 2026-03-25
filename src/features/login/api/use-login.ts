@@ -13,8 +13,6 @@ export const useLogin = () => {
     mutation: {
       onSuccess: async ({ data: { access_token } }) => {
         tokenAction.doSetToken(access_token);
-        await db.delete();
-        localStorage.clear();
         await router.invalidate();
       },
     },

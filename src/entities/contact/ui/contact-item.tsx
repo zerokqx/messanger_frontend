@@ -18,11 +18,11 @@ export const ContactCard = ({
   const [position, setPosition] = useState<{ x: number; y: number } | null>(
     null
   );
+
   useEffect(() => {
     const handler = () => {
       if (document.hidden) toggle(false);
     };
-
     document.addEventListener('visibilitychange', handler);
 
     return () => {

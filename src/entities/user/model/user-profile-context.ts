@@ -1,8 +1,8 @@
-import type { components } from '@/shared/types/v1';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { createContext, use } from 'react';
 
 export type UserProfileContextState = Partial<
-  components['schemas']['ProfileByUserIdData']
+ProfileByUserIdData
 > | null;
 
 const UserProfileContext = createContext<UserProfileContextState | undefined>(

@@ -54,6 +54,7 @@ export default defineConfig({
               onMutations: [
                 'add_contact_contact_add_post',
                 'remove_contact_contact_remove_delete',
+                'update_contact_contact_update_patch',
               ],
               invalidates: [
                 'get_contacts_contact_list_get',

@@ -14,6 +14,8 @@ import { socket } from '@/shared/api';
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
 import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
+import { useSelectedChat } from '@/features/chat';
+import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -41,6 +43,7 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 function RouteComponent() {
+  const selectedChat = useSelectedChat(s=>s.data)
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const token = useTokenStore((s) => s.data.access);
@@ -84,6 +87,7 @@ function RouteComponent() {
       navbar={{
         width: 400,
         breakpoint: 'sm',
+        collapsed:{mobile: !!selectedChat}
       }}
       styles={{
         aside: {

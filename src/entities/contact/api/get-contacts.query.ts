@@ -1,14 +1,10 @@
-import { useIsAuth } from '@/entities/session';
 import {
-  getContactsContactListGet,
-  getGetContactsContactListGetInfiniteQueryKey,
   getGetContactsContactListGetSuspenseInfiniteQueryOptions,
   useGetContactsContactListGetSuspenseInfinite,
 } from '@/shared/api/orval/user-service/v1-user/v1-user';
 import Logger from '@/shared/lib/logger/logger';
 import {
   keepPreviousData,
-  useSuspenseInfiniteQuery,
 } from '@tanstack/react-query';
 
 export const makeContactsInfinityOptions = (limit = 10) => {
@@ -23,7 +19,7 @@ export const makeContactsInfinityOptions = (limit = 10) => {
       suspense: true,
       pageParamName: 'offset',
       getNextPageParam: (
-        lastPage: { data: { items: unknown[]; has_more: boolean } },
+        lastPage,
         _: unknown,
         lastPageParam: number
       ) => {

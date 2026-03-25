@@ -14,6 +14,7 @@ import { GroupedList } from '@/shared/ui/grouped-list';
 import { ratingColor } from '../lib/rating-color';
 import { useCreatedAt } from '../lib';
 import { useSettingsStore } from '@/shared/lib/settings';
+import { urlAvatar } from '../api';
 
 interface ProfileForCurrentUserBaseProps {
   profile: components['schemas']['ProfileData'];
@@ -36,13 +37,17 @@ export const ProfileForCurrentUser = ({
 }: ProfileForCurrentUserProps) => {
   const { t } = useTranslation(['button-labels', 'profile']);
   const createdAt = useCreatedAt(profile.created_at);
-  const primaryColor = useSettingsStore(s=>s.data.primaryColor)
+  const primaryColor = useSettingsStore((s) => s.data.primaryColor);
 
   return (
     <Stack>
       <Center>
         <Box pos={'relative'}>
-          <Avatar  name={profile.login} size={'xl'} />
+          <Avatar
+            src={urlAvatar(profile.user_id, profile.avatars?.current?.file_id)}
+            name={profile.login}
+            size={'xl'}
+          />
           <ActionIcon
             pos={'absolute'}
             bottom={'0'}
@@ -80,7 +85,7 @@ export const ProfileForCurrentUser = ({
           <Rating
             readOnly
             count={5}
-            color={ratingColor(profile.rating.rating ?? 0,primaryColor)}
+            color={ratingColor(profile.rating.rating ?? 0, primaryColor)}
             value={profile.rating.rating ?? 0}
           />
         </GroupedList.Item>

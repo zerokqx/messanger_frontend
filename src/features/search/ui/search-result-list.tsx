@@ -1,10 +1,9 @@
-import type { components } from '@/shared/types/v1';
 import { layoutAction } from '@/shared/lib/hooks/use-layout';
 import { useSearchStore } from '../model';
-import { HorizontalUserCard } from '@/entities/user';
+import { HorizontalUserCard, useDownloadAvatar } from '@/entities/user';
 import { MotionStagerList, StagerItem } from '@/shared/ui/motion-stager-list';
-import { useNavigate, useParams, useRouterState } from '@tanstack/react-router';
-import { useHash } from '@mantine/hooks';
+import { useNavigate, useRouterState } from '@tanstack/react-router';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 
 export const SearchResultList = () => {
   const uuid = useRouterState({ select: (s) => s.location.hash });
@@ -16,8 +15,7 @@ export const SearchResultList = () => {
   return (
     <MotionStagerList key={animationKey} gap={'xs'}>
       {users.map((user) => {
-        const profile =
-          user.profile as components['schemas']['ProfileByUserIdData'];
+        const profile = user.profile as ProfileByUserIdData;
         return (
           <StagerItem
             key={user.user_id}

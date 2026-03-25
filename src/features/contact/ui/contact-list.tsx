@@ -1,5 +1,5 @@
-import { Alert, Box } from '@mantine/core';
-import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'; import { Ban, CircleSlash } from 'lucide-react'; import { useState } from 'react';
+import { Alert } from '@mantine/core';
+import { useNavigate,  useRouterState } from '@tanstack/react-router'; import { Ban, CircleSlash } from 'lucide-react'; import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
 import { ContactCard, SkeletonContactItem } from '@/entities/contact';

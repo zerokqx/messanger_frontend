@@ -1,4 +1,3 @@
-import { useIsAuth } from '@/entities/session';
 import {
   getSearchByQueryUserSearchGetQueryOptions,
   useSearchByQueryUserSearchGet,
@@ -17,20 +16,18 @@ export const makeSearchOptions = (query = '') => {
  * @returns The result of the TanStack Query hook for fetching users.
  */
 export const useFetchUsersSearch = (rawQuery: string | undefined | null) => {
-  const isAuth = useIsAuth();
-
   const query = rawQuery ?? '';
   return useSearchByQueryUserSearchGet(
     { query },
     {
       query: {
-        staleTime: 60 * 20,
+        gcTime: 60 * 1000,
         retry: 2,
         select(data) {
           return data.data.users;
         },
-        enabled: query.length > 0 && isAuth,
+        enabled: query.length >= 3,
       },
-    },
+    }
   );
 };

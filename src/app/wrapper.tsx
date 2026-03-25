@@ -13,9 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import {
-  getGetContactCountContactCountGetQueryKey,
-} from '@/shared/api/orval/user-service/v1-user/v1-user.ts';
+import { getGetContactCountContactCountGetQueryKey } from '@/shared/api/orval/user-service/v1-user/v1-user.ts';
 
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: AsyncStorage,

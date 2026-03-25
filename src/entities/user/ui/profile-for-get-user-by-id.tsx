@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  Center,
-  Rating,
-  Stack,
-  Text,
-} from '@mantine/core';
+import { Avatar, Center, Rating, Stack, Text } from '@mantine/core';
 import type { components } from '@/shared/types/v1';
 import { useIsMe } from '../lib/use-is-me';
 import { AtSign, Ban, Clock, Handshake, Star, User } from 'lucide-react';
@@ -15,6 +9,7 @@ import { useCreatedAt } from '../lib';
 import { useSettingsStore } from '@/shared/lib/settings';
 import { comboRelations } from '@/shared/lib/realtionship-helpers';
 import { formatLogin } from '@/shared/lib/formaters';
+import { urlAvatar } from '../api';
 
 interface ProfileForGetUserByIdProps {
   profile: components['schemas']['ProfileByUserIdData'];
@@ -53,7 +48,11 @@ export const ProfileForGetUserById = ({
   return (
     <Stack>
       <Center>
-        <Avatar name={name} size={'xl'} />
+        <Avatar
+          src={urlAvatar(profile.user_id, profile.avatars?.current?.file_id)}
+          name={name}
+          size={'xl'}
+        />
       </Center>
       <GroupedList>
         <GroupedList.Item leftSection={<AtSign />} label={t('profile:login')}>
@@ -121,13 +120,13 @@ export const ProfileForGetUserById = ({
           >
             {getRelationLabel()}
           </GroupedList.Item>
-            <GroupedList.Item
-              label={t('contact:block')}
-              leftSectionColor="red"
-              leftSection={<Ban />}
-            >
-              {blocked}
-            </GroupedList.Item>
+          <GroupedList.Item
+            label={t('contact:block')}
+            leftSectionColor="red"
+            leftSection={<Ban />}
+          >
+            {blocked}
+          </GroupedList.Item>
         </GroupedList>
       )}
     </Stack>
