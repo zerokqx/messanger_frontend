@@ -13,24 +13,11 @@ export interface BaseResponse {
   data: MessageData;
 }
 
-export interface BotListItem {
-  id: string;
-  login: string;
-  created_at: string;
-}
-
-export interface BotListData {
-  items: BotListItem[];
-  has_more: boolean;
-}
-
-export interface BotListResponse {
-  status: string;
-  data: BotListData;
-}
-
 export interface ChangePasswordRequest {
-  /** @maxLength 128 */
+  /**
+   * @minLength 6
+   * @maxLength 128
+   */
   old_password: string;
   /**
    * @minLength 8
@@ -66,6 +53,22 @@ export interface LoginRequest {
 export interface LoginResponse {
   status?: string;
   data: LoginData;
+}
+
+export interface RegisterData {
+  message: string;
+  user_id: string;
+}
+
+export interface RegisterRequest {
+  login: string;
+  password: string;
+  invite?: string | null;
+}
+
+export interface RegisterResponse {
+  status: string;
+  data: RegisterData;
 }
 
 export interface UserSessionItem {
@@ -120,56 +123,19 @@ export interface VerifyCodeRequest {
   otp: string;
 }
 
-export interface ApiSchemasBotRegisterData {
-  message: string;
-  bot_id: string;
-  token: string;
-}
-
-export interface ApiSchemasBotRegisterRequest {
-  login: string;
-}
-
-export interface ApiSchemasBotRegisterResponse {
-  status: string;
-  data: ApiSchemasBotRegisterData;
-}
-
-export interface ApiSchemasRegisterRegisterData {
-  message: string;
-  user_id: string;
-}
-
-export interface ApiSchemasRegisterRegisterRequest {
-  login: string;
-  password: string;
-  invite?: string | null;
-}
-
-export interface ApiSchemasRegisterRegisterResponse {
-  status: string;
-  data: ApiSchemasRegisterRegisterData;
-}
-
-export type GetUserBotsBotListGetParams = {
+export type UpdatePushTokenSessionsUpdatePushTokenPostParams = {
 /**
- * Смещение для пагинации
- * @minimum 0
+ * FCM токен для push уведомлений
  */
-offset?: number;
-/**
- * Количество ботов для загрузки
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
+fcm_token: string;
 };
 
-export type InternalSessionsListInternalSessionsListGetParams = {
+export type InternalListSessionsInternalSessionsListGetParams = {
+/**
+ * ID пользователя
+ */
 target_user: string;
 };
 
-export type UpdatePushTokenSessionsUpdatePushTokenPostParams = {
-fcm_token: string;
-};
+export type InternalListSessionsInternalSessionsListGet200 = { [key: string]: unknown };
 

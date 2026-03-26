@@ -113,7 +113,17 @@ export default defineConfig({
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
-      override: { mutator: MUTATOR_CONFIG },
+      override: {
+        mutator: MUTATOR_CONFIG,
+        operations: {
+          get_private_chat_history_history_get: {
+            query: {
+              useInfinite:true,
+              useInfiniteQueryParam: 'before_message_id',
+            },
+          },
+        },
+      },
     },
   },
 

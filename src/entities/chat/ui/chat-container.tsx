@@ -1,8 +1,8 @@
 import { Virtuoso } from 'react-virtuoso';
-import { MessageItem } from './message-item';
+import { MessageText } from './message-text-type';
 import { SystemMessage } from './system-message';
 import type { MessageContainerProps } from './types';
-import { Box, Stack } from '@mantine/core';
+import {  Stack } from '@mantine/core';
 
 const StackList = (props: object) => <Stack {...props} gap={'lg'} />;
 export const ChatContainer = ({
@@ -32,10 +32,11 @@ export const ChatContainer = ({
       totalCount={messages.length}
       increaseViewportBy={increaseViewportBy}
       itemContent={(_, item) => {
+        console.log(item,'ITEM');
         if (item.message_type.includes('system')) {
           return <SystemMessage message={item} />;
         }
-        return <MessageItem message={item} />;
+        return <MessageText avatarSrc="dwd" content={item.content} />;
       }}
     />
   );

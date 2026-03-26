@@ -10,12 +10,14 @@ import { Suspense, lazy, useEffect } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { notify } from '@/shared/lib/notifications';
 import { useTokenStore } from '@/shared/token';
-import { socket } from '@/shared/api';
+import { socket, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
 import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 import { useSelectedChat } from '@/features/chat';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive';
+import { useAddMessageToHistory } from '@/features/chat/api/send-message';
+import { getGetPrivateChatHistoryHistoryGetInfiniteQueryKey } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -43,7 +45,8 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 function RouteComponent() {
-  const selectedChat = useSelectedChat(s=>s.data)
+  const addMessage = useAddMessageToHistory();
+  const selectedChat = useSelectedChat((s) => s.data);
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const token = useTokenStore((s) => s.data.access);
@@ -57,8 +60,26 @@ function RouteComponent() {
       notify.success({ title: 'Сокет', message: 'Успешное подключение' });
     };
 
-    const onMessage = () => {
-      notify.success({ title: 'Сокет', message: 'Успешное подключение' });
+    const onMessage = async (event: ChatPrivateNewMessageSocketEvent) => {
+      console.log('chat_private:new_message', event);
+
+      const message = event.payload;
+      if (!message.chat_id) return;
+
+      const historyQueryKey =
+        getGetPrivateChatHistoryHistoryGetInfiniteQueryKey({
+          chat_id: message.chat_id,
+        });
+
+      await addMessage(
+        {
+          chat_id: message.chat_id,
+          content: message.content,
+          message_type: message.message_type,
+          sender_id: message.sender_id,
+        },
+        historyQueryKey
+      );
     };
 
     socket.auth = { token };
@@ -69,7 +90,7 @@ function RouteComponent() {
 
     socket.onAny(onAny);
     socket.on('connect', onConnect);
-    socket.on('message', onMessage);
+    socket.on('chat_private:new_message', onMessage);
 
     if (!socket.connected) {
       socket.connect();
@@ -77,17 +98,17 @@ function RouteComponent() {
 
     return () => {
       socket.off('connect', onConnect);
-      socket.off('message', onMessage);
+      socket.off('chat_private:new_message', onMessage);
       socket.offAny(onAny);
     };
-  }, [token]);
+  }, [addMessage, token]);
 
   return (
     <AppShell
       navbar={{
         width: 400,
         breakpoint: 'sm',
-        collapsed:{mobile: !!selectedChat}
+        collapsed: { mobile: !!selectedChat },
       }}
       styles={{
         aside: {

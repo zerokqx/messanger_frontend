@@ -37,7 +37,6 @@ export const ChatsTab = () => {
         return (
           <ChatCard
             onClick={() => {
-              layoutAction.doSetAside(true)
               selectedChatAction.doSelect(chat.chat_id);
               void navigate({
                 hash: hasUserId(chat.chat_data ?? null),

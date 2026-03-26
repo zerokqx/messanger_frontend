@@ -1,85 +1,95 @@
-import { Avatar, Badge, Box, Group, Paper, Stack, Text } from '@mantine/core';
-import type { ChatCardProps } from './types';
+import { urlAvatar } from '@/entities/user';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
+import type { components } from '@/shared/types/v1';
 import { RoundedContainerGroup } from '@/shared/ui/boxes';
-import useRipple from 'useripple';
 import { lightDark } from '@/shared/lib/light-dark';
-import { formatLogin } from '@/shared/lib/formaters';
+import { formatLogin } from '@/shared/lib/formaters/format-login.ts';
+import { Avatar, Badge, Box, Group, Stack, Text } from '@mantine/core';
+import { getGetPrivateChatHistoryHistoryGetInfiniteQueryKey } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
+
+export type ChatListItem = components['schemas']['PrivateChatListItem'];
+
+export interface ChatCardProps {
+  chat: ChatListItem;
+  isActive?: boolean;
+  title?: string;
+  onClick?: () => void;
+}
 
 const formatTime = (value?: string | null): string => {
-  if (!value) return '--:--';
+  if (!value) return '';
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '--:--';
+  if (Number.isNaN(date.getTime())) return '';
 
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-};
-
-const getTitle = (title: string | undefined, chatType: string): string => {
-  if (title && title.trim().length > 0) return title;
-  return chatType === 'self' ? 'Saved Messages' : 'Private Chat';
-};
-
-const getMessagePreview = (message: string | null | undefined): string => {
-  if (!message || message.trim().length === 0) return 'No messages yet';
-  return message;
-};
-
-export const ChatCard = ({ chat, title, onClick }: ChatCardProps) => {
-  const [addRipple, ripples] = useRipple({
-    background: lightDark('gray.4', 'dark.5'),
+  return date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
   });
-  const messagePreview = getMessagePreview(chat.last_message?.content);
-  const chatTitle = getTitle(title, chat.chat_type);
-  const timeLabel = formatTime(
-    chat.last_message?.created_at ?? chat.created_at
-  );
-  console.log(chat.chat_data);
-  
+};
+
+const getMessagePreview = (content: unknown): string => {
+  if (typeof content !== 'string' || content.trim().length === 0) {
+    return 'Нет сообщений';
+  }
+
+  return content;
+};
+
+export const ChatCard = ({ chat, onClick, isActive, title }: ChatCardProps) => {
+  const profile = chat.chat_data as unknown as ProfileByUserIdData;
+  const displayName =
+    title ?? formatLogin(profile.login, profile.custom_name ?? undefined).name;
+  const preview = getMessagePreview(chat.last_message?.content);
+  const time = formatTime(chat.last_message?.created_at ?? chat.created_at);
 
   return (
     <RoundedContainerGroup
-      pos={'relative'}
-      bdrs={0}
-      onClick={(e) => {
-        onClick?.();
-        addRipple(e);
-      }}
-      bd={'none'}
-      bg={'transparent'}
+      onClick={onClick}
+      wrap="nowrap"
+      justify="space-between"
+      gap="sm"
+      bg={
+        isActive ? lightDark('gray.1', 'dark.7') : lightDark('gray.0', 'dark.8')
+      }
       style={{
-        overflow: 'hidden',
-        textAlign: 'left',
         cursor: 'pointer',
+        transition:
+          'background-color 160ms ease, border-color 160ms ease, transform 160ms ease',
+        alignItems: 'center',
       }}
     >
-      {ripples}
-      <Group align="flex-start" wrap="nowrap" gap="sm">
-        <Avatar radius="1000px" variant="light">
-          {chatTitle.slice(0, 1).toUpperCase()}
-        </Avatar>
+      <Avatar
+        size={48}
+        radius="xl"
+        src={urlAvatar(profile.user_id, profile.avatars?.current?.file_id)}
+        name={displayName}
+      />
 
-        <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
-          <Group justify="space-between" wrap="nowrap" gap="xs"> <Text fw={600} size="sm" truncate>
-              {formatLogin(chat.chat_data.login).name}
-            </Text>
-            <Text size="xs" c="dimmed">
-              {timeLabel}
-            </Text>
-          </Group>
-
-          <Text size="xs" c="dimmed" lineClamp={1}>
-            {messagePreview}
+      <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
+        <Group justify="space-between" wrap="nowrap" gap="xs">
+          <Text fw={600} size="sm" truncate>
+            {displayName}
           </Text>
-        </Stack>
-
-        <Box>
-          {chat.unread_count > 0 ? (
-            <Badge radius="xl" size="sm" variant="filled">
-              {chat.unread_count}
-            </Badge>
+          {time ? (
+            <Text c="dimmed" size="xs" style={{ flexShrink: 0 }}>
+              {time}
+            </Text>
           ) : null}
-        </Box>
-      </Group>
+        </Group>
+
+        <Text c="dimmed" size="sm" lineClamp={1}>
+          {preview}
+        </Text>
+      </Stack>
+
+      <Box style={{ flexShrink: 0 }}>
+        {chat.unread_count > 0 ? (
+          <Badge radius="xl" variant="filled">
+            {chat.unread_count}
+          </Badge>
+        ) : null}
+      </Box>
     </RoundedContainerGroup>
   );
 };

@@ -5,18 +5,23 @@
  * OpenAPI spec version: 1.0.0
  */
 import {
+  useInfiniteQuery,
   useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
   DefinedUseQueryResult,
+  InfiniteData,
   MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -226,6 +231,12 @@ export const getPrivateChatHistoryHistoryGet = (
 
 
 
+export const getGetPrivateChatHistoryHistoryGetInfiniteQueryKey = (params?: GetPrivateChatHistoryHistoryGetParams,) => {
+    return [
+    'infinite', `/v1/chat/private/history`, ...(params ? [params] : [])
+    ] as const;
+    }
+
 export const getGetPrivateChatHistoryHistoryGetQueryKey = (params?: GetPrivateChatHistoryHistoryGetParams,) => {
     return [
     `/v1/chat/private/history`, ...(params ? [params] : [])
@@ -233,6 +244,71 @@ export const getGetPrivateChatHistoryHistoryGetQueryKey = (params?: GetPrivateCh
     }
 
     
+export const getGetPrivateChatHistoryHistoryGetInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, GetPrivateChatHistoryHistoryGetParams['before_message_id']>, TError = ErrorType<unknown>>(params: GetPrivateChatHistoryHistoryGetParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError, TData, QueryKey, GetPrivateChatHistoryHistoryGetParams['before_message_id']>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPrivateChatHistoryHistoryGetInfiniteQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, QueryKey, GetPrivateChatHistoryHistoryGetParams['before_message_id']> = ({ signal, pageParam }) => getPrivateChatHistoryHistoryGet({...params, 'before_message_id': pageParam || params?.['before_message_id']}, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError, TData, QueryKey, GetPrivateChatHistoryHistoryGetParams['before_message_id']> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetPrivateChatHistoryHistoryGetInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>>
+export type GetPrivateChatHistoryHistoryGetInfiniteQueryError = ErrorType<unknown>
+
+
+export function useGetPrivateChatHistoryHistoryGetInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, GetPrivateChatHistoryHistoryGetParams['before_message_id']>, TError = ErrorType<unknown>>(
+ params: GetPrivateChatHistoryHistoryGetParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError, TData, QueryKey, GetPrivateChatHistoryHistoryGetParams['before_message_id']>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>,
+          TError,
+          Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, QueryKey
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPrivateChatHistoryHistoryGetInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, GetPrivateChatHistoryHistoryGetParams['before_message_id']>, TError = ErrorType<unknown>>(
+ params: GetPrivateChatHistoryHistoryGetParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError, TData, QueryKey, GetPrivateChatHistoryHistoryGetParams['before_message_id']>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>,
+          TError,
+          Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, QueryKey
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPrivateChatHistoryHistoryGetInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, GetPrivateChatHistoryHistoryGetParams['before_message_id']>, TError = ErrorType<unknown>>(
+ params: GetPrivateChatHistoryHistoryGetParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError, TData, QueryKey, GetPrivateChatHistoryHistoryGetParams['before_message_id']>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get Private Chat History
+ */
+
+export function useGetPrivateChatHistoryHistoryGetInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, GetPrivateChatHistoryHistoryGetParams['before_message_id']>, TError = ErrorType<unknown>>(
+ params: GetPrivateChatHistoryHistoryGetParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError, TData, QueryKey, GetPrivateChatHistoryHistoryGetParams['before_message_id']>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetPrivateChatHistoryHistoryGetInfiniteQueryOptions(params,options)
+
+  const query = useInfiniteQuery(queryOptions, queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
 export const getGetPrivateChatHistoryHistoryGetQueryOptions = <TData = Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError = ErrorType<unknown>>(params: GetPrivateChatHistoryHistoryGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPrivateChatHistoryHistoryGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
