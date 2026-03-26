@@ -1,7 +1,6 @@
 import { ActionIcon, Group } from '@mantine/core';
 import { type ComponentProps, type MouseEvent, type ReactNode } from 'react';
 import { useTabsApi } from '../model';
-import { lightDark } from '@/shared/lib/light-dark';
 import { RoundedContainerGroup } from '../../boxes';
 
 interface PanelComponentProps {
@@ -26,11 +25,6 @@ export interface PanelProps {
   }[];
 }
 
-const PanelContainer = Group.withProps({
-  bdrs: 'xl',
-  p: 'xs',
-  justify: 'space-evenly',
-});
 export const Panel = ({
   withStyleAtActive = true,
   component = ActionIcon,

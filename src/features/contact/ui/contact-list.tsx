@@ -1,24 +1,19 @@
 import { Alert, Center, Loader } from '@mantine/core';
-import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { Ban, CircleSlash } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
-import { ContactCard, SkeletonContactItem } from '@/entities/contact';
-import { layoutAction } from '@/shared/lib/hooks/use-layout';
+import { ContactCard } from '@/entities/contact';
 import { pendingNotify } from '@/shared/lib/notifications/pending';
 import { successNotify } from '@/shared/lib/notifications/success';
 import { useContactRemove } from '../api';
 import { useContactListState } from '../model/use-contact-list-state';
-import { useChatCreate } from '@/entities/chat';
-import { selectedChatAction } from '@/features/chat';
+import { useChatUserId } from '@/entities/chat';
 
 export const ContactsList = () => {
   const { contacts, count, contactsMap } = useContactListState();
+  const { setUserId, userId } = useChatUserId();
   const [scrolling, setScrolling] = useState(false);
-  const navigate = useNavigate();
-  const hash = useRouterState({ select: (s) => s.location.hash });
-  const { smartCreateMutate } = useChatCreate();
   const [t] = useTranslation('contact');
   const { mutate: removeContact } = useContactRemove();
 
@@ -60,7 +55,7 @@ export const ContactsList = () => {
         return (
           <ContactCard
             simplification={scrolling}
-            isSelected={hash.slice(1) === contact.user_id}
+            isSelected={userId === contact.user_id}
             user={contact}
             onRemove={(userId) => {
               pendingNotify(t('contact-remove-pending'));
@@ -76,10 +71,11 @@ export const ContactsList = () => {
               );
             }}
             onClick={async () => {
-              const chat = await smartCreateMutate(contact.user_id);
-              await navigate({ hash: chat.user_id });
-              selectedChatAction.doSelect(chat.chat_id);
-              layoutAction.doSetAside(true);
+              await setUserId(contact.user_id);
+              // const chat = await smartCreateMutate(contact.user_id);
+              // await navigate({ hash: chat.user_id });
+              // selectedChatAction.doSelect(chat.chat_id);
+              // layoutAction.doSetAside(true);
             }}
           />
         );

@@ -5,6 +5,10 @@ import { ArrowLeft, CircleSlash, PanelLeft } from 'lucide-react';
 import { RoundedContainerGroup } from '@/shared/ui/boxes';
 import { useSendMessage } from '@/features/chat';
 import { useGetChat } from '@/features/chat/model';
+import {
+  useChatUserId,
+  useEnsureChat,
+} from '@/entities/chat/index.ts';
 
 const ChatHistoryViewer = lazy(() =>
   import('./chat-history-viewer.tsx').then((m) => ({
@@ -17,9 +21,9 @@ export interface ChatWidgetProps {
   asideStatus?: boolean;
 }
 export const ChatWidget = ({ onToggleAside, asideStatus }: ChatWidgetProps) => {
-  const { chatId } = useGetChat();
+  const { userId ,setUserId} = useChatUserId();
+  const chatId = useEnsureChat(userId);
   const { mutateAsync: sendMessage } = useSendMessage();
-  const navigate = useNavigate();
   const [inp, setInp] = useState('');
 
   return (
@@ -30,7 +34,9 @@ export const ChatWidget = ({ onToggleAside, asideStatus }: ChatWidgetProps) => {
         style={{ zIndex: 100 }}
         w="100%"
       >
-        <ActionIcon onClick={() => navigate({ hash: '' })}>
+        <ActionIcon onClick={async ()=>{
+          await setUserId('')
+        }}>
           <ArrowLeft />
         </ActionIcon>
         {onToggleAside && (

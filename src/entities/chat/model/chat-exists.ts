@@ -1,6 +1,5 @@
 import { db,  type DexieUserId } from '@/shared/api';
 
-export const chatExists = async (id: DexieUserId) => {
-  const chat = await db.chats.get(id);
-  return chat;
+export const chatExists = async (userId: DexieUserId) => {
+  return await db.chats.get(userId);
 };
