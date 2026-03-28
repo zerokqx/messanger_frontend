@@ -1,73 +1,109 @@
 import { useChatHistory } from '@/entities/chat';
-import { SystemMessage } from '@/entities/chat/ui/system-message';
-import { Box, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
-import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import { MessageCircleMore } from 'lucide-react';
-import { Virtuoso } from 'react-virtuoso';
 import { MessageText } from '@/entities/chat/ui/message-text-type';
-import { pagesMap } from '@/shared/lib/pages-map';
-import type { ChatParticipantUi, UiMessage } from '@/entities/chat/ui/types';
+import { SystemMessage } from '@/entities/chat/ui/system-message';
+import type { UiMessage } from '@/entities/chat/ui/types';
+import {
+  Box,
+  Center,
+  Loader,
+  Paper,
+  Stack,
+  Text,
+  ThemeIcon,
+} from '@mantine/core';
+import { MessageCircleMore } from 'lucide-react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Virtuoso } from 'react-virtuoso';
+import { useChatSession } from '../model/chat-session-context.ts';
 
-const VIRTUOSO_START_INDEX = 100000;
+const INITIAL_FIRST_ITEM_INDEX = 100000;
 
-interface ChatHistoryViewerProps {
-  chatId: string;
-  currentUser: ChatParticipantUi;
-  interlocutor: ChatParticipantUi;
-}
+const StackChat = Stack.withProps({
+  gap: 'md',
+  maw: '50rem',
+  w: '100%',
+  mx: 'auto',
+  p: 'xs',
+});
 
-export const ChatHistoryViewer = ({
-  chatId,
-  currentUser,
-  interlocutor,
-}: ChatHistoryViewerProps) => {
-  const [firstItemIndex, setFirstItemIndex] = useState(VIRTUOSO_START_INDEX);
-  const isLoadingMoreRef = useRef(false);
-  const isAtTopRef = useRef(false);
-  const hasNextPageRef = useRef(false);
+export const ChatHistoryViewer = () => {
+  const chatId = useChatSession((state) => state.chatId);
+  const currentUserId = useChatSession((state) => state.currentUser.user_id);
+  const currentUserLogin = useChatSession((state) => state.currentUser.login);
+  const currentUserAvatar = useChatSession(
+    (state) => state.currentUser.avatars.current.url
+  );
+  const targetUserName = useChatSession(
+    (state) => state.targetUser.formatLogin.name
+  );
+  const targetUserAvatar = useChatSession(
+    (state) => state.targetUser.avatars.current.url
+  );
+
+  const [firstItemIndex, setFirstItemIndex] = useState(
+    INITIAL_FIRST_ITEM_INDEX
+  );
+  const isPrependingRef = useRef(false);
+  const previousLengthRef = useRef(0);
 
   const {
     data: historyChat,
     fetchNextPage,
     hasNextPage,
+    isLoading,
     isFetchingNextPage,
-  } = useChatHistory(chatId);
-
-  useEffect(() => {
-    hasNextPageRef.current = hasNextPage;
-  }, [hasNextPage]);
-
-  useEffect(() => {
-    setFirstItemIndex(VIRTUOSO_START_INDEX);
-    isLoadingMoreRef.current = false;
-    isAtTopRef.current = false;
-  }, [chatId]);
+  } = useChatHistory(chatId, 20);
 
   const messages = useMemo<UiMessage[]>(() => {
-    return pagesMap(historyChat).reverse();
+    return historyChat ? [...historyChat].reverse() : [];
   }, [historyChat]);
 
-  const loadMore = useCallback(async () => {
-    if (
-      isLoadingMoreRef.current ||
-      isFetchingNextPage ||
-      !hasNextPageRef.current
-    )
-      return;
-    isLoadingMoreRef.current = true;
-    try {
-      const result = await fetchNextPage();
-      const newPage = result.data?.pages.at(-1);
-      const addedCount = newPage?.data.items.length ?? 0;
-      if (addedCount > 0) setFirstItemIndex((prev) => prev - addedCount);
-    } finally {
-      isLoadingMoreRef.current = false;
-    }
-  }, [fetchNextPage, isFetchingNextPage]);
+  useEffect(() => {
+    setFirstItemIndex(INITIAL_FIRST_ITEM_INDEX);
+    isPrependingRef.current = false;
+    previousLengthRef.current = 0;
+  }, [chatId]);
 
-  return (
-    <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden', width: '100%' }}>
-      {messages.length === 0 ? (
+  useLayoutEffect(() => {
+    const previousLength = previousLengthRef.current;
+    const currentLength = messages.length;
+
+    if (isPrependingRef.current && currentLength > previousLength) {
+      setFirstItemIndex((current) => current - (currentLength - previousLength));
+      isPrependingRef.current = false;
+    }
+
+    previousLengthRef.current = currentLength;
+  }, [messages.length]);
+
+  useEffect(() => {
+    if (!isFetchingNextPage) {
+      isPrependingRef.current = false;
+    }
+  }, [isFetchingNextPage]);
+
+  const handleStartReached = () => {
+    if (!hasNextPage || isFetchingNextPage || isPrependingRef.current) {
+      return;
+    }
+
+    isPrependingRef.current = true;
+    void fetchNextPage().catch(() => {
+      isPrependingRef.current = false;
+    });
+  };
+
+  if (isLoading && messages.length === 0) {
+    return (
+      <Center style={{ flex: 1, minHeight: 0, width: '100%' }}>
+        <Loader />
+      </Center>
+    );
+  }
+
+  if (!isLoading && messages.length === 0) {
+    return (
+      <Box style={{ flex: 1, minHeight: 0, overflow: 'hidden', width: '100%' }}>
         <Box
           p="md"
           style={{
@@ -99,41 +135,71 @@ export const ChatHistoryViewer = ({
             </Stack>
           </Paper>
         </Box>
-      ) : (
-        <Virtuoso
-          data={messages}
-          firstItemIndex={firstItemIndex}
-          style={{ height: '100%', width: '100%' }}
-          initialTopMostItemIndex={Math.max(messages.length - 1, 0)}
-          followOutput={(isAtBottom) => (isAtBottom ? 'smooth' : false)}
-          computeItemKey={(_, item) =>
-            item.client_id ?? String(item.message_id)
-          }
-          startReached={() => {
-            isAtTopRef.current = true;
-            void loadMore();
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      style={{
+        flex: 1,
+        minHeight: 0,
+        overflow: 'hidden',
+        position: 'relative',
+        width: '100%',
+      }}
+    >
+      <Virtuoso
+        key={chatId}
+        components={{
+          List: StackChat,
+        }}
+        data={messages}
+        firstItemIndex={firstItemIndex}
+        initialTopMostItemIndex={messages.length - 1}
+        alignToBottom
+        style={{ height: '100%', width: '100%' }}
+        followOutput={(isAtBottom) => (isAtBottom ? 'smooth' : false)}
+        defaultItemHeight={76}
+        computeItemKey={(_, item) =>
+          item.client_id ?? String(item.message_id)
+        }
+        startReached={() => {
+          handleStartReached();
+        }}
+        itemContent={(_, item) =>
+          item.message_type.includes('system') ? (
+            <SystemMessage message={item} />
+          ) : (
+            <MessageText
+              message={item}
+              userIdOfCurrentUser={currentUserId}
+              avatarName={
+                item.sender_id === currentUserId
+                  ? currentUserLogin
+                  : targetUserName
+              }
+              avatarSrc={
+                item.sender_id === currentUserId
+                  ? currentUserAvatar
+                  : targetUserAvatar
+              }
+            />
+          )
+        }
+      />
+      {isFetchingNextPage && (
+        <Center
+          style={{
+            position: 'absolute',
+            top: 8,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            pointerEvents: 'none',
           }}
-          itemContent={(_, item) =>
-            item.message_type.includes('system') ? (
-              <SystemMessage message={item} />
-            ) : (
-              <MessageText
-                message={item}
-                userIdOfCurrentUser={currentUser.userId ?? ''}
-                avatarName={
-                  item.sender_id === currentUser.userId
-                    ? currentUser.avatarName
-                    : interlocutor.avatarName
-                }
-                avatarSrc={
-                  item.sender_id === currentUser.userId
-                    ? currentUser.avatarSrc
-                    : interlocutor.avatarSrc
-                }
-              />
-            )
-          }
-        />
+        >
+          <Loader size="sm" />
+        </Center>
       )}
     </Box>
   );
