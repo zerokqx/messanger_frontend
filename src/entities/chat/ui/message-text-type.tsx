@@ -1,7 +1,15 @@
 import { RoundedContainerGroup } from '@/shared/ui/boxes';
 import type { MessageTextProps } from './types';
-import { Avatar, Group, Text } from '@mantine/core';
+import {
+  Avatar,
+  getContrastColor,
+  Group,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { useSettingsStore } from '@/shared/lib/settings';
+import { useResponsive } from '@/shared/lib/hooks/use-responsive';
+import { lightDark } from '@/shared/lib/light-dark';
 
 export const MessageText = ({
   avatarSrc,
@@ -9,12 +17,34 @@ export const MessageText = ({
   userIdOfCurrentUser,
   avatarName,
 }: MessageTextProps) => {
+  const { mobile, desktop } = useResponsive();
+  const theme = useMantineTheme();
   const primary = useSettingsStore((s) => s.data.primaryColor);
+
   const isMe = userIdOfCurrentUser === message.sender_id;
+
+  const bgColor = isMe
+    ? theme.colors[primary][6]
+    : lightDark('dark.9', 'dark.8');
+
+  const textColor = getContrastColor({
+    theme,
+    color: bgColor,
+    autoContrast: true,
+  });
+
   return (
-    <Group maw={'30rem'} wrap="nowrap" align="flex-end">
-      <Avatar name={avatarName} src={avatarSrc} />
-      <RoundedContainerGroup bg={isMe ? primary : undefined}>
+    <Group
+      w={'100%'}
+      wrap="nowrap"
+      justify={desktop ? 'start' : 'flex-start'}
+      style={{
+        flexDirection: isMe ? (desktop ? 'row' : 'row-reverse') : 'row',
+        gap: '12px',
+      }}
+    >
+      {!mobile && <Avatar name={avatarName} src={avatarSrc} />}
+      <RoundedContainerGroup bg={bgColor} c={textColor} bd={'none'}>
         <Text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
           {message.content}
         </Text>

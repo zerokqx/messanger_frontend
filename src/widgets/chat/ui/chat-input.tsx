@@ -24,7 +24,6 @@ export const ChatInput = ({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key !== 'Enter' || event.shiftKey) return;
-
     event.preventDefault();
     handleSubmit();
   };
@@ -39,7 +38,7 @@ export const ChatInput = ({
         backdropFilter: 'blur(10px)',
       }}
     >
-      <Stack gap="xs">
+      <Stack gap="xs" >
         <Textarea
           autosize
           minRows={1}

@@ -85,7 +85,15 @@ export default defineConfig({
       mode: 'tags-split',
       namingConvention: 'kebab-case',
       override: {
+        operations: {
+          get_user_profile_by_user_id__user_id__get: {
+            query: {
+              usePrefetch: true,
+            },
+          },
+        },
         mutator: MUTATOR_CONFIG,
+
         query: { useSuspenseQuery: true },
       },
     },
@@ -116,10 +124,17 @@ export default defineConfig({
       override: {
         mutator: MUTATOR_CONFIG,
         operations: {
+          get_list_private_chats_list_get: {
+            query: {
+              useInfinite: true,
+              useInfiniteQueryParam: 'offset',
+            },
+          },
           get_private_chat_history_history_get: {
             query: {
-              useInfinite:true,
+              useInfinite: true,
               useInfiniteQueryParam: 'before_message_id',
+              usePrefetch: true,
             },
           },
         },

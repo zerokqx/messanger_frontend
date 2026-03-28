@@ -2,9 +2,7 @@ import {
   getGetPrivateChatHistoryHistoryGetInfiniteQueryKey,
   useSendPrivateMessageWithUuidMessageSendPost,
 } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
-import type {
-  PrivateMessageSendRequest,
-} from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
+import type { PrivateMessageSendRequest } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
 import { useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import type { History } from 'lucide-react';
 import { infinityQueryOptimisticInsert } from '@/shared/lib/infinity-query-optimistic-update';
@@ -19,11 +17,11 @@ export type Message = PrivateMessageSendRequest;
 type History = InfiniteData<OptimisticHistoryResponse>;
 type HistoryData = OptimisticHistoryData;
 
+
 export const useAddMessageToHistory = () => {
   const queryClient = useQueryClient();
 
-  return async (data:  MkOptimisticMessageOptions, key: readonly unknown[]) => {
-    
+  return async (data: MkOptimisticMessageOptions, key: readonly unknown[]) => {
     await queryClient.cancelQueries({ queryKey: key });
     const prevHistory = queryClient.getQueriesData<History>({
       queryKey: key,
@@ -42,20 +40,5 @@ export const useAddMessageToHistory = () => {
 };
 
 export const useSendMessage = () => {
-  const addMessage = useAddMessageToHistory();
-  const me = useMe();
-  return useSendPrivateMessageWithUuidMessageSendPost({
-    mutation: {
-      async onMutate({ data }, { client }) {
-        const historyQueryKey =
-          getGetPrivateChatHistoryHistoryGetInfiniteQueryKey({ chat_id:data.chat_id });
-
-        const prevHistory = await addMessage(
-          { ...data, sender_id: me.data.user_id },
-          historyQueryKey
-        );
-
-      },
-    },
-  });
+  return useSendPrivateMessageWithUuidMessageSendPost();
 };

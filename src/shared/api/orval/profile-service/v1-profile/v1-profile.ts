@@ -338,6 +338,20 @@ export function useGetUserProfileByUserIdUserIdGet<TData = Awaited<ReturnType<ty
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
+/**
+ * @summary Get User Profile By User Id
+ */
+export const prefetchGetUserProfileByUserIdUserIdGetQuery = async <TData = Awaited<ReturnType<typeof getUserProfileByUserIdUserIdGet>>, TError = ErrorType<unknown>>(
+ queryClient: QueryClient, userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserProfileByUserIdUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ): Promise<QueryClient> => {
+
+  const queryOptions = getGetUserProfileByUserIdUserIdGetQueryOptions(userId,options)
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+}
 
 
 

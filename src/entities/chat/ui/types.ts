@@ -6,6 +6,7 @@ import type {
   PrivateChatHistoryResponse,
 } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
 import type { SetOptional } from 'type-fest';
+import type { FormatLoginViaCutomNameFn } from '@/shared/lib/formaters/format-login.types';
 
 export type ChatMessage =
   components['schemas']['PrivateChatHistoryResponse']['data']['items'][number];
@@ -43,7 +44,7 @@ export interface MessageTextProps extends MessageBaseProps {}
 
 export interface ChatParticipantUi {
   userId?: string;
-  avatarName?: string;
+  avatarName?: FormatLoginViaCutomNameFn;
   avatarSrc?: string;
 }
 export type UiMessage = SetOptional<MessageItem, 'message_id'> & {

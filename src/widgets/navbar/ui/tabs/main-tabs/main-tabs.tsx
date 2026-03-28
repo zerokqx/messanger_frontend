@@ -18,7 +18,6 @@ import { SkeletonLayout } from '@/shared/ui/skeletons/index.ts';
 import { TabsMenu } from './ui/menu.tsx';
 import { ErrorAlert } from '@/shared/ui/errors-boundary/index.ts';
 import { SkeletonProfile } from '@/entities/user/index.ts';
-import { ChatCard } from '@/entities/chat';
 import type { ChatListItem } from '@/entities/chat';
 import { RoundedContainerStack } from '@/shared/ui/boxes/index.ts';
 import { ChatsTab } from './ui/chats-tab.tsx';
@@ -47,34 +46,6 @@ const ProfileTab = lazy(() =>
   }))
 );
 
-const MOCK_CHAT_ITEM: ChatListItem = {
-  chat_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  chat_type: 'self',
-  chat_data: {
-    additionalProp1: {},
-  },
-  last_message: {
-    message_id: 0,
-    message_type: ['text'],
-    forward_metadata: {
-      forward_type: 'chat_private_messages',
-      forward_sender_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      forward_message_id: 0,
-      forward_chat_data: 'string',
-    },
-    chat_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    sender_data: 'string',
-    content: 'Пример последнего сообщения для превью карточки',
-    media_link: 'string',
-    is_viewed: true,
-    viewed_at: '2026-03-13T23:32:25.848Z',
-    created_at: '2026-03-13T23:32:25.848Z',
-    updated_at: '2026-03-13T23:32:25.848Z',
-  },
-  created_at: '2026-03-13T23:32:25.848Z',
-  unread_count: 3,
-};
 
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const { refetch } = useSearch();

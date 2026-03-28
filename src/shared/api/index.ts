@@ -14,6 +14,7 @@ export const queryClient = new QueryClient({
   },
 });
 export {
+  delteDb,reInitDb,
   db,
   type Chat,
   type Message,

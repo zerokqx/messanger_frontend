@@ -1,16 +1,11 @@
 import type { Fn } from '@/shared/types/utils/functions';
+import type { FormatLoginResult } from './format-login.ts';
+import type { NullUndefined } from '@/shared/types/utils/null-undefined.ts';
 
 type Params = [
-  login: string | undefined | null,
-  custom_name: string | undefined | null,
+  login: NullUndefined<string>,
+  custom_name: NullUndefined<string>,
   withDog?: boolean,
 ];
 
-export type FormatLoginViaCutomNameFn = Fn<
-  Params,
-  {
-    format: string;
-    name: string;
-    params: Params;
-  }
->;
+export type FormatLoginViaCutomNameFn = Fn<Params, FormatLoginResult>;

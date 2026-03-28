@@ -24,3 +24,12 @@ db.version(1).stores({
   chats: 'user_id, chat_id',
   messages: '++id, chat_id, created_at',
 });
+export const delteDb = async () => {
+  if (db.isOpen()) db.close();
+  await db.delete();
+};
+
+export const reInitDb = async () => {
+  if (db.isOpen()) db.close();
+  await Promise.all([db.delete(), db.open()]);
+};

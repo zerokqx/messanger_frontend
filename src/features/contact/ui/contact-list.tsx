@@ -72,10 +72,6 @@ export const ContactsList = () => {
             }}
             onClick={async () => {
               await setUserId(contact.user_id);
-              // const chat = await smartCreateMutate(contact.user_id);
-              // await navigate({ hash: chat.user_id });
-              // selectedChatAction.doSelect(chat.chat_id);
-              // layoutAction.doSetAside(true);
             }}
           />
         );
