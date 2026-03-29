@@ -1,6 +1,6 @@
 import { border } from '@/shared/lib/css-utils';
 import { lightDark } from '@/shared/lib/light-dark';
-import { Group, Stack } from '@mantine/core';
+import { Grid, Group, Stack } from '@mantine/core';
 
 const props = {
 
@@ -11,3 +11,4 @@ const props = {
 }
 export const RoundedContainerStack = Stack.withProps(props);
 export const RoundedContainerGroup = Group.withProps(props);
+export const RoundedContainerGrid = Grid.withProps(props)

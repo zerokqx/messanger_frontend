@@ -23,24 +23,20 @@ export const SearchResultList = () => {
         const profile = user.profile as ProfileByUserIdData;
 
         return (
-          <div
+          <HorizontalUserCard
             style={{
               cursor: 'pointer',
-              paddingBottom: '8px',
             }}
             onClick={async () => {
               await navigate({ hash: profile.user_id });
               layoutAction.doSetAside(true);
             }}
+            isSelected={uuid === profile.user_id}
+            value={profile}
           >
-            <HorizontalUserCard
-              isSelected={uuid === profile.user_id}
-              value={profile}
-            >
-              <HorizontalUserCard.Avatar />
-              <HorizontalUserCard.Login />
-            </HorizontalUserCard>
-          </div>
+            <HorizontalUserCard.Avatar />
+            <HorizontalUserCard.Login />
+          </HorizontalUserCard>
         );
       }}
     />

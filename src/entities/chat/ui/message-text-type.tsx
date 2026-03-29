@@ -37,6 +37,7 @@ export const MessageText = ({
     <Group
       w={'100%'}
       wrap="nowrap"
+      align='end'
       justify={desktop ? 'start' : 'flex-start'}
       style={{
         flexDirection: isMe ? (desktop ? 'row' : 'row-reverse') : 'row',

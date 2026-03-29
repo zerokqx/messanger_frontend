@@ -1,90 +1,121 @@
-import { ActionIcon, Box, Paper, Stack, Text, Textarea } from '@mantine/core';
-import { ArrowUp, CornerDownLeft } from 'lucide-react';
+import { ActionIcon, Group, Textarea } from '@mantine/core';
+import { useSendMessage } from '@/features/chat';
 import type { KeyboardEvent } from 'react';
-import type { ChatInputProps } from './types';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { Send } from 'lucide-react';
+import { lightDark } from '@/shared/lib/light-dark';
+import { AnimatePresence, m } from 'motion/react';
+import { useChatSession } from '../model/chat-session-context.ts';
+import type { ChatInputProps } from './types.ts';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { chatInputValidation } from '../model/chat-input-validations.ts';
 
+export interface ChatInputFormState {
+  content: string;
+}
 const isEmptyValue = (value: string) => value.trim().length === 0;
 
-export const ChatInput = ({
-  value,
-  onChange,
-  onSubmit,
-  disabled = false,
-  isPending = false,
-  placeholder = 'Напишите сообщение...',
-  inputProps,
-}: ChatInputProps) => {
-  const isDisabled = disabled || isPending;
-  const canSubmit = !isDisabled && !isEmptyValue(value);
+export const ChatInput = ({ inputProps }: ChatInputProps) => {
+  const chatId = useChatSession((state) => state.chatId);
+  const { mutateAsync: sendMessage, isPending } = useSendMessage();
+  const { handleSubmit, register, watch, reset, setFocus } =
+    useForm<ChatInputFormState>({
+      resolver: zodResolver(chatInputValidation),
 
-  const handleSubmit = () => {
-    if (!canSubmit) return;
-    void onSubmit();
+      defaultValues: {
+        content: '',
+      },
+    });
+  const value = watch('content', '');
+  const canSubmit = !isPending && !isEmptyValue(value);
+  const submit: SubmitHandler<ChatInputFormState> = async ({ content }, e) => {
+    e?.preventDefault();
+    if (!chatId || isEmptyValue(content)) return;
+
+    const response = await sendMessage({
+      data: {
+        chat_id: chatId,
+        message_type: ['text'],
+        content,
+      },
+    });
+    if (response.status === 'fine') {
+      setFocus('content');
+      reset();
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key !== 'Enter' || event.shiftKey) return;
     event.preventDefault();
-    handleSubmit();
+    void handleSubmit(submit)();
   };
 
   return (
-    <Paper
-      withBorder
-      radius="xl"
-      p="sm"
-      shadow="sm"
-      style={{
-        backdropFilter: 'blur(10px)',
-      }}
-    >
-      <Stack gap="xs" >
-        <Textarea
-          autosize
-          minRows={1}
-          maxRows={6}
-          value={value}
-          onChange={(event) => onChange(event.currentTarget.value)}
-          onKeyDown={handleKeyDown}
-          disabled={isDisabled}
-          placeholder={placeholder}
-          variant="unstyled"
-          styles={{
-            input: {
-              padding: '0.4rem 0.2rem',
-              fontSize: '0.95rem',
-              lineHeight: 1.5,
-            },
+    <form onSubmit={handleSubmit(submit)} style={{ width: '100%' }}>
+      <Group
+        style={{
+          borderTop: `1px solid ${lightDark('gray.4', 'dark.4')}`,
+        }}
+        mt="sm"
+        w="100%"
+        p="sm"
+        justify="center"
+      >
+        <Group
+          w={{
+            base: '100%',
+            sm: '50rem',
           }}
-          {...inputProps}
-        />
-
-        <Box
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '0.75rem',
-          }}
+          justify="space-between"
+          wrap="nowrap"
+          gap="xs"
         >
-          <Text c="dimmed" size="xs" style={{ display: 'flex', gap: '0.35rem' }}>
-            <CornerDownLeft size={14} />
-            Enter для отправки, Shift + Enter для новой строки
-          </Text>
+          <Textarea
+            w="100%"
+            autosize
+            minRows={1}
+            maxRows={6}
+            disabled={isPending}
+            variant="unstyled"
+            {...inputProps}
+            {...register('content')}
+            onKeyDown={handleKeyDown}
+            styles={{
+              input: {
+                padding: '0.4rem 0.2rem',
+                fontSize: '0.95rem',
+                lineHeight: 1.5,
+              },
+            }}
+          />
 
-          <ActionIcon
-            radius="xl"
-            size="lg"
-            variant="filled"
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            loading={isPending}
-            aria-label="Отправить сообщение"
-          >
-            <ArrowUp size={18} />
-          </ActionIcon>
-        </Box>
-      </Stack>
-    </Paper>
+          <AnimatePresence>
+            {canSubmit && (
+              <m.div
+                key="send"
+                initial={{ scale: 0.85, opacity: 0 }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.85,
+                }}
+                animate={{ scale: 1, opacity: 1 }}
+              >
+                <ActionIcon
+                  radius="xl"
+                  size="lg"
+                  variant="filled"
+                  type="submit"
+                  loading={isPending}
+                  aria-label="Отправить сообщение"
+                >
+                  <Send size={18} />
+                </ActionIcon>
+              </m.div>
+            )}
+          </AnimatePresence>
+        </Group>
+      </Group>
+    </form>
   );
 };

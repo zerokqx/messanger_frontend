@@ -1,1 +1,1 @@
-export {RoundedContainerGroup,RoundedContainerStack} from "./rounded-container.tsx"
+export {RoundedContainerGroup,RoundedContainerStack,RoundedContainerGrid} from "./rounded-container.tsx"

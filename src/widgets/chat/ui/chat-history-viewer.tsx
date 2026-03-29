@@ -59,17 +59,27 @@ export const ChatHistoryViewer = () => {
   }, [historyChat]);
 
   useEffect(() => {
-    setFirstItemIndex(INITIAL_FIRST_ITEM_INDEX);
-    isPrependingRef.current = false;
-    previousLengthRef.current = 0;
-  }, [chatId]);
+    const previousLength = previousLengthRef.current;
+    const currentLength = messages.length;
+
+    if (isPrependingRef.current && currentLength > previousLength) {
+      setFirstItemIndex(
+        (current) => current - (currentLength - previousLength)
+      );
+      isPrependingRef.current = false;
+    }
+
+    previousLengthRef.current = currentLength;
+  }, [chatId, messages.length]);
 
   useLayoutEffect(() => {
     const previousLength = previousLengthRef.current;
     const currentLength = messages.length;
 
     if (isPrependingRef.current && currentLength > previousLength) {
-      setFirstItemIndex((current) => current - (currentLength - previousLength));
+      setFirstItemIndex(
+        (current) => current - (currentLength - previousLength)
+      );
       isPrependingRef.current = false;
     }
 
@@ -145,7 +155,6 @@ export const ChatHistoryViewer = () => {
         flex: 1,
         minHeight: 0,
         overflow: 'hidden',
-        position: 'relative',
         width: '100%',
       }}
     >
@@ -158,12 +167,12 @@ export const ChatHistoryViewer = () => {
         firstItemIndex={firstItemIndex}
         initialTopMostItemIndex={messages.length - 1}
         alignToBottom
+        overscan={20}
+        increaseViewportBy={500}
         style={{ height: '100%', width: '100%' }}
         followOutput={(isAtBottom) => (isAtBottom ? 'smooth' : false)}
         defaultItemHeight={76}
-        computeItemKey={(_, item) =>
-          item.client_id ?? String(item.message_id)
-        }
+        computeItemKey={(_, item) => item.client_id ?? String(item.message_id)}
         startReached={() => {
           handleStartReached();
         }}

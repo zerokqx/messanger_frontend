@@ -1,5 +1,8 @@
 import { ChatCard, useChatList, useSelectedChat } from '@/entities/chat';
 import { hasUserId } from '@/entities/chat/lib/has-user-id';
+import { urlAvatar } from '@/entities/user';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
+import { formatLogin } from '@/shared/lib/formaters';
 import { useNavigate } from '@tanstack/react-router';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -25,10 +28,10 @@ export const ChatsTab = () => {
           void fetchNextPage();
         }
       }}
-      totalCount={chats?.length}
       computeItemKey={(_, chat) => chat.chat_id}
       increaseViewportBy={150}
       itemContent={(_, chat) => {
+        const profile = chat.chat_data as unknown as ProfileByUserIdData;
         return (
           <ChatCard
             onClick={() => {
@@ -37,8 +40,21 @@ export const ChatsTab = () => {
                 hash: hasUserId(chat.chat_data ?? null),
               });
             }}
+             unreadCount={chat.unread_count}
+            ids={{
+              chatId: chat.chat_id,
+              userId: profile.user_id,
+            }}
             isActive={chat.chat_id === selectedChatId}
-            chat={chat}
+            preview={{
+              content: chat.last_message?.content ?? '',
+              createdAt: chat.last_message?.created_at ?? '',
+            }}
+            displayName={formatLogin(profile.login, profile.custom_name).name}
+            avatarSrc={urlAvatar(
+              profile.user_id,
+              profile.avatars?.current?.file_id
+            )}
           />
         );
       }}

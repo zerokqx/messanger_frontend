@@ -38,10 +38,6 @@ export const useSelectedChat = create<
 
 /**
  * Хук для работы с userId через хэш URL
- * @returns {{
- *   userId: string; - текущий userId из хэша
- *   setUserId: (id: string) => Promise<void>; - функция для изменения userId в хэше URL
- * }}
  */
 export function useChatUserId() {
   const router = useRouter();

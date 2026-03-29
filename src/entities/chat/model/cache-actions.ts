@@ -53,3 +53,8 @@ export const useCreateChatFromSocketEvent = () => {
     await queryClient.invalidateQueries({ queryKey: privateClatListQueryKey });
   };
 };
+
+
+
+
+export const useChatUpdate = ()=>{}

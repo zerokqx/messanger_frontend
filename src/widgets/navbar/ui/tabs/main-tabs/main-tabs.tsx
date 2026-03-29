@@ -46,7 +46,6 @@ const ProfileTab = lazy(() =>
   }))
 );
 
-
 export const MainTabs = ({ controller }: MainTabsProps) => {
   const { refetch } = useSearch();
   const bottomApiTabs = Tabs.useBridgeRef();
@@ -126,13 +125,12 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
           </Tabs.Tab>
           <Tabs.Tab value="main">
             <Box p={'xs'} h={'100%'} miw={0}>
-
-            <ErrorBoundary FallbackComponent={ErrorAlert}>
-              <ChatsTab/>
-            </ErrorBoundary>
+              <ErrorBoundary FallbackComponent={ErrorAlert}>
+                <ChatsTab />
+              </ErrorBoundary>
             </Box>
           </Tabs.Tab>
-          <Tabs.TabKeepMounted value="contacts">
+          <Tabs.Tab value="contacts">
             <Box p="xs" h="100%" mih={0}>
               <ErrorBoundary FallbackComponent={ErrorAlert}>
                 <Suspense fallback={<SkeletonLayout />}>
@@ -140,7 +138,7 @@ export const MainTabs = ({ controller }: MainTabsProps) => {
                 </Suspense>
               </ErrorBoundary>
             </Box>
-          </Tabs.TabKeepMounted>
+          </Tabs.Tab>
           <Tabs.Tab animationVariant="slide-y-up" value="profile/edit">
             <Box p={'xs'}>
               <ErrorBoundary FallbackComponent={ErrorAlert}>
