@@ -9,6 +9,7 @@ import { useChatSession } from '../model/chat-session-context.ts';
 import type { ChatInputProps } from './types.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { chatInputValidation } from '../model/chat-input-validations.ts';
+import { useTranslation } from 'react-i18next';
 
 export interface ChatInputFormState {
   content: string;
@@ -16,6 +17,7 @@ export interface ChatInputFormState {
 const isEmptyValue = (value: string) => value.trim().length === 0;
 
 export const ChatInput = ({ inputProps }: ChatInputProps) => {
+  const { t } = useTranslation('chat');
   const chatId = useChatSession((state) => state.chatId);
   const { mutateAsync: sendMessage, isPending } = useSendMessage();
   const { handleSubmit, register, watch, reset, setFocus } =
@@ -57,25 +59,18 @@ export const ChatInput = ({ inputProps }: ChatInputProps) => {
         style={{
           borderTop: `1px solid ${lightDark('gray.4', 'dark.4')}`,
         }}
+        justify='space-between'
         mt="sm"
+        wrap='nowrap'
         w="100%"
         p="sm"
-        justify="center"
       >
-        <Group
-          w={{
-            base: '100%',
-            sm: '50rem',
-          }}
-          justify="space-between"
-          wrap="nowrap"
-          gap="xs"
-        >
           <Textarea
             w="100%"
             autosize
             minRows={1}
             maxRows={6}
+            placeholder={t('input-placeholder')}
             disabled={isPending}
             variant="unstyled"
             {...inputProps}
@@ -107,14 +102,13 @@ export const ChatInput = ({ inputProps }: ChatInputProps) => {
                   variant="filled"
                   type="submit"
                   loading={isPending}
-                  aria-label="Отправить сообщение"
+                  aria-label={t('send-message')}
                 >
                   <Send size={18} />
                 </ActionIcon>
               </m.div>
             )}
           </AnimatePresence>
-        </Group>
       </Group>
     </form>
   );

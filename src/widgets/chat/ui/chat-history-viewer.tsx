@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import { MessageCircleMore } from 'lucide-react';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Virtuoso } from 'react-virtuoso';
 import { useChatSession } from '../model/chat-session-context.ts';
 
@@ -20,13 +21,13 @@ const INITIAL_FIRST_ITEM_INDEX = 100000;
 
 const StackChat = Stack.withProps({
   gap: 'md',
-  maw: '50rem',
   w: '100%',
   mx: 'auto',
   p: 'xs',
 });
 
 export const ChatHistoryViewer = () => {
+  const { t } = useTranslation('chat');
   const chatId = useChatSession((state) => state.chatId);
   const currentUserId = useChatSession((state) => state.currentUser.user_id);
   const currentUserLogin = useChatSession((state) => state.currentUser.login);
@@ -137,10 +138,10 @@ export const ChatHistoryViewer = () => {
                 <MessageCircleMore size={24} />
               </ThemeIcon>
               <Text fw={600} size="lg">
-                Чат пока пуст
+                {t('empty-title')}
               </Text>
               <Text c="dimmed" size="sm">
-                Отправьте первое сообщение, чтобы начать разговор.
+                {t('empty-description')}
               </Text>
             </Stack>
           </Paper>

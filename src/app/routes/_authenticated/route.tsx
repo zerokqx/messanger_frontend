@@ -14,12 +14,10 @@ import { socket, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
 import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
-import { useSelectedChat } from '@/features/chat';
-import { useResponsive } from '@/shared/lib/hooks/use-responsive';
+import { useSelectedChat } from '@/entities/chat';
 import { useAddMessageToHistory } from '@/features/chat/api/send-message';
 import { getGetPrivateChatHistoryHistoryGetInfiniteQueryKey } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import { useCreateChatFromSocketEvent } from '@/entities/chat/model/cache-actions';
-import { useQueryClient } from '@tanstack/react-query';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -42,18 +40,17 @@ export const Route = createFileRoute('/_authenticated')({
       });
   },
   loader: async ({ context: { queryClient } }) => {
-    await queryClient.prefetchQuery(getGetMyProfileMeGetQueryOptions());
+    await queryClient.ensureQueryData(getGetMyProfileMeGetQueryOptions());
   },
 });
 
 function RouteComponent() {
   const createNewChat = useCreateChatFromSocketEvent();
   const addMessage = useAddMessageToHistory();
-  const selectedChat = useSelectedChat((s) => s.data);
+  const selectedChat = useSelectedChat((s) => s.chatId);
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const token = useTokenStore((s) => s.data.access);
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     const onAny = (event: string, ...args: unknown[]) => {
@@ -105,7 +102,7 @@ function RouteComponent() {
       socket.off('chat_private:new_message', onMessage);
       socket.offAny(onAny);
     };
-  }, [addMessage, token]);
+  }, [addMessage, createNewChat, token]);
 
   return (
     <AppShell

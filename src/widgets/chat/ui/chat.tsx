@@ -75,7 +75,7 @@ export const ChatWidget = (_props: ChatWidgetProps) => {
   return (
     // eslint-disable-next-line react-x/no-context-provider
     <ChatSessionContext.Provider value={sessionValue}>
-      <Stack h="100%" align="center" mih={0} gap={0}>
+      <Stack h="100%"  mih={0} gap={0}>
         <ChatHeader />
         {chatId ? (
           <Suspense>

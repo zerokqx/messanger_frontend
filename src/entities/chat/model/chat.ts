@@ -56,7 +56,7 @@ export function useChatUserId() {
     async (nextUserId: string) => {
       await router.navigate({ hash: nextUserId });
     },
-    [router]
+    [ router]
   );
 
   return { userId, setUserId };
