@@ -161,9 +161,6 @@ export const ChatHistoryViewer = () => {
     >
       <Virtuoso
         key={chatId}
-        components={{
-          List: StackChat,
-        }}
         data={messages}
         firstItemIndex={firstItemIndex}
         initialTopMostItemIndex={messages.length - 1}
@@ -177,26 +174,32 @@ export const ChatHistoryViewer = () => {
         startReached={() => {
           handleStartReached();
         }}
-        itemContent={(_, item) =>
-          item.message_type.includes('system') ? (
-            <SystemMessage message={item} />
-          ) : (
-            <MessageText
-              message={item}
-              userIdOfCurrentUser={currentUserId}
-              avatarName={
-                item.sender_id === currentUserId
-                  ? currentUserLogin
-                  : targetUserName
-              }
-              avatarSrc={
-                item.sender_id === currentUserId
-                  ? currentUserAvatar
-                  : targetUserAvatar
-              }
-            />
-          )
-        }
+        itemContent={(_, item) => (
+          <Box
+            pb={'xs'}
+            pl={{ base: 'xs', sm: 'xl' }}
+            pr={{ base: 'xs', sm: 'xl' }}
+          >
+            {item.message_type.includes('system') ? (
+              <SystemMessage message={item} />
+            ) : (
+              <MessageText
+                message={item}
+                userIdOfCurrentUser={currentUserId}
+                avatarName={
+                  item.sender_id === currentUserId
+                    ? currentUserLogin
+                    : targetUserName
+                }
+                avatarSrc={
+                  item.sender_id === currentUserId
+                    ? currentUserAvatar
+                    : targetUserAvatar
+                }
+              />
+            )}
+          </Box>
+        )}
       />
       {isFetchingNextPage && (
         <Center

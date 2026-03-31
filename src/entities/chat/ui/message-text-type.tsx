@@ -22,7 +22,6 @@ export const MessageText = ({
   const primary = useSettingsStore((s) => s.data.primaryColor);
 
   const isMe = userIdOfCurrentUser === message.sender_id;
-
   const bgColor = isMe
     ? theme.colors[primary][6]
     : lightDark('dark.9', 'dark.8');
@@ -37,8 +36,7 @@ export const MessageText = ({
     <Group
       w={'100%'}
       wrap="nowrap"
-      align='end'
-      justify={desktop ? 'start' : 'flex-start'}
+      align="end"
       style={{
         flexDirection: isMe ? (desktop ? 'row' : 'row-reverse') : 'row',
         gap: '12px',

@@ -84,6 +84,7 @@ export default defineConfig({
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
+
       override: {
         operations: {
           get_user_profile_by_user_id__user_id__get: {
@@ -94,7 +95,16 @@ export default defineConfig({
         },
         mutator: MUTATOR_CONFIG,
 
-        query: { useSuspenseQuery: true },
+        query: {
+          useSuspenseQuery: true,
+
+          mutationInvalidates: [
+            {
+              onMutations: ['edit_profile_edit_put'],
+              invalidates: ['get_my_profile_me_get'],
+            },
+          ],
+        },
       },
     },
   },

@@ -61,12 +61,6 @@ export interface ApiSchemasUserIdProfilePermissionsResponse {
   allow_message_forwarding: boolean;
   /** Принимать сообщения от незнакомцев */
   allow_messages_from_non_contacts: boolean;
-  /** Разрешить чаты хранить на сервере */
-  allow_server_chats: boolean;
-  /** Принудительное автоудаление в ЛС */
-  force_auto_delete_messages_in_private: boolean;
-  /** Макс. таймер удаления сообщений */
-  max_message_auto_delete_seconds?: number | null;
 }
 
 export interface RelationshipStatusResponse {
@@ -160,8 +154,6 @@ export interface ApiSchemasMeProfilePermissionsResponse {
   show_bio_to_non_contacts: boolean;
   /** Показывать сторисы не-контактам */
   show_stories_to_non_contacts: boolean;
-  /** Разрешить чаты хранить на сервере */
-  allow_server_chats: boolean;
   /**
    * Кто может приглашать в паблики (0 - все, 1 - контакты, 2 - никто)
    * @minimum 0
@@ -180,10 +172,6 @@ export interface ApiSchemasMeProfilePermissionsResponse {
    * @maximum 2
    */
   call_permission: number;
-  /** Принудительное автоудаление в ЛС */
-  force_auto_delete_messages_in_private: boolean;
-  /** Макс. таймер удаления сообщений */
-  max_message_auto_delete_seconds?: number | null;
   /** Автоудаление аккаунта через X дней */
   auto_delete_after_days?: number | null;
 }
@@ -232,18 +220,12 @@ export interface ProfilePermissionsRequest {
   show_bio_to_non_contacts?: boolean | null;
   /** Показывать сторисы не-контактам */
   show_stories_to_non_contacts?: boolean | null;
-  /** Разрешить чаты хранить на сервере */
-  allow_server_chats?: boolean | null;
   /** Кто может приглашать в паблики (0 - все, 1 - контакты, 2 - никто) */
   public_invite_permission?: number | null;
   /** Кто может приглашать в беседы (0 - все, 1 - контакты, 2 - никто) */
   group_invite_permission?: number | null;
   /** Кто может звонить (0 - все, 1 - контакты, 2 - никто) */
   call_permission?: number | null;
-  /** Принудительное автоудаление в ЛС */
-  force_auto_delete_messages_in_private?: boolean | null;
-  /** Макс. таймер удаления сообщений */
-  max_message_auto_delete_seconds?: number | null;
   /** Автоудаление аккаунта через X дней */
   auto_delete_after_days?: number | null;
 }
@@ -265,10 +247,14 @@ export interface ProfileUpdateRequest {
 export interface UserProfileRequest {
   user_id: string;
   current_user: string;
+  full_profile: boolean;
+  with_permissions: boolean;
 }
 
 export interface UserProfilesRequest {
   user_id: string;
   user_ids: string[];
+  full_profile: boolean;
+  with_permissions: boolean;
 }
 

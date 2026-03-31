@@ -15,7 +15,6 @@ import type {
 
 export type Message = PrivateMessageSendRequest;
 type History = InfiniteData<OptimisticHistoryResponse>;
-type HistoryData = OptimisticHistoryData;
 
 
 export const useAddMessageToHistory = () => {

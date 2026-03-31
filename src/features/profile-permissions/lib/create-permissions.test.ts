@@ -28,15 +28,21 @@ describe('createPermissions', () => {
     expect(typeof result.public_invite_permission).toBe('string');
     expect(typeof result.group_invite_permission).toBe('string');
     expect(typeof result.call_permission).toBe('string');
-    expect(typeof result.max_message_auto_delete_seconds).toBe('string');
     expect(typeof result.auto_delete_after_days).toBe('string');
 
     expect(typeof result.is_searchable).toBe('boolean');
   });
 
   it('должна корректно трансформировать числовые значения в строки', () => {
-    expect(result.max_message_auto_delete_seconds).toBe('3600');
     expect(result.auto_delete_after_days).toBe('7');
+  });
+
+  it('не должна включать удалённые из формы поля', () => {
+    expect(result).not.toHaveProperty('allow_server_chats');
+    expect(result).not.toHaveProperty(
+      'force_auto_delete_messages_in_private'
+    );
+    expect(result).not.toHaveProperty('max_message_auto_delete_seconds');
   });
 
   it('проверка статических типов (TypeScript)', () => {

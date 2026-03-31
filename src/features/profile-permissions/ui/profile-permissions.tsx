@@ -1,8 +1,5 @@
 import { useProfilePut } from '@/features/profile-put';
-import { getGetMyProfileMeGetQueryKey } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
-import { usePlurarDates } from '@/shared/lib/hooks/use-date';
-import { useQueryClient } from '@tanstack/react-query';
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   createPermissions,
@@ -15,6 +12,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, Select, Button, Stack } from '@mantine/core';
 import { useTails } from '@/shared/lib/tails';
 import { RoundedContainerStack } from '@/shared/ui/boxes';
+import { notify } from '@/shared/lib/notifications';
 
 type Permissions = components['schemas']['ProfileData'];
 
@@ -22,12 +20,8 @@ export const ProfilePermissions = memo(
   ({ permissions }: { permissions: Permissions }) => {
     const { t } = useTranslation([
       'permisions',
-      'plurar-data',
       'button-labels',
     ]);
-    const hoursPlurar = usePlurarDates((s) => s.hours);
-    const daysPlurar = usePlurarDates((s) => s.days);
-    const queryClient = useQueryClient();
 
     const {
       register,
@@ -49,34 +43,37 @@ export const ProfilePermissions = memo(
           },
         },
         {
-          async onSuccess() {
-            await queryClient.invalidateQueries({
-              queryKey: getGetMyProfileMeGetQueryKey(),
-            });
+          onSuccess() {
+            notify.success();
           },
         }
       );
     };
 
-    const selectData = useMemo(() => {
-      const everyoneContactsNobody = [
-        { label: t('permisions:everyone'), value: '0' },
-        { label: t('permisions:contacts'), value: '1' },
-        { label: t('permisions:nobody'), value: '2' },
-      ];
+    const everyoneContactsNobodyData = [
+      { label: t('permisions:everyone'), value: '0' },
+      { label: t('permisions:contacts'), value: '1' },
+      { label: t('permisions:nobody'), value: '2' },
+    ];
 
-      const hours = hoursPlurar.map(([oriignal, hour]) => ({
-        label: hour,
-        value: String(oriignal * 3600),
-      }));
-
-      const days = daysPlurar.map(([original, day]) => ({
-        label: day,
-        value: original.toString(),
-      }));
-
-      return { everyoneContactsNobody, hours, days };
-    }, [t, hoursPlurar, daysPlurar]);
+    const autoDeleteAfterDaysData = [
+      {
+        label: t('permisions:auto_delete_after_days_1_month'),
+        value: '30',
+      },
+      {
+        label: t('permisions:auto_delete_after_days_3_months'),
+        value: '90',
+      },
+      {
+        label: t('permisions:auto_delete_after_days_6_months'),
+        value: '180',
+      },
+      {
+        label: t('permisions:auto_delete_after_days_12_months'),
+        value: '365',
+      },
+    ];
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -106,45 +103,33 @@ export const ProfilePermissions = memo(
               {...register('show_stories_to_non_contacts')}
               label={t('permisions:show_stories_to_non_contacts')}
             />
-            <Checkbox
-              {...register('allow_server_chats')}
-              label={t('permisions:allow_server_chats')}
-            />
-            <Checkbox
-              {...register('force_auto_delete_messages_in_private')}
-              label={t('permisions:force_auto_delete_messages_in_private')}
-            />
           </RoundedContainerStack>
           <RoundedContainerStack bdrs={0}>
+            <Controller
+              name="last_seen_visibility"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  variant="filled"
+                  {...field}
+                  label={t('permisions:last_seen_visibility')}
+                  data={everyoneContactsNobodyData}
+                />
+              )}
+            />
 
-          <Controller
-            name="last_seen_visibility"
-            control={control}
-            render={({ field }) => (
-
-              <Select
-                  variant='filled'
-                {...field}
-                label={t('permisions:last_seen_visibility')}
-                data={selectData.everyoneContactsNobody}
-              />
-            )}
-          />
-
-          <Controller
-            name="call_permission"
-            control={control}
-            render={({ field }) => (
-              <Select
-
-                  variant='filled'
-                {...field}
-                label={t('permisions:call_permission')}
-                data={selectData.everyoneContactsNobody}
-              />
-            )}
-          />
-
+            <Controller
+              name="call_permission"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  variant="filled"
+                  {...field}
+                  label={t('permisions:call_permission')}
+                  data={everyoneContactsNobodyData}
+                />
+              )}
+            />
           </RoundedContainerStack>
           <RoundedContainerStack bdrs={0}>
             <Controller
@@ -155,7 +140,7 @@ export const ProfilePermissions = memo(
                   {...field}
                   variant="filled"
                   label={t('permisions:public_invite_permission')}
-                  data={selectData.everyoneContactsNobody}
+                  data={everyoneContactsNobodyData}
                 />
               )}
             />
@@ -168,49 +153,22 @@ export const ProfilePermissions = memo(
                   {...field}
                   variant="filled"
                   label={t('permisions:group_invite_permission')}
-                  data={selectData.everyoneContactsNobody}
+                  data={everyoneContactsNobodyData}
                 />
               )}
             />
           </RoundedContainerStack>
 
-
           <RoundedContainerStack bdrs={0}>
-            <Controller
-              name="max_message_auto_delete_seconds"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  variant='filled'
-                  {...field}
-                  label={t('permisions:max_message_auto_delete_seconds')}
-                  data={[
-                    {
-                      value: 'null',
-                      label: t('permisions:do_not_delete'),
-                    },
-                    ...selectData.hours,
-                  ]}
-                />
-              )}
-            />
-
             <Controller
               name="auto_delete_after_days"
               control={control}
               render={({ field }) => (
                 <Select
-
-                  variant='filled'
+                  variant="filled"
                   {...field}
                   label={t('permisions:auto_delete_after_days')}
-                  data={[
-                    {
-                      value: 'null',
-                      label: t('permisions:do_not_delete'),
-                    },
-                    ...selectData.days,
-                  ]}
+                  data={autoDeleteAfterDaysData}
                 />
               )}
             />

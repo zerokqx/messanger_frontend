@@ -5,16 +5,20 @@ import type { Stringified, Simplify } from 'type-fest';
 type Permissions =
   components['schemas']['api__schemas__me__ProfilePermissionsResponse'];
 
+type RemovedFields =
+  | 'allow_server_chats'
+  | 'force_auto_delete_messages_in_private'
+  | 'max_message_auto_delete_seconds';
+
 type StringifiedFields =
   | 'last_seen_visibility'
   | 'public_invite_permission'
   | 'group_invite_permission'
   | 'call_permission'
-  | 'max_message_auto_delete_seconds'
   | 'auto_delete_after_days';
 
 export type PermissionsStringify = Simplify<
-  Omit<Permissions, StringifiedFields> &
+  Omit<Permissions, StringifiedFields | RemovedFields> &
     Stringified<Pick<Permissions, StringifiedFields>>
 >;
 
@@ -30,19 +34,12 @@ export const createPermissions = (
       permission.show_profile_photo_to_non_contacts,
     show_bio_to_non_contacts: permission.show_bio_to_non_contacts,
     show_stories_to_non_contacts: permission.show_stories_to_non_contacts,
-    allow_server_chats: permission.allow_server_chats,
-    force_auto_delete_messages_in_private:
-      permission.force_auto_delete_messages_in_private,
     last_seen_visibility: toString(permission.last_seen_visibility),
     public_invite_permission: toString(permission.public_invite_permission),
     group_invite_permission: toString(permission.group_invite_permission),
     call_permission: toString(permission.call_permission),
-    max_message_auto_delete_seconds: String(
-      permission.max_message_auto_delete_seconds
-    ),
     auto_delete_after_days: String(permission.auto_delete_after_days),
   };
 };
-
 
 

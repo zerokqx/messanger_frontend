@@ -89,7 +89,7 @@ AXIOS_INSTANCE.interceptors.response.use(
       originalConfig.headers = originalConfig.headers ?? {};
       originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
 
-      return void AXIOS_INSTANCE(originalConfig);
+      return AXIOS_INSTANCE(originalConfig);
     } catch {
       tokenAction.doReset();
       return Promise.reject(new Error('Refresh error'));
