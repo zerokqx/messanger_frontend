@@ -25,8 +25,8 @@ import type {
 
 import type {
   AvatarBatchRequest,
-  BodyUploadAvatarUploadAvatarPost,
-  DownloadAvatarDownloadAvatarUserIdGetParams,
+  BodyUploadAvatarAvatarUploadPost,
+  DownloadAvatarAvatarDownloadUserIdGetParams,
   HTTPValidationError,
   UploadAvatarResponse
 } from '../storage-service.schemas';
@@ -42,16 +42,16 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 /**
  * @summary Upload Avatar
  */
-export const uploadAvatarUploadAvatarPost = (
-    bodyUploadAvatarUploadAvatarPost: BodyType<BodyUploadAvatarUploadAvatarPost>,
+export const uploadAvatarAvatarUploadPost = (
+    bodyUploadAvatarAvatarUploadPost: BodyType<BodyUploadAvatarAvatarUploadPost>,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       const formData = new FormData();
-formData.append(`file`, bodyUploadAvatarUploadAvatarPost.file);
+formData.append(`file`, bodyUploadAvatarAvatarUploadPost.file);
 
       return customInstance<UploadAvatarResponse>(
-      {url: `/v1/storage/upload/avatar`, method: 'POST',
+      {url: `/v1/storage/avatar/upload`, method: 'POST',
        data: formData, signal
     },
       options);
@@ -59,11 +59,11 @@ formData.append(`file`, bodyUploadAvatarUploadAvatarPost.file);
   
 
 
-export const getUploadAvatarUploadAvatarPostMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadAvatarUploadAvatarPost>>, TError,{data: BodyType<BodyUploadAvatarUploadAvatarPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof uploadAvatarUploadAvatarPost>>, TError,{data: BodyType<BodyUploadAvatarUploadAvatarPost>}, TContext> => {
+export const getUploadAvatarAvatarUploadPostMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadAvatarAvatarUploadPost>>, TError,{data: BodyType<BodyUploadAvatarAvatarUploadPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof uploadAvatarAvatarUploadPost>>, TError,{data: BodyType<BodyUploadAvatarAvatarUploadPost>}, TContext> => {
 
-const mutationKey = ['uploadAvatarUploadAvatarPost'];
+const mutationKey = ['uploadAvatarAvatarUploadPost'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -73,10 +73,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadAvatarUploadAvatarPost>>, {data: BodyType<BodyUploadAvatarUploadAvatarPost>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadAvatarAvatarUploadPost>>, {data: BodyType<BodyUploadAvatarAvatarUploadPost>}> = (props) => {
           const {data} = props ?? {};
 
-          return  uploadAvatarUploadAvatarPost(data,requestOptions)
+          return  uploadAvatarAvatarUploadPost(data,requestOptions)
         }
 
 
@@ -86,35 +86,35 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UploadAvatarUploadAvatarPostMutationResult = NonNullable<Awaited<ReturnType<typeof uploadAvatarUploadAvatarPost>>>
-    export type UploadAvatarUploadAvatarPostMutationBody = BodyType<BodyUploadAvatarUploadAvatarPost>
-    export type UploadAvatarUploadAvatarPostMutationError = ErrorType<unknown>
+    export type UploadAvatarAvatarUploadPostMutationResult = NonNullable<Awaited<ReturnType<typeof uploadAvatarAvatarUploadPost>>>
+    export type UploadAvatarAvatarUploadPostMutationBody = BodyType<BodyUploadAvatarAvatarUploadPost>
+    export type UploadAvatarAvatarUploadPostMutationError = ErrorType<unknown>
 
     /**
  * @summary Upload Avatar
  */
-export const useUploadAvatarUploadAvatarPost = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadAvatarUploadAvatarPost>>, TError,{data: BodyType<BodyUploadAvatarUploadAvatarPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useUploadAvatarAvatarUploadPost = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadAvatarAvatarUploadPost>>, TError,{data: BodyType<BodyUploadAvatarAvatarUploadPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof uploadAvatarUploadAvatarPost>>,
+        Awaited<ReturnType<typeof uploadAvatarAvatarUploadPost>>,
         TError,
-        {data: BodyType<BodyUploadAvatarUploadAvatarPost>},
+        {data: BodyType<BodyUploadAvatarAvatarUploadPost>},
         TContext
       > => {
-      return useMutation(getUploadAvatarUploadAvatarPostMutationOptions(options), queryClient);
+      return useMutation(getUploadAvatarAvatarUploadPostMutationOptions(options), queryClient);
     }
     /**
  * @summary Download Avatar
  */
-export const downloadAvatarDownloadAvatarUserIdGet = (
+export const downloadAvatarAvatarDownloadUserIdGet = (
     userId: string,
-    params: DownloadAvatarDownloadAvatarUserIdGetParams,
+    params: DownloadAvatarAvatarDownloadUserIdGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<unknown>(
-      {url: `/v1/storage/download/avatar/${userId}`, method: 'GET',
+      {url: `/v1/storage/avatar/download/${userId}`, method: 'GET',
         params, signal
     },
       options);
@@ -123,75 +123,75 @@ export const downloadAvatarDownloadAvatarUserIdGet = (
 
 
 
-export const getDownloadAvatarDownloadAvatarUserIdGetQueryKey = (userId: string,
-    params?: DownloadAvatarDownloadAvatarUserIdGetParams,) => {
+export const getDownloadAvatarAvatarDownloadUserIdGetQueryKey = (userId: string,
+    params?: DownloadAvatarAvatarDownloadUserIdGetParams,) => {
     return [
-    `/v1/storage/download/avatar/${userId}`, ...(params ? [params] : [])
+    `/v1/storage/avatar/download/${userId}`, ...(params ? [params] : [])
     ] as const;
     }
 
     
-export const getDownloadAvatarDownloadAvatarUserIdGetQueryOptions = <TData = Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError = ErrorType<HTTPValidationError>>(userId: string,
-    params: DownloadAvatarDownloadAvatarUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getDownloadAvatarAvatarDownloadUserIdGetQueryOptions = <TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(userId: string,
+    params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getDownloadAvatarDownloadAvatarUserIdGetQueryKey(userId,params);
+  const queryKey =  queryOptions?.queryKey ?? getDownloadAvatarAvatarDownloadUserIdGetQueryKey(userId,params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>> = ({ signal }) => downloadAvatarDownloadAvatarUserIdGet(userId,params, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>> = ({ signal }) => downloadAvatarAvatarDownloadUserIdGet(userId,params, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type DownloadAvatarDownloadAvatarUserIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>>
-export type DownloadAvatarDownloadAvatarUserIdGetQueryError = ErrorType<HTTPValidationError>
+export type DownloadAvatarAvatarDownloadUserIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>>
+export type DownloadAvatarAvatarDownloadUserIdGetQueryError = ErrorType<HTTPValidationError>
 
 
-export function useDownloadAvatarDownloadAvatarUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
  userId: string,
-    params: DownloadAvatarDownloadAvatarUserIdGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError, TData>> & Pick<
+    params: DownloadAvatarAvatarDownloadUserIdGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>,
+          Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>,
           TError,
-          Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>
+          Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDownloadAvatarDownloadAvatarUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
  userId: string,
-    params: DownloadAvatarDownloadAvatarUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError, TData>> & Pick<
+    params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>,
+          Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>,
           TError,
-          Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>
+          Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDownloadAvatarDownloadAvatarUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
  userId: string,
-    params: DownloadAvatarDownloadAvatarUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+    params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Download Avatar
  */
 
-export function useDownloadAvatarDownloadAvatarUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
  userId: string,
-    params: DownloadAvatarDownloadAvatarUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarDownloadAvatarUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+    params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getDownloadAvatarDownloadAvatarUserIdGetQueryOptions(userId,params,options)
+  const queryOptions = getDownloadAvatarAvatarDownloadUserIdGetQueryOptions(userId,params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

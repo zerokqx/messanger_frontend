@@ -31,7 +31,7 @@ export function AuhtPage() {
 
   return (
     <>
-      <Modal.Stack >
+      <Modal.Stack>
         <Suspense fallback={null}>
           <LoginModalLazy
             title={t('auth:enter')}
@@ -54,6 +54,9 @@ export function AuhtPage() {
           </LoginModalLazy>
           <RegisterModalLazy
             fullScreen={mobile}
+            onSuccessRegister={() => {
+              stack.open('login');
+            }}
             title={t('auth:register')}
             centered
             {...stack.register('register')}
@@ -91,9 +94,8 @@ export function AuhtPage() {
           <Group gap={'md'} justify={'space-around'} wrap="wrap-reverse">
             <Button
               onClick={() => {
-
                 stack.open('login');
-                navigator.vibrate(10)
+                navigator.vibrate(10);
               }}
               bdrs={'xl'}
             >
@@ -102,7 +104,7 @@ export function AuhtPage() {
             <Button
               onClick={() => {
                 stack.open('register');
-                navigator.vibrate(10)
+                navigator.vibrate(10);
               }}
               variant="subtle"
               bdrs={'xl'}

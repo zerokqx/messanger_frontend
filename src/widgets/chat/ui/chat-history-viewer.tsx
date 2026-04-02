@@ -19,13 +19,6 @@ import { useChatSession } from '../model/chat-session-context.ts';
 
 const INITIAL_FIRST_ITEM_INDEX = 100000;
 
-const StackChat = Stack.withProps({
-  gap: 'md',
-  w: '100%',
-  mx: 'auto',
-  p: 'xs',
-});
-
 export const ChatHistoryViewer = () => {
   const { t } = useTranslation('chat');
   const chatId = useChatSession((state) => state.chatId);
@@ -174,32 +167,38 @@ export const ChatHistoryViewer = () => {
         startReached={() => {
           handleStartReached();
         }}
-        itemContent={(_, item) => (
-          <Box
-            pb={'xs'}
-            pl={{ base: 'xs', sm: 'xl' }}
-            pr={{ base: 'xs', sm: 'xl' }}
-          >
-            {item.message_type.includes('system') ? (
-              <SystemMessage message={item} />
-            ) : (
-              <MessageText
-                message={item}
-                userIdOfCurrentUser={currentUserId}
-                avatarName={
-                  item.sender_id === currentUserId
-                    ? currentUserLogin
-                    : targetUserName
-                }
-                avatarSrc={
-                  item.sender_id === currentUserId
-                    ? currentUserAvatar
-                    : targetUserAvatar
-                }
-              />
-            )}
-          </Box>
-        )}
+        itemContent={(index, item) => {
+          
+          const localIndex = index - firstItemIndex;
+          return (
+            <Box
+              pb={'xs'}
+              pl={{ base: 'xs', sm: 'xl' }}
+              pr={{ base: 'xs', sm: 'xl' }}
+            >
+              {item.message_type.includes('system') ? (
+                <SystemMessage message={item} />
+              ) : (
+                <MessageText
+                  message={item}
+                    nextUserIdOfMessage={messages[localIndex+1]?.sender_id}
+                    previousUserIdOfMessage={messages[localIndex-1]?.sender_id}
+                  userIdOfCurrentUser={currentUserId}
+                  avatarName={
+                    item.sender_id === currentUserId
+                      ? currentUserLogin
+                      : targetUserName
+                  }
+                  avatarSrc={
+                    item.sender_id === currentUserId
+                      ? currentUserAvatar
+                      : targetUserAvatar
+                  }
+                />
+              )}
+            </Box>
+          );
+        }}
       />
       {isFetchingNextPage && (
         <Center

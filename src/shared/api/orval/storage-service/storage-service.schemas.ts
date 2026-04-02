@@ -17,7 +17,7 @@ export interface BaseResponse {
   data: MessageData;
 }
 
-export interface BodyUploadAvatarUploadAvatarPost {
+export interface BodyUploadAvatarAvatarUploadPost {
   file: Blob;
 }
 
@@ -41,7 +41,7 @@ export interface UploadAvatarResponse {
   data: UploadAvatarData;
 }
 
-export type DownloadAvatarDownloadAvatarUserIdGetParams = {
+export type DownloadAvatarAvatarDownloadUserIdGetParams = {
 file_id: string;
 };
 

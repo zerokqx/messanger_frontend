@@ -48,6 +48,33 @@ export interface PermissionsResponse {
   you_can_call_permission: boolean;
 }
 
+export type VerificationType = typeof VerificationType[keyof typeof VerificationType];
+
+
+export const VerificationType = {
+  system: 'system',
+  verified: 'verified',
+  partner: 'partner',
+} as const;
+
+/**
+ * Элемент верификации (галочка)
+ */
+export interface VerificationItem {
+  /** Тип верификации: system | verified | partner */
+  type: VerificationType;
+  /** Причина выдачи (например, 'Официальный аккаунт') */
+  reason?: string | null;
+  /** ID пользователя, выдавшего галочку */
+  issuer_id: string;
+  /** Имя эмитента (например, 'Yobble') */
+  issuer_name?: string | null;
+  /** Дата выдачи */
+  issued_at?: string | null;
+  /** Дата истечения (null = бессрочно) */
+  expires_at?: string | null;
+}
+
 export interface RatingData {
   rating?: number | null;
   /** fine | unavailable | blocked | deleted */
@@ -84,7 +111,11 @@ export interface ProfileByUserIdData {
   custom_name?: string | null;
   /** Биография */
   bio?: string | null;
-  /** Подтвержденный (официальный) аккаунт */
+  /** Основная верификация пользователя (system или verified) */
+  verification?: VerificationItem | null;
+  /** Список партнёрских верификаций */
+  partner_verifications?: VerificationItem[];
+  /** устарело, использовать verification и partner_verifications */
   is_verified?: boolean | null;
   /** Системный аккаунт */
   is_system?: boolean | null;
@@ -189,7 +220,11 @@ export interface ProfileData {
   full_name?: string | null;
   /** Биография */
   bio?: string | null;
-  /** Подтвержденный (официальный) аккаунт */
+  /** Основная верификация пользователя (system или verified) */
+  verification?: VerificationItem | null;
+  /** Список партнёрских верификаций */
+  partner_verifications?: VerificationItem[];
+  /** устарело, использовать verification и partner_verifications */
   is_verified?: boolean | null;
   /** Рейтинг пользователя */
   rating: RatingData;

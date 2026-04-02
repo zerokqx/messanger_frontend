@@ -38,6 +38,8 @@ export interface MessageBaseProps {
   avatarSrc?: string;
   userIdOfCurrentUser: string;
   message: UiMessage;
+  nextUserIdOfMessage?:string
+  previousUserIdOfMessage?: string
 }
 
 export interface MessageTextProps extends MessageBaseProps {}

@@ -6,15 +6,10 @@ export type {
 } from './socket.types.ts';
 import { QueryClient } from '@tanstack/react-query';
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      gcTime: 60 * 100000,
-    },
-  },
-});
+export const queryClient = new QueryClient({});
 export {
-  delteDb,reInitDb,
+  delteDb,
+  reInitDb,
   db,
   type Chat,
   type Message,
@@ -22,4 +17,4 @@ export {
   type DexieChatId,
   type DexieUserId,
 } from './db.ts';
-export * from "./socket.types.ts"
+export * from './socket.types.ts';

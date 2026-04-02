@@ -1,3 +1,5 @@
+import { useLogger } from "react-use";
+
 // logger.ts
 const LOG_LEVEL = {
   DEBUG: 0,

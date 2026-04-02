@@ -15,6 +15,7 @@ import { ratingColor } from '../lib/rating-color';
 import { useCreatedAt } from '../lib';
 import { useSettingsStore } from '@/shared/lib/settings';
 import { urlAvatar } from '../api';
+import Logger from '@/shared/lib/logger/logger';
 
 interface ProfileForCurrentUserBaseProps {
   profile: components['schemas']['ProfileData'];
@@ -38,6 +39,7 @@ export const ProfileForCurrentUser = ({
   const { t } = useTranslation(['button-labels', 'profile']);
   const createdAt = useCreatedAt(profile.created_at);
   const primaryColor = useSettingsStore((s) => s.data.primaryColor);
+  Logger.debug('profile-for-current-user.tsx', 'Current profile', [profile]);
 
   return (
     <Stack>

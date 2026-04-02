@@ -14,10 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { getGetContactCountContactCountGetQueryKey } from '@/shared/api/orval/user-service/v1-user/v1-user.ts';
-
-const asyncStoragePersister = createAsyncStoragePersister({
-  storage: AsyncStorage,
-});
+import { QueryClientProvider } from '@tanstack/react-query';
 
 const loadFeatures = () =>
   import('./features-dom-animation.ts').then((res) => res.default);
@@ -43,9 +40,8 @@ export const Wrapper = () => {
         defaultColorScheme="light"
       >
           <LazyMotion strict features={loadFeatures}>
-            <PersistQueryClientProvider
+            <QueryClientProvider
               client={queryClient}
-              persistOptions={{ persister: asyncStoragePersister }}
             >
               <I18nextProvider i18n={i18n}>
                 <ModalsProvider>
@@ -61,7 +57,7 @@ export const Wrapper = () => {
                 </ModalsProvider>
                 <NotificationStyled />
               </I18nextProvider>
-            </PersistQueryClientProvider>
+            </QueryClientProvider>
           </LazyMotion>
       </MantineProvider>
     </StrictMode>
