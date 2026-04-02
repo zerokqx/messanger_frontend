@@ -71,7 +71,6 @@ export const ChatInput = ({ inputProps }: ChatInputProps) => {
             minRows={1}
             maxRows={6}
             placeholder={t('input-placeholder')}
-            disabled={isPending}
             variant="unstyled"
             {...inputProps}
             {...register('content')}

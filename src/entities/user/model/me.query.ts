@@ -41,6 +41,18 @@ export const useMe = () => {
   });
 };
 
+
+export const useMeUserId = () => {
+  return useGetMyProfileMeGetSuspense({
+    query: {
+      select(response) {
+        return response.data.user_id;
+      },
+      staleTime: Infinity,
+    },
+  });
+};
+
 export const useMeDescriptor: DescriptorImplementator<ProfileData, []> = (
   options
 ) => {

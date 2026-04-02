@@ -58,7 +58,7 @@ export const MessageText = ({
         <Text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
           {message.content}
         </Text>
-        {/* {message.is_viewed && <CheckCheck />} */}
+        {message.is_viewed && <CheckCheck />}
       </RoundedContainerGroup>
     </Group>
   );

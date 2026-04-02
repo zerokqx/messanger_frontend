@@ -18,6 +18,7 @@ import { useSelectedChat } from '@/entities/chat';
 import { useAddMessageToHistory } from '@/features/chat/api/send-message';
 import { getGetPrivateChatHistoryHistoryGetInfiniteQueryKey } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import { useCreateChatFromSocketEvent } from '@/entities/chat/model/cache-actions';
+import { useMeUserId } from '@/entities/user';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -45,6 +46,7 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 function RouteComponent() {
+  const { data: meUserId } = useMeUserId();
   const createNewChat = useCreateChatFromSocketEvent();
   const addMessage = useAddMessageToHistory();
   const selectedChat = useSelectedChat((s) => s.chatId);
@@ -72,37 +74,38 @@ function RouteComponent() {
           chat_id: message.chat_id,
         });
 
-      await addMessage(
-        {
-          chat_id: message.chat_id,
-          content: message.content,
-          message_type: message.message_type,
-          sender_id: message.sender_id,
-        },
-        historyQueryKey
-      );
+      if (meUserId !== event.payload.sender_id) {
+        await addMessage(
+          {
+            chat_id: message.chat_id,
+            content: message.content,
+            message_type: message.message_type,
+            sender_id: message.sender_id,
+          },
+          historyQueryKey
+        );
+      }
     };
 
     socket.auth = { token };
 
+    if (!socket.connected) {
+      socket.connect();
+    }
     socket.offAny();
     socket.off('connect', onConnect);
-    socket.off('message', onMessage);
+    socket.off('chat_private:new_message', onMessage);
 
     socket.onAny(onAny);
     socket.on('connect', onConnect);
     socket.on('chat_private:new_message', onMessage);
-
-    if (!socket.connected) {
-      socket.connect();
-    }
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('chat_private:new_message', onMessage);
       socket.offAny(onAny);
     };
-  }, [addMessage, createNewChat, token]);
+  }, [addMessage, createNewChat, meUserId, token]);
 
   return (
     <AppShell

@@ -168,7 +168,6 @@ export const ChatHistoryViewer = () => {
           handleStartReached();
         }}
         itemContent={(index, item) => {
-          
           const localIndex = index - firstItemIndex;
           return (
             <Box
@@ -181,8 +180,8 @@ export const ChatHistoryViewer = () => {
               ) : (
                 <MessageText
                   message={item}
-                    nextUserIdOfMessage={messages[localIndex+1]?.sender_id}
-                    previousUserIdOfMessage={messages[localIndex-1]?.sender_id}
+                  nextUserIdOfMessage={messages[localIndex + 1]?.sender_id}
+                  previousUserIdOfMessage={messages[localIndex - 1]?.sender_id}
                   userIdOfCurrentUser={currentUserId}
                   avatarName={
                     item.sender_id === currentUserId
