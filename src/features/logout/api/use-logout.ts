@@ -4,13 +4,23 @@ import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { delteDb } from '@/shared/api';
 import { useChatUserId, useSelectedChat } from '@/entities/chat';
+import { useSessionLogoutSessionsLogoutPost } from '@/shared/api/orval/auth-service/v1-auth-sessions/v1-auth-sessions';
 
 export const useLogout = () => {
   const router = useRouter();
   const client = useQueryClient();
   const { setUserId } = useChatUserId();
+  const { mutateAsync: logoutFromServer } =
+    useSessionLogoutSessionsLogoutPost();
 
   return useCallback(async () => {
+    try {
+      await logoutFromServer();
+    } catch {
+      document.cookie =
+        'yobble_access_token=; Max-Age=0; path=/; domain=.yobble.org';
+    }
+
     localStorage.clear();
     sessionStorage.clear();
     await client.cancelQueries();
@@ -20,6 +30,7 @@ export const useLogout = () => {
     useSelectedChat.getState().set('');
     await delteDb();
     await router.invalidate();
+
     client.clear();
-  }, [client, router, setUserId]);
+  }, [client, logoutFromServer, router, setUserId]);
 };

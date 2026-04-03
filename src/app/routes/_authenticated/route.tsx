@@ -56,11 +56,12 @@ function RouteComponent() {
 
   useEffect(() => {
     const onAny = (event: string, ...args: unknown[]) => {
+      Logger.debug('_authenticated/route.tsx','Socket new event',[event,...args])
       console.log('EVENT:', event, args);
     };
 
     const onConnect = () => {
-      notify.success({ title: 'Сокет', message: 'Успешное подключение' });
+      Logger.debug('_authenticated/route.tsx','Socket connected')
     };
 
     const onMessage = async (event: ChatPrivateNewMessageSocketEvent) => {

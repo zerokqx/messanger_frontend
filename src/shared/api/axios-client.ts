@@ -65,7 +65,7 @@ AXIOS_INSTANCE.interceptors.request.use((config) => {
   return config;
 });
 AXIOS_INSTANCE.interceptors.request.use((config) => {
-  config.headers.set('X-Client-Type', 'web');
+  config.headers.set('X-Client-Type', import.meta.env.DEV ? 'unknown': 'web');
   return config;
 });
 

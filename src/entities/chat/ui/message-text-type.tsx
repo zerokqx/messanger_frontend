@@ -5,6 +5,7 @@ import {
   getContrastColor,
   Group,
   Text,
+  ThemeIcon,
   useMantineTheme,
 } from '@mantine/core';
 import { useSettingsStore } from '@/shared/lib/settings';
@@ -37,6 +38,14 @@ export const MessageText = ({
 
   const nextMessage = nextUserIdOfMessage === message.sender_id;
 
+  const formatedTime = new Date(message.created_at).toLocaleTimeString(
+    'ru-RU',
+    {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }
+  );
   return (
     <Group
       w={'100%'}
@@ -54,11 +63,27 @@ export const MessageText = ({
           src={!nextMessage ? avatarSrc : undefined}
         />
       )}
-      <RoundedContainerGroup bg={bgColor} c={textColor} bd={'none'}>
+      <RoundedContainerGroup
+        bg={bgColor}
+        c={textColor}
+        gap={'md'}
+        wrap="nowrap"
+        align="end"
+        bd={'none'}
+      >
         <Text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
           {message.content}
         </Text>
-        {message.is_viewed && <CheckCheck />}
+        <Group align="end" gap={'xs'} wrap="nowrap">
+          <Text size="xs" opacity={0.6}>
+            {formatedTime}
+          </Text>
+          {message.is_viewed && (
+            <ThemeIcon color="white" opacity={0.6} size={'xs'}>
+              <CheckCheck />
+            </ThemeIcon>
+          )}
+        </Group>
       </RoundedContainerGroup>
     </Group>
   );

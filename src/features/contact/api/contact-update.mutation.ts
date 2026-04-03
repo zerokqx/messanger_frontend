@@ -1,4 +1,4 @@
-import { makeGetUserById } from '@/entities/user';
+import { makeGetUserById, updateUserLocalCacheByUserId } from '@/entities/user';
 import type {
   ContactInfoResponse,
   ContactInfoData,
@@ -11,13 +11,9 @@ import {
 import { getSearchByQueryUserSearchGetQueryKey } from '@/shared/api/orval/feed-service/v1-feed-user-search/v1-feed-user-search';
 import { infinityQueryOptimisticUpdate } from '@/shared/lib/infinity-query-optimistic-update';
 import { notify } from '@/shared/lib/notifications';
-import type { InfiniteData, QueryKey } from '@tanstack/react-query';
+import type { InfiniteData } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-
-interface MutateContext {
-  prevGetById?: ProfileByUserIdResponse;
-  prevContactList: [QueryKey, InfiniteData<ContactInfoResponse> | undefined][];
-}
+import { keys } from 'lodash';
 
 const contactOpt = getGetContactsContactListGetInfiniteQueryKey();
 const searchOpt = getSearchByQueryUserSearchGetQueryKey();
@@ -36,25 +32,20 @@ export const useContactUpdate = () => {
           context.client.cancelQueries({ queryKey: searchOpt }),
         ]);
 
-        const prevGetById = context.client.getQueryData<ProfileByUserIdResponse>(
-          getUserByIdOpt.queryKey
-        );
+        const prevGetById =
+          context.client.getQueryData<ProfileByUserIdResponse>(
+            getUserByIdOpt.queryKey
+          );
+
         const prevContactList = context.client.getQueriesData<
           InfiniteData<ContactInfoResponse>
         >({ queryKey: contactOpt });
 
-        context.client.setQueryData<ProfileByUserIdResponse>(
-          getUserByIdOpt.queryKey,
-          (old) => {
-            if (!old) return old;
-
-            return {
-              ...old,
-              data: {
-                ...old.data,
-                custom_name: data.custom_name,
-              },
-            };
+        await updateUserLocalCacheByUserId(
+          context.client,
+          data.user_id,
+          (draft) => {
+            draft.data.custom_name = data.custom_name;
           }
         );
 
@@ -82,7 +73,6 @@ export const useContactUpdate = () => {
         return { prevGetById, prevContactList };
       },
       onError(_error, variables, onMutateResult, context) {
-
         context.client.setQueryData(
           makeGetUserById(variables.data.user_id).queryKey,
           onMutateResult?.prevGetById
