@@ -9,8 +9,8 @@ import {
 import { Suspense, lazy, useEffect } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { notify } from '@/shared/lib/notifications';
-import { useTokenStore } from '@/shared/token';
-import { socket, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
+import { useTokenStore, tokenAction } from '@/shared/token';
+import { socket, getCookie, ACCESS_COOKIE_NAME, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
 import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
@@ -87,10 +87,27 @@ function RouteComponent() {
       }
     };
 
-    // В прод режиме сокеты авторизуются через куки
-    if (!import.meta.env.PROD) {
+    // В прод режиме достаём токен из куки (сокеты не умеют читать HttpOnly куки)
+    if (import.meta.env.PROD) {
+      const cookieToken = getCookie(ACCESS_COOKIE_NAME);
+      if (cookieToken) {
+        socket.auth = { token: cookieToken };
+      }
+    } else {
       socket.auth = { token };
     }
+
+    socket.on('reconnect_attempt', () => {
+      // При переподключении обновляем токен из куки
+      if (import.meta.env.PROD) {
+        const cookieToken = getCookie(ACCESS_COOKIE_NAME);
+        if (cookieToken) {
+          socket.auth = { token: cookieToken };
+        }
+      } else {
+        socket.auth = { token: tokenAction.doGetToken() || '' };
+      }
+    });
 
     if (!socket.connected) {
       socket.connect();
@@ -106,6 +123,7 @@ function RouteComponent() {
     return () => {
       socket.off('connect', onConnect);
       socket.off('chat_private:new_message', onMessage);
+      socket.off('reconnect_attempt');
       socket.offAny(onAny);
     };
   }, [addMessage, createNewChat, meUserId, token]);
