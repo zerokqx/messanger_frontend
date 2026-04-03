@@ -7,6 +7,7 @@
     "benchmark:doctor": "bunx -y react-doctor@latest . --verbose",
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:docker": "vite build",
     "test:ts": "tsc --noEmit",
     "test:node": "vitest --project node",
     "test:browser": "vitest --project browser --config ./vite.config.ts",

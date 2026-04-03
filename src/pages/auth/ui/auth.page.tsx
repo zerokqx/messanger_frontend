@@ -24,10 +24,31 @@ const RegisterModalLazy = lazy(() =>
   }))
 );
 
+const BETA_BASE = 'https://beta.yobble.org';
+
 export function AuhtPage() {
   const { t } = useTranslation(['auth', 'button-labels']);
   const stack = useModalsStack(['login', 'register']);
   const { mobile } = useResponsive();
+  const isProd = import.meta.env.PROD;
+
+  const openLogin = () => {
+    if (isProd) {
+      window.open(`${BETA_BASE}/login`, '_blank');
+    } else {
+      stack.open('login');
+      navigator.vibrate(10);
+    }
+  };
+
+  const openRegister = () => {
+    if (isProd) {
+      window.open(`${BETA_BASE}/register`, '_blank');
+    } else {
+      stack.open('register');
+      navigator.vibrate(10);
+    }
+  };
 
   return (
     <>
@@ -92,26 +113,25 @@ export function AuhtPage() {
           <Text>{t('auth:enter_to_account_for_communicate_friend')}</Text>
           <Space h={'xl'} />
           <Group gap={'md'} justify={'space-around'} wrap="wrap-reverse">
-            <Button
-              onClick={() => {
-                stack.open('login');
-                navigator.vibrate(10);
-              }}
-              bdrs={'xl'}
-            >
+            <Button onClick={openLogin} bdrs={'xl'}>
               {t('button-labels:enter')}
             </Button>
             <Button
-              onClick={() => {
-                stack.open('register');
-                navigator.vibrate(10);
-              }}
+              onClick={openRegister}
               variant="subtle"
               bdrs={'xl'}
             >
               {t('button-labels:register')}
             </Button>
           </Group>
+          {isProd && (
+            <>
+              <Space h={'xl'} />
+              <Text c="dimmed" size="sm" ta="center">
+                Авторизация происходит через beta.yobble.org
+              </Text>
+            </>
+          )}
         </Blockquote>
       </Stack>
     </>

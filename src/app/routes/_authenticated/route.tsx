@@ -87,7 +87,10 @@ function RouteComponent() {
       }
     };
 
-    socket.auth = { token };
+    // В прод режиме сокеты авторизуются через куки
+    if (!import.meta.env.PROD) {
+      socket.auth = { token };
+    }
 
     if (!socket.connected) {
       socket.connect();

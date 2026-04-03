@@ -17,16 +17,27 @@ interface RefreshResponse {
 }
 
 const MOCK_REFRESH_TOKEN = 'cookie-refresh-token';
+export const ACCESS_COOKIE_NAME = 'yobble_access_token';
+
+/** Читаем значение куки по имени */
+export const getCookie = (name: string): string | null => {
+  const match = document.cookie.match(
+    new RegExp('(?:^|; )' + name + '=([^;]*)')
+  );
+  return match?.[1] ?? null;
+};
 
 let refreshPromise: Promise<string> | null = null;
 
 const refreshAccessToken = async (access: string): Promise<string> => {
+  const isProd = import.meta.env.PROD;
+
+  // В прод режиме куки работают на одном домене — сервер сам прочтёт куки и вернёт новые
+  const body = isProd ? {} : { access_token: access, refresh_token: MOCK_REFRESH_TOKEN };
+
   const { data } = await Axios.post<RefreshResponse>(
     `${import.meta.env.VITE_API_URL}/v1/auth/token/refresh`,
-    {
-      access_token: access,
-      refresh_token: MOCK_REFRESH_TOKEN,
-    },
+    body,
     {
       withCredentials: true,
       headers: {
@@ -46,8 +57,11 @@ const refreshAccessToken = async (access: string): Promise<string> => {
 };
 
 AXIOS_INSTANCE.interceptors.request.use((config) => {
-  const token = tokenAction.doGetToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  const isProd = import.meta.env.PROD;
+  if (!isProd) {
+    const token = tokenAction.doGetToken();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 AXIOS_INSTANCE.interceptors.request.use((config) => {
@@ -86,12 +100,19 @@ AXIOS_INSTANCE.interceptors.response.use(
       });
 
       const nextAccess = await refreshPromise;
-      originalConfig.headers = originalConfig.headers ?? {};
-      originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
+      const isProd = import.meta.env.PROD;
+      if (!isProd) {
+        originalConfig.headers = originalConfig.headers ?? {};
+        originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
+      }
 
       return AXIOS_INSTANCE(originalConfig);
-    } catch {
-      tokenAction.doReset();
+    } catch (err) {
+      const isSessionError = err instanceof AxiosError && err.response?.status === 401;
+      if (isSessionError) {
+        tokenAction.doReset();
+        window.location.href = '/auth';
+      }
       return Promise.reject(new Error('Refresh error'));
     }
   }
