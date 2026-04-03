@@ -107,8 +107,12 @@ AXIOS_INSTANCE.interceptors.response.use(
       }
 
       return AXIOS_INSTANCE(originalConfig);
-    } catch {
-      tokenAction.doReset();
+    } catch (err) {
+      const isSessionError = err instanceof AxiosError && err.response?.status === 401;
+      if (isSessionError) {
+        tokenAction.doReset();
+        window.location.href = '/auth';
+      }
       return Promise.reject(new Error('Refresh error'));
     }
   }
