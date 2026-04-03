@@ -44,9 +44,11 @@ export const Route = createFileRoute('/_unauthenticated')({
             if (newAccess) {
               tokenAction.doSetToken(newAccess);
               // Редирект на страницу куда пользователь хотел попасть
+              // window.location — чтобы контекст auth пересчитался с новым токеном
               const redirectUrl =
                 new URLSearchParams(location.search).get('redirect') ?? '/y';
-              throw redirect({ to: redirectUrl });
+              window.location.href = redirectUrl;
+              return;
             }
           } catch {
             // Кука невалидна или бэк недоступен — продолжаем на /auth

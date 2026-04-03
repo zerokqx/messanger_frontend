@@ -36,7 +36,9 @@ export const Route = createFileRoute('/')({
             const newAccess = data.data?.access_token;
             if (newAccess) {
               tokenAction.doSetToken(newAccess);
-              throw redirect({ to: '/y' });
+              // window.location — чтобы контекст auth пересчитался с новым токеном
+              window.location.href = '/y';
+              return;
             }
           } catch {
             // Кука невалидна — продолжаем на /auth
