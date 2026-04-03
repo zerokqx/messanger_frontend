@@ -1,6 +1,7 @@
 import {
   infinityQueryOptimisticInsert,
   infinityQueryOptimisticRemove,
+  infinityQueryOptimisticUpdate,
 } from '@/shared/lib/infinity-query-optimistic-update';
 import { notify } from '@/shared/lib/notifications';
 import type { InfiniteData } from '@tanstack/react-query';
@@ -15,6 +16,7 @@ import {
 } from '@/shared/api/orval/user-service/v1-user/v1-user';
 import { getGetUserProfileByUserIdUserIdGetQueryKey } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 import type { ProfileByUserIdResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
+import { updateUserLocalCacheByUserId } from './use-get-user-by-id';
 
 type InfinityBlacklist = InfiniteData<Blacklist>;
 interface MutateContext {
@@ -32,6 +34,14 @@ export const useAddBlacklist = () => {
         const previous = client.getQueriesData<InfinityBlacklist>({
           queryKey: blackListQueryKey,
         });
+
+        await updateUserLocalCacheByUserId(
+          client,
+          data.user_id ?? '',
+          (draft) => {
+            draft.data.relationship.is_target_user_blocked_by_current_user = true;
+          }
+        );
 
         const user = client.getQueryData<ProfileByUserIdResponse>(
           getGetUserProfileByUserIdUserIdGetQueryKey(data.user_id ?? '')
@@ -77,7 +87,13 @@ export const useRemoveFromBlacklist = () => {
         const previous = client.getQueriesData<InfinityBlacklist>({
           queryKey: blackListQueryKey,
         });
-
+        const queryKeyUser = getGetUserProfileByUserIdUserIdGetQueryKey(
+          data.user_id
+        );
+        const previousUser = client.getQueryData(queryKeyUser);
+        await updateUserLocalCacheByUserId(client, data.user_id, (draft) => {
+          draft.data.relationship.is_target_user_blocked_by_current_user = false;
+        });
         client.setQueriesData<InfinityBlacklist>(
           { queryKey: blackListQueryKey },
           (old) => {
@@ -90,17 +106,29 @@ export const useRemoveFromBlacklist = () => {
           }
         );
 
-        return { previous };
+        return { previous, queryKeyUser, previousUser };
       },
 
       onError(_error, _variables, onMutateResult, { client }) {
         onMutateResult?.previous.forEach(([queryKey, data]) => {
           client.setQueryData(queryKey, data);
         });
+        if (onMutateResult?.queryKeyUser) {
+          client.setQueryData(
+            onMutateResult.queryKeyUser,
+            onMutateResult.previousUser
+          );
+        }
+
         notify.error();
       },
       async onSettled(_data, _error, _variables, _onMutateResult, context) {
-        await context.client.invalidateQueries({ queryKey: blackListQueryKey });
+        await Promise.all([
+          context.client.invalidateQueries({ queryKey: blackListQueryKey }),
+          context.client.invalidateQueries({
+            queryKey: _onMutateResult?.queryKeyUser,
+          }),
+        ]);
       },
     },
   });

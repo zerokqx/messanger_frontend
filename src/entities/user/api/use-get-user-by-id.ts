@@ -1,9 +1,11 @@
+import type { ProfileByUserIdResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import {
   getGetUserProfileByUserIdUserIdGetQueryOptions,
   getGetUserProfileByUserIdUserIdGetQueryKey,
   useGetUserProfileByUserIdUserIdGet,
 } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
-import { useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { produce, type Draft } from 'immer';
 import { useCallback } from 'react';
 
 interface UseGetUserByIdArgs {
@@ -46,4 +48,26 @@ export const useGetUserById = ({ id }: UseGetUserByIdArgs) => {
   });
 
   return { ...query, invalidateUser };
+};
+
+type UpdateFunction = (dragt: Draft<ProfileByUserIdResponse>) => void;
+interface UpdateUserLocalCacheByUserIdOptions {
+  useInvalidate?: boolean;
+}
+export const updateUserLocalCacheByUserId = async (
+  queryClient: QueryClient,
+  userId: string,
+  updater: UpdateFunction,
+  options?: UpdateUserLocalCacheByUserIdOptions
+) => {
+  const queryKey = getGetUserProfileByUserIdUserIdGetQueryKey(userId);
+  queryClient.setQueryData<ProfileByUserIdResponse>(queryKey, (old) => {
+    if (!old) return old;
+    return produce(old, (draft) => {
+      updater(draft);
+    });
+  });
+  if (options?.useInvalidate) {
+    await queryClient.invalidateQueries({ queryKey });
+  }
 };

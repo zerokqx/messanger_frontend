@@ -9,6 +9,7 @@ import { formatLogin } from '@/shared/lib/formaters/format-login.ts';
 import { ChatSessionContext } from '../model/chat-session-context.ts';
 import { ChatHeader } from './chat-header.tsx';
 import { ErrorBoundary } from 'react-error-boundary';
+import { FooterChatUserBlocked } from './footer-chat-user-blocked.tsx';
 
 const ChatHistoryViewer = lazy(() =>
   import('./chat-history-viewer.tsx').then((m) => ({
@@ -81,7 +82,15 @@ export const ChatWidget = (_props: ChatWidgetProps) => {
           <Suspense>
             <ErrorBoundary fallback={<Alert>Error load chat</Alert>}>
               <ChatHistoryViewer />
-              <ChatInput />
+              <FooterChatUserBlocked
+                targetUser={{
+                  login: user?.login,
+                  user_id: user?.user_id??'',
+                  relationship: user?.relationship,
+                }}
+              >
+                <ChatInput />
+              </FooterChatUserBlocked>
             </ErrorBoundary>
           </Suspense>
         ) : (
