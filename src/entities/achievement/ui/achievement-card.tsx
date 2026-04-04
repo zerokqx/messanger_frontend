@@ -77,7 +77,7 @@ const AchievementCardBase = ({
               </Badge>
               <Badge variant="gradient">#{achievement.category}</Badge>
             </Group>
-            <Text size="xs" opacity={0.5} lineClamp={2}>
+            <Text size="xs" opacity={0.5} >
               {achievement.description}
             </Text>
           </Stack>

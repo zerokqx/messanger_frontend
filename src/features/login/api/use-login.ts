@@ -1,7 +1,12 @@
 import { tokenAction } from '@/shared/token';
 import { useRouter } from '@tanstack/react-router';
 import { useLoginLoginPasswordPost } from '@/shared/api/orval/auth-service/v1-auth/v1-auth';
-import { reInitDb, getCookie, ACCESS_COOKIE_NAME } from '@/shared/api';
+import {
+  ACCESS_COOKIE_NAME,
+  PROD_PLACEHOLDER_ACCESS_TOKEN,
+  getCookie,
+  reInitDb,
+} from '@/shared/api';
 
 /**
  * @param search - Return data from hook useForm
@@ -17,7 +22,7 @@ export const useLogin = () => {
         const token = isProd ? getCookie(ACCESS_COOKIE_NAME) : access_token;
         if (token) {
           // В прод режиме сохраняем placeholder JWT, т.к. методы используют cookie
-          const storeToken = isProd ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature' : token;
+          const storeToken = isProd ? PROD_PLACEHOLDER_ACCESS_TOKEN : token;
           tokenAction.doSetToken(storeToken);
         }
         await router.invalidate();

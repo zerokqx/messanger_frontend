@@ -1,13 +1,16 @@
+import { isClientSessionAuthorized } from '@/shared/api';
 import { useTokenStore } from '@/shared/token';
 import { useCallback, useEffect, useState } from 'react';
 import { useLogger } from 'react-use';
-import z from 'zod';
 
 /**
  * @returns boolean
  */
 function useCheckAuth(): boolean {
-  const validate = useCallback((t: string) => z.jwt().safeParse(t).success, []);
+  const validate = useCallback(
+    (token: string) => isClientSessionAuthorized(token),
+    []
+  );
   const access = useTokenStore((s) => s.data.access);
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
@@ -21,9 +24,8 @@ function useCheckAuth(): boolean {
 }
 
 useCheckAuth.check = (): boolean => {
-  const validate = (t: string) => z.jwt().safeParse(t).success;
   const token = useTokenStore.getState().data.access;
-  return validate(token);
+  return isClientSessionAuthorized(token);
 };
 
 export { useCheckAuth };

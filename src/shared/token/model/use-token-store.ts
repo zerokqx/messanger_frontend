@@ -1,8 +1,8 @@
 import type { UseTokenStoreState } from '../types/use-token-store.type';
-import z from 'zod';
 import { createStore } from '@colorfy-software/zfy';
 
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
+import { isClientSessionAuthorized } from '@/shared/api/auth-session';
 
 const initialTokenState: UseTokenStoreState = { access: '' };
 
@@ -19,7 +19,7 @@ export const useTokenStore = createStore<UseTokenStoreState>(
 
 export const tokenAction = createStoreAction(
   [
-    (t: string) => z.jwt().safeParse(t).success,
+    (token: string) => isClientSessionAuthorized(token),
     (t: string) => {
       useTokenStore.setState((s) => ({
         ...s,

@@ -1,2 +1,2 @@
 export {useVisibilityChat,visibilityChatActions} from "./visibility-chat.tsx"
-export {chatInputValidation} from "./chat-input-validations.ts"
+export {chatInputValidation,MAX_MESSAGE_LENGHT} from "./chat-input-validations.ts"

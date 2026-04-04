@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { useCheckAuth } from './use-check-auth';
 import { useTokenStore } from '@/shared/token';
+import { PROD_PLACEHOLDER_ACCESS_TOKEN } from '@/shared/api';
 import { renderHook } from 'vitest-browser-react';
 
 vi.mock('react-use', () => ({
@@ -42,5 +43,17 @@ describe('useCheckAuth Тестирование', () => {
 
     expect(tokenStore.current.data.access).toBe(jwt);
     expect(checkAuth.current).toBeTruthy();
+  });
+
+  test('Placeholder token не считается валидной сессией без prod-cookie', async () => {
+    const { result, act } = await renderHook(() => useTokenStore((s) => s));
+
+    await act(() => {
+      result.current.update((state) => {
+        state.access = PROD_PLACEHOLDER_ACCESS_TOKEN;
+      });
+    });
+
+    expect(useCheckAuth.check()).toBeFalsy();
   });
 });

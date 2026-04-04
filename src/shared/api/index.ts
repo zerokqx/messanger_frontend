@@ -18,4 +18,12 @@ export {
   type DexieUserId,
 } from './db.ts';
 export * from './socket.types.ts';
-export { getCookie, ACCESS_COOKIE_NAME } from './axios-client.ts';
+export {
+  ACCESS_COOKIE_NAME,
+  PROD_PLACEHOLDER_ACCESS_TOKEN,
+  type RefreshTokenResponse,
+  getCookie,
+  hasValidAccessCookie,
+  isClientSessionAuthorized,
+  isPlaceholderAccessToken,
+} from './auth-session.ts';

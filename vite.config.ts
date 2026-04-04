@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { devtools } from '@tanstack/devtools-vite';
 import { loadEnv, type ServerOptions } from 'vite';
+import { log } from 'orval';
 
 const WATCH_IGNORED = [
   '**/.devenv/**',

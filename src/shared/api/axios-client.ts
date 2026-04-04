@@ -1,8 +1,14 @@
 import Axios, { AxiosError, type AxiosRequestConfig } from 'axios';
 import { tokenAction } from '../token';
+import {
+  ACCESS_COOKIE_NAME,
+  PROD_PLACEHOLDER_ACCESS_TOKEN,
+  type RefreshTokenResponse,
+  getCookie,
+} from './auth-session';
 
 export const AXIOS_INSTANCE = Axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: '/api',
   withCredentials: true,
 });
 
@@ -10,32 +16,27 @@ interface RetryAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
-interface RefreshResponse {
-  data?: {
-    access_token?: string;
-  };
-}
-
 const MOCK_REFRESH_TOKEN = 'cookie-refresh-token';
-export const ACCESS_COOKIE_NAME = 'yobble_access_token';
-
-/** Читаем значение куки по имени */
-export const getCookie = (name: string): string | null => {
-  const match = document.cookie.match(
-    new RegExp('(?:^|; )' + name + '=([^;]*)')
-  );
-  return match?.[1] ?? null;
-};
 
 let refreshPromise: Promise<string> | null = null;
+
+const resetSession = () => {
+  tokenAction.doReset();
+
+  if (window.location.pathname !== '/auth') {
+    window.location.href = '/auth';
+  }
+};
 
 const refreshAccessToken = async (access: string): Promise<string> => {
   const isProd = import.meta.env.PROD;
 
   // В прод режиме куки работают на одном домене — сервер сам прочтёт куки и вернёт новые
-  const body = isProd ? {} : { access_token: access, refresh_token: MOCK_REFRESH_TOKEN };
+  const body = isProd
+    ? {}
+    : { access_token: access, refresh_token: MOCK_REFRESH_TOKEN };
 
-  const { data } = await Axios.post<RefreshResponse>(
+  const { data } = await Axios.post<RefreshTokenResponse>(
     `${import.meta.env.VITE_API_URL}/v1/auth/token/refresh`,
     body,
     {
@@ -48,15 +49,19 @@ const refreshAccessToken = async (access: string): Promise<string> => {
   );
 
   const nextAccess = data.data?.access_token;
-  
+
   // Проверяем что токен существует и не является строкой "none"
-  if (!nextAccess || nextAccess.toLowerCase() === 'none' || nextAccess.trim() === '') {
+  if (
+    !nextAccess ||
+    nextAccess.toLowerCase() === 'none' ||
+    nextAccess.trim() === ''
+  ) {
     // В прод режиме пробуем прочитать токен из куки
     if (isProd) {
       const cookieToken = getCookie(ACCESS_COOKIE_NAME);
       if (cookieToken && cookieToken.toLowerCase() !== 'none') {
         // В прод режиме сохраняем валидный placeholder JWT, т.к. методы используют cookie
-        tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+        tokenAction.doSetToken(PROD_PLACEHOLDER_ACCESS_TOKEN);
         return cookieToken;
       }
     }
@@ -65,12 +70,12 @@ const refreshAccessToken = async (access: string): Promise<string> => {
 
   // В прод режиме сохраняем placeholder JWT, т.к. методы используют cookie
   if (isProd) {
-    tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+    tokenAction.doSetToken(PROD_PLACEHOLDER_ACCESS_TOKEN);
     // Форсируем проверку куки для обновления состояния авторизации
     window.dispatchEvent(new CustomEvent('auth:refresh-completed'));
     return nextAccess;
   }
-  
+
   tokenAction.doSetToken(nextAccess);
   return nextAccess;
 };
@@ -84,7 +89,7 @@ AXIOS_INSTANCE.interceptors.request.use((config) => {
   return config;
 });
 AXIOS_INSTANCE.interceptors.request.use((config) => {
-  config.headers.set('X-Client-Type', import.meta.env.DEV ? 'unknown': 'web');
+  config.headers.set('X-Client-Type', import.meta.env.DEV ? 'unknown' : 'web');
   return config;
 });
 
@@ -101,13 +106,13 @@ AXIOS_INSTANCE.interceptors.response.use(
       originalConfig._retry ||
       originalConfig.url?.includes('/v1/auth/token/refresh')
     ) {
-      tokenAction.doReset();
+      resetSession();
       return Promise.reject(error);
     }
 
     const access = tokenAction.doGetToken();
     if (!access) {
-      tokenAction.doReset();
+      resetSession();
       return Promise.reject(error);
     }
 
@@ -120,25 +125,15 @@ AXIOS_INSTANCE.interceptors.response.use(
 
       const nextAccess = await refreshPromise;
       const isProd = import.meta.env.PROD;
-      
-      // В прод режиме после успешного refresh перезагружаем страницу
-      // чтобы роутер пересчитал состояние auth с новым токеном
-      if (isProd) {
-        window.location.reload();
-      }
-      
+
       if (!isProd) {
         originalConfig.headers = originalConfig.headers ?? {};
         originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
       }
 
-      return AXIOS_INSTANCE(originalConfig);
-    } catch (err) {
-      const isSessionError = err instanceof AxiosError && err.response?.status === 401;
-      if (isSessionError) {
-        tokenAction.doReset();
-        window.location.href = '/auth';
-      }
+      return await AXIOS_INSTANCE(originalConfig);
+    } catch {
+      resetSession();
       return Promise.reject(new Error('Refresh error'));
     }
   }
@@ -151,7 +146,7 @@ export const customInstance = <T>(
   const promise = AXIOS_INSTANCE({
     ...config,
     ...options,
-  }).then(({ data }) => data);
+  }).then(({ data }: { data: T }) => data);
 
   return promise;
 };

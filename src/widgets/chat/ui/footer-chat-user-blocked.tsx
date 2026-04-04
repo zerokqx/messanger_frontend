@@ -53,9 +53,9 @@ export const FooterChatUserBlocked = ({
         if (relationship.is_current_user_in_blacklist_of_target) {
           return (
             <Text>
-              <Text span c={primaryColor}>
+              <Text fw={700} span c={primaryColor}>
                 {login}
-              </Text>
+              </Text>{' '}
               blocked you
             </Text>
           );
