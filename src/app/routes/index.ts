@@ -18,33 +18,43 @@ export const Route = createFileRoute('/')({
   loader: async ({ location }) => {
     if (import.meta.env.PROD) {
       const existingToken = tokenAction.doGetToken();
-      if (!existingToken) {
+      if (!existingToken || existingToken.includes('placeholder')) {
         const accessCookie = getCookie(ACCESS_COOKIE_NAME);
-        if (accessCookie) {
-          try {
-            const { data } = await rawAxios.post(
-              '/v1/auth/token/refresh',
-              {},
-              {
-                withCredentials: true,
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-Client-Type': 'web',
-                },
-              }
-            );
-            const newAccess = data.data?.access_token;
-            if (newAccess && newAccess.toLowerCase() !== 'none') {
-              // В прод режиме сохраняем заглушку, т.к. методы используют cookie
-              const isProd = import.meta.env.PROD;
-              tokenAction.doSetToken(isProd ? '123123' : newAccess);
-              // window.location — чтобы контекст auth пересчитался с новым токеном
-              window.location.href = '/y';
-              return;
+        if (accessCookie && accessCookie.toLowerCase() !== 'none') {
+          // Кука есть и валидна — сохраняем placeholder JWT и редиректимся
+          tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+          window.location.href = '/y';
+          return;
+        }
+        // Куки нет или она "none" — пробуем refresh
+        try {
+          const { data } = await rawAxios.post(
+            '/v1/auth/token/refresh',
+            {},
+            {
+              withCredentials: true,
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Client-Type': 'web',
+              },
             }
-          } catch {
-            // Кука невалидна — продолжаем на /auth
+          );
+          const newAccess = data.data?.access_token;
+          if (newAccess && newAccess.toLowerCase() !== 'none') {
+            // Сервер вернул токен — используем его
+            tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+            window.location.href = '/y';
+            return;
           }
+          // Сервер вернул "none" — пробуем прочитать куку снова (может сервер её обновил)
+          const cookieAfterRefresh = getCookie(ACCESS_COOKIE_NAME);
+          if (cookieAfterRefresh && cookieAfterRefresh.toLowerCase() !== 'none') {
+            tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+            window.location.href = '/y';
+            return;
+          }
+        } catch {
+          // Refresh не удался — продолжаем на /auth
         }
       }
     }
