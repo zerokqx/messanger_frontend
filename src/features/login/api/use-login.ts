@@ -16,7 +16,9 @@ export const useLogin = () => {
         // В прод режиме сервер ставит куку, читаем её
         const token = isProd ? getCookie(ACCESS_COOKIE_NAME) : access_token;
         if (token) {
-          tokenAction.doSetToken(token);
+          // В прод режиме сохраняем заглушку, т.к. методы используют cookie
+          const storeToken = isProd ? '123123' : token;
+          tokenAction.doSetToken(storeToken);
         }
         await router.invalidate();
         await reInitDb();

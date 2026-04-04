@@ -41,8 +41,10 @@ export const Route = createFileRoute('/_unauthenticated')({
               }
             );
             const newAccess = data.data?.access_token;
-            if (newAccess) {
-              tokenAction.doSetToken(newAccess);
+            if (newAccess && newAccess.toLowerCase() !== 'none') {
+              // В прод режиме сохраняем заглушку, т.к. методы используют cookie
+              const isProd = import.meta.env.PROD;
+              tokenAction.doSetToken(isProd ? '123123' : newAccess);
               // Редирект на страницу куда пользователь хотел попасть
               // window.location — чтобы контекст auth пересчитался с новым токеном
               const redirectUrl =
