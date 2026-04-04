@@ -1,5 +1,8 @@
 {
+  "description": "An unexpected error occurred. Try refreshing the page or go back to the home page.",
   "title": "Something went wrong",
+  "go-home": "Go home",
+  "logout": "Logout",
   "retry": "Retry",
   "copy": "Copy",
   "copied": "Copied",

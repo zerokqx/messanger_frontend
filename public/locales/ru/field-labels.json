@@ -1,7 +1,11 @@
 {
   "full-name": "Полное имя",
+  "full-name-placeholder": "Александр...",
   "bio_label": "Биография",
+  "bio-placeholder": "Расскажите о себе...",
   "password_label": "Пароль",
   "password_repeat_label": "Повторите пароль",
+  "submit-shortcut": "Enter — отправить",
+  "newline-shortcut": "Shift + Enter — перенос строки",
   "userName_label": "Имя пользователя"
 }

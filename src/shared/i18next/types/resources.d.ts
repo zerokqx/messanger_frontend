@@ -54,10 +54,15 @@ interface Resources {
     "submit": "Send"
   },
   "chat": {
+    "blocked-you": "{{login}} blocked you",
+    "chat-load-error": "Failed to load chat",
     "empty-description": "Send the first message to start the conversation.",
     "empty-title": "No messages yet",
     "input-placeholder": "Message...",
-    "send-message": "Send message"
+    "not-selected": "Chat is not selected",
+    "send-message": "Send message",
+    "system-message": "System message",
+    "unblock": "Unblock"
   },
   "contact": {
     "add": "Add",
@@ -91,15 +96,22 @@ interface Resources {
   "errors-boundary": {
     "copied": "Copied",
     "copy": "Copy",
+    "description": "An unexpected error occurred. Try refreshing the page or go back to the home page.",
+    "go-home": "Go home",
+    "logout": "Logout",
     "retry": "Retry",
     "title": "Something went wrong",
     "unknown-error": "Unknown error"
   },
   "field-labels": {
+    "bio-placeholder": "Tell something about yourself...",
     "bio_label": "Biography",
     "full-name": "Full name",
+    "full-name-placeholder": "Alexander...",
+    "newline-shortcut": "Shift + Enter — new line",
     "password_label": "Password",
     "password_repeat_label": "Repeat password",
+    "submit-shortcut": "Enter — submit",
     "userName_label": "User name"
   },
   "lists": {
@@ -141,13 +153,18 @@ interface Resources {
     "new-password": "New password",
     "notification-loading-title": "Updating password",
     "notification-success-message": "Password updated successfully!",
-    "old-password": "Old password"
+    "old-password": "Old password",
+    "passwords-must-differ": "Passwords must be different"
   },
   "permisions": {
     "allow_message_forwarding": "Allow message forwarding",
     "allow_messages_from_non_contacts": "Accept messages from strangers",
     "allow_server_chats": "Allow chats to be stored on the server",
-    "auto_delete_after_days": "Auto‑delete account after X days",
+    "auto_delete_after_days": "Auto-delete account",
+    "auto_delete_after_days_12_months": "12 months",
+    "auto_delete_after_days_1_month": "1 month",
+    "auto_delete_after_days_3_months": "3 months",
+    "auto_delete_after_days_6_months": "6 months",
     "call_permission": "Who can call you",
     "contacts": "Contacts",
     "do_not_delete": "Do not delete",
@@ -176,6 +193,7 @@ interface Resources {
     "bio": "Biography",
     "bio-undefined": "Biography is not set",
     "bio-user-not-write-about-himself": "User did not fill in biography",
+    "blocked": "Blocked",
     "created_at": "Created at",
     "full-name": "Full name",
     "full-name-undefined": "Full name is not set",
@@ -198,10 +216,15 @@ interface Resources {
     "close_all_sessions": "Close all sessions",
     "close_session": "Close session",
     "created_at": "Created at",
+    "current_session": "Current session",
     "last_activation": "Last actiovation",
+    "only_current_session": "There are no sessions left besides the current one...",
+    "revoke_irreversible": "Session termination is irreversible",
     "revoke_text_all": "Are you sure you want to end all sessions except the current one?",
     "revoke_text_one": "Are you sure you want to end the selected session?",
+    "revoke_title_all": "Terminate all sessions",
     "revoke_title_one": "Session termination",
+    "session_not_found": "This session does not exist",
     "sessions_not_found": "No active sessions",
     "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions."
   },
@@ -238,6 +261,7 @@ interface Resources {
     "theme-option-auto": "Auto",
     "theme-option-dark": "Dark",
     "theme-option-light": "Light",
+    "theme-select-aria-label": "Theme selection",
     "violet": "Violet",
     "with-animation-label": "Animations across the app",
     "with-animations-description": "Enables or disables animations on all app screens and UI elements"
@@ -247,6 +271,7 @@ interface Resources {
   },
   "titles": {
     "error": "Error",
+    "loading": "Loading...",
     "not_found_page": "Page not found",
     "please_check_address": "Please check the address and repeat",
     "success": "Success"

@@ -1,13 +1,11 @@
 import { useRemoveFromBlacklist } from '@/entities/user';
-import { useBlacklist } from '@/features/blocklist-manager/api/blacklist';
 import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { border } from '@/shared/lib/css-utils';
 import { lightDark } from '@/shared/lib/light-dark';
 import { comboRelations } from '@/shared/lib/realtionship-helpers';
-import { useSettingsStore } from '@/shared/lib/settings';
-import { Button, Group, Text, ThemeIcon } from '@mantine/core';
-import { Lock } from 'lucide-react';
+import { Button, Group, Text } from '@mantine/core';
 import { useMemo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FooterChatUserBlockedProps {
   children?: ReactNode;
@@ -18,8 +16,8 @@ export const FooterChatUserBlocked = ({
   targetUser: { relationship, login, user_id },
 }: FooterChatUserBlockedProps) => {
   const { mutateAsync: unblock } = useRemoveFromBlacklist();
+  const [t] = useTranslation('chat');
   const relations = useMemo(() => comboRelations(relationship), [relationship]);
-  const primaryColor = useSettingsStore((s) => s.data.primaryColor);
 
   return relations.oneOfTheBlocked ? (
     <Group
@@ -45,20 +43,13 @@ export const FooterChatUserBlocked = ({
               }}
               variant="light"
             >
-              Unblock
+              {t('unblock')}
             </Button>
           );
         }
 
         if (relationship.is_current_user_in_blacklist_of_target) {
-          return (
-            <Text>
-              <Text fw={700} span c={primaryColor}>
-                {login}
-              </Text>{' '}
-              blocked you
-            </Text>
-          );
+          return <Text>{t('blocked-you', { login: login ?? '' })}</Text>;
         }
 
         return null;

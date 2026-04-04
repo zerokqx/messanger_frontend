@@ -44,7 +44,7 @@ export const ThemeSelect = () => {
   return (
     <Select
       variant="filled"
-      aria-label="Theme"
+      aria-label={t('theme-select-aria-label')}
       allowDeselect={false}
       value={colorScheme}
       onChange={onChange}

@@ -5,6 +5,7 @@
   "animation-error": "Ошибка выбора анимации",
   "animation-error-message": "Не удалось применить выбранную анимацию",
   "theme-category": "Тема",
+  "theme-select-aria-label": "Выбор темы",
   "theme-option-auto": "Авто",
   "theme-option-dark": "Тёмная",
   "theme-option-light": "Светлая",

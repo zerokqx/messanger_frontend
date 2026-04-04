@@ -1,5 +1,6 @@
 {
   "error": "Error",
+  "loading": "Loading...",
   "not_found_page": "Page not found",
   "please_check_address": "Please check the address and repeat",
   "success": "Success"

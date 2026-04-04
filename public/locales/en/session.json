@@ -3,9 +3,14 @@
   "close_session": "Close session",
   "created_at": "Created at",
   "last_activation": "Last actiovation",
+  "current_session": "Current session",
+  "only_current_session": "There are no sessions left besides the current one...",
   "revoke_text_all": "Are you sure you want to end all sessions except the current one?",
   "revoke_text_one": "Are you sure you want to end the selected session?",
+  "revoke_irreversible": "Session termination is irreversible",
+  "revoke_title_all": "Terminate all sessions",
   "revoke_title_one": "Session termination",
+  "session_not_found": "This session does not exist",
   "untrasted_session": "An untrusted session is any session that is less than 5 days old. This session cannot terminate other sessions.",
   "sessions_not_found": "No active sessions"
 }

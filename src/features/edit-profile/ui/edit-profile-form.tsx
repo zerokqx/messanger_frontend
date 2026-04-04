@@ -113,13 +113,13 @@ export const ProfileEditForm = ({
         <TextInput
           {...register('full_name')}
           label={t('field-labels:full-name')}
-          placeholder="Alexandr ..."
+          placeholder={t('field-labels:full-name-placeholder')}
         />
         <Textarea
           {...register('bio')}
           label={t('field-labels:bio_label')}
           rows={4}
-          placeholder="..."
+          placeholder={t('field-labels:bio-placeholder')}
           onKeyDown={(e) => {
             if (!osType.isDesktop) return;
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -130,8 +130,8 @@ export const ProfileEditForm = ({
           description={
             osType.isDesktop && (
               <Text component="span" size="xs" c="dimmed">
-                Enter — Отправить <br />
-                Shift + Enter — Перенос строки
+                {t('field-labels:submit-shortcut')} <br />
+                {t('field-labels:newline-shortcut')}
               </Text>
             )
           }

@@ -5,6 +5,7 @@
   "animation-error": "Animation selection error",
   "animation-error-message": "Failed to apply the selected animation",
   "theme-category": "Theme",
+  "theme-select-aria-label": "Theme selection",
   "theme-option-auto": "Auto",
   "theme-option-dark": "Dark",
   "theme-option-light": "Light",

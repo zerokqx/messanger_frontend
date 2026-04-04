@@ -2,13 +2,14 @@ import { useIsAuth } from '@/entities/session';
 import { useLogout } from '@/entities/user';
 import { Stack, Text, Title, Button, Paper, Group } from '@mantine/core';
 import type { ErrorRouteComponent } from '@tanstack/react-router';
-import capitalize from 'lodash/capitalize';
 import { RefreshCcw, Home, LogOut } from 'lucide-react';
 import * as m from 'motion/react-m';
+import { useTranslation } from 'react-i18next';
 
 export const PageError: ErrorRouteComponent = ({ error, reset }) => {
   const isAuth = useIsAuth();
   const logout = useLogout();
+  const [t] = useTranslation(['errors-boundary', 'titles']);
   return (
     <Stack
       h="100vh"
@@ -27,16 +28,13 @@ export const PageError: ErrorRouteComponent = ({ error, reset }) => {
       <Paper withBorder shadow="md" radius="lg" p="xl" maw={420} w="100%">
         <Stack align="center" gap="sm" ta="center">
           <Title size={64} c="red.6" fw={900}>
-            Error
+            {t('titles:error')}
           </Title>
 
-          <Title order={3}>
-            {capitalize(error.message || 'Something went wrong')}
-          </Title>
+          <Title order={3}>{error.message || t('errors-boundary:unknown-error')}</Title>
 
           <Text size="sm" c="dimmed">
-            An unexpected error occurred. Try refreshing the page or go back to
-            the home page.
+            {t('errors-boundary:description')}
           </Text>
 
           <Group justify="center" mt="md">
@@ -45,7 +43,7 @@ export const PageError: ErrorRouteComponent = ({ error, reset }) => {
               leftSection={<RefreshCcw size={16} />}
               onClick={reset}
             >
-              Try again
+              {t('errors-boundary:retry')}
             </Button>
 
             <Button
@@ -54,7 +52,7 @@ export const PageError: ErrorRouteComponent = ({ error, reset }) => {
               component="a"
               href="/"
             >
-              Go home
+              {t('errors-boundary:go-home')}
             </Button>
           </Group>
 
@@ -65,7 +63,7 @@ export const PageError: ErrorRouteComponent = ({ error, reset }) => {
               color="red"
               leftSection={<LogOut />}
             >
-              Logout
+              {t('errors-boundary:logout')}
             </Button>
           )}
         </Stack>

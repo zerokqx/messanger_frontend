@@ -1,6 +1,11 @@
 {
+  "blocked-you": "{{login}} blocked you",
+  "chat-load-error": "Failed to load chat",
   "input-placeholder": "Message...",
+  "not-selected": "Chat is not selected",
   "send-message": "Send message",
+  "system-message": "System message",
+  "unblock": "Unblock",
   "empty-title": "No messages yet",
   "empty-description": "Send the first message to start the conversation."
 }

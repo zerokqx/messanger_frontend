@@ -13,10 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { notifications } from '@mantine/notifications';
 import { Check, Save } from 'lucide-react';
 import {
-  changePasswordValidation,
+  createChangePasswordValidation,
   type PasswordsSchema,
 } from '../model/change-password-validations';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
 
 export const ChangePasswordModal = ({
   opened,
@@ -30,9 +31,13 @@ export const ChangePasswordModal = ({
   } = usePasswordChange();
   const [t] = useTranslation('password-change');
   const tailIsSuccess = useTails(1000, isSuccess);
+  const validationSchema = useMemo(
+    () => createChangePasswordValidation(t('passwords-must-differ')),
+    [t]
+  );
 
   const { register, reset, handleSubmit, formState } = useForm<PasswordsSchema>(
-    { resolver: zodResolver(changePasswordValidation) }
+    { resolver: zodResolver(validationSchema) }
   );
   const loadingNotificationId = 'password-change';
   const submit: SubmitHandler<PasswordsSchema> = async ({

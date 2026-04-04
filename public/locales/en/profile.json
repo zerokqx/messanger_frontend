@@ -2,6 +2,7 @@
   "bio": "Biography",
   "bio-undefined": "Biography is not set",
   "created_at": "Created at",
+  "blocked": "Blocked",
   "full-name": "Full name",
   "full-name-user-not-write-himself-name": "User did not specify a full name",
   "full-name-undefined": "Full name is not set",

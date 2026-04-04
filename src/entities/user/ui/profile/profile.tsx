@@ -141,7 +141,7 @@ const Login = () => {
         <Group>
           <Text>{context.formatName.format}</Text>
           {rel && rel.is_target_user_blocked_by_current_user && (
-            <Text c={'vdarkGray'}>Заблокирован</Text>
+            <Text c={'vdarkGray'}>{t('blocked')}</Text>
           )}
         </Group>
         <Label>{t('login')}</Label>

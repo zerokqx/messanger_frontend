@@ -2,17 +2,19 @@ import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 import type { ModalRevokeProps } from './modal-revoke.types';
 import { useGetSessionByIdFromCache } from '@/entities/session';
 import { useRevokeSession } from '../model';
+import { useTranslation } from 'react-i18next';
 
 export const ModalRevoke = ({ opened, onClose, id }: ModalRevokeProps) => {
   const session = useGetSessionByIdFromCache(id);
   const { mutate: mutateRevoke } = useRevokeSession();
+  const [t] = useTranslation(['button-labels', 'session']);
   return (
-    <Modal opened={opened} onClose={onClose}>
+    <Modal opened={opened} onClose={onClose} title={t('session:revoke_title_one')}>
       {session ? (
         <>
           <Stack>
-            <Text>Вы уверены что хотите завершить данную сесиию?</Text>
-            <Text opacity={0.3}>Завершение сессии необротимый процесс</Text>
+            <Text>{t('session:revoke_text_one')}</Text>
+            <Text opacity={0.3}>{t('session:revoke_irreversible')}</Text>
             <Group grow>
               <Button
                 onClick={() => {
@@ -20,14 +22,14 @@ export const ModalRevoke = ({ opened, onClose, id }: ModalRevokeProps) => {
                 }}
                 color="red"
               >
-                Да
+                {t('button-labels:confirm')}
               </Button>
-              <Button onClick={onClose}>Нет</Button>
+              <Button onClick={onClose}>{t('button-labels:cancel')}</Button>
             </Group>
           </Stack>
         </>
       ) : (
-        <Text>Такой сессии не существует</Text>
+        <Text>{t('session:session_not_found')}</Text>
       )}
     </Modal>
   );

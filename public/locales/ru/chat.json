@@ -1,6 +1,11 @@
 {
+  "blocked-you": "{{login}} заблокировал вас",
+  "chat-load-error": "Не удалось загрузить чат",
   "input-placeholder": "Сообщение...",
+  "not-selected": "Чат не выбран",
   "send-message": "Отправить сообщение",
+  "system-message": "Системное сообщение",
+  "unblock": "Разблокировать",
   "empty-title": "Чат пока пуст",
   "empty-description": "Отправьте первое сообщение, чтобы начать разговор."
 }

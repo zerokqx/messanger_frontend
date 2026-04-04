@@ -1,7 +1,11 @@
 {
   "full-name": "Full name",
+  "full-name-placeholder": "Alexander...",
   "bio_label": "Biography",
+  "bio-placeholder": "Tell something about yourself...",
   "password_label": "Password",
   "password_repeat_label": "Repeat password",
+  "submit-shortcut": "Enter — submit",
+  "newline-shortcut": "Shift + Enter — new line",
   "userName_label": "User name"
 }

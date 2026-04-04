@@ -4,6 +4,7 @@ import type { SessionData } from './session.types';
 import { Virtuoso } from 'react-virtuoso';
 import { useMemo } from 'react';
 import { createThrottledVibrationHandler } from '@/shared/lib/vibration';
+import { useTranslation } from 'react-i18next';
 
 interface SessionListProps {
   sessions: SessionData[];
@@ -12,6 +13,7 @@ interface SessionListProps {
 const BoxItem = (props: object) => <Box pb="md" {...props} />;
 
 export const SessionList = ({ sessions }: SessionListProps) => {
+  const [t] = useTranslation('session');
   const handleScroll = useMemo(
     () =>
       createThrottledVibrationHandler({
@@ -37,10 +39,6 @@ export const SessionList = ({ sessions }: SessionListProps) => {
         itemContent={(index) => {
           const session = sessions[index];
 
-          if (!session) {
-            return null;
-          }
-
           if (session.is_current) {
             return (
               <SessionCurrentCard
@@ -53,9 +51,9 @@ export const SessionList = ({ sessions }: SessionListProps) => {
           return <SessionCard session={session} />;
         }}
       />
-      {sessions.length === 1 && sessions[0]?.is_current && (
+      {sessions.length === 1 && sessions[0].is_current && (
         <Center>
-          <Text opacity={0.6}>Сессий больше нету кроме текущей...</Text>
+          <Text opacity={0.6}>{t('only_current_session')}</Text>
         </Center>
       )}
     </Stack>

@@ -8,7 +8,6 @@ import {
 } from '@mantine/core';
 import { Suspense, lazy, useEffect } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
-import { notify } from '@/shared/lib/notifications';
 import { useTokenStore, tokenAction } from '@/shared/token';
 import { socket, getCookie, ACCESS_COOKIE_NAME, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
 import { SafeChat } from '@/widgets/chat';
@@ -19,6 +18,7 @@ import { useAddMessageToHistory } from '@/features/chat/api/send-message';
 import { getGetPrivateChatHistoryHistoryGetInfiniteQueryKey } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import { useCreateChatFromSocketEvent } from '@/entities/chat/model/cache-actions';
 import { useMeUserId } from '@/entities/user';
+import { useTranslation } from 'react-i18next';
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -46,6 +46,7 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 function RouteComponent() {
+  const [i18nTitles] = useTranslation('titles');
   const { data: meUserId } = useMeUserId();
   const createNewChat = useCreateChatFromSocketEvent();
   const addMessage = useAddMessageToHistory();
@@ -160,7 +161,7 @@ function RouteComponent() {
         style={{ height: '100dvh', minHeight: 0, overflow: 'hidden' }}
       >
         <Box h="100%" mih={0}>
-          <Suspense fallback={<p>dawdw</p>}>
+          <Suspense fallback={<Box p="md">{i18nTitles('loading')}</Box>}>
             <SafeChat
               onToggleAside={() => {
                 layoutAction.doSetAside(!asside);

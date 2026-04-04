@@ -10,6 +10,7 @@ import { ChatSessionContext } from '../model/chat-session-context.ts';
 import { ChatHeader } from './chat-header.tsx';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FooterChatUserBlocked } from './footer-chat-user-blocked.tsx';
+import { useTranslation } from 'react-i18next';
 
 const ChatHistoryViewer = lazy(() =>
   import('./chat-history-viewer.tsx').then((m) => ({
@@ -22,7 +23,8 @@ export interface ChatWidgetProps {
   asideStatus?: boolean;
 }
 
-export const ChatWidget = (_props: ChatWidgetProps) => {
+export const ChatWidget = () => {
+  const [t] = useTranslation('chat');
   const { userId } = useChatUserId();
   const { data: user } = useGetUserById({ id: userId });
   const { data: me } = useMe();
@@ -80,7 +82,7 @@ export const ChatWidget = (_props: ChatWidgetProps) => {
         <ChatHeader />
         {chatId ? (
           <Suspense>
-            <ErrorBoundary fallback={<Alert>Error load chat</Alert>}>
+            <ErrorBoundary fallback={<Alert>{t('chat-load-error')}</Alert>}>
               <ChatHistoryViewer />
               <FooterChatUserBlocked
                 targetUser={{
@@ -94,7 +96,7 @@ export const ChatWidget = (_props: ChatWidgetProps) => {
             </ErrorBoundary>
           </Suspense>
         ) : (
-          <Alert icon={<CircleSlash size={16} />}>Chat is not selected</Alert>
+          <Alert icon={<CircleSlash size={16} />}>{t('not-selected')}</Alert>
         )}
       </Stack>
     </ChatSessionContext.Provider>

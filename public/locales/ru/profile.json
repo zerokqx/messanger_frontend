@@ -2,6 +2,7 @@
   "bio": "Биография",
   "bio-undefined": "Биография не заполнена",
   "created_at": "Дата создания",
+  "blocked": "Заблокирован",
   "full-name": "Полное имя",
   "full-name-user-not-write-himself-name": "Пользователь не указал полное имя",
   "full-name-undefined": "Полное имя не указано",

@@ -1,14 +1,16 @@
 import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 import type { RevokeAllModalProps } from './revoke-all-modal.types';
 import { useSessionRevokeAll } from '../model';
+import { useTranslation } from 'react-i18next';
 
 export const RevokeAllModal = ({ opened, onClose }: RevokeAllModalProps) => {
   const { mutate: mutateAllRevoke } = useSessionRevokeAll();
+  const [t] = useTranslation(['button-labels', 'session']);
   return (
-    <Modal opened={opened} onClose={onClose}>
+    <Modal opened={opened} onClose={onClose} title={t('session:revoke_title_all')}>
       <Stack>
-        <Text>Вы уверены что хотите завершить все сессии кроме текущей?</Text>
-        <Text opacity={0.3}>Завершение сессий необротимый процесс</Text>
+        <Text>{t('session:revoke_text_all')}</Text>
+        <Text opacity={0.3}>{t('session:revoke_irreversible')}</Text>
         <Group grow>
           <Button
             onClick={() => {
@@ -16,9 +18,9 @@ export const RevokeAllModal = ({ opened, onClose }: RevokeAllModalProps) => {
             }}
             color="red"
           >
-            Да
+            {t('button-labels:confirm')}
           </Button>
-          <Button onClick={onClose}>Нет</Button>
+          <Button onClick={onClose}>{t('button-labels:cancel')}</Button>
         </Group>
       </Stack>
     </Modal>
