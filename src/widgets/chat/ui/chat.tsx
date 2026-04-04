@@ -9,7 +9,7 @@ import { formatLogin } from '@/shared/lib/formaters/format-login.ts';
 import { ChatSessionContext } from '../model/chat-session-context.ts';
 import { ChatHeader } from './chat-header.tsx';
 import { ErrorBoundary } from 'react-error-boundary';
-import { FooterChatUserBlocked } from './footer-chat-user-blocked.tsx';
+import { FooterChatUserBlocked } from './footer-chat-user-status.tsx';
 import { useTranslation } from 'react-i18next';
 
 const ChatHistoryViewer = lazy(() =>
@@ -80,15 +80,16 @@ export const ChatWidget = () => {
     <ChatSessionContext.Provider value={sessionValue}>
       <Stack h="100%" mih={0} gap={0}>
         <ChatHeader />
-        {chatId ? (
+        {chatId && user ? (
           <Suspense>
             <ErrorBoundary fallback={<Alert>{t('chat-load-error')}</Alert>}>
               <ChatHistoryViewer />
               <FooterChatUserBlocked
                 targetUser={{
-                  login: user?.login,
-                  user_id: user?.user_id??'',
-                  relationship: user?.relationship,
+                  login: user.login,
+                  user_id: user.user_id,
+                  permissions: user.permissions,
+                  relationship: user.relationship,
                 }}
               >
                 <ChatInput />

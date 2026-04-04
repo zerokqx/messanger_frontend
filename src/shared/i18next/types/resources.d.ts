@@ -62,7 +62,8 @@ interface Resources {
     "not-selected": "Chat is not selected",
     "send-message": "Send message",
     "system-message": "System message",
-    "unblock": "Unblock"
+    "unblock": "Unblock",
+    "you-cant-write-this-chat": "You cannot write in this chat"
   },
   "contact": {
     "add": "Add",

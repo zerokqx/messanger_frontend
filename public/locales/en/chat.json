@@ -6,6 +6,7 @@
   "send-message": "Send message",
   "system-message": "System message",
   "unblock": "Unblock",
+  "you-cant-write-this-chat": "You cannot write in this chat",
   "empty-title": "No messages yet",
   "empty-description": "Send the first message to start the conversation."
 }

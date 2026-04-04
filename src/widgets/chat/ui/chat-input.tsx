@@ -89,11 +89,6 @@ export const ChatInput = ({ inputProps }: ChatInputProps) => {
         />
 
         <Stack>
-          <CharCounter
-            invalidColor="red"
-            max={MAX_MESSAGE_LENGHT}
-            currentCount={value.length}
-          />
           <AnimatePresence>
             {canSubmit && (
               <m.div
