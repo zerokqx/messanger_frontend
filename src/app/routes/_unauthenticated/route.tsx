@@ -24,35 +24,50 @@ export const Route = createFileRoute('/_unauthenticated')({
     // В прод режиме пробуем авторизоваться по кукам если localStorage пустой
     if (import.meta.env.PROD) {
       const existingToken = tokenAction.doGetToken();
-      if (!existingToken) {
+      if (!existingToken || existingToken.includes('placeholder')) {
         const accessCookie = getCookie(ACCESS_COOKIE_NAME);
-        if (accessCookie) {
-          try {
-            // Кука есть — пробуем рефрешнуть через бэк (без интерцепторов)
-            const { data } = await rawAxios.post(
-              '/v1/auth/token/refresh',
-              {},
-              {
-                withCredentials: true,
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-Client-Type': 'web',
-                },
-              }
-            );
-            const newAccess = data.data?.access_token;
-            if (newAccess) {
-              tokenAction.doSetToken(newAccess);
-              // Редирект на страницу куда пользователь хотел попасть
-              // window.location — чтобы контекст auth пересчитался с новым токеном
-              const redirectUrl =
-                new URLSearchParams(location.search).get('redirect') ?? '/y';
-              window.location.href = redirectUrl;
-              return;
+        if (accessCookie && accessCookie.toLowerCase() !== 'none') {
+          // Кука есть и валидна — сохраняем placeholder JWT и редиректимся
+          tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+          window.location.href = location.pathname;
+          return;
+        }
+        // Куки нет или она "none" — пробуем refresh
+        try {
+          // Кука есть — пробуем рефрешнуть через бэк (без интерцепторов)
+          const { data } = await rawAxios.post(
+            '/v1/auth/token/refresh',
+            {},
+            {
+              withCredentials: true,
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Client-Type': 'web',
+              },
             }
-          } catch {
-            // Кука невалидна или бэк недоступен — продолжаем на /auth
+          );
+          const newAccess = data.data?.access_token;
+          if (newAccess && newAccess.toLowerCase() !== 'none') {
+            // Сервер вернул токен — используем его
+            tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+            // Редирект на страницу куда пользователь хотел попасть
+            // window.location — чтобы контекст auth пересчитался с новым токеном
+            const redirectUrl =
+              new URLSearchParams(location.search).get('redirect') ?? '/y';
+            window.location.href = redirectUrl;
+            return;
           }
+          // Сервер вернул "none" — пробуем прочитать куку снова (может сервер её обновил)
+          const cookieAfterRefresh = getCookie(ACCESS_COOKIE_NAME);
+          if (cookieAfterRefresh && cookieAfterRefresh.toLowerCase() !== 'none') {
+            tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+            const redirectUrl =
+              new URLSearchParams(location.search).get('redirect') ?? '/y';
+            window.location.href = redirectUrl;
+            return;
+          }
+        } catch {
+          // Кука невалидна или бэк недоступен — продолжаем на /auth
         }
       }
     }

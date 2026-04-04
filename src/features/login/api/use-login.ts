@@ -16,7 +16,9 @@ export const useLogin = () => {
         // В прод режиме сервер ставит куку, читаем её
         const token = isProd ? getCookie(ACCESS_COOKIE_NAME) : access_token;
         if (token) {
-          tokenAction.doSetToken(token);
+          // В прод режиме сохраняем placeholder JWT, т.к. методы используют cookie
+          const storeToken = isProd ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature' : token;
+          tokenAction.doSetToken(storeToken);
         }
         await router.invalidate();
         await reInitDb();

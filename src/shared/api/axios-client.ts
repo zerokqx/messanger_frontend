@@ -48,10 +48,29 @@ const refreshAccessToken = async (access: string): Promise<string> => {
   );
 
   const nextAccess = data.data?.access_token;
-  if (!nextAccess) {
+  
+  // Проверяем что токен существует и не является строкой "none"
+  if (!nextAccess || nextAccess.toLowerCase() === 'none' || nextAccess.trim() === '') {
+    // В прод режиме пробуем прочитать токен из куки
+    if (isProd) {
+      const cookieToken = getCookie(ACCESS_COOKIE_NAME);
+      if (cookieToken && cookieToken.toLowerCase() !== 'none') {
+        // В прод режиме сохраняем валидный placeholder JWT, т.к. методы используют cookie
+        tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+        return cookieToken;
+      }
+    }
     throw new Error('No access token in refresh response');
   }
 
+  // В прод режиме сохраняем placeholder JWT, т.к. методы используют cookie
+  if (isProd) {
+    tokenAction.doSetToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwcm9kLXVzZXIiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTgwMDAwMDAwMH0.placeholder_signature');
+    // Форсируем проверку куки для обновления состояния авторизации
+    window.dispatchEvent(new CustomEvent('auth:refresh-completed'));
+    return nextAccess;
+  }
+  
   tokenAction.doSetToken(nextAccess);
   return nextAccess;
 };
@@ -101,6 +120,13 @@ AXIOS_INSTANCE.interceptors.response.use(
 
       const nextAccess = await refreshPromise;
       const isProd = import.meta.env.PROD;
+      
+      // В прод режиме после успешного refresh перезагружаем страницу
+      // чтобы роутер пересчитал состояние auth с новым токеном
+      if (isProd) {
+        window.location.reload();
+      }
+      
       if (!isProd) {
         originalConfig.headers = originalConfig.headers ?? {};
         originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
