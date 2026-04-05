@@ -27,9 +27,11 @@ const MOCK_REFRESH_TOKEN = 'cookie-refresh-token';
 let refreshPromise: Promise<string> | null = null;
 
 const resetSession = () => {
+  console.log('❌ [RESET SESSION] Logging out user');
   tokenAction.doReset();
 
   if (window.location.pathname !== '/auth') {
+    console.log('❌ [RESET SESSION] Redirecting to /auth from', window.location.pathname);
     window.location.href = '/auth';
   }
 };
@@ -101,6 +103,7 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
 
   // В прод режиме сохраняем placeholder JWT, т.к. методы используют cookie
   if (isProd) {
+    console.log('🔄 [PROD] Setting placeholder token and dispatching event');
     tokenAction.doSetToken(PROD_PLACEHOLDER_ACCESS_TOKEN);
     // Форсируем проверку куки для обновления состояния авторизации
     window.dispatchEvent(new CustomEvent('auth:refresh-completed'));
