@@ -70,10 +70,14 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
 
   const { data } = await promise;
 
+  const nextAccess = data.data?.access_token;
+  const nextRefresh = data.data?.refresh_token;
+
   if (!isProd) {
     console.log('🔄 [REFRESH RESPONSE]', {
-      new_access_token: data.data?.access_token,
-      new_refresh_token: data.data?.refresh_token,
+      raw_data: data,
+      new_access_token: nextAccess,
+      new_refresh_token: nextRefresh,
     });
   }
 
