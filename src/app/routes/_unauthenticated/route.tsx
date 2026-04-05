@@ -40,7 +40,7 @@ export const Route = createFileRoute('/_unauthenticated')({
               withCredentials: true,
               headers: {
                 'Content-Type': 'application/json',
-                'X-Client-Type': 'web',
+                'X-Client-Type': import.meta.env.DEV ? 'web-dev' : 'web',
               },
             }
           );

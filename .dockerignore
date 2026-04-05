@@ -1,6 +1,7 @@
 .git
 .gitignore
 node_modules
+bun_modules
 dist
 .devenv
 .direnv

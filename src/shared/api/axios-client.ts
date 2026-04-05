@@ -43,7 +43,7 @@ const refreshAccessToken = async (access: string): Promise<string> => {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
-        'X-Client-Type': 'web',
+        'X-Client-Type': import.meta.env.DEV ? 'web-dev' : 'web',
       },
     }
   );
@@ -81,15 +81,7 @@ const refreshAccessToken = async (access: string): Promise<string> => {
 };
 
 AXIOS_INSTANCE.interceptors.request.use((config) => {
-  const isProd = import.meta.env.PROD;
-  if (!isProd) {
-    const token = tokenAction.doGetToken();
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-AXIOS_INSTANCE.interceptors.request.use((config) => {
-  config.headers.set('X-Client-Type', import.meta.env.DEV ? 'unknown' : 'web');
+  config.headers.set('X-Client-Type', import.meta.env.DEV ? 'web-dev' : 'web');
   return config;
 });
 
@@ -124,12 +116,6 @@ AXIOS_INSTANCE.interceptors.response.use(
       });
 
       const nextAccess = await refreshPromise;
-      const isProd = import.meta.env.PROD;
-
-      if (!isProd) {
-        originalConfig.headers = originalConfig.headers ?? {};
-        originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
-      }
 
       return await AXIOS_INSTANCE(originalConfig);
     } catch {

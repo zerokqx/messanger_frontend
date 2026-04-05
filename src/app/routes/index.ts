@@ -33,7 +33,7 @@ export const Route = createFileRoute('/')({
               withCredentials: true,
               headers: {
                 'Content-Type': 'application/json',
-                'X-Client-Type': 'web',
+                'X-Client-Type': import.meta.env.DEV ? 'web-dev' : 'web',
               },
             }
           );
