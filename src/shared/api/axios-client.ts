@@ -36,19 +36,33 @@ const refreshAccessToken = async (access: string): Promise<string> => {
     ? {}
     : { access_token: access, refresh_token: MOCK_REFRESH_TOKEN };
 
-  const { data } = await Axios.post<RefreshTokenResponse>(
-    `${import.meta.env.VITE_API_URL}/v1/auth/token/refresh`,
+  if (!isProd) {
+    console.log('🔄 [REFRESH REQUEST]', {
+      sending_access_token: access.substring(0, 30) + '...',
+      refresh_token_body: MOCK_REFRESH_TOKEN,
+    });
+  }
+
+  // Используем AXIOS_INSTANCE чтобы запрос шёл через прокси /api (куки правильно отправлялись)
+  const { data } = await AXIOS_INSTANCE.post<RefreshTokenResponse>(
+    '/v1/auth/token/refresh',
     body,
     {
-      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
-        'X-Client-Type': import.meta.env.DEV ? 'web-dev' : 'web',
       },
     }
   );
 
   const nextAccess = data.data?.access_token;
+  const nextRefresh = data.data?.refresh_token;
+
+  if (!isProd) {
+    console.log('🔄 [REFRESH RESPONSE]', {
+      new_access_token: nextAccess,
+      new_refresh_token: nextRefresh,
+    });
+  }
 
   // Проверяем что токен существует и не является строкой "none"
   if (
@@ -82,6 +96,19 @@ const refreshAccessToken = async (access: string): Promise<string> => {
 
 AXIOS_INSTANCE.interceptors.request.use((config) => {
   config.headers.set('X-Client-Type', import.meta.env.DEV ? 'web-dev' : 'web');
+  
+  // Логируем токены в dev режиме
+  if (import.meta.env.DEV) {
+    const storedToken = tokenAction.doGetToken();
+    if (storedToken) {
+      console.log('🔑 [REQUEST TOKEN]', {
+        url: config.url,
+        stored_token: storedToken.substring(0, 30) + '...',
+        header_set: config.headers.Authorization ? 'yes' : 'no',
+      });
+    }
+  }
+  
   return config;
 });
 

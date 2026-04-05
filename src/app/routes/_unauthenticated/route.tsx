@@ -13,7 +13,7 @@ import {
 
 /** Отдельный axios без интерцепторов — чтобы не триггерить рефреш при инициализации */
 const rawAxios = Axios.create({
-  baseURL: import.meta.env.VITE_API_URL.replace(/\/+$/, ''),
+  baseURL: '/api',
   withCredentials: true,
 });
 
