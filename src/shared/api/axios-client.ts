@@ -28,25 +28,21 @@ const resetSession = () => {
   }
 };
 
-const refreshAccessToken = async (access: string): Promise<string> => {
+const refreshAccessToken = async (_access: string): Promise<string> => {
   const isProd = import.meta.env.PROD;
 
-  // В прод режиме куки работают на одном домене — сервер сам прочтёт куки и вернёт новые
-  const body = isProd
-    ? {}
-    : { access_token: access, refresh_token: MOCK_REFRESH_TOKEN };
-
+  // Не отправляем токены в теле — сервер сам прочитает их из куки
   if (!isProd) {
     console.log('🔄 [REFRESH REQUEST]', {
-      sending_access_token: access.substring(0, 30) + '...',
-      refresh_token_body: MOCK_REFRESH_TOKEN,
+      stored_access_token: _access.substring(0, 30) + '...',
+      body: 'empty (server reads from cookie)',
     });
   }
 
   // Используем AXIOS_INSTANCE чтобы запрос шёл через прокси /api (куки правильно отправлялись)
   const { data } = await AXIOS_INSTANCE.post<RefreshTokenResponse>(
     '/v1/auth/token/refresh',
-    body,
+    {},
     {
       headers: {
         'Content-Type': 'application/json',
