@@ -7,16 +7,31 @@ import {
   Center,
   Loader,
   Paper,
+  Skeleton,
   Stack,
   Text,
   ThemeIcon,
 } from '@mantine/core';
 import { MessageCircleMore } from 'lucide-react';
+<<<<<<< Updated upstream
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
+||||||| Stash base
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Virtuoso } from 'react-virtuoso';
+=======
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { LogLevel, Virtuoso } from 'react-virtuoso';
+>>>>>>> Stashed changes
 import { useChatSession } from '../model/chat-session-context.ts';
+import Logger from '@/shared/lib/logger/logger.ts';
 
-const INITIAL_FIRST_ITEM_INDEX = 100000;
+const getMessageKey = (message: UiMessage, index: number) =>
+  message.client_id ??
+  message.message_id ??
+  `${message.sender_id ?? 'unknown'}-${message.created_at ?? 'pending'}-${index}`;
 
 const StackChat = Stack.withProps({
   gap: 'md',
@@ -40,68 +55,15 @@ export const ChatHistoryViewer = () => {
     (state) => state.targetUser.avatars.current.url
   );
 
-  const [firstItemIndex, setFirstItemIndex] = useState(
-    INITIAL_FIRST_ITEM_INDEX
-  );
-  const isPrependingRef = useRef(false);
-  const previousLengthRef = useRef(0);
-
   const {
     data: historyChat,
-    fetchNextPage,
-    hasNextPage,
     isLoading,
+    hasNextPage,
+    fetchNextPage,
     isFetchingNextPage,
   } = useChatHistory(chatId, 20);
 
-  const messages = useMemo<UiMessage[]>(() => {
-    return historyChat ? [...historyChat].reverse() : [];
-  }, [historyChat]);
-
-  useEffect(() => {
-    const previousLength = previousLengthRef.current;
-    const currentLength = messages.length;
-
-    if (isPrependingRef.current && currentLength > previousLength) {
-      setFirstItemIndex(
-        (current) => current - (currentLength - previousLength)
-      );
-      isPrependingRef.current = false;
-    }
-
-    previousLengthRef.current = currentLength;
-  }, [chatId, messages.length]);
-
-  useLayoutEffect(() => {
-    const previousLength = previousLengthRef.current;
-    const currentLength = messages.length;
-
-    if (isPrependingRef.current && currentLength > previousLength) {
-      setFirstItemIndex(
-        (current) => current - (currentLength - previousLength)
-      );
-      isPrependingRef.current = false;
-    }
-
-    previousLengthRef.current = currentLength;
-  }, [messages.length]);
-
-  useEffect(() => {
-    if (!isFetchingNextPage) {
-      isPrependingRef.current = false;
-    }
-  }, [isFetchingNextPage]);
-
-  const handleStartReached = () => {
-    if (!hasNextPage || isFetchingNextPage || isPrependingRef.current) {
-      return;
-    }
-
-    isPrependingRef.current = true;
-    void fetchNextPage().catch(() => {
-      isPrependingRef.current = false;
-    });
-  };
+  const messages = historyChat ?? [];
 
   if (isLoading && messages.length === 0) {
     return (
@@ -164,18 +126,21 @@ export const ChatHistoryViewer = () => {
           List: StackChat,
         }}
         data={messages}
-        firstItemIndex={firstItemIndex}
+        increaseViewportBy={1000}
         initialTopMostItemIndex={messages.length - 1}
         alignToBottom
-        overscan={20}
-        increaseViewportBy={500}
-        style={{ height: '100%', width: '100%' }}
-        followOutput={(isAtBottom) => (isAtBottom ? 'smooth' : false)}
-        defaultItemHeight={76}
-        computeItemKey={(_, item) => item.client_id ?? String(item.message_id)}
-        startReached={() => {
-          handleStartReached();
+        atTopStateChange={async (atBottom) => {
+          if (!isFetchingNextPage && hasNextPage && atBottom) {
+            Logger.debug('chat-history-viewer.tsx', 'Load new page', [
+              {
+                isFetchingNextPage,
+                hasNextPage,
+              },
+            ]);
+            await fetchNextPage();
+          }
         }}
+<<<<<<< Updated upstream
         itemContent={(_, item) =>
           item.message_type.includes('system') ? (
             <SystemMessage message={item} />
@@ -196,20 +161,87 @@ export const ChatHistoryViewer = () => {
             />
           )
         }
+||||||| Stash base
+        itemContent={(index, item) => {
+          const localIndex = index - firstItemIndex;
+          return (
+            <Box
+              pb={'xs'}
+              pl={{ base: 'xs', sm: 'xl' }}
+              pr={{ base: 'xs', sm: 'xl' }}
+            >
+              {item.message_type.includes('system') ? (
+                <SystemMessage message={item} />
+              ) : (
+                <MessageText
+                  message={item}
+                  nextUserIdOfMessage={messages[localIndex + 1]?.sender_id}
+                  previousUserIdOfMessage={messages[localIndex - 1]?.sender_id}
+                  userIdOfCurrentUser={currentUserId}
+                  avatarName={
+                    item.sender_id === currentUserId
+                      ? currentUserLogin
+                      : targetUserName
+                  }
+                  avatarSrc={
+                    item.sender_id === currentUserId
+                      ? currentUserAvatar
+                      : targetUserAvatar
+                  }
+                />
+              )}
+            </Box>
+          );
+        }}
+=======
+        startReached={async () => {
+          if (!isFetchingNextPage && hasNextPage) {
+            Logger.debug('chat-history-viewer.tsx', 'Load new page', [
+              {
+                isFetchingNextPage,
+                hasNextPage,
+              },
+            ]);
+            await fetchNextPage();
+          }
+        }}
+        logLevel={LogLevel.DEBUG}
+        style={{ height: '100%', width: '100%' }}
+        followOutput={(isAtBottom) => (isAtBottom ? 'auto' : false)}
+        defaultItemHeight={76}
+        computeItemKey={(index, item) => getMessageKey(item, index)}
+        itemContent={(index, item) => {
+          return (
+            <Box
+              pb="xs"
+              pl={{ base: 'xs', sm: 'xl' }}
+              pr={{ base: 'xs', sm: 'xl' }}
+            >
+              {item.message_type.includes('system') ? (
+                <SystemMessage message={item} />
+              ) : (
+                <MessageText
+                  message={item}
+                  nextUserIdOfMessage={messages[index + 1]?.sender_id}
+                  previousUserIdOfMessage={messages[index - 1]?.sender_id}
+                  userIdOfCurrentUser={currentUserId}
+                  avatarName={
+                    item.sender_id === currentUserId
+                      ? currentUserLogin
+                      : targetUserName
+                  }
+                  avatarSrc={
+                    item.sender_id === currentUserId
+                      ? currentUserAvatar
+                      : targetUserAvatar
+                  }
+                />
+              )}
+            </Box>
+          );
+        }}
+>>>>>>> Stashed changes
       />
-      {isFetchingNextPage && (
-        <Center
-          style={{
-            position: 'absolute',
-            top: 8,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            pointerEvents: 'none',
-          }}
-        >
-          <Loader size="sm" />
-        </Center>
-      )}
     </Box>
   );
 };

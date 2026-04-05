@@ -75,6 +75,11 @@ export const MessageItemMessageTypeItem = {
   poll: 'poll',
 } as const;
 
+export type _MessageItemState = {
+  isError?: string | null;
+  isPending?: string | null;
+} | null;
+
 export interface MessageItem {
   /** внутренний ID сообщения */
   message_id: number;
@@ -101,6 +106,7 @@ export interface MessageItem {
   is_edited?: boolean;
   /** Дата и время обновления сообщения */
   updated_at?: string | null;
+  __state?: _MessageItemState;
 }
 
 /**

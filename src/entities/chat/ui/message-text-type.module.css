@@ -1,0 +1,20 @@
+.messageRow {
+  justify-content: flex-start;
+}
+
+.avatar {
+  display: none;
+  flex-shrink: 0;
+}
+
+@media (max-width: 35.999em) {
+  .messageRow[data-side='me'] {
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 36em) {
+  .avatar {
+    display: block;
+  }
+}

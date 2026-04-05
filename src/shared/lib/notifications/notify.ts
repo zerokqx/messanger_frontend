@@ -79,6 +79,7 @@ const showByLevel = (level: NotifyLevel, payload: NotifyPayload = {}) => {
   });
 };
 
+
 export const notify = {
   error(payload: NotifyPayload = {}) {
     showByLevel('error', payload);

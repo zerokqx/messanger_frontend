@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
   const proxy = proxyEnabled
     ? {
         '/api': {
-          target: 'https://dev.api.yobble.org',
+          target: env.VITE_API_URL,
           changeOrigin: true,
           secure: true,
           rewrite: (path: string) => path.replace(/^\/api/, ''),

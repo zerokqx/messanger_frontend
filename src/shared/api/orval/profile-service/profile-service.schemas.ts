@@ -219,18 +219,23 @@ export interface ProfileData {
 
 export interface ProfilePermissionsRequest {
   /** Можно ли находить пользователя */
-  is_searchable?: boolean | null;
+  is_searchable?: boolean;
   /** Можно ли пересылать сообщения */
-  allow_message_forwarding?: boolean | null;
+  allow_message_forwarding?: boolean;
   /** Принимать сообщения от незнакомцев */
-  allow_messages_from_non_contacts?: boolean | null;
+  allow_messages_from_non_contacts?: boolean;
   /** Показывать фото не-контактам */
-  show_profile_photo_to_non_contacts?: boolean | null;
-  /** Видимость 'был в сети' (0 - все, 1 - контакты, 2 - никто) */
-  last_seen_visibility?: number | null;
+  show_profile_photo_to_non_contacts?: boolean;
+  /**
+   * Видимость 'был в сети' (0 - все, 1 - контакты, 2 - никто)
+   * @minimum 0
+   * @maximum 2
+   */
+  last_seen_visibility?: number;
   /** Показывать био не-контактам */
-  show_bio_to_non_contacts?: boolean | null;
+  show_bio_to_non_contacts?: boolean;
   /** Показывать сторисы не-контактам */
+<<<<<<< Updated upstream
   show_stories_to_non_contacts?: boolean | null;
   /** Разрешить чаты хранить на сервере */
   allow_server_chats?: boolean | null;
@@ -244,6 +249,35 @@ export interface ProfilePermissionsRequest {
   force_auto_delete_messages_in_private?: boolean | null;
   /** Макс. таймер удаления сообщений */
   max_message_auto_delete_seconds?: number | null;
+||||||| Stash base
+  show_stories_to_non_contacts?: boolean | null;
+  /** Кто может приглашать в паблики (0 - все, 1 - контакты, 2 - никто) */
+  public_invite_permission?: number | null;
+  /** Кто может приглашать в беседы (0 - все, 1 - контакты, 2 - никто) */
+  group_invite_permission?: number | null;
+  /** Кто может звонить (0 - все, 1 - контакты, 2 - никто) */
+  call_permission?: number | null;
+=======
+  show_stories_to_non_contacts?: boolean;
+  /**
+   * Кто может приглашать в паблики (0 - все, 1 - контакты, 2 - никто)
+   * @minimum 0
+   * @maximum 2
+   */
+  public_invite_permission?: number;
+  /**
+   * Кто может приглашать в беседы (0 - все, 1 - контакты, 2 - никто)
+   * @minimum 0
+   * @maximum 2
+   */
+  group_invite_permission?: number;
+  /**
+   * Кто может звонить (0 - все, 1 - контакты, 2 - никто)
+   * @minimum 0
+   * @maximum 2
+   */
+  call_permission?: number;
+>>>>>>> Stashed changes
   /** Автоудаление аккаунта через X дней */
   auto_delete_after_days?: number | null;
 }

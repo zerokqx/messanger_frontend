@@ -12,7 +12,7 @@ export const useChatHistory = (chatId: string, limit = 10) => {
     },
     {
       query: {
-        select: (data) => pagesMap(data),
+        select: (data) => pagesMap(data).reverse(),
         staleTime: 1000 * 60 * 10,
         gcTime: 1000 * 60 * 60 * 24,
         initialPageParam: null,

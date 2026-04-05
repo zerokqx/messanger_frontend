@@ -28,6 +28,8 @@ export default defineConfig({
     input: { target: targetUrl('auth') },
     output: {
       target: targetPath('auth-service'),
+
+      indexFiles: true,
       baseUrl: url('auth'),
       client: 'react-query',
       httpClient: 'axios',
@@ -43,6 +45,8 @@ export default defineConfig({
       target: targetPath('user-service'),
       baseUrl: url('user'),
       client: 'react-query',
+
+      indexFiles: true,
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
@@ -81,6 +85,8 @@ export default defineConfig({
       target: targetPath('profile-service'),
       baseUrl: url('profile'),
       client: 'react-query',
+
+      indexFiles: true,
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
@@ -104,6 +110,8 @@ export default defineConfig({
     output: {
       target: targetPath('feed-service'),
       baseUrl: url('feed'),
+
+      indexFiles: true,
       client: 'react-query',
       httpClient: 'axios',
       mode: 'tags-split',
@@ -113,16 +121,37 @@ export default defineConfig({
   },
 
   'chat-private-service': {
-    input: { target: targetUrl('chat_private') },
+    input: {
+      target: targetUrl('chat_private'),
+      override: {
+        transformer: (api) => {
+          const schema = api.components?.schemas?.MessageItem;
+          if (schema?.properties && schema) {
+            schema.properties.__state = {
+              type: 'object',
+              nullable: true,
+              properties: {
+                isError: { type: 'string', nullable: true },
+                isPending: { type: 'string', nullable: true },
+              },
+            };
+          }
+          return api;
+        },
+      },
+    },
     output: {
       target: targetPath('chat-private-service'),
       baseUrl: url('chat/private'),
+      indexFiles: true,
       client: 'react-query',
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
+
       override: {
         mutator: MUTATOR_CONFIG,
+
         operations: {
           get_list_private_chats_list_get: {
             query: {
@@ -146,6 +175,8 @@ export default defineConfig({
     input: { target: targetUrl('achievement') },
     output: {
       target: targetPath('achievement-service'),
+
+      indexFiles: true,
       baseUrl: url('achievement'),
       client: 'react-query',
       httpClient: 'axios',
@@ -163,6 +194,8 @@ export default defineConfig({
       target: targetPath('feedback-service'),
       baseUrl: url('feedback'),
       client: 'react-query',
+
+      indexFiles: true,
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
@@ -175,6 +208,8 @@ export default defineConfig({
     output: {
       target: targetPath('rating-service'),
       baseUrl: url('rating'),
+
+      indexFiles: true,
       client: 'react-query',
       httpClient: 'axios',
       mode: 'tags-split',
@@ -189,6 +224,7 @@ export default defineConfig({
       target: targetPath('storage-service'),
       baseUrl: url('storage'),
       client: 'react-query',
+      indexFiles: true,
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
@@ -202,6 +238,8 @@ export default defineConfig({
       target: targetPath('call-service'),
       baseUrl: url('call'),
       client: 'react-query',
+
+      indexFiles: true,
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',

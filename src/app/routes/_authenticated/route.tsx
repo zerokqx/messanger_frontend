@@ -19,7 +19,16 @@ import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 import { useAddMessageToHistory } from '@/features/chat/api/send-message';
 import { getGetPrivateChatHistoryHistoryGetInfiniteQueryKey } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import { useCreateChatFromSocketEvent } from '@/entities/chat/model/cache-actions';
+<<<<<<< Updated upstream
 import { useQueryClient } from '@tanstack/react-query';
+||||||| Stash base
+import { useMeUserId } from '@/entities/user';
+import { useTranslation } from 'react-i18next';
+=======
+import { useGetUserById, useMeUserId } from '@/entities/user';
+import { useTranslation } from 'react-i18next';
+import { notifications } from '@mantine/notifications';
+>>>>>>> Stashed changes
 
 const LazyAppShellNavbar = lazy(() =>
   import('@/widgets/navbar').then((m) => ({ default: m.AppShellNavbarWidget }))
@@ -65,7 +74,7 @@ function RouteComponent() {
     };
 
     const onMessage = async (event: ChatPrivateNewMessageSocketEvent) => {
-      console.log('chat_private:new_message', event);
+      Logger.debug('_authenticated/route.tsx',"New message",[event])
       await createNewChat(event);
       const message = event.payload;
       if (!message.chat_id) return;
@@ -75,6 +84,7 @@ function RouteComponent() {
           chat_id: message.chat_id,
         });
 
+<<<<<<< Updated upstream
       await addMessage(
         {
           chat_id: message.chat_id,
@@ -84,6 +94,36 @@ function RouteComponent() {
         },
         historyQueryKey
       );
+||||||| Stash base
+      if (meUserId !== event.payload.sender_id) {
+        await addMessage(
+          {
+            chat_id: message.chat_id,
+            content: message.content,
+            message_type: message.message_type,
+            sender_id: message.sender_id,
+          },
+          historyQueryKey
+        );
+      }
+=======
+      if (meUserId !== event.payload.sender_id) {
+        await addMessage(
+          {
+            chat_id: message.chat_id,
+            content: message.content,
+            message_type: message.message_type,
+            sender_id: message.sender_id,
+          },
+          historyQueryKey
+        );
+        notifications.show({
+          id:message.message_id.toString(),
+          title: "Новое сообщение",
+          content: message.content ??'',
+        })
+      }
+>>>>>>> Stashed changes
     };
 
     socket.auth = { token };
