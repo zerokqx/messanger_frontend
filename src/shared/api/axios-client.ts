@@ -7,8 +7,14 @@ import {
   getCookie,
 } from './auth-session';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL?.replace(/\/+$/, '') ||
+  'https://dev.api.yobble.org';
+
+// В dev: прокси через Vite `/api`
+// В prod: напрямую через nginx `/v1/` (без `/api` префикса)
 export const AXIOS_INSTANCE = Axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.DEV ? '/api' : API_BASE_URL,
   withCredentials: true,
 });
 
@@ -39,24 +45,35 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
     });
   }
 
-  // Используем AXIOS_INSTANCE чтобы запрос шёл через прокси /api (куки правильно отправлялись)
-  const { data } = await AXIOS_INSTANCE.post<RefreshTokenResponse>(
-    '/v1/auth/token/refresh',
-    {},
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  // В проде запрос идёт напрямую на API домен, в дев — через прокси /api
+  const promise = isProd
+    ? Axios.post<RefreshTokenResponse>(
+        `${API_BASE_URL}/v1/auth/token/refresh`,
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Client-Type': 'web',
+          },
+        }
+      )
+    : AXIOS_INSTANCE.post<RefreshTokenResponse>(
+        '/v1/auth/token/refresh',
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-  const nextAccess = data.data?.access_token;
-  const nextRefresh = data.data?.refresh_token;
+  const { data } = await promise;
 
   if (!isProd) {
     console.log('🔄 [REFRESH RESPONSE]', {
-      new_access_token: nextAccess,
-      new_refresh_token: nextRefresh,
+      new_access_token: data.data?.access_token,
+      new_refresh_token: data.data?.refresh_token,
     });
   }
 

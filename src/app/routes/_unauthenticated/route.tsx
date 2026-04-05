@@ -11,9 +11,13 @@ import {
   isPlaceholderAccessToken,
 } from '@/shared/api';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL?.replace(/\/+$/, '') ||
+  'https://dev.api.yobble.org';
+
 /** Отдельный axios без интерцепторов — чтобы не триггерить рефреш при инициализации */
 const rawAxios = Axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.DEV ? '/api' : API_BASE_URL,
   withCredentials: true,
 });
 
