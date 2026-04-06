@@ -8,7 +8,11 @@ import {
   getGetListPrivateChatsListGetInfiniteQueryKey,
   getGetPrivateChatHistoryHistoryGetInfiniteQueryKey,
 } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
-import { CacheDescriptor } from '@/shared/model/cache-descriptor';
+import { infinityQueryOptimisticInsert } from '@/shared/lib/infinity-query-optimistic-update';
+import {
+  CacheDescriptor,
+  type ReplaceOptions,
+} from '@/shared/model/cache-descriptor';
 import type {
   OptimisticHistoryData,
   OptimisticHistoryResponse,
@@ -80,9 +84,9 @@ export class MessageCacheDescriptor extends CacheDescriptor<
       return data.find((message) => message.message_id === messageId);
     }
 
-    const cachedHistories = this.client.getQueriesData<History>({
-      queryKey: this.getChatHistoryQueryKey(),
-    });
+    const cachedHistories = this.getCacheSnapshot<History>(
+      this.getChatHistoryQueryKey()
+    );
 
     for (const [, history] of cachedHistories) {
       if (!history) {
@@ -101,6 +105,49 @@ export class MessageCacheDescriptor extends CacheDescriptor<
     }
 
     return undefined;
+  }
+
+  /**
+   * Полностью заменяет найденное сообщение в history cache.
+   * По умолчанию проверяет, что replacement-данные содержат все ключи
+   * текущего объекта; `forceReplace` отключает эту проверку.
+   */
+  async replace(
+    predicate: (entity: UiMessage) => boolean,
+    data: Partial<UiMessage>,
+    options?: ReplaceOptions
+  ) {
+    await this.client.cancelQueries({
+      queryKey: this.getChatHistoryQueryKey(),
+    });
+
+    this.client.setQueriesData<History>(
+      { queryKey: this.getChatHistoryQueryKey() },
+      (old) => {
+        if (!old) {
+          return old;
+        }
+
+        return produce(old, (draft) => {
+          draft.pages.forEach((page) => {
+            page.data.items = page.data.items.map((item) => {
+              if (!predicate(item)) {
+                return item;
+              }
+
+              this.validateReplacementShape(item, data, options);
+
+              return {
+                ...data,
+                chat_id: this.cacheId,
+              } as Draft<OptimisticHistoryData['items'][number]>;
+            });
+          });
+        });
+      }
+    );
+
+    return this.getChatHistoryQueryKey();
   }
 
   /** Генерирует локальный `message_id` для optimistic сообщений. */
@@ -126,18 +173,11 @@ export class MessageCacheDescriptor extends CacheDescriptor<
           return old;
         }
 
-        return {
-          ...old,
-          pages: old.pages.map((page, index) =>
-            index === 0
-              ? produce(page, (draftPage) => {
-                  draftPage.data.items.unshift(
-                    nextMessage as Draft<OptimisticHistoryData['items'][number]>
-                  );
-                })
-              : page
-          ),
-        };
+        return infinityQueryOptimisticInsert(
+          old,
+          (page) => page.data.items,
+          nextMessage
+        );
       }
     );
 

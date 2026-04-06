@@ -21,6 +21,7 @@ export interface MessageLayoutProps extends BoxProps {
   chatId?: string;
   messageId?: number;
   isMe?: boolean;
+  isViewed?: boolean;
   nextSameAuthor?: boolean;
   variant?: MessageVariant;
   className?: string;
@@ -38,6 +39,7 @@ export const MessageLayout = ({
   chatId,
   messageId,
   isMe = false,
+  isViewed = false,
   nextSameAuthor = false,
   variant = 'text',
   ...props
@@ -48,6 +50,7 @@ export const MessageLayout = ({
       data-chat-id={chatId}
       data-message-id={messageId}
       data-is-me={String(isMe)}
+      data-is-viewed={String(isViewed)}
       data-next-same-author={String(nextSameAuthor)}
       data-variant={variant}
       {...props}

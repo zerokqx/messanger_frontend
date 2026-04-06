@@ -1,6 +1,4 @@
 export {
-  addRawMessage,
-  useAddRawMessage,
   useMessageHistory,
   useSendMessage,
   type Message,

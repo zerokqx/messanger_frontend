@@ -1,37 +1,12 @@
-import { useQueryClient, type QueryClient } from '@tanstack/react-query';
 import { assign } from 'lodash';
 import { useMeUserId } from '@/entities/user';
 import type { PrivateMessageSendRequest } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
 import { useSendPrivateMessageWithUuidMessageSendPost } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import { MessageCacheDescriptor } from '../model/message-cache-descriptor';
-import type { MessageHistoryQueryKey, UiMessage } from '../model';
+import type { UiMessage } from '../model';
+import { ChatCacheDescriptor } from '@/entities/chat';
 
 export type Message = PrivateMessageSendRequest;
-
-/**
- * Добавляет готовое сообщение в кеш истории конкретного чата.
- * Используется и для payload из сокета, и для optimistic вставки.
- */
-export const addRawMessage = async (
-  queryClient: QueryClient,
-  message: UiMessage
-): Promise<MessageHistoryQueryKey> => {
-  const descriptor = MessageCacheDescriptor.getInstance(
-    message.chat_id,
-    queryClient
-  );
-  return descriptor.create(message);
-};
-
-/**
- * Хук-обёртка над `addRawMessage`, которая берёт `QueryClient`
- * из контекста TanStack Query.
- */
-export const useAddRawMessage = () => {
-  const queryClient = useQueryClient();
-
-  return (message: UiMessage) => addRawMessage(queryClient, message);
-};
 
 /**
  * Отправляет сообщение и делает optimistic обновление только для
@@ -43,17 +18,22 @@ export const useSendMessage = () => {
   return useSendPrivateMessageWithUuidMessageSendPost({
     mutation: {
       async onMutate({ data }, context) {
-        const descriptor = MessageCacheDescriptor.getInstance(
+        const descriptorMessage = MessageCacheDescriptor.getInstance(
           data.chat_id,
           context.client
         );
-        const optimisticMessageId = descriptor.generateMessageId();
+        const chatDescriptor = ChatCacheDescriptor.getInstance(
+          data.chat_id,
+          context.client
+        );
+        const optimisticMessageId = descriptorMessage.generateMessageId();
+
         const optimisticMessage: UiMessage = {
           message_id: optimisticMessageId,
           chat_id: data.chat_id,
           content: data.content ?? null,
           message_type: data.message_type,
-          sender_id: meUserId ,
+          sender_id: meUserId,
           forward_metadata: null,
           sender_data: null,
           media_link: null,
@@ -65,9 +45,12 @@ export const useSendMessage = () => {
           isOptimistic: true,
         };
 
-        await addRawMessage(context.client, optimisticMessage);
+        await descriptorMessage.create(optimisticMessage);
+        await chatDescriptor.partialUpdate({
+          last_message: optimisticMessage,
+        });
 
-        return { descriptor, optimisticMessageId };
+        return { descriptor: descriptorMessage, optimisticMessageId };
       },
       onSuccess(data, _variables, mutationContext) {
         void mutationContext.descriptor.update(

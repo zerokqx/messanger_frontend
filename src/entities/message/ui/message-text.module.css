@@ -1,3 +1,55 @@
 .messageBubble {
   max-width: min(100%, 42rem);
 }
+
+.messageMeta {
+  min-width: max-content;
+}
+
+.messageReadMark {
+  display: none;
+}
+
+:global([data-is-me='false']) .messageReadMark {
+  display: none;
+}
+
+:global([data-is-me='true']) .messageReadMark {
+  display: inline-grid;
+  opacity: 0.6;
+  position: relative;
+}
+
+.messageReadSingle,
+.messageReadDouble {
+  grid-area: 1 / 1;
+}
+
+.messageReadSingle {
+  display: block;
+}
+
+.messageReadDouble {
+  display: none;
+}
+
+:global([data-is-me='true'][data-is-viewed='true']) .messageReadSingle {
+  display: none;
+}
+
+:global([data-is-me='true'][data-is-viewed='true']) .messageReadDouble {
+  display: block;
+  animation: readMarkIn 140ms ease;
+}
+
+@keyframes readMarkIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+}

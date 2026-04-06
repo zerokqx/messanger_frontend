@@ -15,11 +15,12 @@ import {
   ACCESS_COOKIE_NAME,
   type ChatPrivateNewMessageSocketEvent,
 } from '@/shared/api';
+import { useQueryClient } from '@tanstack/react-query';
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
 import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
-import { useSelectedChat } from '@/entities/chat';
-import { useAddRawMessage } from '@/entities/message';
+import { ChatCacheDescriptor, useSelectedChat } from '@/entities/chat';
+import { MessageCacheDescriptor } from '@/entities/message';
 import { useCreateChatFromSocketEvent } from '@/entities/chat/model/cache-actions';
 import { useMeUserId } from '@/entities/user';
 import { useTranslation } from 'react-i18next';
@@ -50,10 +51,10 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
   const [i18nTitles] = useTranslation('titles');
   const { data: meUserId } = useMeUserId();
   const createNewChat = useCreateChatFromSocketEvent();
-  const addRawMessage = useAddRawMessage();
   const selectedChat = useSelectedChat((s) => s.chatId);
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
@@ -61,15 +62,17 @@ function RouteComponent() {
 
   // Храним актуальные значения в ref, чтобы socket-обработчики не ловили stale closure.
   const createNewChatRef = useRef(createNewChat);
-  const addRawMessageRef = useRef(addRawMessage);
+  const queryClientRef = useRef(queryClient);
   const meUserIdRef = useRef(meUserId);
+  const selectedChatRef = useRef(selectedChat);
   const tokenRef = useRef(token);
 
   useEffect(() => {
     // Обновляем ref на каждом рендере, не пересоздавая подписки сокета.
     createNewChatRef.current = createNewChat;
-    addRawMessageRef.current = addRawMessage;
+    queryClientRef.current = queryClient;
     meUserIdRef.current = meUserId;
+    selectedChatRef.current = selectedChat;
     tokenRef.current = token;
   });
 
@@ -102,7 +105,7 @@ function RouteComponent() {
     const onReconnectAttempt = () => {
       // Обновляем токен из куки при каждой попытке реконнекта
       const reconnectToken = import.meta.env.PROD
-        ? getCookie(ACCESS_COOKIE_NAME) || ''
+        ? (getCookie(ACCESS_COOKIE_NAME) ?? '')
         : tokenAction.doGetToken() || '';
 
       console.log('🔄 [SOCKET] Reconnect attempt, updating token');
@@ -118,10 +121,26 @@ function RouteComponent() {
     };
 
     const onMessage = async (event: ChatPrivateNewMessageSocketEvent) => {
+      const message = event.payload;
+      const chatDescriptor = ChatCacheDescriptor.getInstance(
+        message.chat_id,
+        queryClient
+      );
+      const isMyMessage = meUserIdRef.current === event.payload.sender_id;
+
+      if (!isMyMessage && selectedChatRef.current !== message.chat_id) {
+        const currentChat = chatDescriptor.getCache();
+        await chatDescriptor.partialUpdate({
+          unread_count: (currentChat?.unread_count ?? 0) + 1,
+        });
+      }
+      const messagesDescriptor = MessageCacheDescriptor.getInstance(
+        message.chat_id,
+        queryClient
+      );
       console.log('📨 [SOCKET] chat_private:new_message received', event);
 
       await createNewChatRef.current(event);
-      const message = event.payload;
       if (!message.chat_id) {
         console.warn('⚠️ [SOCKET] No chat_id in message, skipping');
         return;
@@ -133,7 +152,7 @@ function RouteComponent() {
         message.sender_id
       );
 
-      if (meUserIdRef.current !== event.payload.sender_id) {
+      if (!isMyMessage) {
         console.log('➕ [SOCKET] Adding message to history', {
           message_id: message.message_id,
           chat_id: message.chat_id,
@@ -142,9 +161,17 @@ function RouteComponent() {
           sender_id: message.sender_id,
         });
 
-        await addRawMessageRef.current(message);
-      } else {
-        console.log(
+        if (meUserIdRef.current) {
+          await chatDescriptor.markRead({
+            userId: meUserIdRef.current,
+          });
+        }
+
+        await messagesDescriptor.create(message);
+        await chatDescriptor.partialUpdate({
+          last_message: message,
+        });
+      } else { console.log(
           'ℹ️ [SOCKET] Message from current user, not adding (already added optimistically on send)'
         );
       }
@@ -152,7 +179,7 @@ function RouteComponent() {
 
     // В прод режиме достаём токен из куки (сокеты не умеют читать HttpOnly куки)
     const socketToken = import.meta.env.PROD
-      ? getCookie(ACCESS_COOKIE_NAME) || ''
+      ? (getCookie(ACCESS_COOKIE_NAME) ?? '')
       : tokenRef.current;
 
     console.log('🔌 [SOCKET] Initial connection with token:', {

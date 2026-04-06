@@ -1,5 +1,4 @@
 import type {
-  MessageItem,
   PrivateChatHistoryResponse,
   PrivateChatListItem,
   PrivateChatListResponse,
@@ -14,12 +13,22 @@ import {
   infinityQueryOptimisticRemove,
   infinityQueryOptimisticUpdate,
 } from '@/shared/lib/infinity-query-optimistic-update';
-import { CacheDescriptor } from '@/shared/model/cache-descriptor';
+import {
+  CacheDescriptor,
+  type ReplaceOptions,
+} from '@/shared/model/cache-descriptor';
 import type { InfiniteData, QueryClient } from '@tanstack/react-query';
+import { produce } from 'immer';
 
 
 type ChatListCache = InfiniteData<PrivateChatListResponse>;
 type ChatHistoryCache = InfiniteData<PrivateChatHistoryResponse>;
+type ResetUnreadOfChat = () => void | Promise<void>;
+
+interface MarkReadOptions {
+  userId?: string;
+  resetUnreadOfChat?: boolean;
+}
 
 /**
  * Инкапсулирует работу с кешем приватного чата.
@@ -89,14 +98,14 @@ export class ChatCacheDescriptor extends CacheDescriptor<
    * Если список уже передан снаружи, использует его.
    * Иначе делает линейный поиск по данным из query cache.
    */
-  search(data?: PrivateChatListItem[]) {
+  search(data?: PrivateChatListItem[]): PrivateChatListItem | undefined {
     if (data) {
       return data.find((chat) => chat.chat_id === this.cacheId);
     }
 
-    const cachedLists = this.client.getQueriesData<ChatListCache>({
-      queryKey: this.getChatListQueryKey(),
-    });
+    const cachedLists = this.getCacheSnapshot<ChatListCache>(
+      this.getChatListQueryKey()
+    );
 
     for (const [, chatList] of cachedLists) {
       if (!chatList) {
@@ -115,6 +124,58 @@ export class ChatCacheDescriptor extends CacheDescriptor<
     }
 
     return undefined;
+  }
+
+  /**
+   * Возвращает текущий чат, к которому привязан дескриптор.
+   * Если плоский список уже передан снаружи, использует его.
+   * Иначе ищет чат в query cache.
+   */
+  getCache(data?: PrivateChatListItem[]): PrivateChatListItem | undefined {
+    return this.search(data);
+  }
+
+  /**
+   * Полностью заменяет найденный чат в кеше списка.
+   * По умолчанию проверяет, что replacement-данные содержат все ключи
+   * текущего объекта; `forceReplace` отключает эту проверку.
+   */
+  async replace(
+    predicate: (entity: PrivateChatListItem) => boolean,
+    data: Partial<PrivateChatListItem>,
+    options?: ReplaceOptions
+  ) {
+    await this.client.cancelQueries({
+      queryKey: this.getChatListQueryKey(),
+    });
+
+    this.client.setQueriesData<ChatListCache>(
+      { queryKey: this.getChatListQueryKey() },
+      (old) => {
+        if (!old) {
+          return old;
+        }
+
+        return produce(old, (draft) => {
+          draft.pages.forEach((page) => {
+            page.data.items = page.data.items.map((item) => {
+              if (!predicate(item)) {
+                return item;
+              }
+
+              this.validateReplacementShape(item, data, options);
+
+              return {
+                ...data,
+                chat_id: this.cacheId,
+              } as PrivateChatListItem;
+            });
+          });
+        });
+      }
+    );
+
+    return this.getChatListQueryKey();
   }
 
   /** Добавляет чат в начало первой страницы списка. */
@@ -147,12 +208,15 @@ export class ChatCacheDescriptor extends CacheDescriptor<
 
   /** Полностью обновляет чат в кеше по `chat_id`. */
   async update(chat: PrivateChatListItem) {
-    return this.partialUpdate({
-      ...chat,
-      chat_id: this.cacheId,
-    });
+    return this.replace(
+      (item) => item.chat_id === this.cacheId,
+      {
+        ...chat,
+        chat_id: this.cacheId,
+      },
+      { forceReplace: true }
+    );
   }
-
   /**
    * Частично обновляет чат в списке через optimistic helper.
    * Подходит для `unread_count`, `last_message`, `chat_data` и других полей.
@@ -182,11 +246,15 @@ export class ChatCacheDescriptor extends CacheDescriptor<
   }
 
   /**
-   * Помечает все сообщения текущего чата как прочитанные только в кеше.
-   * Дополнительно сбрасывает `unread_count` и обновляет `last_message`
-   * в списке чатов.
+   * Помечает сообщения текущего чата как прочитанные только в кеше.
+   * Если передан `userId`, обновляются только сообщения этого отправителя.
+   * Если включён `resetUnreadOfChat`, внешний callback должен сам обнулить
+   * счётчик непрочитанных у чата.
    */
-  async markAllRead() {
+  async markRead(
+    options?: MarkReadOptions,
+    resetUnreadOfChat?: ResetUnreadOfChat
+  ) {
     await this.client.cancelQueries({
       queryKey: this.getChatHistoryQueryKey(),
     });
@@ -201,7 +269,8 @@ export class ChatCacheDescriptor extends CacheDescriptor<
         return infinityQueryOptimisticUpdate(
           old,
           (page) => page.data.items,
-          () => true,
+          (item) =>
+            options?.userId ? item.sender_id === options.userId : true,
           (draft) => {
             draft.is_viewed = true;
           }
@@ -209,89 +278,17 @@ export class ChatCacheDescriptor extends CacheDescriptor<
       }
     );
 
-    await this.client.cancelQueries({
-      queryKey: this.getChatListQueryKey(),
-    });
-
-    this.client.setQueriesData<ChatListCache>(
-      { queryKey: this.getChatListQueryKey() },
-      (old) => {
-        if (!old) {
-          return old;
-        }
-
-        return infinityQueryOptimisticUpdate(
-          old,
-          (page) => page.data.items,
-          (item) => item.chat_id === this.cacheId,
-          (draft) => {
-            draft.unread_count = 0;
-
-            if (draft.last_message) {
-              draft.last_message.is_viewed = true;
-            }
-          }
+    if (options?.resetUnreadOfChat) {
+      if (!resetUnreadOfChat) {
+        throw new Error(
+          'markRead with resetUnreadOfChat=true requires external reset callback'
         );
       }
-    );
-  }
 
-  /**
-   * Обновляет превью чата на основе сообщения.
-   * Используется для локального синка `last_message` и `unread_count`.
-   */
-  async updateFromMessage(
-    message: MessageItem,
-    options?: {
-      unreadCount?: number;
-      incrementUnreadCount?: boolean;
-    }
-  ) {
-    const patch: Partial<PrivateChatListItem> = {
-      last_message: {
-        ...message,
-        chat_id: this.cacheId,
-      },
-    };
-
-    if (typeof options?.unreadCount === 'number') {
-      patch.unread_count = options.unreadCount;
+      await resetUnreadOfChat();
     }
 
-    return this.partialUpdate(patch).then(async () => {
-      if (!options?.incrementUnreadCount) {
-        return;
-      }
-
-      await this.client.cancelQueries({
-        queryKey: this.getChatListQueryKey(),
-      });
-
-      this.client.setQueriesData<ChatListCache>(
-        { queryKey: this.getChatListQueryKey() },
-        (old) => {
-          if (!old) {
-            return old;
-          }
-
-          return infinityQueryOptimisticUpdate(
-            old,
-            (page) => page.data.items,
-            (item) => item.chat_id === this.cacheId,
-            (draft) => {
-              draft.unread_count =
-                typeof draft.unread_count === 'number'
-                  ? draft.unread_count + 1
-                  : 1;
-              draft.last_message = {
-                ...message,
-                chat_id: this.cacheId,
-              };
-            }
-          );
-        }
-      );
-    });
+    return this.getChatHistoryQueryKey();
   }
 
   /**

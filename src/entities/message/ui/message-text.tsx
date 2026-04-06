@@ -5,7 +5,7 @@ import {
   ThemeIcon,
   useMantineTheme,
 } from '@mantine/core';
-import { CheckCheck } from 'lucide-react';
+import { Check, CheckCheck } from 'lucide-react';
 import { useMemo } from 'react';
 import { useSettingsStore } from '@/shared/lib/settings';
 import { lightDark } from '@/shared/lib/light-dark';
@@ -56,15 +56,18 @@ export const MessageText = ({
       <Text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
         {message.content}
       </Text>
-      <Group align="end" gap="xs" wrap="nowrap">
+      <Group className={styles.messageMeta} align="end" gap="xs" wrap="nowrap">
         <Text size="xs" opacity={0.6}>
           {formattedTime}
         </Text>
-        {message.is_viewed ? (
-          <ThemeIcon color="white" opacity={0.6} size="xs">
-            <CheckCheck />
-          </ThemeIcon>
-        ) : null}
+        <ThemeIcon
+          className={styles.messageReadMark}
+          color="white"
+          size="xs"
+        >
+          <Check className={styles.messageReadSingle} />
+          <CheckCheck className={styles.messageReadDouble} />
+        </ThemeIcon>
       </Group>
     </RoundedContainerGroup>
   );

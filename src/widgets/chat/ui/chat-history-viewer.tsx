@@ -188,6 +188,7 @@ export const ChatHistoryViewer = () => {
               ) : (
                 <MessageLayout
                   isMe={isMe}
+                  isViewed={item.is_viewed}
                   nextSameAuthor={
                     messages[localIndex + 1]?.sender_id === item.sender_id
                   }
