@@ -1,9 +1,9 @@
 import { io } from 'socket.io-client';
 
-// В dev: прямой URL API сервера
-// В prod: относительный путь (nginx проксирует /socket.io/)
+// В prod: напрямую на API домен (чтобы бэкенд видел реальный IP клиента)
+// Токен передаётся через query параметр, куки не нужны
 export const socket = io(
-  import.meta.env.DEV ? import.meta.env.VITE_API_URL : undefined,
+  import.meta.env.VITE_API_URL,
   {
     autoConnect: false,
   }

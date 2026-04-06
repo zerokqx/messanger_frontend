@@ -90,25 +90,33 @@ function RouteComponent() {
     };
 
     // В прод режиме достаём токен из куки (сокеты не умеют читать HttpOnly куки)
-    if (import.meta.env.PROD) {
-      const cookieToken = getCookie(ACCESS_COOKIE_NAME);
-      if (cookieToken) {
-        socket.auth = { token: cookieToken };
-      }
-    } else {
-      socket.auth = { token };
-    }
+    const socketToken = import.meta.env.PROD
+      ? getCookie(ACCESS_COOKIE_NAME) || ''
+      : token;
+
+    console.log('🔌 [SOCKET] Connecting with token:', {
+      isProd: import.meta.env.PROD,
+      token_source: import.meta.env.PROD ? 'cookie' : 'localStorage',
+      cookie_raw: getCookie(ACCESS_COOKIE_NAME),
+      token_preview: socketToken.substring(0, 30) + '...',
+      has_token: socketToken.length > 0,
+    });
+
+    // Передаём токен и client_type через query — бэкенд использует их для аутентификации
+    socket.io.opts.query = {
+      token: socketToken,
+      client_type: import.meta.env.PROD ? 'web' : 'web-dev',
+    };
 
     socket.on('reconnect_attempt', () => {
       // При переподключении обновляем токен из куки
-      if (import.meta.env.PROD) {
-        const cookieToken = getCookie(ACCESS_COOKIE_NAME);
-        if (cookieToken) {
-          socket.auth = { token: cookieToken };
-        }
-      } else {
-        socket.auth = { token: tokenAction.doGetToken() || '' };
-      }
+      const reconnectToken = import.meta.env.PROD
+        ? getCookie(ACCESS_COOKIE_NAME) || ''
+        : tokenAction.doGetToken() || '';
+      socket.io.opts.query = {
+        token: reconnectToken,
+        client_type: import.meta.env.PROD ? 'web' : 'web-dev',
+      };
     });
 
     if (!socket.connected) {
