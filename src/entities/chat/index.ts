@@ -1,18 +1,11 @@
-export { ChatCard, Chat } from './ui';
-export type {
-  OptimisticHistoryData,
-  OptimisticHistoryResponse,
-  ChatMessage,
-  UiMessage,
-  ChatCompound,
-  MessageContainerProps,
-  MessageTextProps,
-  SystemMessageProps,
-} from './ui';
+export { ChatCard } from './ui';
 export type { ChatCardProps, ChatListItem } from './ui';
-export { useChatHistory, useChatCreate, useChatList } from './api/';
+export { useChatCreate, useChatList } from './api/';
 export {
+  ChatCacheDescriptor,
+  type ChatHistoryQueryKey,
   type ChatItem,
+  type ChatListQueryKey,
   chatExists,
   useSelectedChat,
   useChatUserId,

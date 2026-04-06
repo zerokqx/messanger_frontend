@@ -1,14 +1,8 @@
-import type { components } from '@/shared/types/v1';
+import type { ApiSchemasMeProfilePermissionsResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { toString } from 'lodash';
 import type { Stringified, Simplify } from 'type-fest';
 
-type Permissions =
-  components['schemas']['api__schemas__me__ProfilePermissionsResponse'];
-
-type RemovedFields =
-  | 'allow_server_chats'
-  | 'force_auto_delete_messages_in_private'
-  | 'max_message_auto_delete_seconds';
+type Permissions = ApiSchemasMeProfilePermissionsResponse;
 
 type StringifiedFields =
   | 'last_seen_visibility'
@@ -18,7 +12,7 @@ type StringifiedFields =
   | 'auto_delete_after_days';
 
 export type PermissionsStringify = Simplify<
-  Omit<Permissions, StringifiedFields | RemovedFields> &
+  Omit<Permissions, StringifiedFields> &
     Stringified<Pick<Permissions, StringifiedFields>>
 >;
 
@@ -41,5 +35,3 @@ export const createPermissions = (
     auto_delete_after_days: String(permission.auto_delete_after_days),
   };
 };
-
-

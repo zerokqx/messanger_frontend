@@ -1,12 +1,12 @@
 import { pagesMap } from '@/shared/lib/pages-map';
 
-import type { components } from '@/shared/types/v1';
+import type { ContactInfoData } from '@/shared/api/orval/user-service/user-service.schemas';
 import type { InfiniteData } from '@tanstack/react-query';
 import { describe, expect, it, } from 'vitest';
-type ContactItem = components['schemas']['ContactInfoData']['items'][number];
+type ContactItem = ContactInfoData['items'][number];
 interface ContactPage {
   status: string;
-  data: components['schemas']['ContactInfoData'];
+  data: ContactInfoData;
 }
 
 const makeContact = (overrides: Partial<ContactItem> = {}): ContactItem => ({

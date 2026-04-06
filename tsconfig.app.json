@@ -22,7 +22,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
+    "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "noUncheckedIndexedAccess": false,
@@ -36,6 +36,6 @@
   "include": [
     "src",
     "__mocks__",
-    "public/locales",
+    "public/locales"
   ]
 }

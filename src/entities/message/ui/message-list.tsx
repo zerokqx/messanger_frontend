@@ -1,19 +1,25 @@
+import { Stack } from '@mantine/core';
+import type { ComponentProps } from 'react';
 import { Virtuoso } from 'react-virtuoso';
-import { MessageText } from './message-text-type';
+import { MessageText } from './message-text';
 import { SystemMessage } from './system-message';
-import type { MessageContainerProps } from './types';
-import {  Stack } from '@mantine/core';
+import type { MessageListProps } from './types';
 
-const StackList = (props: object) => <Stack {...props} gap={'lg'} />;
-export const ChatContainer = ({
+const ListRoot = (props: ComponentProps<typeof Stack>) => (
+  <Stack {...props} gap="lg" />
+);
+
+/** Простой виртуализированный список для экранов, где нужен только рендер сообщений. */
+export const MessageList = ({
   messages,
+  currentUserId = '',
   style,
   increaseViewportBy = 280,
   initialTopMostItemIndex,
   startReached,
   followOutput,
   computeItemKey,
-}: MessageContainerProps) => {
+}: MessageListProps) => {
   return (
     <Virtuoso
       data={messages}
@@ -23,7 +29,7 @@ export const ChatContainer = ({
       followOutput={followOutput}
       computeItemKey={computeItemKey}
       components={{
-        List: StackList,
+        List: ListRoot,
       }}
       style={{
         minHeight: 0,
@@ -32,11 +38,13 @@ export const ChatContainer = ({
       totalCount={messages.length}
       increaseViewportBy={increaseViewportBy}
       itemContent={(_, item) => {
-        console.log(item,'ITEM');
         if (item.message_type.includes('system')) {
           return <SystemMessage message={item} />;
         }
-        return <MessageText avatarSrc="dwd" content={item.content} />;
+
+        return (
+          <MessageText message={item} userIdOfCurrentUser={currentUserId} />
+        );
       }}
     />
   );

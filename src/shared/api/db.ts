@@ -1,4 +1,4 @@
-import type { components } from '../types/v1';
+import type { PrivateChatHistoryData } from './orval/chat-private-service/chat-private-service.schemas';
 import { Dexie, type EntityTable } from 'dexie';
 export type DexieUserId = string;
 export type DexieChatId = string;
@@ -8,8 +8,7 @@ export interface Chat {
   chat_id: DexieChatId;
 }
 
-export type MessageItem =
-  components['schemas']['PrivateChatHistoryData']['items'][number];
+export type MessageItem = PrivateChatHistoryData['items'][number];
 
 export interface Message extends MessageItem {
   id: number;

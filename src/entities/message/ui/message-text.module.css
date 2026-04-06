@@ -1,0 +1,3 @@
+.messageBubble {
+  max-width: min(100%, 42rem);
+}

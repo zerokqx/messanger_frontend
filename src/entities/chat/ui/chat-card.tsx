@@ -19,6 +19,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import { useMemo } from 'react';
 
+export type ChatListItem = PrivateChatListItem;
+
 export interface ChatCardProps {
   isActive?: boolean;
   unreadCount: PrivateChatListItem['unread_count'];

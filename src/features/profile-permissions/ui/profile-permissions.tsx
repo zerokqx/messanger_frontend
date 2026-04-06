@@ -6,7 +6,7 @@ import {
   type PermissionsStringify,
 } from '../lib/create-permissions';
 import { normilizePermissions } from '../lib/normilize-permissions';
-import type { components } from '@/shared/types/v1';
+import type { ProfileData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { Check, Save } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { Checkbox, Select, Button, Stack } from '@mantine/core';
@@ -14,7 +14,7 @@ import { useTails } from '@/shared/lib/tails';
 import { RoundedContainerStack } from '@/shared/ui/boxes';
 import { notify } from '@/shared/lib/notifications';
 
-type Permissions = components['schemas']['ProfileData'];
+type Permissions = ProfileData;
 
 export const ProfilePermissions = memo(
   ({ permissions }: { permissions: Permissions }) => {

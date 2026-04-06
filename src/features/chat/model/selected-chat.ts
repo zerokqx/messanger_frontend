@@ -1,9 +1,9 @@
 import { createStoreAction } from '@/shared/lib/zustand/create-store-action/create-store-action';
-import type { components } from '@/shared/types/v1';
+import type { PrivateChatListItem } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
 import { createStore } from '@colorfy-software/zfy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type Chat = components['schemas']['PrivateChatListItem'];
+export type Chat = PrivateChatListItem;
 
 export const useSelectedChat = createStore('selected-chat', '', {
   persist: {

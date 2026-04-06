@@ -1,9 +1,7 @@
-import type { components } from '@/shared/types/v1';
+import type { ProfilePermissionsRequest } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { forEach, toNumber } from 'lodash';
-import { ProfilePermissions } from '../ui/profile-permissions';
 
-export type ProfilePermissions =
-  components['schemas']['api__schemas__me__ProfilePermissionsResponse'];
+export type ProfilePermissions = ProfilePermissionsRequest;
 export type PermissionsUnkeyed = {
   [K in keyof ProfilePermissions]: ProfilePermissions[K] | string;
 };
@@ -12,7 +10,6 @@ export const normilizePermissions = (
   permissions: PermissionsUnkeyed
 ): ProfilePermissions => {
   const keysForNullNormalize = [
-    'max_message_auto_delete_seconds',
     'auto_delete_after_days',
   ] as const satisfies readonly (keyof ProfilePermissions)[];
 

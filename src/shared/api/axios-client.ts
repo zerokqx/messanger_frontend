@@ -80,7 +80,7 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
   const nextRefresh = data.data?.refresh_token;
 
   if (!isProd) {
-    console.log('🔄 [REFRESH RESPONSE]', {
+    console.log('🔄 [REFRESH RESPONS ]', {
       raw_data: data,
       new_access_token: nextAccess,
       new_refresh_token: nextRefresh,

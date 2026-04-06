@@ -9,13 +9,17 @@ import {
 import { Suspense, lazy, useEffect, useRef } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
 import { useTokenStore, tokenAction } from '@/shared/token';
-import { socket, getCookie, ACCESS_COOKIE_NAME, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
+import {
+  socket,
+  getCookie,
+  ACCESS_COOKIE_NAME,
+  type ChatPrivateNewMessageSocketEvent,
+} from '@/shared/api';
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
 import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 import { useSelectedChat } from '@/entities/chat';
-import { useAddMessageToHistory } from '@/features/chat/api/send-message';
-import { getGetPrivateChatHistoryHistoryGetInfiniteQueryKey } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
+import { useAddRawMessage } from '@/entities/message';
 import { useCreateChatFromSocketEvent } from '@/entities/chat/model/cache-actions';
 import { useMeUserId } from '@/entities/user';
 import { useTranslation } from 'react-i18next';
@@ -49,34 +53,37 @@ function RouteComponent() {
   const [i18nTitles] = useTranslation('titles');
   const { data: meUserId } = useMeUserId();
   const createNewChat = useCreateChatFromSocketEvent();
-  const addMessage = useAddMessageToHistory();
+  const addRawMessage = useAddRawMessage();
   const selectedChat = useSelectedChat((s) => s.chatId);
   const asside = useLayoutStore((s) => s.data.asside);
   const t = useMantineTheme();
   const token = useTokenStore((s) => s.data.access);
 
-  // Use refs to avoid recreating useEffect dependencies
+  // Храним актуальные значения в ref, чтобы socket-обработчики не ловили stale closure.
   const createNewChatRef = useRef(createNewChat);
-  const addMessageRef = useRef(addMessage);
+  const addRawMessageRef = useRef(addRawMessage);
   const meUserIdRef = useRef(meUserId);
   const tokenRef = useRef(token);
 
   useEffect(() => {
-    // Update refs on every render
+    // Обновляем ref на каждом рендере, не пересоздавая подписки сокета.
     createNewChatRef.current = createNewChat;
-    addMessageRef.current = addMessage;
+    addRawMessageRef.current = addRawMessage;
     meUserIdRef.current = meUserId;
     tokenRef.current = token;
   });
 
   useEffect(() => {
     const onAny = (event: string, ...args: unknown[]) => {
-      Logger.debug('_authenticated/route.tsx','Socket new event',[event,...args])
+      Logger.debug('_authenticated/route.tsx', 'Socket new event', [
+        event,
+        ...args,
+      ]);
       console.log('EVENT:', event, args);
     };
 
     const onConnect = () => {
-      Logger.debug('_authenticated/route.tsx','Socket connected')
+      Logger.debug('_authenticated/route.tsx', 'Socket connected');
       console.log('✅ [SOCKET] Connected successfully, SID:', socket.id);
     };
 
@@ -119,36 +126,27 @@ function RouteComponent() {
         console.warn('⚠️ [SOCKET] No chat_id in message, skipping');
         return;
       }
-
-      const historyQueryKey =
-        getGetPrivateChatHistoryHistoryGetInfiniteQueryKey({
-          chat_id: message.chat_id,
-        });
-
-      console.log('🔑 [SOCKET] Query key for chat:', historyQueryKey);
-      console.log('👤 [SOCKET] Current user ID:', meUserIdRef.current, 'Message sender:', message.sender_id);
+      console.log(
+        '👤 [SOCKET] Current user ID:',
+        meUserIdRef.current,
+        'Message sender:',
+        message.sender_id
+      );
 
       if (meUserIdRef.current !== event.payload.sender_id) {
         console.log('➕ [SOCKET] Adding message to history', {
+          message_id: message.message_id,
           chat_id: message.chat_id,
           content: message.content,
           message_type: message.message_type,
           sender_id: message.sender_id,
         });
-        
-        const prevHistory = await addMessageRef.current(
-          {
-            chat_id: message.chat_id,
-            content: message.content,
-            message_type: message.message_type,
-            sender_id: message.sender_id,
-          },
-          historyQueryKey
-        );
-        
-        console.log('✅ [SOCKET] Previous history state:', prevHistory);
+
+        await addRawMessageRef.current(message);
       } else {
-        console.log('ℹ️ [SOCKET] Message from current user, not adding (already added optimistically on send)');
+        console.log(
+          'ℹ️ [SOCKET] Message from current user, not adding (already added optimistically on send)'
+        );
       }
     };
 
@@ -185,7 +183,7 @@ function RouteComponent() {
     } else {
       console.log('ℹ️ [SOCKET] Already connected, skipping');
     }
-    
+
     socket.offAny();
     socket.off('connect', onConnect);
     socket.off('chat_private:new_message', onMessage);
@@ -206,9 +204,11 @@ function RouteComponent() {
       socket.off('disconnect', onDisconnect);
       socket.offAny(onAny);
 
-      console.log('🧹 [SOCKET] Cleanup handlers only, keeping connection alive');
+      console.log(
+        '🧹 [SOCKET] Cleanup handlers only, keeping connection alive'
+      );
     };
-  }, []); // Empty deps - socket connection lives forever
+  }, []); // Пустые зависимости: соединение и подписки живут весь жизненный цикл layout.
 
   return (
     <AppShell

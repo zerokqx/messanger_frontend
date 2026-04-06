@@ -1,9 +1,9 @@
 import { describe, it, expect, expectTypeOf } from 'vitest';
 import { createPermissions } from './create-permissions.ts';
-import type { components } from '@/shared/types/v1.js';
+import type { ApiSchemasMeProfilePermissionsResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
 
 describe('createPermissions', () => {
-  const mockPermission: components['schemas']['api__schemas__me__ProfilePermissionsResponse'] =
+  const mockPermission: ApiSchemasMeProfilePermissionsResponse =
     {
       is_searchable: true,
       allow_message_forwarding: false,
@@ -11,13 +11,10 @@ describe('createPermissions', () => {
       show_profile_photo_to_non_contacts: false,
       show_bio_to_non_contacts: true,
       show_stories_to_non_contacts: true,
-      allow_server_chats: false,
-      force_auto_delete_messages_in_private: true,
       last_seen_visibility: 2,
       public_invite_permission: 1,
       group_invite_permission: 2,
-      call_permission: 3,
-      max_message_auto_delete_seconds: 3600,
+      call_permission: 2,
       auto_delete_after_days: 7,
     };
 
@@ -37,12 +34,9 @@ describe('createPermissions', () => {
     expect(result.auto_delete_after_days).toBe('7');
   });
 
-  it('не должна включать удалённые из формы поля', () => {
-    expect(result).not.toHaveProperty('allow_server_chats');
-    expect(result).not.toHaveProperty(
-      'force_auto_delete_messages_in_private'
-    );
-    expect(result).not.toHaveProperty('max_message_auto_delete_seconds');
+  it('не должна оставлять числовые поля в исходном виде', () => {
+    expect(result.last_seen_visibility).not.toBe(2);
+    expect(result.public_invite_permission).not.toBe(1);
   });
 
   it('проверка статических типов (TypeScript)', () => {

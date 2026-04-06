@@ -1,4 +1,4 @@
-import type { components } from '@/shared/types/v1';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { Button, Group, type DefaultMantineColor } from '@mantine/core';
 import { Plus, Trash } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import { notify } from '@/shared/lib/notifications';
 
 interface ContactControllPanelProps {
   userId: string;
-  user: components['schemas']['ProfileByUserIdData'];
+  user: ProfileByUserIdData;
   onUpdate: (userId: string) => void;
 }
 

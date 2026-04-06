@@ -1,7 +1,7 @@
 import { useNotifyClipboard } from '@/shared/lib/hooks/use-notify-clipboard';
 import { IconButton } from '@/shared/ui/buttons';
 import { Label, LabelBox } from '@/shared/ui/lables';
-import type { components } from '@/shared/types/v1';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import {
   Group,
   Avatar as MantineAvatar,
@@ -36,7 +36,7 @@ const LazyBioFlake = lazy(() =>
 );
 
 const ProfileContext = createContext<
-  | (Partial<components['schemas']['ProfileByUserIdData']> & {
+  | (Partial<ProfileByUserIdData> & {
       formatName: ReturnType<FormatLoginViaCutomNameFn>;
     })
   | null

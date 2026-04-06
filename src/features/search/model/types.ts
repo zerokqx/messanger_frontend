@@ -1,4 +1,4 @@
-import type { components } from '@/shared/types/v1';
+import type { UserSearchResponse } from '@/shared/api/orval/feed-service/feed-service.schemas';
 
 export type TUseSearchStoreState =
-  components['schemas']['UserSearchResponse']['data']['users'];
+  UserSearchResponse['data']['users'];

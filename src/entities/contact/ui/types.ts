@@ -1,8 +1,8 @@
-import type { components } from '@/shared/types/v1';
+import type { ContactInfo } from '@/shared/api/orval/user-service/user-service.schemas';
 import type { GridProps } from '@mantine/core';
 
 export interface IContactElementProp {
-  user: components['schemas']['ContactInfo'];
+  user: ContactInfo;
   onClick?: GridProps['onClick'];
   onRemove?: (id: string) => void;
   simplification?: boolean;

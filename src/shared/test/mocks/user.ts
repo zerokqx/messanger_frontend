@@ -1,6 +1,9 @@
-import type { components } from '@/shared/types/v1';
+import type {
+  ProfileData,
+  ProfileResponse,
+} from '@/shared/api/orval/profile-service/profile-service.schemas';
 
-export const mockCurrentUser: components['schemas']['ProfileData'] = {
+export const mockCurrentUser: ProfileData = {
   user_id: '8d0f6e7c-12ab-4cd0-a7ea-57b95f7e9a21',
   login: 'test_user',
   full_name: 'Test User',
@@ -38,17 +41,14 @@ export const mockCurrentUser: components['schemas']['ProfileData'] = {
     last_seen_visibility: 1,
     show_bio_to_non_contacts: true,
     show_stories_to_non_contacts: false,
-    allow_server_chats: true,
     public_invite_permission: 1,
     group_invite_permission: 1,
     call_permission: 1,
-    force_auto_delete_messages_in_private: false,
-    max_message_auto_delete_seconds: null,
     auto_delete_after_days: null,
   },
 };
 
-export const mockCurrentUserResponse: components['schemas']['ProfileResponse'] = {
+export const mockCurrentUserResponse: ProfileResponse = {
   status: 'success',
   data: mockCurrentUser,
 };

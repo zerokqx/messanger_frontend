@@ -12,17 +12,12 @@ import { useTranslation } from 'react-i18next';
 import { useAddBlacklist, useRemoveFromBlacklist } from '@/entities/user';
 import { useContactAdd, useContactRemove } from '../api';
 import type { Fn } from '@/shared/types/utils/functions';
-import type { components } from '@/shared/types/v1';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { useInvalidateContacts } from '@/entities/contact';
 import { useDisclosure } from '@mantine/hooks';
 
 interface ContactMenu extends ActionIconProps {
-  user?: Partial<
-    Pick<
-      components['schemas']['ProfileByUserIdData'],
-      'relationship' | 'user_id'
-    >
-  >;
+  user?: Partial<Pick<ProfileByUserIdData, 'relationship' | 'user_id'>>;
 
   onUpdate: (userId: string) => void;
   onEditClick?: () => void;

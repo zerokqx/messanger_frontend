@@ -1,8 +1,8 @@
 import type { Fn } from '@/shared/types/utils/functions';
-import type { components } from '@/shared/types/v1';
+import type { SessionsListData } from '@/shared/api/orval/auth-service/auth-service.schemas';
 
 type SortSessionsByIsCurrent<
-  Sessions = components['schemas']['SessionsListData']['sessions'],
+  Sessions = SessionsListData['sessions'],
 > = Fn<[sessions: Sessions], Sessions>;
 
 export const sortSessionsByIsCurrent: SortSessionsByIsCurrent = (sessions) => {

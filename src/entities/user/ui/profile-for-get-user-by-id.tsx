@@ -1,5 +1,5 @@
 import { Avatar, Center, Rating, Stack, Text } from '@mantine/core';
-import type { components } from '@/shared/types/v1';
+import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { useIsMe } from '../lib/use-is-me';
 import { AtSign, Ban, Clock, Handshake, Star, User } from 'lucide-react';
 import { GroupedList } from '@/shared/ui/grouped-list';
@@ -12,7 +12,7 @@ import { formatLogin } from '@/shared/lib/formaters';
 import { urlAvatar } from '../api';
 
 interface ProfileForGetUserByIdProps {
-  profile: components['schemas']['ProfileByUserIdData'];
+  profile: ProfileByUserIdData;
 }
 
 export const ProfileForGetUserById = ({

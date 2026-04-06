@@ -12,15 +12,12 @@ export const profilePermissionsMock: PermissionsUnkeyed = {
   show_profile_photo_to_non_contacts: false,
   show_bio_to_non_contacts: false,
   show_stories_to_non_contacts: false,
-  allow_server_chats: false,
-  force_auto_delete_messages_in_private: false,
 
   last_seen_visibility: '0',
   public_invite_permission: '0',
   group_invite_permission: '0',
   call_permission: '0',
 
-  max_message_auto_delete_seconds: 'null',
   auto_delete_after_days: 'null',
 };
 const expected = {
@@ -30,15 +27,12 @@ const expected = {
   show_profile_photo_to_non_contacts: false,
   show_bio_to_non_contacts: false,
   show_stories_to_non_contacts: false,
-  allow_server_chats: false,
-  force_auto_delete_messages_in_private: false,
 
   last_seen_visibility: 0,
   public_invite_permission: 0,
   group_invite_permission: 0,
   call_permission: 0,
 
-  max_message_auto_delete_seconds: null,
   auto_delete_after_days: null,
 } satisfies ProfilePermissions;
 describe('normilizePermissions Тестирование', () => {

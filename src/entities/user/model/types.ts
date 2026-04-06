@@ -1,10 +1,11 @@
-import type { components } from '@/shared/types/v1';
+import type {
+  ProfileByUserIdData,
+  ProfileData,
+  ProfileResponse,
+} from '@/shared/api/orval/profile-service/profile-service.schemas';
 
-export type TUserState = components['schemas']['ProfileResponse']['data'];
+export type TUserState = ProfileResponse['data'];
 
-export type ICurrentProfileContext = Partial<
-  components['schemas']['ProfileData']
->;
+export type ICurrentProfileContext = Partial<ProfileData>;
 
-export type ISearchProfileContext =
-  components['schemas']['ProfileByUserIdData'];
+export type ISearchProfileContext = ProfileByUserIdData;

@@ -2,7 +2,11 @@ import { useIsAuth } from '@/entities/session';
 import { useGetPrivateChatHistoryHistoryGetInfinite } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import { pagesMap } from '@/shared/lib/pages-map';
 
-export const useChatHistory = (chatId: string, limit = 10) => {
+/**
+ * Загружает историю сообщений приватного чата и разворачивает
+ * infinite-query страницы в плоский список для UI.
+ */
+export const useMessageHistory = (chatId: string, limit = 10) => {
   const isAuth = useIsAuth();
 
   return useGetPrivateChatHistoryHistoryGetInfinite(
@@ -32,10 +36,10 @@ export const useChatHistory = (chatId: string, limit = 10) => {
               item.message_id < oldestMessageId
                 ? item.message_id
                 : oldestMessageId,
-            items[0].message_id,
+            items[0].message_id
           );
         },
       },
-    },
+    }
   );
 };

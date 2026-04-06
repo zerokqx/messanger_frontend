@@ -1,8 +1,12 @@
-import { useChatHistory } from '@/entities/chat';
-import { MessageText } from '@/entities/chat/ui/message-text-type';
-import { SystemMessage } from '@/entities/chat/ui/system-message';
-import type { UiMessage } from '@/entities/chat/ui/types';
 import {
+  MessageLayout,
+  MessageText,
+  SystemMessage,
+  type UiMessage,
+  useMessageHistory,
+} from '@/entities/message';
+import {
+  Avatar,
   Box,
   Center,
   Loader,
@@ -46,7 +50,7 @@ export const ChatHistoryViewer = () => {
     hasNextPage,
     isLoading,
     isFetchingNextPage,
-  } = useChatHistory(chatId, 20);
+  } = useMessageHistory(chatId, 20);
 
   const messages = useMemo<UiMessage[]>(() => {
     return historyChat ? [...historyChat].reverse() : [];
@@ -159,16 +163,20 @@ export const ChatHistoryViewer = () => {
         initialTopMostItemIndex={messages.length - 1}
         alignToBottom
         overscan={20}
-        increaseViewportBy={500}
+        increaseViewportBy={800}
         style={{ height: '100%', width: '100%' }}
         followOutput={(isAtBottom) => (isAtBottom ? 'smooth' : false)}
         defaultItemHeight={76}
-        computeItemKey={(_, item) => item.client_id ?? String(item.message_id)}
+        computeItemKey={(_, item) => String(item.message_id)}
         startReached={() => {
           handleStartReached();
         }}
         itemContent={(index, item) => {
           const localIndex = index - firstItemIndex;
+          const isMe = item.sender_id === currentUserId;
+          const avatarName = isMe ? currentUserLogin : targetUserName;
+          const avatarSrc = isMe ? currentUserAvatar : targetUserAvatar;
+
           return (
             <Box
               pb={'xs'}
@@ -178,22 +186,30 @@ export const ChatHistoryViewer = () => {
               {item.message_type.includes('system') ? (
                 <SystemMessage message={item} />
               ) : (
-                <MessageText
-                  message={item}
-                  nextUserIdOfMessage={messages[localIndex + 1]?.sender_id}
-                  previousUserIdOfMessage={messages[localIndex - 1]?.sender_id}
-                  userIdOfCurrentUser={currentUserId}
-                  avatarName={
-                    item.sender_id === currentUserId
-                      ? currentUserLogin
-                      : targetUserName
+                <MessageLayout
+                  isMe={isMe}
+                  nextSameAuthor={
+                    messages[localIndex + 1]?.sender_id === item.sender_id
                   }
-                  avatarSrc={
-                    item.sender_id === currentUserId
-                      ? currentUserAvatar
-                      : targetUserAvatar
-                  }
-                />
+                  chatId={chatId}
+                  messageId={item.message_id}
+                  variant={item.message_type[0]}
+                  avatar={{
+                    visible: true,
+                    component: ({ className }) => (
+                      <Avatar
+                        className={className}
+                        name={avatarName}
+                        src={avatarSrc}
+                      />
+                    ),
+                  }}
+                >
+                  <MessageText
+                    message={item}
+                    userIdOfCurrentUser={currentUserId}
+                  />
+                </MessageLayout>
               )}
             </Box>
           );

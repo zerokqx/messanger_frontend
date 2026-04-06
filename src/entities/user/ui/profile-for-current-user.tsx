@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import type { components } from '@/shared/types/v1';
+import type { ProfileData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { useTranslation } from 'react-i18next';
 import { AtSign, Clock, Edit, Star, User } from 'lucide-react';
 import { GroupedList } from '@/shared/ui/grouped-list';
@@ -18,14 +18,14 @@ import { urlAvatar } from '../api';
 import Logger from '@/shared/lib/logger/logger';
 
 interface ProfileForCurrentUserBaseProps {
-  profile: components['schemas']['ProfileData'];
+  profile: ProfileData;
   withEdit?: false;
   onEdit?: never;
 }
 interface ProfileForCurrentUserWithEditProps {
-  profile: components['schemas']['ProfileData'];
+  profile: ProfileData;
   withEdit: true;
-  onEdit: (profile: components['schemas']['ProfileData']) => void;
+  onEdit: (profile: ProfileData) => void;
 }
 
 type ProfileForCurrentUserProps =

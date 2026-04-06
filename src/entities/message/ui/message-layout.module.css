@@ -1,0 +1,49 @@
+.messageLayout {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.avatarSlot {
+  display: none;
+  flex: 0 0 auto;
+}
+
+.contentSlot {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-start;
+}
+
+.messageLayout[data-is-me='true'] .contentSlot {
+  justify-content: flex-end;
+}
+
+.messageLayout[data-next-same-author='true'] .avatarSlot {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.messageLayout[data-variant='system'] {
+  justify-content: center;
+}
+
+.messageLayout[data-variant='system'] .avatarSlot {
+  display: none;
+}
+
+.messageLayout[data-variant='system'] .contentSlot {
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .avatarSlot {
+    display: block;
+  }
+
+  .messageLayout[data-is-me='true'] .contentSlot {
+    justify-content: flex-start;
+  }
+}

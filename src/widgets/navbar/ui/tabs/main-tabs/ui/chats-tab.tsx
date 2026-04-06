@@ -3,6 +3,7 @@ import { hasUserId } from '@/entities/chat/lib/has-user-id';
 import { urlAvatar } from '@/entities/user';
 import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { formatLogin } from '@/shared/lib/formaters';
+import Logger from '@/shared/lib/logger/logger';
 import { useNavigate } from '@tanstack/react-router';
 import { Virtuoso } from 'react-virtuoso';
 

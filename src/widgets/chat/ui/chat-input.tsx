@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Stack, Textarea } from '@mantine/core';
-import { useSendMessage } from '@/features/chat';
+import { useSendMessage } from '@/entities/message';
 import type { KeyboardEvent } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { Send } from 'lucide-react';

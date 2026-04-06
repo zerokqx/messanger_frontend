@@ -1,9 +1,9 @@
-import type { components } from '@/shared/types/v1';
+import type { UserSessionItem } from '@/shared/api/orval/auth-service/auth-service.schemas';
 import type { GridProps, TextProps } from '@mantine/core';
 import type { ReactNode } from 'react';
 import type { DividerProps as DividerPropsMantine } from '@mantine/core';
 
-export type SessionData = components['schemas']['UserSessionItem'];
+export type SessionData = UserSessionItem;
 
 type DividerProps =
   | {
