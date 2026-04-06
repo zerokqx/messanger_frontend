@@ -21,17 +21,18 @@ export default defineConfig(({ mode }) => {
   const PLAYWRIGHT_EXECUTABLE_PATH =
     env.PLAYWRIGHT_LAUNCH_OPTIONS_EXECUTABLE_PATH ??
     env.PLAYWRIGHT_EXECUTABLE_PATH;
-  const proxyEnabled = env.VITE_PROXY_API === 'true';
-  const proxy = proxyEnabled
-    ? {
-        '/api': {
-          target: 'https://dev.api.yobble.org',
-          changeOrigin: true,
-          secure: true,
-          rewrite: (path: string) => path.replace(/^\/api/, ''),
-        },
-      }
-    : undefined;
+  // Proxy only for dev mode
+  const proxy =
+    mode === 'development'
+      ? {
+          '/api': {
+            target: 'https://dev.api.yobble.org',
+            changeOrigin: true,
+            secure: true,
+            rewrite: (path: string) => path.replace(/^\/api/, ''),
+          },
+        }
+      : undefined;
 
   const serverOptionsForRemote: ServerOptions = {
     allowedHosts: ['dev.app.yobble.org'],
@@ -75,7 +76,6 @@ export default defineConfig(({ mode }) => {
     preview: {
       host: '0.0.0.0',
       port: 5173,
-      proxy,
     },
     test: {
       globals: true,

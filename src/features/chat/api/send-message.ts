@@ -30,21 +30,36 @@ export const useAddMessageToHistory = () => {
   const queryClient = useQueryClient();
 
   return async (data: MkOptimisticMessageOptions, key: readonly unknown[]) => {
+    console.log('💬 [SEND-MESSAGE] Adding message to history', {
+      data,
+      queryKey: key,
+    });
+    
     await queryClient.cancelQueries({ queryKey: key });
     const prevHistory = queryClient.getQueriesData<History>({
       queryKey: key,
     });
+    
+    console.log('📊 [SEND-MESSAGE] Previous history state:', prevHistory);
 
     queryClient.setQueriesData<History>({ queryKey: key }, (old) => {
-      if (!old) return old;
+      console.log('📝 [SEND-MESSAGE] Setting new history data, old state:', old);
+      
+      if (!old) {
+        console.warn('⚠️ [SEND-MESSAGE] No history data found, cannot add message');
+        return old;
+      }
       // void markRead.mutateAsync({
       //   data: { chat_id: data.chat_id, mark_all: true },
       // });
 
-      return infinityQueryOptimisticInsert<
+      const result = infinityQueryOptimisticInsert<
         OptimisticHistoryResponse,
         OptimisticHistoryData['items'][number]
       >(old, (page) => page.data.items, mkOptimisticMessage(data), 'start');
+      
+      console.log('✅ [SEND-MESSAGE] New history state:', result);
+      return result;
     });
     return prevHistory;
   };
