@@ -16,8 +16,25 @@ export const useLogin = () => {
   const router = useRouter();
   return useLoginLoginPasswordPost({
     mutation: {
-      onSuccess: async ({ data: { access_token } }) => {
+      onSuccess: async (response) => {
         const isProd = import.meta.env.PROD;
+        const { access_token, refresh_token } = response.data;
+
+        // Логируем токены в dev режиме для отладки
+        if (!isProd) {
+          console.log('🔐 [LOGIN RESPONSE]', {
+            access_token: access_token,
+            refresh_token: refresh_token,
+          });
+          console.log('🍪 [COOKIES AFTER LOGIN]', {
+            access_cookie: document.cookie.includes('yobble_access_token')
+              ? 'present'
+              : 'missing',
+            refresh_cookie_path:
+              'check browser devtools → Application → Cookies → localhost',
+          });
+        }
+
         // В прод режиме сервер ставит куку, читаем её
         const token = isProd ? getCookie(ACCESS_COOKIE_NAME) : access_token;
         if (token) {

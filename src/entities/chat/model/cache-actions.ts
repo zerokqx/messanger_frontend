@@ -18,18 +18,28 @@ export const useCreateChatFromSocketEvent = () => {
     async ({
       payload: { chat_id, content, ...payload },
     }: ChatPrivateNewMessageSocketEvent) => {
+      console.log('💬 [SOCKET-CACHE] Creating/updating chat from socket event', {
+        chat_id,
+        has_existing_chat: data?.some((chat) => chat.chat_id === chat_id),
+        payload,
+      });
+      
       const privateClatListQueryKey =
         getGetListPrivateChatsListGetInfiniteQueryKey();
       // const prevPrivateChatList = queryClient.getQueriesData<ChatInfinite>({
       //   queryKey: privateClatListQueryKey,
       // });
 
-      if (!data?.some((chat) => chat.chat_id === chat_id))
+      if (!data?.some((chat) => chat.chat_id === chat_id)) {
+        console.log('➕ [SOCKET-CACHE] Chat not in list, adding to first page');
         queryClient.setQueriesData<InfiniteData<PrivateChatListResponse>>(
           { queryKey: privateClatListQueryKey },
           (old) => {
             Logger.debug('cache-actions.tsx', 'Add New Chats', payload);
-            if (!old) return old;
+            if (!old) {
+              console.warn('⚠️ [SOCKET-CACHE] No existing chat list data, creating initial');
+              return old;
+            }
             return infinityQueryOptimisticInsert<
               PrivateChatListResponse,
               PrivateChatListItem
@@ -52,6 +62,10 @@ export const useCreateChatFromSocketEvent = () => {
             );
           }
         );
+        console.log('✅ [SOCKET-CACHE] Chat added to list');
+      } else {
+        console.log('ℹ️ [SOCKET-CACHE] Chat already exists in list, updating');
+      }
       await queryClient.invalidateQueries({
         queryKey: privateClatListQueryKey,
       });

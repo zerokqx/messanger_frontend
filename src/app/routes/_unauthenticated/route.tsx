@@ -11,9 +11,13 @@ import {
   isPlaceholderAccessToken,
 } from '@/shared/api';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL?.replace(/\/+$/, '') ||
+  'https://dev.api.yobble.org';
+
 /** Отдельный axios без интерцепторов — чтобы не триггерить рефреш при инициализации */
 const rawAxios = Axios.create({
-  baseURL: import.meta.env.VITE_API_URL.replace(/\/+$/, ''),
+  baseURL: import.meta.env.DEV ? '/api' : API_BASE_URL,
   withCredentials: true,
 });
 
@@ -40,7 +44,7 @@ export const Route = createFileRoute('/_unauthenticated')({
               withCredentials: true,
               headers: {
                 'Content-Type': 'application/json',
-                'X-Client-Type': 'web',
+                'X-Client-Type': import.meta.env.DEV ? 'web-dev' : 'web',
               },
             }
           );
