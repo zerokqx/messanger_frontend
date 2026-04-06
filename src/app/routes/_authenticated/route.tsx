@@ -8,9 +8,21 @@ import {
 } from '@mantine/core';
 import { Suspense, lazy, useEffect } from 'react';
 import { layoutAction, useLayoutStore } from '@/shared/lib/hooks/use-layout';
+<<<<<<< Updated upstream
 import { notify } from '@/shared/lib/notifications';
 import { useTokenStore } from '@/shared/token';
 import { socket, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
+||||||| Stash base
+import { useTokenStore, tokenAction } from '@/shared/token';
+import { socket, getCookie, ACCESS_COOKIE_NAME, type ChatPrivateNewMessageSocketEvent } from '@/shared/api';
+=======
+import { useTokenStore, tokenAction } from '@/shared/token';
+import {
+  getSocketAuthToken,
+  socket,
+  type ChatPrivateNewMessageSocketEvent,
+} from '@/shared/api';
+>>>>>>> Stashed changes
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
 import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
@@ -126,8 +138,48 @@ function RouteComponent() {
 >>>>>>> Stashed changes
     };
 
+<<<<<<< Updated upstream
     socket.auth = { token };
+||||||| Stash base
+    // В прод режиме достаём токен из куки (сокеты не умеют читать HttpOnly куки)
+    if (import.meta.env.PROD) {
+      const cookieToken = getCookie(ACCESS_COOKIE_NAME);
+      if (cookieToken) {
+        socket.auth = { token: cookieToken };
+      }
+    } else {
+      socket.auth = { token };
+    }
+=======
+    socket.auth = { token: getSocketAuthToken(token) };
+>>>>>>> Stashed changes
 
+<<<<<<< Updated upstream
+||||||| Stash base
+    socket.on('reconnect_attempt', () => {
+      // При переподключении обновляем токен из куки
+      if (import.meta.env.PROD) {
+        const cookieToken = getCookie(ACCESS_COOKIE_NAME);
+        if (cookieToken) {
+          socket.auth = { token: cookieToken };
+        }
+      } else {
+        socket.auth = { token: tokenAction.doGetToken() || '' };
+      }
+    });
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+=======
+    socket.on('reconnect_attempt', () => {
+      socket.auth = { token: getSocketAuthToken(tokenAction.doGetToken()) };
+    });
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+>>>>>>> Stashed changes
     socket.offAny();
     socket.off('connect', onConnect);
     socket.off('message', onMessage);

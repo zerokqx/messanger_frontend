@@ -1,11 +1,35 @@
 import Axios, { AxiosError, type AxiosRequestConfig } from 'axios';
 import { tokenAction } from '../token';
+<<<<<<< Updated upstream
+||||||| Stash base
+import {
+  ACCESS_COOKIE_NAME,
+  PROD_PLACEHOLDER_ACCESS_TOKEN,
+  type RefreshTokenResponse,
+  getCookie,
+} from './auth-session';
+=======
+import {
+  CLIENT_TYPE,
+  hasValidAccessCookie,
+  isPlaceholderAccessToken,
+  normalizeAccessToken,
+} from './auth-session';
+import { refreshClientSession, resetClientSession } from './client-session';
+
+interface RetryAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
+let refreshPromise: Promise<string> | null = null;
+>>>>>>> Stashed changes
 
 export const AXIOS_INSTANCE = Axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
+<<<<<<< Updated upstream
 interface RetryAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
@@ -133,18 +157,115 @@ const refreshAccessToken = async (access: string): Promise<string> => {
   return nextAccess;
 };
 
+||||||| Stash base
+interface RetryAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
+const MOCK_REFRESH_TOKEN = 'cookie-refresh-token';
+
+let refreshPromise: Promise<string> | null = null;
+
+const resetSession = () => {
+  tokenAction.doReset();
+
+  if (window.location.pathname !== '/auth') {
+    window.location.href = '/auth';
+  }
+};
+
+const refreshAccessToken = async (access: string): Promise<string> => {
+  const isProd = import.meta.env.PROD;
+
+  // В прод режиме куки работают на одном домене — сервер сам прочтёт куки и вернёт новые
+  const body = isProd
+    ? {}
+    : { access_token: access, refresh_token: MOCK_REFRESH_TOKEN };
+
+  const { data } = await Axios.post<RefreshTokenResponse>(
+    `${import.meta.env.VITE_API_URL}/v1/auth/token/refresh`,
+    body,
+    {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Client-Type': 'web',
+      },
+    }
+  );
+
+  const nextAccess = data.data?.access_token;
+
+  // Проверяем что токен существует и не является строкой "none"
+  if (
+    !nextAccess ||
+    nextAccess.toLowerCase() === 'none' ||
+    nextAccess.trim() === ''
+  ) {
+    // В прод режиме пробуем прочитать токен из куки
+    if (isProd) {
+      const cookieToken = getCookie(ACCESS_COOKIE_NAME);
+      if (cookieToken && cookieToken.toLowerCase() !== 'none') {
+        // В прод режиме сохраняем валидный placeholder JWT, т.к. методы используют cookie
+        tokenAction.doSetToken(PROD_PLACEHOLDER_ACCESS_TOKEN);
+        return cookieToken;
+      }
+    }
+    throw new Error('No access token in refresh response');
+  }
+
+  // В прод режиме сохраняем placeholder JWT, т.к. методы используют cookie
+  if (isProd) {
+    tokenAction.doSetToken(PROD_PLACEHOLDER_ACCESS_TOKEN);
+    // Форсируем проверку куки для обновления состояния авторизации
+    window.dispatchEvent(new CustomEvent('auth:refresh-completed'));
+    return nextAccess;
+  }
+
+  tokenAction.doSetToken(nextAccess);
+  return nextAccess;
+};
+
+=======
+>>>>>>> Stashed changes
 AXIOS_INSTANCE.interceptors.request.use((config) => {
+<<<<<<< Updated upstream
   const token = tokenAction.doGetToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
+||||||| Stash base
+  const isProd = import.meta.env.PROD;
+  if (!isProd) {
+    const token = tokenAction.doGetToken();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
+=======
+  const accessToken = normalizeAccessToken(tokenAction.doGetToken());
+
+  if (
+    accessToken &&
+    !hasValidAccessCookie() &&
+    !isPlaceholderAccessToken(accessToken)
+  ) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+>>>>>>> Stashed changes
   return config;
 });
+
 AXIOS_INSTANCE.interceptors.request.use((config) => {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   config.headers.set('X-Client-Type', 'web');
 ||||||| Stash base
   config.headers.set('X-Client-Type', import.meta.env.DEV ? 'unknown' : 'web');
 =======
   config.headers.set('X-Client-Type', import.meta.env.DEV ? 'web-dev' : 'web');
+>>>>>>> Stashed changes
+||||||| Stash base
+  config.headers.set('X-Client-Type', import.meta.env.DEV ? 'unknown' : 'web');
+=======
+  config.headers.set('X-Client-Type', CLIENT_TYPE);
 >>>>>>> Stashed changes
   return config;
 });
@@ -162,39 +283,73 @@ AXIOS_INSTANCE.interceptors.response.use(
       originalConfig._retry ||
       originalConfig.url?.includes('/v1/auth/token/refresh')
     ) {
+<<<<<<< Updated upstream
       tokenAction.doReset();
+||||||| Stash base
+      resetSession();
+=======
+      resetClientSession();
+>>>>>>> Stashed changes
       return Promise.reject(error);
     }
 
+<<<<<<< Updated upstream
     const access = tokenAction.doGetToken();
     if (!access) {
       tokenAction.doReset();
+||||||| Stash base
+    const access = tokenAction.doGetToken();
+    if (!access) {
+      resetSession();
+=======
+    if (!tokenAction.doGetToken() && !hasValidAccessCookie()) {
+      resetClientSession();
+>>>>>>> Stashed changes
       return Promise.reject(error);
     }
 
     originalConfig._retry = true;
 
     try {
-      refreshPromise ??= refreshAccessToken(access).finally(() => {
+      refreshPromise ??= refreshClientSession().finally(() => {
         refreshPromise = null;
       });
 
+<<<<<<< Updated upstream
       const nextAccess = await refreshPromise;
       originalConfig.headers = originalConfig.headers ?? {};
       originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
+||||||| Stash base
+      const nextAccess = await refreshPromise;
+      const isProd = import.meta.env.PROD;
+=======
+      const nextAccessToken = await refreshPromise;
+      const normalizedAccessToken = normalizeAccessToken(nextAccessToken);
+>>>>>>> Stashed changes
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       return void AXIOS_INSTANCE(originalConfig);
     } catch {
       tokenAction.doReset();
 ||||||| Stash base
       if (!isProd) {
+||||||| Stash base
+      if (!isProd) {
+=======
+      if (
+        normalizedAccessToken &&
+        !hasValidAccessCookie() &&
+        !isPlaceholderAccessToken(normalizedAccessToken)
+      ) {
+>>>>>>> Stashed changes
         originalConfig.headers = originalConfig.headers ?? {};
-        originalConfig.headers.Authorization = `Bearer ${nextAccess}`;
+        originalConfig.headers.Authorization = `Bearer ${normalizedAccessToken}`;
       }
 
       return await AXIOS_INSTANCE(originalConfig);
     } catch {
+<<<<<<< Updated upstream
       resetSession();
 =======
       // В прод режиме после успешного refresh перезагружаем страницу
@@ -217,6 +372,16 @@ AXIOS_INSTANCE.interceptors.response.use(
         window.location.href = '/auth';
       }
 >>>>>>> Stashed changes
+||||||| Stash base
+      resetSession();
+=======
+      resetClientSession();
+
+      if (window.location.pathname !== '/auth') {
+        window.location.href = '/auth';
+      }
+
+>>>>>>> Stashed changes
       return Promise.reject(new Error('Refresh error'));
     }
   }
@@ -237,5 +402,5 @@ export const customInstance = <T>(
 export type ErrorType<Error> = AxiosError<Error>;
 export type BodyType<BodyData> = BodyData;
 
-export type ResponseType<T> = T; // Говорим
-export type MutatorResponse<T> = T; // Для мутаций
+export type ResponseType<T> = T;
+export type MutatorResponse<T> = T;

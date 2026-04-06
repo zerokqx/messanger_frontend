@@ -1,3 +1,10 @@
+<<<<<<< Updated upstream
+||||||| Stash base
+import { useLogger } from "react-use";
+
+=======
+
+>>>>>>> Stashed changes
 // logger.ts
 const LOG_LEVEL = {
   DEBUG: 0,

@@ -70,6 +70,7 @@ export const theme = createTheme({
   },
 
   primaryColor: 'violet',
+  
   primaryShade: { light: 6, dark: 9 },
   other: {
     borders: {
@@ -102,6 +103,7 @@ export const theme = createTheme({
     },
   },
 
+  
   radius: RadiusSchema.parse({}),
   defaultRadius: 'md',
 

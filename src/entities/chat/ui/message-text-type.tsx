@@ -4,6 +4,7 @@ import type { MessageTextProps } from './types';
 import {
   Avatar,
   getContrastColor,
+  getGradient,
   Group,
   Text,
   useMantineTheme,
@@ -21,9 +22,18 @@ export const MessageText = ({
   const primary = useSettingsStore((s) => s.data.primaryColor);
   const isMe = userIdOfCurrentUser === message.sender_id;
 
+
   const bgColor = isMe
+<<<<<<< Updated upstream
     ? theme.colors[primary][6]
     : lightDark('dark.9', 'dark.8');
+||||||| Stash base
+    ? theme.colors[primary][6]
+    : lightDark('dark.5', 'dark.8');
+=======
+    ? getGradient({ from: `${primary}.6`, to: `${primary}.9`, deg: 120 }, theme)
+    : lightDark('dark.5', 'dark.8');
+>>>>>>> Stashed changes
 
   const textColor = getContrastColor({
     theme,
