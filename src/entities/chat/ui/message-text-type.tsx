@@ -1,5 +1,6 @@
 import { RoundedContainerGroup } from '@/shared/ui/boxes';
 import type { MessageTextProps } from './types';
+import styles from './message-text-type.module.css';
 import {
   Avatar,
   getContrastColor,
@@ -9,7 +10,6 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useSettingsStore } from '@/shared/lib/settings';
-import { useResponsive } from '@/shared/lib/hooks/use-responsive';
 import { lightDark } from '@/shared/lib/light-dark';
 import { CheckCheck } from 'lucide-react';
 
@@ -20,7 +20,6 @@ export const MessageText = ({
   userIdOfCurrentUser,
   avatarName,
 }: MessageTextProps) => {
-  const { mobile, desktop } = useResponsive();
   const theme = useMantineTheme();
   const primary = useSettingsStore((s) => s.data.primaryColor);
 
@@ -48,22 +47,19 @@ export const MessageText = ({
   );
   return (
     <Group
-      w={'100%'}
+      className={styles.messageGroup}
+      data-is-me={isMe ? 'true' : 'false'}
+      data-next-same-author={nextMessage ? 'true' : 'false'}
       wrap="nowrap"
       align="end"
-      style={{
-        flexDirection: isMe ? (desktop ? 'row' : 'row-reverse') : 'row',
-        gap: '12px',
-      }}
     >
-      {!mobile && (
-        <Avatar
-          opacity={nextMessage ? 0 : undefined}
-          name={avatarName}
-          src={!nextMessage ? avatarSrc : undefined}
-        />
-      )}
+      <Avatar
+        className={styles.avatar}
+        name={avatarName}
+        src={!nextMessage ? avatarSrc : undefined}
+      />
       <RoundedContainerGroup
+        className={styles.messageBubble}
         bg={bgColor}
         c={textColor}
         gap={'md'}

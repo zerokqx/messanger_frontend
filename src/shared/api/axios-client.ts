@@ -6,9 +6,12 @@ import {
   type RefreshTokenResponse,
   getCookie,
 } from './auth-session';
+import { doRefreshTokenTokenRefreshPost } from './orval/auth-service/v1-auth/v1-auth';
+import type { RefreshTokenTokenRefreshPostMutationResult } from './orval/auth-service/v1-auth-token/v1-auth-token';
+import { toLower } from 'lodash';
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL?.replace(/\/+$/, '') ||
+  import.meta.env.VITE_API_URL.replace(/\/+$/, '') ||
   'https://dev.api.yobble.org';
 
 // В dev: прокси через Vite `/api`
@@ -22,8 +25,6 @@ interface RetryAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
-const MOCK_REFRESH_TOKEN = 'cookie-refresh-token';
-
 let refreshPromise: Promise<string> | null = null;
 
 const resetSession = () => {
@@ -31,7 +32,10 @@ const resetSession = () => {
   tokenAction.doReset();
 
   if (window.location.pathname !== '/auth') {
-    console.log('❌ [RESET SESSION] Redirecting to /auth from', window.location.pathname);
+    console.log(
+      '❌ [RESET SESSION] Redirecting to /auth from',
+      window.location.pathname
+    );
     window.location.href = '/auth';
   }
 };
@@ -49,7 +53,7 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
 
   // В проде запрос идёт напрямую на API домен, в дев — через прокси /api
   const promise = isProd
-    ? Axios.post<RefreshTokenResponse>(
+    ? Axios.post<Partial<RefreshTokenTokenRefreshPostMutationResult>>(
         `${API_BASE_URL}/v1/auth/token/refresh`,
         {},
         {
@@ -60,7 +64,7 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
           },
         }
       )
-    : AXIOS_INSTANCE.post<RefreshTokenResponse>(
+    : AXIOS_INSTANCE.post<Partial<RefreshTokenTokenRefreshPostMutationResult>>(
         '/v1/auth/token/refresh',
         {},
         {
@@ -86,7 +90,7 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
   // Проверяем что токен существует и не является строкой "none"
   if (
     !nextAccess ||
-    nextAccess.toLowerCase() === 'none' ||
+    toLower(nextAccess) === 'none' ||
     nextAccess.trim() === ''
   ) {
     // В прод режиме пробуем прочитать токен из куки
@@ -116,7 +120,7 @@ const refreshAccessToken = async (_access: string): Promise<string> => {
 
 AXIOS_INSTANCE.interceptors.request.use((config) => {
   config.headers.set('X-Client-Type', import.meta.env.DEV ? 'web-dev' : 'web');
-  
+
   // Логируем токены в dev режиме
   if (import.meta.env.DEV) {
     const storedToken = tokenAction.doGetToken();
@@ -128,7 +132,7 @@ AXIOS_INSTANCE.interceptors.request.use((config) => {
       });
     }
   }
-  
+
   return config;
 });
 

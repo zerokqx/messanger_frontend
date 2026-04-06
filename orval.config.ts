@@ -33,7 +33,7 @@ export default defineConfig({
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
-      override: { mutator: MUTATOR_CONFIG, query: {} },
+      override: { mutator: MUTATOR_CONFIG,  },
     },
   },
 
