@@ -88,18 +88,26 @@ function RouteComponent() {
       console.log('🔄 [SOCKET] Reconnected with new SID:', socket.id);
     };
 
+    const onReconnectError = () => {
+      console.warn('⚠️ [SOCKET] Reconnect failed, will retry...');
+    };
+
     const onReconnectAttempt = () => {
       // Обновляем токен из куки при каждой попытке реконнекта
       const reconnectToken = import.meta.env.PROD
         ? getCookie(ACCESS_COOKIE_NAME) || ''
         : tokenAction.doGetToken() || '';
-      
+
       console.log('🔄 [SOCKET] Reconnect attempt, updating token');
-      
+
       socket.auth = {
         token: reconnectToken,
         client_type: import.meta.env.PROD ? 'web' : 'web-dev',
       };
+    };
+
+    const onConnectError = (err: Error) => {
+      console.error('❌ [SOCKET] Connection error:', err.message);
     };
 
     const onMessage = async (event: ChatPrivateNewMessageSocketEvent) => {
@@ -166,6 +174,8 @@ function RouteComponent() {
     // Подписываемся на события
     socket.on('reconnect', onReconnect);
     socket.on('reconnect_attempt', onReconnectAttempt);
+    socket.on('reconnect_error', onReconnectError);
+    socket.on('connect_error', onConnectError);
     socket.on('disconnect', onDisconnect);
 
     // Первый коннект
@@ -191,9 +201,11 @@ function RouteComponent() {
       socket.off('chat_private:new_message', onMessage);
       socket.off('reconnect', onReconnect);
       socket.off('reconnect_attempt', onReconnectAttempt);
+      socket.off('reconnect_error', onReconnectError);
+      socket.off('connect_error', onConnectError);
       socket.off('disconnect', onDisconnect);
       socket.offAny(onAny);
-      
+
       console.log('🧹 [SOCKET] Cleanup handlers only, keeping connection alive');
     };
   }, []); // Empty deps - socket connection lives forever
