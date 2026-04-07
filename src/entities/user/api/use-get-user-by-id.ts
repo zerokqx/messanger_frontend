@@ -5,8 +5,9 @@ import {
   useGetUserProfileByUserIdUserIdGet,
 } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
-import { produce, type Draft } from 'immer';
+import type { Draft } from 'immer';
 import { useCallback } from 'react';
+import { UserByIdCacheDescriptor } from '../model/user-by-id-cache-descriptor';
 
 interface UseGetUserByIdArgs {
   id: string;
@@ -50,7 +51,7 @@ export const useGetUserById = ({ id }: UseGetUserByIdArgs) => {
   return { ...query, invalidateUser };
 };
 
-type UpdateFunction = (dragt: Draft<ProfileByUserIdResponse>) => void;
+type UpdateFunction = (draft: Draft<ProfileByUserIdResponse>) => void;
 interface UpdateUserLocalCacheByUserIdOptions {
   useInvalidate?: boolean;
 }
@@ -60,14 +61,13 @@ export const updateUserLocalCacheByUserId = async (
   updater: UpdateFunction,
   options?: UpdateUserLocalCacheByUserIdOptions
 ) => {
-  const queryKey = getGetUserProfileByUserIdUserIdGetQueryKey(userId);
-  queryClient.setQueryData<ProfileByUserIdResponse>(queryKey, (old) => {
-    if (!old) return old;
-    return produce(old, (draft) => {
-      updater(draft);
-    });
-  });
+  const descriptor = UserByIdCacheDescriptor.getInstance(userId, queryClient);
+
+  await descriptor.update(updater);
+
   if (options?.useInvalidate) {
-    await queryClient.invalidateQueries({ queryKey });
+    await queryClient.invalidateQueries({
+      queryKey: descriptor.getUserQueryKey(),
+    });
   }
 };
