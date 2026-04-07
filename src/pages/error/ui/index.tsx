@@ -1,5 +1,5 @@
 import { useIsAuth } from '@/entities/session';
-import { useLogout } from '@/entities/user';
+import { useLogout } from '@/features/logout';
 import { Stack, Text, Title, Button, Paper, Group, Image } from '@mantine/core';
 import type { ErrorRouteComponent } from '@tanstack/react-router';
 import { RefreshCcw, Home, LogOut } from 'lucide-react';

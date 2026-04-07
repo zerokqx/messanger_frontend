@@ -27,3 +27,14 @@ export {
   isClientSessionAuthorized,
   isPlaceholderAccessToken,
 } from './auth-session.ts';
+
+export * as AchievementServiceSchemas from './orval/achievement-service/achievement-service.schemas';
+export * as AuthServiceSchemas from './orval/auth-service/auth-service.schemas';
+export * as CallServiceSchemas from './orval/call-service/call-service.schemas';
+export * as ChatPrivateServiceSchemas from './orval/chat-private-service/chat-private-service.schemas';
+export * as FeedServiceSchemas from './orval/feed-service/feed-service.schemas';
+export * as ProfileServiceSchemas from './orval/profile-service/profile-service.schemas';
+export * as ProfileServiceV2Schemas from './orval/profile-service-v2/profile-service-v2.schemas';
+export * as RatingServiceSchemas from './orval/rating-service/rating-service.schemas';
+export * as StorageServiceSchemas from './orval/storage-service/storage-service.schemas';
+export * as UserServiceSchemas from './orval/user-service/user-service.schemas';

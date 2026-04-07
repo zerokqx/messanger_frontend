@@ -1,5 +1,4 @@
-import { ProfileForCurrentUser } from '@/entities/user';
-import { useMe } from '@/entities/user/model/me.query';
+import { ProfileForCurrentUser, useMe } from '@/entities/viewer';
 
 interface ProfileTabContentProps {
   onEdit: () => void;

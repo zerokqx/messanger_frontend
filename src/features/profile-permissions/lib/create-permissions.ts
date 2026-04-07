@@ -1,8 +1,8 @@
-import type { ApiSchemasMeProfilePermissionsResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
+import type { ProfileServiceV2Schemas } from '@/shared/api';
 import { toString } from 'lodash';
 import type { Stringified, Simplify } from 'type-fest';
 
-type Permissions = ApiSchemasMeProfilePermissionsResponse;
+export type Permissions = ProfileServiceV2Schemas.PrivacyGetResponse['data'];
 
 type StringifiedFields =
   | 'last_seen_visibility'
@@ -26,12 +26,12 @@ export const createPermissions = (
       permission.allow_messages_from_non_contacts,
     show_profile_photo_to_non_contacts:
       permission.show_profile_photo_to_non_contacts,
+    last_seen_visibility: toString(permission.last_seen_visibility),
     show_bio_to_non_contacts: permission.show_bio_to_non_contacts,
     show_stories_to_non_contacts: permission.show_stories_to_non_contacts,
-    last_seen_visibility: toString(permission.last_seen_visibility),
     public_invite_permission: toString(permission.public_invite_permission),
     group_invite_permission: toString(permission.group_invite_permission),
     call_permission: toString(permission.call_permission),
-    auto_delete_after_days: String(permission.auto_delete_after_days),
+    auto_delete_after_days: toString(permission.auto_delete_after_days),
   };
 };

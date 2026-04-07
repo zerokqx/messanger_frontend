@@ -1,5 +1,5 @@
 import { assign } from 'lodash';
-import { useMeUserId } from '@/entities/user';
+import { useMeUserId } from '@/entities/viewer';
 import type { PrivateMessageSendRequest } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
 import { useSendPrivateMessageWithUuidMessageSendPost } from '@/shared/api/orval/chat-private-service/v1-chat-private/v1-chat-private';
 import { MessageCacheDescriptor } from '../model/message-cache-descriptor';

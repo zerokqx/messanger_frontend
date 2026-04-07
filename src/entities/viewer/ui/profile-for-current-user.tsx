@@ -7,25 +7,27 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import type { ProfileData } from '@/shared/api/orval/profile-service/profile-service.schemas';
+import type {  MeData } from '@/shared/api/orval/profile-service-v2/profile-service-v2.schemas';
 import { useTranslation } from 'react-i18next';
 import { AtSign, Clock, Edit, Star, User } from 'lucide-react';
 import { GroupedList } from '@/shared/ui/grouped-list';
-import { ratingColor } from '../lib/rating-color';
-import { useCreatedAt } from '../lib';
+import { useCreatedAt } from '@/entities/user/lib';
+import { ratingColor } from '@/entities/user/lib/rating-color.ts';
 import { useSettingsStore } from '@/shared/lib/settings';
-import { urlAvatar } from '../api';
+import { urlAvatar } from '@/entities/user/api';
 import Logger from '@/shared/lib/logger/logger';
+import { useMe } from '../model';
 
 interface ProfileForCurrentUserBaseProps {
-  profile: ProfileData;
+  profile: MeData;
   withEdit?: false;
   onEdit?: never;
 }
+
 interface ProfileForCurrentUserWithEditProps {
-  profile: ProfileData;
+  profile: MeData;
   withEdit: true;
-  onEdit: (profile: ProfileData) => void;
+  onEdit: (profile: MeData) => void;
 }
 
 type ProfileForCurrentUserProps =
@@ -34,29 +36,30 @@ type ProfileForCurrentUserProps =
 
 export const ProfileForCurrentUser = ({
   onEdit,
-  profile,
 }: ProfileForCurrentUserProps) => {
+  const {data: profile} = useMe()
   const { t } = useTranslation(['button-labels', 'profile']);
   const createdAt = useCreatedAt(profile.created_at);
-  const primaryColor = useSettingsStore((s) => s.data.primaryColor);
+  const primaryColor = useSettingsStore((state) => state.data.primaryColor);
+
   Logger.debug('profile-for-current-user.tsx', 'Current profile', [profile]);
 
   return (
     <Stack>
       <Center>
-        <Box pos={'relative'}>
+        <Box pos="relative">
           <Avatar
             src={urlAvatar(profile.user_id, profile.avatars?.current?.file_id)}
             name={profile.login}
-            size={'xl'}
+            size="xl"
           />
           <ActionIcon
-            pos={'absolute'}
-            bottom={'0'}
+            pos="absolute"
+            bottom="0"
             onClick={() => {
               onEdit?.(profile);
             }}
-            right={'0'}
+            right="0"
           >
             <Edit />
           </ActionIcon>
@@ -104,7 +107,7 @@ export const ProfileForCurrentUser = ({
           leftSection={<Clock />}
           leftSectionColor="gray"
           label={t('profile:bio')}
-          fallback={<Text c={'dimmed'}>{t('profile:bio-undefined')}</Text>}
+          fallback={<Text c="dimmed">{t('profile:bio-undefined')}</Text>}
         >
           {profile.bio}
         </GroupedList.Item>

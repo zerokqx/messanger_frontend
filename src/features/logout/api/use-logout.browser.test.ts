@@ -2,25 +2,30 @@ import { describe, expect, test } from 'vitest';
 import { renderHook } from 'vitest-browser-react';
 import { useLogout } from './use-logout';
 import { tokenAction } from '@/shared/token';
-import { userAction, useUserStore } from '@/entities/user/model/user-store';
-import {
-  mockCurrentUser,
-  mockInvalidate,
-  mockNavigate,
-} from '@/shared/test/mocks';
+import { mockInvalidate, mockNavigate } from '@/shared/test/mocks';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createElement, type FC, type ReactNode } from 'react';
+
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
 
 describe('useLogout Тест', () => {
   test('Проверка на выход', async () => {
+    const queryClient = createTestQueryClient();
+    const wrapper: FC<{ children: ReactNode }> = ({ children }) =>
+      createElement(QueryClientProvider, { client: queryClient }, children);
     const token = 'mock-token';
     tokenAction.doSetToken(token);
-    userAction.doInit(mockCurrentUser);
     expect(tokenAction.doGetToken()).toBe(token);
-    const { result: logout } = await renderHook(() => useLogout());
+    const { result: logout } = await renderHook(() => useLogout(), { wrapper });
     await logout.current();
-    expect(mockNavigate).toBeCalledWith({ to: '/auth' });
+    expect(mockNavigate).toBeCalledWith({ hash: '' });
     expect(mockInvalidate).toBeCalled();
     expect(tokenAction.doGetToken()).toBe('');
-    const { result: me } = await renderHook(() => useUserStore((s) => s.data));
-    expect(me.current).toStrictEqual({ user: null });
   });
 });

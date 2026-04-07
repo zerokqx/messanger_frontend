@@ -14,15 +14,25 @@ export interface Message extends MessageItem {
   id: number;
 }
 
+export interface Images {
+  id: string;
+  blob: Blob;
+  size?: string;
+  sourceUrl: string;
+}
+
 export const db = new Dexie('yobble') as Dexie & {
   chats: EntityTable<Chat, 'user_id'>;
   messages: EntityTable<Message, 'id'>;
+  images: EntityTable<Images, 'id'>;
 };
 
 db.version(1).stores({
   chats: 'user_id, chat_id',
   messages: '++id, chat_id, created_at',
+  images: 'id',
 });
+
 export const delteDb = async () => {
   if (db.isOpen()) db.close();
   await db.delete();

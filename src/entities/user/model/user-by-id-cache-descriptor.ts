@@ -1,8 +1,8 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { produce, type Draft } from 'immer';
 import { queryClient } from '@/shared/api';
-import type { ProfileByUserIdResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
-import { getGetUserProfileByUserIdUserIdGetQueryKey } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
+import type { ProfileByUserIdResponse } from '@/shared/api/orval/profile-service-v2/profile-service-v2.schemas';
+import { getGetUserProfileByUserIdUserIdGetQueryKey } from '@/shared/api/orval/profile-service-v2/v2-profile/v2-profile';
 import {
   CacheDescriptor,
   type ReplaceOptions,

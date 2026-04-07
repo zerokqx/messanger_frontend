@@ -28,11 +28,14 @@ import type {
 
 import type {
   BaseResponse,
+  GetMyProfileMeGetParams,
   HTTPValidationError,
   MeEditRequest,
+  MeGetResponse,
   PrivacyGetResponse,
   ProfileByUserIdResponse,
   ProfileByUserIdsResponse,
+  ProfileUpdateRequest,
   UserProfileRequest,
   UserProfilesRequest
 } from '../profile-service-v2.schemas';
@@ -49,13 +52,14 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * @summary Get My Profile
  */
 export const getMyProfileMeGet = (
-    
+    params?: GetMyProfileMeGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<PrivacyGetResponse>(
-      {url: `/v2/profile/me`, method: 'GET', signal
+      return customInstance<MeGetResponse>(
+      {url: `/v2/profile/me`, method: 'GET',
+        params, signal
     },
       options);
     }
@@ -63,23 +67,23 @@ export const getMyProfileMeGet = (
 
 
 
-export const getGetMyProfileMeGetQueryKey = () => {
+export const getGetMyProfileMeGetQueryKey = (params?: GetMyProfileMeGetParams,) => {
     return [
-    `/v2/profile/me`
+    `/v2/profile/me`, ...(params ? [params] : [])
     ] as const;
     }
 
     
-export const getGetMyProfileMeGetQueryOptions = <TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetMyProfileMeGetQueryOptions = <TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetMyProfileMeGetQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetMyProfileMeGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfileMeGet>>> = ({ signal }) => getMyProfileMeGet(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfileMeGet>>> = ({ signal }) => getMyProfileMeGet(params, requestOptions, signal);
 
       
 
@@ -93,7 +97,7 @@ export type GetMyProfileMeGetQueryError = ErrorType<unknown>
 
 
 export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>> & Pick<
+ params: undefined |  GetMyProfileMeGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyProfileMeGet>>,
           TError,
@@ -103,7 +107,7 @@ export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProf
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>> & Pick<
+ params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyProfileMeGet>>,
           TError,
@@ -113,7 +117,7 @@ export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProf
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -121,11 +125,11 @@ export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProf
  */
 
 export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetMyProfileMeGetQueryOptions(options)
+  const queryOptions = getGetMyProfileMeGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -135,16 +139,16 @@ export function useGetMyProfileMeGet<TData = Awaited<ReturnType<typeof getMyProf
 
 
 
-export const getGetMyProfileMeGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetMyProfileMeGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetMyProfileMeGetQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetMyProfileMeGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfileMeGet>>> = ({ signal }) => getMyProfileMeGet(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfileMeGet>>> = ({ signal }) => getMyProfileMeGet(params, requestOptions, signal);
 
       
 
@@ -158,15 +162,15 @@ export type GetMyProfileMeGetSuspenseQueryError = ErrorType<unknown>
 
 
 export function useGetMyProfileMeGetSuspense<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params: undefined |  GetMyProfileMeGetParams, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetMyProfileMeGetSuspense<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetMyProfileMeGetSuspense<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -174,11 +178,11 @@ export function useGetMyProfileMeGetSuspense<TData = Awaited<ReturnType<typeof g
  */
 
 export function useGetMyProfileMeGetSuspense<TData = Awaited<ReturnType<typeof getMyProfileMeGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: GetMyProfileMeGetParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyProfileMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetMyProfileMeGetSuspenseQueryOptions(options)
+  const queryOptions = getGetMyProfileMeGetSuspenseQueryOptions(params,options)
 
   const query = useSuspenseQuery(queryOptions, queryClient) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -192,7 +196,7 @@ export function useGetMyProfileMeGetSuspense<TData = Awaited<ReturnType<typeof g
  * @summary Edit Profile
  */
 export const editProfileEditPut = (
-    meEditRequest: BodyType<MeEditRequest>,
+    profileUpdateRequest: BodyType<ProfileUpdateRequest>,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
@@ -200,7 +204,7 @@ export const editProfileEditPut = (
       return customInstance<BaseResponse>(
       {url: `/v2/profile/edit`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
-      data: meEditRequest, signal
+      data: profileUpdateRequest, signal
     },
       options);
     }
@@ -208,8 +212,8 @@ export const editProfileEditPut = (
 
 
 export const getEditProfileEditPutMutationOptions = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editProfileEditPut>>, TError,{data: BodyType<MeEditRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof editProfileEditPut>>, TError,{data: BodyType<MeEditRequest>}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editProfileEditPut>>, TError,{data: BodyType<ProfileUpdateRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof editProfileEditPut>>, TError,{data: BodyType<ProfileUpdateRequest>}, TContext> => {
 
 const mutationKey = ['editProfileEditPut'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -221,7 +225,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editProfileEditPut>>, {data: BodyType<MeEditRequest>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editProfileEditPut>>, {data: BodyType<ProfileUpdateRequest>}> = (props) => {
           const {data} = props ?? {};
 
           return  editProfileEditPut(data,requestOptions)
@@ -235,21 +239,227 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type EditProfileEditPutMutationResult = NonNullable<Awaited<ReturnType<typeof editProfileEditPut>>>
-    export type EditProfileEditPutMutationBody = BodyType<MeEditRequest>
+    export type EditProfileEditPutMutationBody = BodyType<ProfileUpdateRequest>
     export type EditProfileEditPutMutationError = ErrorType<unknown>
 
     /**
  * @summary Edit Profile
  */
 export const useEditProfileEditPut = <TError = ErrorType<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editProfileEditPut>>, TError,{data: BodyType<MeEditRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editProfileEditPut>>, TError,{data: BodyType<ProfileUpdateRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof editProfileEditPut>>,
+        TError,
+        {data: BodyType<ProfileUpdateRequest>},
+        TContext
+      > => {
+      return useMutation(getEditProfileEditPutMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Get My Privacy
+ */
+export const getMyPrivacyPrivacyMeGet = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<PrivacyGetResponse>(
+      {url: `/v2/profile/privacy/me`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetMyPrivacyPrivacyMeGetQueryKey = () => {
+    return [
+    `/v2/profile/privacy/me`
+    ] as const;
+    }
+
+    
+export const getGetMyPrivacyPrivacyMeGetQueryOptions = <TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyPrivacyPrivacyMeGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>> = ({ signal }) => getMyPrivacyPrivacyMeGet(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMyPrivacyPrivacyMeGetQueryResult = NonNullable<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>>
+export type GetMyPrivacyPrivacyMeGetQueryError = ErrorType<unknown>
+
+
+export function useGetMyPrivacyPrivacyMeGet<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>,
+          TError,
+          Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyPrivacyPrivacyMeGet<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>,
+          TError,
+          Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyPrivacyPrivacyMeGet<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get My Privacy
+ */
+
+export function useGetMyPrivacyPrivacyMeGet<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetMyPrivacyPrivacyMeGetQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+export const getGetMyPrivacyPrivacyMeGetSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyPrivacyPrivacyMeGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>> = ({ signal }) => getMyPrivacyPrivacyMeGet(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMyPrivacyPrivacyMeGetSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>>
+export type GetMyPrivacyPrivacyMeGetSuspenseQueryError = ErrorType<unknown>
+
+
+export function useGetMyPrivacyPrivacyMeGetSuspense<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyPrivacyPrivacyMeGetSuspense<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyPrivacyPrivacyMeGetSuspense<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get My Privacy
+ */
+
+export function useGetMyPrivacyPrivacyMeGetSuspense<TData = Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMyPrivacyPrivacyMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetMyPrivacyPrivacyMeGetSuspenseQueryOptions(options)
+
+  const query = useSuspenseQuery(queryOptions, queryClient) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+/**
+ * @summary Edit Privacy
+ */
+export const editPrivacyPrivacyEditPut = (
+    meEditRequest: BodyType<MeEditRequest>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<BaseResponse>(
+      {url: `/v2/profile/privacy/edit`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: meEditRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getEditPrivacyPrivacyEditPutMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editPrivacyPrivacyEditPut>>, TError,{data: BodyType<MeEditRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof editPrivacyPrivacyEditPut>>, TError,{data: BodyType<MeEditRequest>}, TContext> => {
+
+const mutationKey = ['editPrivacyPrivacyEditPut'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editPrivacyPrivacyEditPut>>, {data: BodyType<MeEditRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  editPrivacyPrivacyEditPut(data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditPrivacyPrivacyEditPutMutationResult = NonNullable<Awaited<ReturnType<typeof editPrivacyPrivacyEditPut>>>
+    export type EditPrivacyPrivacyEditPutMutationBody = BodyType<MeEditRequest>
+    export type EditPrivacyPrivacyEditPutMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Edit Privacy
+ */
+export const useEditPrivacyPrivacyEditPut = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editPrivacyPrivacyEditPut>>, TError,{data: BodyType<MeEditRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof editPrivacyPrivacyEditPut>>,
         TError,
         {data: BodyType<MeEditRequest>},
         TContext
       > => {
-      return useMutation(getEditProfileEditPutMutationOptions(options), queryClient);
+      return useMutation(getEditPrivacyPrivacyEditPutMutationOptions(options), queryClient);
     }
     /**
  * @summary Get User Profile By User Id

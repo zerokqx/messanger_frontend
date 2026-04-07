@@ -15,8 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { SessionListSkeleton } from '@/features/session';
 import type { RootTabsProps } from './types.ts';
 import { rootTabs } from '@/widgets/navbar/config/root-tabs.tsx';
-import { useLogout } from '@/entities/user/index.ts';
-import { useMe } from '@/entities/user/model/me.query.ts';
+import { useMe } from '@/entities/viewer';
 import {
   SkeletonLayout,
   SkeletonsCardList,
@@ -25,6 +24,7 @@ import { ChangePasswordModal } from '@/features/change-password/index.ts';
 import { useDisclosure } from '@mantine/hooks';
 import { useResponsive } from '@/shared/lib/hooks/use-responsive/index.ts';
 import { modals } from '@mantine/modals';
+import { useLogout } from '@/features/logout';
 import { lightDark } from '@/shared/lib/light-dark/index.ts';
 
 const SessionsTab = lazy(() =>

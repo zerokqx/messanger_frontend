@@ -1,9 +1,9 @@
-import type { ProfileByUserIdResponse } from '@/shared/api/orval/profile-service/profile-service.schemas';
+import type { ProfileByUserIdResponse } from '@/shared/api/orval/profile-service-v2/profile-service-v2.schemas';
 import {
   getGetUserProfileByUserIdUserIdGetQueryOptions,
   getGetUserProfileByUserIdUserIdGetQueryKey,
   useGetUserProfileByUserIdUserIdGet,
-} from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
+} from '@/shared/api/orval/profile-service-v2/v2-profile/v2-profile';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import type { Draft } from 'immer';
 import { useCallback } from 'react';

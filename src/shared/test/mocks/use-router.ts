@@ -8,6 +8,20 @@ const mockHistoryGoBack = vi.fn();
 export const mockInvalidate = vi.fn();
 vi.stubGlobal('mockNavigate', mockNavigate);
 export const routerMock = {
+  useRouterState: ({ select }: { select?: (state: any) => unknown } = {}) => {
+    const state = {
+      location: {
+        pathname: '/',
+        search: {},
+        hash: '',
+        state: {},
+        key: 'default',
+      },
+      status: 'idle',
+    };
+
+    return select ? select(state) : state;
+  },
   useRouter: () => ({
     state: {
       location: {

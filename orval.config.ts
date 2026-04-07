@@ -1,3 +1,4 @@
+
 import { defineConfig } from 'orval';
 
 const BASE_TARGET_PATH = './src/shared/api/orval';
@@ -12,10 +13,8 @@ const url = (name: string, version = 'v1'): string => {
   return `/${version}/${name}`;
 };
 
-const targetUrl = <T extends string>(
-  name: T
-): `https://dev.api.yobble.org/docs/openapi/${T}_service` => {
-  return `https://dev.api.yobble.org/docs/openapi/${name}_service`;
+const targetUrl = (name: string, withServicesSuffix = true): string => {
+  return `https://dev.api.yobble.org/docs/openapi/${name}${withServicesSuffix ? '_service' : ''}`;
 };
 
 const MUTATOR_CONFIG = {
@@ -24,6 +23,7 @@ const MUTATOR_CONFIG = {
 };
 
 export default defineConfig({
+  
   'auth-service': {
     input: { target: targetUrl('auth') },
     output: {
@@ -33,7 +33,7 @@ export default defineConfig({
       httpClient: 'axios',
       mode: 'tags-split',
       namingConvention: 'kebab-case',
-      override: { mutator: MUTATOR_CONFIG,  },
+      override: { mutator: MUTATOR_CONFIG },
     },
   },
 
@@ -70,6 +70,39 @@ export default defineConfig({
               useInfiniteQueryParam: 'offset',
             },
           },
+        },
+      },
+    },
+  },
+  'profile-service-v2': {
+    input: { target: targetUrl('profile_service_v2',false) },
+    output: {
+      indexFiles: true,
+      target: targetPath('profile-service-v2'),
+      baseUrl: url('profile', 'v2'),
+      client: 'react-query',
+      httpClient: 'axios',
+      mode: 'tags-split',
+      namingConvention: 'kebab-case',
+
+      override: {
+        operations: {
+          get_user_profile_by_user_id__user_id__get: {
+            query: {
+              usePrefetch: true,
+            },
+          },
+        },
+        mutator: MUTATOR_CONFIG,
+        query: {
+          useSuspenseQuery: true,
+
+          mutationInvalidates: [
+            {
+              onMutations: ['edit_profile_edit_put'],
+              invalidates: ['get_my_profile_me_get'],
+            },
+          ],
         },
       },
     },

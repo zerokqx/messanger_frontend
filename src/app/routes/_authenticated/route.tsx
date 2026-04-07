@@ -18,11 +18,10 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { SafeChat } from '@/widgets/chat';
 import Logger from '@/shared/lib/logger/logger';
-import { getGetMyProfileMeGetQueryOptions } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 import { ChatCacheDescriptor, useSelectedChat } from '@/entities/chat';
 import { MessageCacheDescriptor } from '@/entities/message';
 import { useCreateChatFromSocketEvent } from '@/entities/chat/model/cache-actions';
-import { useMeUserId } from '@/entities/user';
+import { fetchMe, useMeUserId } from '@/entities/viewer';
 import { useTranslation } from 'react-i18next';
 
 const LazyAppShellNavbar = lazy(() =>
@@ -45,8 +44,8 @@ export const Route = createFileRoute('/_authenticated')({
         },
       });
   },
-  loader: async ({ context: { queryClient } }) => {
-    await queryClient.ensureQueryData(getGetMyProfileMeGetQueryOptions());
+  loader: async () => {
+    await fetchMe();
   },
 });
 

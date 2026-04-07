@@ -60,6 +60,17 @@ describe('MessageCacheDescriptor', () => {
     expect(Number.isInteger(descriptor.generateMessageId())).toBe(true);
   });
 
+  test('checks existence of a cached message', () => {
+    const client = new QueryClient();
+    const descriptor = MessageCacheDescriptor.getInstance('chat-1', client);
+    const historyKey = descriptor.getChatHistoryQueryKey();
+
+    client.setQueryData(historyKey, createHistory([createMessage()]));
+
+    expect(descriptor.exist(1)).toBe(true);
+    expect(descriptor.exist(999)).toBe(false);
+  });
+
   test('creates a message in the first history page', async () => {
     const client = new QueryClient();
     const descriptor = MessageCacheDescriptor.getInstance('chat-1', client);

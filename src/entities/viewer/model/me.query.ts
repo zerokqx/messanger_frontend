@@ -11,12 +11,17 @@ import {
   getGetMyProfileMeGetQueryKey,
   getGetMyProfileMeGetQueryOptions,
   useGetMyProfileMeGetSuspense,
-} from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
-import type { ProfileData } from '@/shared/api/orval/profile-service/profile-service.schemas';
+} from '@/shared/api/orval/profile-service-v2/v2-profile/v2-profile';
+import type { MeData } from '@/shared/api/orval/profile-service-v2/profile-service-v2.schemas';
 
-export const meQueryOptions = getGetMyProfileMeGetQueryOptions({
-  query: { staleTime: 60 * 1000 },
-});
+export const meQueryKey = getGetMyProfileMeGetQueryKey();
+
+export const meQueryOptions = getGetMyProfileMeGetQueryOptions(
+  {},
+  {
+    query: { staleTime: 60 * 1000 },
+  }
+);
 
 /**
  * @description функция испльзуемая для загруки пользователя на уровне роутера
@@ -31,30 +36,25 @@ export const fetchMe = async () => {
  * fetchMe(loader) => useMe(components)
  */
 export const useMe = () => {
-  return useGetMyProfileMeGetSuspense({
-    query: {
-      select(response) {
-        return response.data;
+  return useGetMyProfileMeGetSuspense(
+    {},
+    {
+      query: {
+        select(response) {
+          return response.data;
+        },
+        staleTime: 60 * 1000,
       },
-      staleTime: 60 * 1000,
-    },
-  });
+    }
+  );
 };
-
 
 export const useMeUserId = () => {
-  return useGetMyProfileMeGetSuspense({
-    query: {
-      select(response) {
-        return response.data.user_id;
-      },
-      staleTime: Infinity,
-    },
-  });
+  return useGetMyProfileMeGetSuspense({});
 };
 
-export const useMeDescriptor: DescriptorImplementator<ProfileData, []> = (
+export const useMeDescriptor: DescriptorImplementator<MeData, []> = (
   options
 ) => {
-  return useCacheDescriptor(getGetMyProfileMeGetQueryKey(), options);
+  return useCacheDescriptor(meQueryKey, options);
 };

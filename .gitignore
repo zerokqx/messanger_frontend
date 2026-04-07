@@ -43,3 +43,4 @@ devenv.local.nix
 .env
 # pre-commit
 .pre-commit-config.yaml
+sandbox.ts

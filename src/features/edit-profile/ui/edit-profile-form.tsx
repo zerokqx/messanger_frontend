@@ -1,4 +1,4 @@
-import { useMe } from '@/entities/user/model/me.query';
+import { meQueryKey, useMe } from '@/entities/viewer';
 import { useTranslation } from 'react-i18next';
 import { useEditProfile } from '../api';
 import { useOs } from '@/shared/lib/use-os';
@@ -17,7 +17,6 @@ import { TailButton } from '@/shared/ui/buttons';
 import { Check, Save } from 'lucide-react';
 import { useMount, useUnmount } from 'react-use';
 import { urlAvatar, useUploadAvatar } from '@/entities/user';
-import { getGetMyProfileMeGetQueryKey } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 
 interface ProfileEditFormProps {
   onSuccess?: () => void;
@@ -63,7 +62,7 @@ export const ProfileEditForm = ({
         {
           onSuccess(_data, _variables, _onMutateResult, context) {
             void context.client.invalidateQueries({
-              queryKey: getGetMyProfileMeGetQueryKey(),
+              queryKey: meQueryKey,
             });
           },
         }

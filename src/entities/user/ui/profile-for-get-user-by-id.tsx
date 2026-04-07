@@ -1,6 +1,6 @@
 import { Avatar, Center, Rating, Stack, Text } from '@mantine/core';
 import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
-import { useIsMe } from '../lib/use-is-me';
+import { useIsMe } from '@/entities/viewer/lib/use-is-me.ts';
 import { AtSign, Ban, Clock, Handshake, Star, User } from 'lucide-react';
 import { GroupedList } from '@/shared/ui/grouped-list';
 import { useTranslation } from 'react-i18next';
@@ -45,6 +45,7 @@ export const ProfileForGetUserById = ({
   }
   const { format, name } = formatLogin(profile.login, profile.custom_name);
   const blocked = getBlocked();
+
   return (
     <Stack>
       <Center>

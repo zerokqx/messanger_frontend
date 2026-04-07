@@ -66,6 +66,14 @@ export abstract class CacheDescriptor<
   abstract search(...args: TSearchArgs): TEntity | undefined;
 
   /**
+   * Проверяет, существует ли сущность либо в переданных данных,
+   * либо в query cache.
+   */
+  exist(...args: TSearchArgs): boolean {
+    return this.search(...args) !== undefined;
+  }
+
+  /**
    * Полностью заменяет найденную сущность в кеше.
    * Конкретная реализация зависит от формы доменного кеша.
    */

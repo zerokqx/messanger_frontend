@@ -41,7 +41,7 @@ export const ChatsTab = () => {
                 hash: hasUserId(chat.chat_data ?? null),
               });
             }}
-             unreadCount={chat.unread_count}
+            unreadCount={chat.unread_count}
             ids={{
               chatId: chat.chat_id,
               userId: profile.user_id,

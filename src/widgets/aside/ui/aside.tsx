@@ -7,13 +7,13 @@ import {
 } from '@mantine/core';
 import { lazy, Suspense } from 'react';
 import { SkeletonProfile, useGetUserById } from '@/entities/user';
+import { useIsMe } from '@/entities/viewer';
 import { ContactMenu } from '@/features/contact';
 import { Tabs } from '@/shared/ui/query-tabs';
 import { ArrowLeft } from 'lucide-react';
 import { notify } from '@/shared/lib/notifications';
 import { SkeletonLayout } from '@/shared/ui/skeletons';
 import { useDrag } from '@use-gesture/react';
-import { useIsMe } from '@/entities/user/lib/use-is-me';
 import { useRouterState } from '@tanstack/react-router';
 
 const ProfileForGetUserById = lazy(() =>
@@ -59,7 +59,8 @@ export const Aside = ({ onClose }: CustomAsideProps) => {
       },
     }
   );
-  if(!uuid ) return
+  if (!uuid) return;
+
   return (
     <AppShellAside
       {...bind()}

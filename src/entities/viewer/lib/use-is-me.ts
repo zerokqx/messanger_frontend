@@ -1,6 +1,7 @@
-import { useMe } from '../model/me.query';
+import { useMe } from '../model/me.query.ts';
 
 export const useIsMe = (userId: string) => {
   const { data: me } = useMe();
+
   return userId === me.user_id;
 };

@@ -22,4 +22,12 @@ export const handlers = [
       { status: 200 }
     );
   }),
+  http.post('*/v1/auth/sessions/logout', () => {
+    return HttpResponse.json(
+      {
+        data: null,
+      },
+      { status: 200 }
+    );
+  }),
 ];

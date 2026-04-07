@@ -310,6 +310,13 @@ export interface ProfileByUserIdsResponse {
   data: ProfileByUserIdsResponseData;
 }
 
+export interface ProfileUpdateRequest {
+  /** Полное имя */
+  full_name?: string | null;
+  /** Биография */
+  bio?: string | null;
+}
+
 export interface UserProfileRequest {
   user_id: string;
   current_user: string;
@@ -325,4 +332,23 @@ export interface UserProfilesRequest {
   with_permissions: boolean;
   need_rating: boolean;
 }
+
+export type GetMyProfileMeGetParams = {
+/**
+ * Include avatar data
+ */
+need_avatar?: boolean;
+/**
+ * Include rating data
+ */
+need_rating?: boolean;
+/**
+ * Include verification status
+ */
+need_verification?: boolean;
+/**
+ * Include balance information
+ */
+need_balances?: boolean;
+};
 
