@@ -24,32 +24,10 @@ export const useUploadAvatar = () => {
 
 export const urlAvatar = (
   userId: NullUndefined<string>,
-  fileId: NullUndefined<string>
+  fileId: NullUndefined<string>,
+  version?: 'main' | 'preview' | 'thumbnail'
 ) => {
   return !userId || !fileId
     ? undefined
-    : `${import.meta.env.VITE_API_URL}/v1/storage/avatar/download/${userId}?file_id=${fileId}`;
+    : `${import.meta.env.VITE_API_URL}/v1/storage/avatar/download/${userId}?file_id=${fileId}&version=${version ?? 'main'}`;
 };
-// export const createCacheId = (userId: string, fileId: string) => `${userId}_${fileId}`;
-// export async function getOrCacheImage(id: string, url: string) {
-//   let item = await db.images.get(id);
-//
-//   if (!item) {
-//     const res = await fetch(url);
-//
-//     if (!res.ok) {
-//       throw new Error('failed to load image');
-//     }
-//
-//     const blob = await res.blob();
-//
-//     await db.images.put({
-//       id,
-//       blob,
-//       sourceUrl: url,
-//     });
-//     item = { blob };
-//   }
-//
-//   return item.blob as Blob;
-// }

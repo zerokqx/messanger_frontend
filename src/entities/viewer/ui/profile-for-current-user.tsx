@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import type {  MeData } from '@/shared/api/orval/profile-service-v2/profile-service-v2.schemas';
+import type { MeData } from '@/shared/api/orval/profile-service-v2/profile-service-v2.schemas';
 import { useTranslation } from 'react-i18next';
 import { AtSign, Clock, Edit, Star, User } from 'lucide-react';
 import { GroupedList } from '@/shared/ui/grouped-list';
@@ -17,6 +17,7 @@ import { useSettingsStore } from '@/shared/lib/settings';
 import { urlAvatar } from '@/entities/user/api';
 import Logger from '@/shared/lib/logger/logger';
 import { useMe } from '../model';
+import { useParalelImageLoad } from '@/shared/lib/paralel-image-load';
 
 interface ProfileForCurrentUserBaseProps {
   profile: MeData;
@@ -37,8 +38,12 @@ type ProfileForCurrentUserProps =
 export const ProfileForCurrentUser = ({
   onEdit,
 }: ProfileForCurrentUserProps) => {
-  const {data: profile} = useMe()
+  const { data: profile } = useMe();
   const { t } = useTranslation(['button-labels', 'profile']);
+  const {src} = useParalelImageLoad(
+    urlAvatar(profile.user_id, profile.avatars?.current?.file_id, 'thumbnail'),
+    urlAvatar(profile.user_id, profile.avatars?.current?.file_id, 'preview')
+  );
   const createdAt = useCreatedAt(profile.created_at);
   const primaryColor = useSettingsStore((state) => state.data.primaryColor);
 
@@ -49,7 +54,8 @@ export const ProfileForCurrentUser = ({
       <Center>
         <Box pos="relative">
           <Avatar
-            src={urlAvatar(profile.user_id, profile.avatars?.current?.file_id)}
+            
+            src={src}
             name={profile.login}
             size="xl"
           />

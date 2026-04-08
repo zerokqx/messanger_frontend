@@ -4,6 +4,7 @@ import { urlAvatar } from '@/entities/user';
 import type { ProfileByUserIdData } from '@/shared/api/orval/profile-service/profile-service.schemas';
 import { formatLogin } from '@/shared/lib/formaters';
 import Logger from '@/shared/lib/logger/logger';
+import { Avatar } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-router';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -51,10 +52,16 @@ export const ChatsTab = () => {
               content: chat.last_message?.content ?? '',
               createdAt: chat.last_message?.created_at ?? '',
             }}
+            avatarSrcPreview={urlAvatar(
+              profile.user_id,
+              profile.avatars?.current?.file_id,
+              'thumbnail'
+            )}
             displayName={formatLogin(profile.login, profile.custom_name).name}
             avatarSrc={urlAvatar(
               profile.user_id,
-              profile.avatars?.current?.file_id
+              profile.avatars?.current?.file_id,
+              'preview'
             )}
           />
         );

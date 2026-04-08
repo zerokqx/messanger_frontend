@@ -21,6 +21,44 @@ export interface BodyUploadAvatarAvatarUploadPost {
   file: Blob;
 }
 
+export type MediaType = typeof MediaType[keyof typeof MediaType];
+
+
+export const MediaType = {
+  image: 'image',
+  video: 'video',
+  audio: 'audio',
+  voice: 'voice',
+} as const;
+
+export interface BodyUploadFileFilesUploadPost {
+  file: Blob;
+  media_type: MediaType;
+  no_compress?: boolean;
+}
+
+export interface FileAccessCheckRequest {
+  /** File ID to check access for */
+  file_id: string;
+  /** User ID requesting access */
+  user_id: string;
+}
+
+export interface FileAccessCheckResponse {
+  /** Whether the user has access to the file */
+  allowed: boolean;
+}
+
+export interface FileUploadData {
+  /** Uploaded file ID */
+  file_id: string;
+}
+
+export interface FileUploadResponse {
+  status: string;
+  data: FileUploadData;
+}
+
 export interface ValidationError {
   loc: (string | number)[];
   msg: string;
@@ -43,5 +81,6 @@ export interface UploadAvatarResponse {
 
 export type DownloadAvatarAvatarDownloadUserIdGetParams = {
 file_id: string;
+version?: string;
 };
 

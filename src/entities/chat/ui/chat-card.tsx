@@ -9,15 +9,14 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import type {
-  PrivateChatListItem,
-} from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
+import type { PrivateChatListItem } from '@/shared/api/orval/chat-private-service/chat-private-service.schemas';
 import { useSettingsStore } from '@/shared/lib/settings';
 import useRipple from 'useripple';
 import { prefetchGetUserProfileByUserIdUserIdGetQuery } from '@/shared/api/orval/profile-service/v1-profile/v1-profile';
 import { useQueryClient } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import { useMemo } from 'react';
+import { useParalelImageLoad } from '@/shared/lib/paralel-image-load';
 
 export type ChatListItem = PrivateChatListItem;
 
@@ -32,6 +31,7 @@ export interface ChatCardProps {
     content?: string;
     createdAt?: string;
   };
+  avatarSrcPreview?: string;
   avatarSrc?: string;
   displayName: string;
   onClick?: () => void;
@@ -56,9 +56,11 @@ export const ChatCard = ({
   onClick,
   isActive,
   displayName,
+  avatarSrcPreview,
 }: ChatCardProps) => {
   const primary = useSettingsStore((s) => s.data.primaryColor);
   const [addRipples, ripples] = useRipple();
+  const { src } = useParalelImageLoad(avatarSrcPreview, avatarSrc);
   const theme = useMantineTheme();
   const contrastColor = getContrastColor({ color: primary, theme });
   const queryClient = useQueryClient();
@@ -108,7 +110,7 @@ export const ChatCard = ({
         size={48}
         color={isActive ? contrastColor : undefined}
         radius="xl"
-        src={avatarSrc}
+        src={src}
         name={displayName}
       />
 

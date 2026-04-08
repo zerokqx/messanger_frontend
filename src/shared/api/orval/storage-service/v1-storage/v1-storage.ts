@@ -26,7 +26,11 @@ import type {
 import type {
   AvatarBatchRequest,
   BodyUploadAvatarAvatarUploadPost,
+  BodyUploadFileFilesUploadPost,
   DownloadAvatarAvatarDownloadUserIdGetParams,
+  FileAccessCheckRequest,
+  FileAccessCheckResponse,
+  FileUploadResponse,
   HTTPValidationError,
   UploadAvatarResponse
 } from '../storage-service.schemas';
@@ -131,7 +135,7 @@ export const getDownloadAvatarAvatarDownloadUserIdGetQueryKey = (userId: string,
     }
 
     
-export const getDownloadAvatarAvatarDownloadUserIdGetQueryOptions = <TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(userId: string,
+export const getDownloadAvatarAvatarDownloadUserIdGetQueryOptions = <TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<unknown>>(userId: string,
     params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
@@ -151,10 +155,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type DownloadAvatarAvatarDownloadUserIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>>
-export type DownloadAvatarAvatarDownloadUserIdGetQueryError = ErrorType<HTTPValidationError>
+export type DownloadAvatarAvatarDownloadUserIdGetQueryError = ErrorType<unknown>
 
 
-export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<unknown>>(
  userId: string,
     params: DownloadAvatarAvatarDownloadUserIdGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -165,7 +169,7 @@ export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnT
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<unknown>>(
  userId: string,
     params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -176,7 +180,7 @@ export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnT
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<unknown>>(
  userId: string,
     params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
@@ -185,7 +189,7 @@ export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnT
  * @summary Download Avatar
  */
 
-export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useDownloadAvatarAvatarDownloadUserIdGet<TData = Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError = ErrorType<unknown>>(
  userId: string,
     params: DownloadAvatarAvatarDownloadUserIdGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadAvatarAvatarDownloadUserIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
@@ -263,5 +267,136 @@ export const useGetAvatarsBatchInternalAvatarsListPost = <TError = ErrorType<HTT
         TContext
       > => {
       return useMutation(getGetAvatarsBatchInternalAvatarsListPostMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Upload File
+ */
+export const uploadFileFilesUploadPost = (
+    bodyUploadFileFilesUploadPost: BodyType<BodyUploadFileFilesUploadPost>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
+formData.append(`file`, bodyUploadFileFilesUploadPost.file);
+formData.append(`media_type`, bodyUploadFileFilesUploadPost.media_type);
+if(bodyUploadFileFilesUploadPost.no_compress !== undefined) {
+ formData.append(`no_compress`, bodyUploadFileFilesUploadPost.no_compress.toString())
+ }
+
+      return customInstance<FileUploadResponse>(
+      {url: `/v1/storage/files/upload`, method: 'POST',
+       data: formData, signal
+    },
+      options);
+    }
+  
+
+
+export const getUploadFileFilesUploadPostMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFileFilesUploadPost>>, TError,{data: BodyType<BodyUploadFileFilesUploadPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof uploadFileFilesUploadPost>>, TError,{data: BodyType<BodyUploadFileFilesUploadPost>}, TContext> => {
+
+const mutationKey = ['uploadFileFilesUploadPost'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadFileFilesUploadPost>>, {data: BodyType<BodyUploadFileFilesUploadPost>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  uploadFileFilesUploadPost(data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploadFileFilesUploadPostMutationResult = NonNullable<Awaited<ReturnType<typeof uploadFileFilesUploadPost>>>
+    export type UploadFileFilesUploadPostMutationBody = BodyType<BodyUploadFileFilesUploadPost>
+    export type UploadFileFilesUploadPostMutationError = ErrorType<void>
+
+    /**
+ * @summary Upload File
+ */
+export const useUploadFileFilesUploadPost = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFileFilesUploadPost>>, TError,{data: BodyType<BodyUploadFileFilesUploadPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof uploadFileFilesUploadPost>>,
+        TError,
+        {data: BodyType<BodyUploadFileFilesUploadPost>},
+        TContext
+      > => {
+      return useMutation(getUploadFileFilesUploadPostMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Check File Access
+ */
+export const checkFileAccessInternalFilesAccessCheckPost = (
+    fileAccessCheckRequest: BodyType<FileAccessCheckRequest>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<FileAccessCheckResponse>(
+      {url: `/v1/storage/internal/files/access/check`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: fileAccessCheckRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getCheckFileAccessInternalFilesAccessCheckPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkFileAccessInternalFilesAccessCheckPost>>, TError,{data: BodyType<FileAccessCheckRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof checkFileAccessInternalFilesAccessCheckPost>>, TError,{data: BodyType<FileAccessCheckRequest>}, TContext> => {
+
+const mutationKey = ['checkFileAccessInternalFilesAccessCheckPost'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof checkFileAccessInternalFilesAccessCheckPost>>, {data: BodyType<FileAccessCheckRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  checkFileAccessInternalFilesAccessCheckPost(data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CheckFileAccessInternalFilesAccessCheckPostMutationResult = NonNullable<Awaited<ReturnType<typeof checkFileAccessInternalFilesAccessCheckPost>>>
+    export type CheckFileAccessInternalFilesAccessCheckPostMutationBody = BodyType<FileAccessCheckRequest>
+    export type CheckFileAccessInternalFilesAccessCheckPostMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Check File Access
+ */
+export const useCheckFileAccessInternalFilesAccessCheckPost = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof checkFileAccessInternalFilesAccessCheckPost>>, TError,{data: BodyType<FileAccessCheckRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof checkFileAccessInternalFilesAccessCheckPost>>,
+        TError,
+        {data: BodyType<FileAccessCheckRequest>},
+        TContext
+      > => {
+      return useMutation(getCheckFileAccessInternalFilesAccessCheckPostMutationOptions(options), queryClient);
     }
     
